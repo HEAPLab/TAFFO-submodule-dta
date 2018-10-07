@@ -1,6 +1,8 @@
 add_llvm_loadable_module(TaffoAutotuner
     TaffoTunerPass.cpp
     TaffoTunerPass.h
+    FixedPointType.cpp
+    FixedPointType.h
   
   PLUGIN_TOOL
   opt
