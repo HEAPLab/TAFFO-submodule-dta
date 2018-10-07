@@ -58,6 +58,8 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
       }
     }
   }
+
+  sortQueue(vals);
 }
 
 
@@ -93,4 +95,42 @@ FixedPointType TaffoTuner::associateFixFormat(RangeError rng) {
     }
   }
   return fp;
+}
+
+
+void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
+  size_t next = 0;
+  while (next < vals.size()) {
+    Value *v = vals.at(next);
+
+    for (auto *u: v->users()) {
+
+      /* Insert u at the end of the queue.
+       * If u exists already in the queue, *move* it to the end instead. */
+      for (int i=0; i<vals.size();) {
+        if (vals[i] == u) {
+          vals.erase(vals.begin() + i);
+          if (i < next)
+            next--;
+        } else {
+          i++;
+        }
+      }
+
+      if (GlobalObject *go = dyn_cast<GlobalObject>(u)) {
+        if (go->getMetadata(INPUT_INFO_METADATA)) {
+          vals.push_back(u);
+          if (!hasInfo(u)) {
+            dbgs() << "[WARNING] Find Value without range!\n";
+            ValueInfo vi;
+            vi.rangeError = valueInfo(v)->rangeError;
+            vi.fixpType = associateFixFormat(vi.rangeError);
+            *valueInfo(u) = vi;
+          }
+        }
+      }
+
+    }
+    next++;
+  }
 }

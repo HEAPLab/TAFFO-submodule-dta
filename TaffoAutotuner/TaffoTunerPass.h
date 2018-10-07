@@ -52,6 +52,7 @@ namespace tuner {
 
     void retrieveValue(llvm::Module &m, std::vector<llvm::Value *> &vals);
     ValueInfo* parseMDRange(mdutils::InputInfo II);
+    void sortQueue(std::vector<llvm::Value*> &vals);
     ValueInfo* parseMDRange(mdutils::InputInfo *II);
     FixedPointType associateFixFormat(RangeError rng);
 
