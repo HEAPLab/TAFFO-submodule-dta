@@ -14,6 +14,8 @@
 #ifndef __TAFFO_TUNER_PASS_H__
 #define __TAFFO_TUNER_PASS_H__
 
+#define DEBUG_TYPE "taffotuner"
+
 using namespace taffo;
 
 llvm::cl::opt<int> FracThreshold("minfractbits", llvm::cl::value_desc("bits"),
@@ -51,10 +53,12 @@ namespace tuner {
     bool runOnModule(llvm::Module &M) override;
 
     void retrieveValue(llvm::Module &m, std::vector<llvm::Value *> &vals);
-    ValueInfo* parseMDRange(mdutils::InputInfo II);
-    void sortQueue(std::vector<llvm::Value*> &vals);
-    ValueInfo* parseMDRange(mdutils::InputInfo *II);
+    bool parseMDRange(llvm::Value *v, mdutils::InputInfo *II);
     FixedPointType associateFixFormat(RangeError rng);
+    void sortQueue(std::vector<llvm::Value*> &vals);
+    void collapseFunction(llvm::Module &m);
+    llvm::Function *findEqFunction(llvm::Function *fun, llvm::Function *origin);
+    void attachFPMetaData(std::vector<llvm::Value*> &vals);
 
 
     std::shared_ptr<ValueInfo> valueInfo(llvm::Value *val) {

@@ -19,7 +19,7 @@ using namespace tuner;
 char TaffoTuner::ID = 0;
 
 static RegisterPass<TaffoTuner> X(
-  "autotuner",
+  "taffotuner",
   "TAFFO Framework Data Type Allocation",
   false /* does not affect the CFG */,
   true /* Optimization Pass */);
@@ -39,21 +39,31 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 
   for (GlobalObject &globObj : m.globals()) {
     if (mdutils::InputInfo *II = MDManager.retrieveInputInfo(globObj)) {
-      if (ValueInfo* vi = parseMDRange(II)) {
-        vi->fixpType = associateFixFormat(vi->rangeError);
+      if (parseMDRange(&globObj, II)) {
+        valueInfo(&globObj)->fixpType = associateFixFormat(valueInfo(&globObj)->rangeError);
         vals.push_back(&globObj);
-        *valueInfo(&globObj) = *vi;
       }
     }
   }
 
   for (Function &f : m.functions()) {
+
+    SmallVector<mdutils::InputInfo*, 5> argsII;
+    MDManager.retrieveArgumentInputInfo(f, argsII);
+    auto arg = f.arg_begin();
+    for (mdutils::InputInfo* II : argsII) {
+      if (parseMDRange(arg, II)) {
+        valueInfo(arg)->fixpType = associateFixFormat(valueInfo(arg)->rangeError);
+        vals.push_back(arg);
+      }
+      arg++;
+    }
+
     for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
       if (mdutils::InputInfo *II = MDManager.retrieveInputInfo(*iIt)) {
-        if (ValueInfo* vi = parseMDRange(II)) {
-          vi->fixpType = associateFixFormat(vi->rangeError);
+        if (parseMDRange(&*iIt, II)) {
+          valueInfo(&*iIt)->fixpType = associateFixFormat(valueInfo(&*iIt)->rangeError);
           vals.push_back(&*iIt);
-          *valueInfo(&*iIt) = *vi;
         }
       }
     }
@@ -63,25 +73,24 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 }
 
 
-ValueInfo* TaffoTuner::parseMDRange(mdutils::InputInfo *II){
+bool TaffoTuner::parseMDRange(Value *v, mdutils::InputInfo *II) {
   mdutils::Range* rng = II->IRange;
   if (rng!=nullptr && !std::isnan(rng->Max) && !std::isnan(rng->Min)) {
-    ValueInfo *vi;
-    vi->rangeError.Max = rng->Max;
-    vi->rangeError.Min = rng->Min;
-    return vi;
+    valueInfo(v)->rangeError.Max = rng->Max;
+    valueInfo(v)->rangeError.Min = rng->Min;
+    return true;
   } else {
-    return nullptr;
+    return false;
   }
 }
 
 
 FixedPointType TaffoTuner::associateFixFormat(RangeError rng) {
   FixedPointType fp;
-  fp.isSigned = rng.Min < 0 ? true : false;
+  fp.isSigned = rng.Min < 0;
 
-  double max = std::fmax(std::abs(rng.Min), std::abs(rng.Max));
-  int intBit = std::ceil(std::log2(max)) + fp.isSigned ? 1 : 0;
+  int max = std::max(std::abs(rng.Min), std::abs(rng.Max));
+  int intBit = std::ceil(std::log2(max+1)) + (fp.isSigned ? 1 : 0);
 
   fp.bitsAmt = TotalBits;
   fp.fracBitsAmt = fp.bitsAmt - intBit;
@@ -117,16 +126,28 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
         }
       }
 
-      if (GlobalObject *go = dyn_cast<GlobalObject>(u)) {
+      if (Instruction *inst = dyn_cast<Instruction>(u)) {
+        if (inst->getMetadata(INPUT_INFO_METADATA)) {
+          vals.push_back(u);
+          if (!hasInfo(u)) {
+            dbgs() << "[WARNING] Find Value without range!\n";
+            valueInfo(u)->rangeError = valueInfo(v)->rangeError;
+            valueInfo(u)->fixpType = associateFixFormat(valueInfo(v)->rangeError);
+          }
+        } else {
+          dbgs() << "[WARNING] Find Value without TAFFO info!\n";
+        }
+
+      } else if (GlobalObject *go = dyn_cast<GlobalObject>(u)) {
         if (go->getMetadata(INPUT_INFO_METADATA)) {
           vals.push_back(u);
           if (!hasInfo(u)) {
             dbgs() << "[WARNING] Find Value without range!\n";
-            ValueInfo vi;
-            vi.rangeError = valueInfo(v)->rangeError;
-            vi.fixpType = associateFixFormat(vi.rangeError);
-            *valueInfo(u) = vi;
+            valueInfo(u)->rangeError = valueInfo(v)->rangeError;
+            valueInfo(u)->fixpType = associateFixFormat(valueInfo(v)->rangeError);
           }
+        } else {
+          dbgs() << "[WARNING] Find Value without TAFFO info!\n";
         }
       }
 
