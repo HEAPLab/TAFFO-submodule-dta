@@ -56,9 +56,10 @@ namespace tuner {
     bool parseMDRange(llvm::Value *v, mdutils::InputInfo *II);
     FixedPointType associateFixFormat(RangeError rng);
     void sortQueue(std::vector<llvm::Value*> &vals);
-    void collapseFunction(llvm::Module &m);
+    std::vector<llvm::Function*> collapseFunction(llvm::Module &m);
     llvm::Function *findEqFunction(llvm::Function *fun, llvm::Function *origin);
     void attachFPMetaData(std::vector<llvm::Value*> &vals);
+    void attachFunctionMetaData(llvm::Module &m);
 
 
     std::shared_ptr<ValueInfo> valueInfo(llvm::Value *val) {

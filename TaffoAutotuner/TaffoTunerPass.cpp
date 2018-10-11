@@ -4,6 +4,7 @@
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/InstIterator.h"
+#include "llvm/IR/Metadata.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
@@ -29,6 +30,8 @@ bool TaffoTuner::runOnModule(Module &m)
   std::vector<Value*> vals;
   retrieveValue(m, vals);
   
+  attachFPMetaData(vals);
+  attachFunctionMetaData(m);
   return true;
 }
 
@@ -47,7 +50,6 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
   }
 
   for (Function &f : m.functions()) {
-
     SmallVector<mdutils::InputInfo*, 5> argsII;
     MDManager.retrieveArgumentInputInfo(f, argsII);
     auto arg = f.arg_begin();
@@ -153,5 +155,52 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
 
     }
     next++;
+  }
+}
+
+
+void TaffoTuner::attachFPMetaData(std::vector<llvm::Value *> &vals) {
+  mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
+
+  for (Value *v : vals) {
+    assert(info[v] && "Every value should have info");
+    FixedPointType fpty = valueInfo(v)->fixpType;
+    mdutils::FPType *fpMD = new mdutils::FPType(fpty.bitsAmt, fpty.fracBitsAmt, fpty.isSigned);
+
+    if (Instruction *inst = dyn_cast<Instruction>(v)) {
+      mdutils::InputInfo *II = MDManager.retrieveInputInfo(*inst);
+      II = II ? II : new mdutils::InputInfo();
+      II->IType = fpMD;
+      mdutils::MetadataManager::setInputInfoMetadata(*inst, *II);
+
+    } else if (GlobalObject *go = dyn_cast<GlobalObject>(v)) {
+      mdutils::InputInfo *II = MDManager.retrieveInputInfo(*go);
+      II = II ? II : new mdutils::InputInfo();
+      II->IType = fpMD;
+      mdutils::MetadataManager::setInputInfoMetadata(*go, *II);
+
+    } else if (!isa<Argument>(v)) {
+      dbgs() << "[WARNING] Cannot attach MetaData to " << *v << "\n";
+    }
+  }
+}
+
+
+void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
+  mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
+
+  for (Function &f : m.functions()) {
+    SmallVector<mdutils::InputInfo*, 5> argsII;
+    MDManager.retrieveArgumentInputInfo(f, argsII);
+    auto argsIt = argsII.begin();
+    for (Argument &arg : f.args()) {
+      if (hasInfo(&arg)) {
+        FixedPointType fpty = valueInfo(&arg)->fixpType;
+        mdutils::FPType* fpMD = new mdutils::FPType(fpty.bitsAmt, fpty.fracBitsAmt, fpty.isSigned);
+        (*argsIt)->IType = fpMD;
+      }
+      argsIt++;
+    }
+    MDManager.setArgumentInputInfoMetadata(f, argsII);
   }
 }
