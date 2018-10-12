@@ -15,6 +15,7 @@
 #define __TAFFO_TUNER_PASS_H__
 
 #define DEBUG_TYPE "taffotuner"
+#define DEBUG_FUN  "tunerfunction"
 
 using namespace taffo;
 
@@ -42,12 +43,19 @@ namespace tuner {
     llvm::Optional<std::string> target;
   };
 
+  struct FunInfo {
+    llvm::Function* newFun;
+    std::vector<std::pair<int,FixedPointType>> fixArgs;
+  };
+
 
   struct TaffoTuner : public llvm::ModulePass {
     static char ID;
 
     /* to not be accessed directly, use valueInfo() */
     llvm::DenseMap<llvm::Value *, std::shared_ptr<ValueInfo>> info;
+
+    llvm::DenseMap<llvm::Function*, std::vector<FunInfo>> functionPool;
 
     TaffoTuner(): ModulePass(ID) { }
     bool runOnModule(llvm::Module &M) override;

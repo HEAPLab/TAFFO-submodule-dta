@@ -29,9 +29,16 @@ bool TaffoTuner::runOnModule(Module &m)
 {
   std::vector<Value*> vals;
   retrieveValue(m, vals);
-  
+
+  std::vector<Function*> toDel;
+  toDel = collapseFunction(m);
+
   attachFPMetaData(vals);
   attachFunctionMetaData(m);
+
+  for (Function *f : toDel)
+    f->eraseFromParent();
+
   return true;
 }
 
@@ -156,6 +163,59 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
     }
     next++;
   }
+}
+
+
+std::vector<Function*> TaffoTuner::collapseFunction(Module &m) {
+  std::vector<Function*> toDel;
+  for (Function &f : m.functions()) {
+    if (MDNode *mdNode = f.getMetadata(CLONED_FUN_METADATA)) {
+      DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "Analyzing original function " << f.getName() << "\n";);
+
+      for (auto mdIt = mdNode->op_begin(); mdIt != mdNode->op_end(); mdIt++) {
+        DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t Clone : " << **mdIt << "\n";);
+
+        ValueAsMetadata *md = dyn_cast<ValueAsMetadata>(*mdIt);
+        Function *fClone = dyn_cast<Function>(md->getValue());
+        if (Function *eqFun = findEqFunction(fClone, &f)) {
+          DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t Replace function " << fClone->getName()
+            << " with " << eqFun->getName() << "\n";);
+          fClone->replaceAllUsesWith(eqFun);
+          toDel.push_back(fClone);
+        }
+
+      }
+    }
+  }
+  return toDel;
+}
+
+
+Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
+  std::vector<std::pair<int,FixedPointType>> fixSign;
+
+  DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Search eq function for " << fun->getName()
+    << " in " << origin->getName() << " pool\n";);
+  int i=0;
+  for (Argument &arg : fun->args()) {
+    if (hasInfo(&arg)) {
+      fixSign.push_back(std::pair<int, FixedPointType>(i,valueInfo(&arg)->fixpType));
+    }
+    i++;
+  }
+
+  for (FunInfo fi : functionPool[origin]) {
+    if (fi.fixArgs == fixSign) {
+      return fi.newFun;
+    }
+  }
+
+  FunInfo funInfo;
+  funInfo.newFun = fun;
+  funInfo.fixArgs = fixSign;
+  functionPool[origin].push_back(funInfo);
+  DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t Function " << fun->getName() << " used\n";);
+  return nullptr;
 }
 
 
