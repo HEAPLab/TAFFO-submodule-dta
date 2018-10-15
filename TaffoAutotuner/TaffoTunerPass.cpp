@@ -30,6 +30,8 @@ bool TaffoTuner::runOnModule(Module &m)
   std::vector<Value*> vals;
   retrieveValue(m, vals);
 
+  mergeFixFormat(vals);
+
   std::vector<Function*> toDel;
   toDel = collapseFunction(m);
 
@@ -166,10 +168,47 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
 }
 
 
+void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
+  bool merged = false;
+  for (Value *v : vals) {
+    for (Value *u: v->users()) {
+      if (std::find(vals.begin(),vals.end(),u) != vals.end()) {
+        FixedPointType *fpv = &valueInfo(v)->fixpType;
+        FixedPointType *fpu = &valueInfo(u)->fixpType;
+        if (!(*fpv == *fpu)) {
+          if (fpv->bitsAmt == fpu->bitsAmt &&
+              std::abs(fpv->fracBitsAmt - fpu->fracBitsAmt)
+              + (fpv->isSigned == fpu->isSigned ? 0 : 1) <= SimilarBits) {
+
+            FixedPointType fp(fpv->isSigned || fpu->isSigned,
+                              std::min(fpv->fracBitsAmt, fpu->fracBitsAmt),
+                              fpv->bitsAmt);
+            DEBUG(dbgs() << "Merged fixp : \n"
+                         << "\t" << *v << " fix ty " << *fpv << "\n"
+                         << "\t" << *u << " fix ty " << *fpu << "\n"
+                         << "Final format " << fp << "\n";);
+
+            valueInfo(v)->fixpType = fp;
+            valueInfo(u)->fixpType = fp;
+            merged = true;
+          } else {
+            FixCast++;
+          }
+        }
+      }
+    }
+  }
+  if (merged)
+    mergeFixFormat(vals);
+}
+
+
 std::vector<Function*> TaffoTuner::collapseFunction(Module &m) {
   std::vector<Function*> toDel;
   for (Function &f : m.functions()) {
     if (MDNode *mdNode = f.getMetadata(CLONED_FUN_METADATA)) {
+      if (std::find(toDel.begin(), toDel.end(), &f) != toDel.end())
+        continue;
       DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "Analyzing original function " << f.getName() << "\n";);
 
       for (auto mdIt = mdNode->op_begin(); mdIt != mdNode->op_end(); mdIt++) {
@@ -196,10 +235,20 @@ Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
 
   DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Search eq function for " << fun->getName()
     << " in " << origin->getName() << " pool\n";);
+
+  if(isFloatType(fun->getReturnType())) {
+    fixSign.push_back(std::pair<int, FixedPointType>
+        (-1, valueInfo(*fun->user_begin())->fixpType) ); //ret value in signature
+    DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Return type : "
+        << valueInfo(*fun->user_begin())->fixpType << "\n";);
+  }
+
   int i=0;
   for (Argument &arg : fun->args()) {
     if (hasInfo(&arg)) {
       fixSign.push_back(std::pair<int, FixedPointType>(i,valueInfo(&arg)->fixpType));
+      DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Arg "<< i << " type : "
+          << valueInfo(&arg)->fixpType << "\n";);
     }
     i++;
   }

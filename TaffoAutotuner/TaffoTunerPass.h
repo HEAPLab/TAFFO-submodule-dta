@@ -23,6 +23,10 @@ llvm::cl::opt<int> FracThreshold("minfractbits", llvm::cl::value_desc("bits"),
     llvm::cl::desc("Threshold of fractional bits in fixed point numbers"), llvm::cl::init(3));
 llvm::cl::opt<int> TotalBits("totalbits", llvm::cl::value_desc("bits"),
     llvm::cl::desc("Total amount of bits in fixed point numbers"), llvm::cl::init(32));
+llvm::cl::opt<int> SimilarBits("similarbits", llvm::cl::value_desc("bits"),
+    llvm::cl::desc("Maximum number of difference bits that leads two fixp formats to merge"), llvm::cl::init(2));
+
+STATISTIC(FixCast, "Number of fixed point format cast");
 
 namespace tuner {
 
@@ -64,6 +68,7 @@ namespace tuner {
     bool parseMDRange(llvm::Value *v, mdutils::InputInfo *II);
     FixedPointType associateFixFormat(RangeError rng);
     void sortQueue(std::vector<llvm::Value*> &vals);
+    void mergeFixFormat(std::vector<llvm::Value*> &vals);
     std::vector<llvm::Function*> collapseFunction(llvm::Module &m);
     llvm::Function *findEqFunction(llvm::Function *fun, llvm::Function *origin);
     void attachFPMetaData(std::vector<llvm::Value*> &vals);
