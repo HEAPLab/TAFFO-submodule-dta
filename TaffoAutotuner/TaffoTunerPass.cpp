@@ -184,12 +184,25 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
                               std::min(fpv->fracBitsAmt, fpu->fracBitsAmt),
                               fpv->bitsAmt);
             DEBUG(dbgs() << "Merged fixp : \n"
-                         << "\t" << *v << " fix ty " << *fpv << "\n"
-                         << "\t" << *u << " fix ty " << *fpu << "\n"
+                         << "\t" << *v << " fix type " << *fpv << "\n"
+                         << "\t" << *u << " fix type " << *fpu << "\n"
                          << "Final format " << fp << "\n";);
 
             valueInfo(v)->fixpType = fp;
             valueInfo(u)->fixpType = fp;
+
+            if (Argument *arg =  dyn_cast<Argument>(v)) {
+              Function *fun =  arg->getParent();
+              int n = arg->getArgNo();
+              for (auto it = fun->user_begin(); it != fun->user_end(); it++) {
+                if (isa<CallInst>(*it) || isa<InvokeInst>(*it)) {
+                  DEBUG(dbgs() << "Argument " << *arg << " nr. " << n
+                               << " propagate fix type merge on callsite " << **it << "\n";);
+                  valueInfo(it->getOperand(n))->fixpType = fp;
+                }
+              }
+            }
+
             merged = true;
           } else {
             FixCast++;
