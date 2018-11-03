@@ -62,8 +62,8 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
     SmallVector<mdutils::InputInfo*, 5> argsII;
     MDManager.retrieveArgumentInputInfo(f, argsII);
     auto arg = f.arg_begin();
-    for (mdutils::InputInfo* II : argsII) {
-      if (parseMDRange(arg, II)) {
+    for (auto itII = argsII.begin(); itII != argsII.end(); itII++) {
+      if (parseMDRange(arg, *itII)) {
         valueInfo(arg)->fixpType = associateFixFormat(valueInfo(arg)->rangeError);
         vals.push_back(arg);
       }
@@ -86,6 +86,11 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 
 bool TaffoTuner::parseMDRange(Value *v, mdutils::InputInfo *II) {
   mdutils::Range* rng = II->IRange;
+  if (II->IType == nullptr) {
+    dbgs() << "[Info] Skipping only range info of " << *v << "\n";
+    return false;
+  }
+
   if (rng!=nullptr && !std::isnan(rng->Max) && !std::isnan(rng->Min)) {
     valueInfo(v)->rangeError.Max = rng->Max;
     valueInfo(v)->rangeError.Min = rng->Min;
@@ -141,24 +146,26 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
         if (inst->getMetadata(INPUT_INFO_METADATA)) {
           vals.push_back(u);
           if (!hasInfo(u)) {
-            dbgs() << "[WARNING] Find Value without range!\n";
+            dbgs() << "[WARNING] Find Value " << *inst << " without range!\n";
             valueInfo(u)->rangeError = valueInfo(v)->rangeError;
             valueInfo(u)->fixpType = associateFixFormat(valueInfo(v)->rangeError);
           }
         } else {
-          dbgs() << "[WARNING] Find Value without TAFFO info!\n";
+          dbgs() << "[WARNING] Find Value " << *inst << " without TAFFO info!\n";
+          assert(false);
         }
 
       } else if (GlobalObject *go = dyn_cast<GlobalObject>(u)) {
         if (go->getMetadata(INPUT_INFO_METADATA)) {
           vals.push_back(u);
           if (!hasInfo(u)) {
-            dbgs() << "[WARNING] Find Value without range!\n";
+            dbgs() << "[WARNING] Find Value " << *go << " without range!\n";
             valueInfo(u)->rangeError = valueInfo(v)->rangeError;
             valueInfo(u)->fixpType = associateFixFormat(valueInfo(v)->rangeError);
           }
         } else {
-          dbgs() << "[WARNING] Find Value without TAFFO info!\n";
+          dbgs() << "[WARNING] Find Value " << *go << " without TAFFO info!\n";
+          assert(false);
         }
       }
 
