@@ -14,7 +14,7 @@
 #ifndef __TAFFO_TUNER_PASS_H__
 #define __TAFFO_TUNER_PASS_H__
 
-#define DEBUG_TYPE "taffotuner"
+#define DEBUG_TYPE "taffo-tuner"
 #define DEBUG_FUN  "tunerfunction"
 
 using namespace taffo;

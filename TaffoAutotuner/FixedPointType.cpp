@@ -17,14 +17,14 @@ using namespace taffo;
 
 cl::opt<int> GlobalFracBitsAmt("fixpfracbitsamt", cl::value_desc("bits"),
   cl::desc("Default amount of fractional bits in fixed point numbers"),
-  cl::init(16));
+  cl::init(0));
 cl::opt<int> GlobalBitsAmt("fixpbitsamt", cl::value_desc("bits"),
-  cl::desc("Default amount of bits in fixed point numbers"), cl::init(32));
+  cl::desc("Default amount of bits in fixed point numbers"), cl::init(0));
 
 
 FixedPointType::FixedPointType()
 {
-  this->isSigned = true;
+  this->isSigned = false;
   this->fracBitsAmt = GlobalFracBitsAmt;
   this->bitsAmt = GlobalBitsAmt;
 }
@@ -41,6 +41,7 @@ FixedPointType::FixedPointType(Type *llvmtype, bool signd)
     this->fracBitsAmt = 0;
     this->bitsAmt = llvmtype->getIntegerBitWidth();
   } else {
+    this->isSigned = false;
     this->fracBitsAmt = 0;
     this->bitsAmt = 0;
   }
