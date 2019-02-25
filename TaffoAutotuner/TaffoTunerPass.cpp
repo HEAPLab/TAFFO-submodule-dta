@@ -87,7 +87,7 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 
 
 bool TaffoTuner::parseMDRange(Value *v, mdutils::InputInfo *II) {
-  mdutils::Range* rng = II->IRange;
+  mdutils::Range* rng = II->IRange.get();
   if (II->IType == nullptr) {
     dbgs() << "[Info] Skipping only range info of " << *v << "\n";
     return false;
@@ -301,13 +301,13 @@ void TaffoTuner::attachFPMetaData(std::vector<llvm::Value *> &vals) {
     if (Instruction *inst = dyn_cast<Instruction>(v)) {
       mdutils::InputInfo *II = MDManager.retrieveInputInfo(*inst);
       II = II ? II : new mdutils::InputInfo();
-      II->IType = fpMD;
+      II->IType.reset(fpMD);
       mdutils::MetadataManager::setInputInfoMetadata(*inst, *II);
 
     } else if (GlobalObject *go = dyn_cast<GlobalObject>(v)) {
       mdutils::InputInfo *II = MDManager.retrieveInputInfo(*go);
       II = II ? II : new mdutils::InputInfo();
-      II->IType = fpMD;
+      II->IType.reset(fpMD);
       mdutils::MetadataManager::setInputInfoMetadata(*go, *II);
 
     } else if (!isa<Argument>(v)) {
@@ -330,7 +330,7 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
       if (iinfo && hasInfo(&arg)) {
         FixedPointType fpty = valueInfo(&arg)->fixpType;
         mdutils::FPType* fpMD = new mdutils::FPType(fpty.bitsAmt, fpty.fracBitsAmt, fpty.isSigned);
-        iinfo->IType = fpMD;
+        iinfo->IType.reset(fpMD);
       }
       argsIt++;
     }
