@@ -63,11 +63,13 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
     MDManager.retrieveArgumentInputInfo(f, argsII);
     auto arg = f.arg_begin();
     for (auto itII = argsII.begin(); itII != argsII.end(); itII++) {
-      // TODO: struct support
-      mdutils::InputInfo *ii = dyn_cast<mdutils::InputInfo>(*itII);
-      if (ii && parseMDRange(arg, ii)) {
-        valueInfo(arg)->fixpType = associateFixFormat(valueInfo(arg)->rangeError);
-        vals.push_back(arg);
+      if (*itII) {
+        // TODO: struct support
+        mdutils::InputInfo *ii = dyn_cast<mdutils::InputInfo>(*itII);
+        if (ii && parseMDRange(arg, ii)) {
+          valueInfo(arg)->fixpType = associateFixFormat(valueInfo(arg)->rangeError);
+          vals.push_back(arg);
+        }
       }
       arg++;
     }
@@ -325,12 +327,14 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
     MDManager.retrieveArgumentInputInfo(f, argsII);
     auto argsIt = argsII.begin();
     for (Argument &arg : f.args()) {
-      // TODO: struct support
-      mdutils::InputInfo *iinfo = dyn_cast<mdutils::InputInfo>(*argsIt);
-      if (iinfo && hasInfo(&arg)) {
-        FixedPointType fpty = valueInfo(&arg)->fixpType;
-        mdutils::FPType* fpMD = new mdutils::FPType(fpty.bitsAmt, fpty.fracBitsAmt, fpty.isSigned);
-        iinfo->IType.reset(fpMD);
+      if (*argsIt) {
+        // TODO: struct support
+        mdutils::InputInfo *iinfo = dyn_cast<mdutils::InputInfo>(*argsIt);
+        if (iinfo && hasInfo(&arg)) {
+          FixedPointType fpty = valueInfo(&arg)->fixpType;
+          mdutils::FPType* fpMD = new mdutils::FPType(fpty.bitsAmt, fpty.fracBitsAmt, fpty.isSigned);
+          iinfo->IType.reset(fpMD);
+        }
       }
       argsIt++;
     }
