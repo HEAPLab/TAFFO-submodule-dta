@@ -10,7 +10,7 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 #include "TaffoTunerPass.h"
-
+#include "FixedPointType.h"
 #include "Metadata.h"
 
 
@@ -90,8 +90,8 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 
 bool TaffoTuner::parseMDRange(Value *v, mdutils::InputInfo *II) {
   mdutils::Range* rng = II->IRange.get();
-  if (II->IType == nullptr) {
-    dbgs() << "[Info] Skipping only range info of " << *v << "\n";
+  if (!isFloatType(v->getType())) {
+    dbgs() << "[Info] Skipping value " << *v << " because not a float\n";
     return false;
   }
 
