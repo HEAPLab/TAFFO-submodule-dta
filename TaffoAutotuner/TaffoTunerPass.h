@@ -37,18 +37,14 @@ namespace tuner {
   };
 
   struct ValueInfo {
-    bool isBacktrackingNode = false;
-    bool isRoot;
-    llvm::SmallPtrSet<llvm::Value*, 5> roots;
     FixedPointType fixpType;  // significant iff origType is a float or a pointer to a float
-    int fixpTypeRootDistance = INT_MAX;
-    llvm::Type *origType;
     RangeError rangeError;
-    llvm::Optional<std::string> target;
   };
 
   struct FunInfo {
     llvm::Function* newFun;
+    /* {function argument index, type of argument}
+     * argument idx is -1 for return value */
     std::vector<std::pair<int,FixedPointType>> fixArgs;
   };
 
@@ -58,7 +54,8 @@ namespace tuner {
 
     /* to not be accessed directly, use valueInfo() */
     llvm::DenseMap<llvm::Value *, std::shared_ptr<ValueInfo>> info;
-
+    
+    /* original function -> cloned function map */
     llvm::DenseMap<llvm::Function*, std::vector<FunInfo>> functionPool;
 
     TaffoTuner(): ModulePass(ID) { }
