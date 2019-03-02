@@ -213,16 +213,16 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
               + (fpv->isSigned() == fpu->isSigned() ? 0 : 1) <= SimilarBits) {
 
             std::shared_ptr<FPType> fp(new FPType(
-              std::min(fpv->getPointPos(), fpu->getPointPos()),
               fpv->getWidth(),
+              std::min(fpv->getPointPos(), fpu->getPointPos()),
               fpv->isSigned() || fpu->isSigned()));
             DEBUG(dbgs() << "Merged fixp : \n"
                          << "\t" << *v << " fix type " << fpv->toString() << "\n"
                          << "\t" << *u << " fix type " << fpu->toString() << "\n"
                          << "Final format " << fp->toString() << "\n";);
 
-            iiv->IType = fp;
-            iiu->IType = fp;
+            iiv->IType.reset(fp->clone());
+            iiu->IType.reset(fp->clone());
 
             if (Argument *arg =  dyn_cast<Argument>(v)) {
               Function *fun =  arg->getParent();
