@@ -7,8 +7,6 @@
 #include "llvm/Support/Debug.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
-
-#include "FixedPointType.h"
 #include "InputInfo.h"
 
 #ifndef __TAFFO_TUNER_PASS_H__
@@ -17,7 +15,6 @@
 #define DEBUG_TYPE "taffo-tuner"
 #define DEBUG_FUN  "tunerfunction"
 
-using namespace taffo;
 
 llvm::cl::opt<int> FracThreshold("minfractbits", llvm::cl::value_desc("bits"),
     llvm::cl::desc("Threshold of fractional bits in fixed point numbers"), llvm::cl::init(3));
@@ -28,24 +25,18 @@ llvm::cl::opt<int> SimilarBits("similarbits", llvm::cl::value_desc("bits"),
 
 STATISTIC(FixCast, "Number of fixed point format cast");
 
+
 namespace tuner {
 
-  struct RangeError {
-    double Min = std::numeric_limits<double>::quiet_NaN();
-    double Max = std::numeric_limits<double>::quiet_NaN();
-    double Error = std::numeric_limits<double>::quiet_NaN();
-  };
-
   struct ValueInfo {
-    FixedPointType fixpType;  // significant iff origType is a float or a pointer to a float
-    RangeError rangeError;
+    std::shared_ptr<mdutils::MDInfo> metadata;
   };
 
   struct FunInfo {
     llvm::Function* newFun;
     /* {function argument index, type of argument}
      * argument idx is -1 for return value */
-    std::vector<std::pair<int,FixedPointType>> fixArgs;
+    std::vector<std::pair<int, std::shared_ptr<mdutils::MDInfo>>> fixArgs;
   };
 
 
@@ -63,7 +54,7 @@ namespace tuner {
 
     void retrieveValue(llvm::Module &m, std::vector<llvm::Value *> &vals);
     bool parseMDRange(llvm::Value *v, mdutils::InputInfo *II);
-    FixedPointType associateFixFormat(RangeError rng);
+    void associateFixFormat(mdutils::InputInfo& rng);
     void sortQueue(std::vector<llvm::Value*> &vals);
     void mergeFixFormat(std::vector<llvm::Value*> &vals);
     std::vector<llvm::Function*> collapseFunction(llvm::Module &m);

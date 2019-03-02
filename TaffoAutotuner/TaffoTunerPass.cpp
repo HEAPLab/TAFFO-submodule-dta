@@ -10,12 +10,30 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 #include "TaffoTunerPass.h"
-#include "FixedPointType.h"
 #include "Metadata.h"
 
 
 using namespace llvm;
 using namespace tuner;
+using namespace mdutils;
+
+
+Type *fullyUnwrapPointerOrArrayType(Type *srct)
+{
+  if (srct->isPointerTy()) {
+    return fullyUnwrapPointerOrArrayType(srct->getPointerElementType());
+  } else if (srct->isArrayTy()) {
+    return fullyUnwrapPointerOrArrayType(srct->getArrayElementType());
+  }
+  return srct;
+}
+
+
+bool isFloatType(Type *srct)
+{
+  return fullyUnwrapPointerOrArrayType(srct)->isFloatingPointTy();
+}
+
 
 char TaffoTuner::ID = 0;
 
@@ -24,6 +42,7 @@ static RegisterPass<TaffoTuner> X(
   "TAFFO Framework Data Type Allocation",
   false /* does not affect the CFG */,
   true /* Optimization Pass */);
+
 
 bool TaffoTuner::runOnModule(Module &m)
 {
@@ -51,8 +70,10 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 
   for (GlobalObject &globObj : m.globals()) {
     if (mdutils::InputInfo *II = MDManager.retrieveInputInfo(globObj)) {
-      if (parseMDRange(&globObj, II)) {
-        valueInfo(&globObj)->fixpType = associateFixFormat(valueInfo(&globObj)->rangeError);
+      mdutils::InputInfo *newII = cast<mdutils::InputInfo>(II->clone());
+      if (parseMDRange(&globObj, newII)) {
+        associateFixFormat(*newII);
+        valueInfo(&globObj)->metadata.reset(newII);
         vals.push_back(&globObj);
       }
     }
@@ -67,7 +88,9 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
         // TODO: struct support
         mdutils::InputInfo *ii = dyn_cast<mdutils::InputInfo>(*itII);
         if (ii && parseMDRange(arg, ii)) {
-          valueInfo(arg)->fixpType = associateFixFormat(valueInfo(arg)->rangeError);
+          mdutils::InputInfo *newII = cast<mdutils::InputInfo>(ii->clone());
+          associateFixFormat(*newII);
+          valueInfo(arg)->metadata.reset(newII);
           vals.push_back(arg);
         }
       }
@@ -77,7 +100,9 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
     for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
       if (mdutils::InputInfo *II = MDManager.retrieveInputInfo(*iIt)) {
         if (parseMDRange(&*iIt, II)) {
-          valueInfo(&*iIt)->fixpType = associateFixFormat(valueInfo(&*iIt)->rangeError);
+          mdutils::InputInfo *newII = cast<mdutils::InputInfo>(II->clone());
+          associateFixFormat(*newII);
+          valueInfo(&*iIt)->metadata.reset(newII);
           vals.push_back(&*iIt);
         }
       }
@@ -88,42 +113,37 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 }
 
 
-bool TaffoTuner::parseMDRange(Value *v, mdutils::InputInfo *II) {
+bool TaffoTuner::parseMDRange(Value *v, InputInfo *II) {
   mdutils::Range* rng = II->IRange.get();
   if (!isFloatType(v->getType())) {
     dbgs() << "[Info] Skipping value " << *v << " because not a float\n";
     return false;
   }
 
-  if (rng!=nullptr && !std::isnan(rng->Max) && !std::isnan(rng->Min)) {
-    valueInfo(v)->rangeError.Max = rng->Max;
-    valueInfo(v)->rangeError.Min = rng->Min;
-    return true;
-  } else {
-    return false;
-  }
+  return rng!=nullptr;
 }
 
 
-FixedPointType TaffoTuner::associateFixFormat(RangeError rng) {
-  FixedPointType fp;
-  fp.isSigned = rng.Min < 0;
+void TaffoTuner::associateFixFormat(InputInfo& II)
+{
+  Range& rng = *(II.IRange);
+  bool isSigned = rng.Min < 0;
 
   int max = std::max(std::abs(rng.Min), std::abs(rng.Max));
-  int intBit = std::ceil(std::log2(max+1)) + (fp.isSigned ? 1 : 0);
-
-  fp.bitsAmt = TotalBits;
-  fp.fracBitsAmt = fp.bitsAmt - intBit;
+  int intBit = std::ceil(std::log2(max+1)) + (isSigned ? 1 : 0);
+  int bitsAmt = TotalBits;
+  int fracBitsAmt = bitsAmt - intBit;
 
   //Check dimension
-  if (fp.fracBitsAmt < FracThreshold) {
-    dbgs() << "[WARNING] Fractional part is too small !\n";
-    fp.fracBitsAmt = 0;
-    if (intBit > fp.bitsAmt) {
-      dbgs() << "[WARNING] Overflow may occurs !\n";
+  if (fracBitsAmt < FracThreshold) {
+    dbgs() << "[WARNING] Fractional part is too small!\n";
+    fracBitsAmt = 0;
+    if (intBit > bitsAmt) {
+      dbgs() << "[WARNING] Overflow may occur!\n";
     }
   }
-  return fp;
+  
+  II.IType.reset(new FPType(bitsAmt, fracBitsAmt, isSigned));
 }
 
 
@@ -151,8 +171,7 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
           vals.push_back(u);
           if (!hasInfo(u)) {
             dbgs() << "[WARNING] Find Value " << *inst << " without range!\n";
-            valueInfo(u)->rangeError = valueInfo(v)->rangeError;
-            valueInfo(u)->fixpType = associateFixFormat(valueInfo(v)->rangeError);
+            valueInfo(u)->metadata.reset(valueInfo(v)->metadata->clone());
           }
         } else {
           dbgs() << "[WARNING] Find Value " << *inst << " without TAFFO info!\n";
@@ -164,8 +183,7 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
           vals.push_back(u);
           if (!hasInfo(u)) {
             dbgs() << "[WARNING] Find Value " << *go << " without range!\n";
-            valueInfo(u)->rangeError = valueInfo(v)->rangeError;
-            valueInfo(u)->fixpType = associateFixFormat(valueInfo(v)->rangeError);
+            valueInfo(u)->metadata.reset(valueInfo(v)->metadata->clone());
           }
         } else {
           dbgs() << "[WARNING] Find Value " << *go << " without TAFFO info!\n";
@@ -184,23 +202,27 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
   for (Value *v : vals) {
     for (Value *u: v->users()) {
       if (std::find(vals.begin(),vals.end(),u) != vals.end()) {
-        FixedPointType *fpv = &valueInfo(v)->fixpType;
-        FixedPointType *fpu = &valueInfo(u)->fixpType;
+        // todo: bail out for structs
+        InputInfo *iiv = cast<InputInfo>(valueInfo(v)->metadata.get());
+        InputInfo *iiu = cast<InputInfo>(valueInfo(u)->metadata.get());
+        FPType *fpv = cast<FPType>(iiv->IType.get());
+        FPType *fpu = cast<FPType>(iiu->IType.get());
         if (!(*fpv == *fpu)) {
-          if (fpv->bitsAmt == fpu->bitsAmt &&
-              std::abs(fpv->fracBitsAmt - fpu->fracBitsAmt)
-              + (fpv->isSigned == fpu->isSigned ? 0 : 1) <= SimilarBits) {
+          if (fpv->getWidth() == fpu->getWidth() &&
+              std::abs((int)fpv->getPointPos() - (int)fpu->getPointPos())
+              + (fpv->isSigned() == fpu->isSigned() ? 0 : 1) <= SimilarBits) {
 
-            FixedPointType fp(fpv->isSigned || fpu->isSigned,
-                              std::min(fpv->fracBitsAmt, fpu->fracBitsAmt),
-                              fpv->bitsAmt);
+            std::shared_ptr<FPType> fp(new FPType(
+              std::min(fpv->getPointPos(), fpu->getPointPos()),
+              fpv->getWidth(),
+              fpv->isSigned() || fpu->isSigned()));
             DEBUG(dbgs() << "Merged fixp : \n"
-                         << "\t" << *v << " fix type " << *fpv << "\n"
-                         << "\t" << *u << " fix type " << *fpu << "\n"
-                         << "Final format " << fp << "\n";);
+                         << "\t" << *v << " fix type " << fpv->toString() << "\n"
+                         << "\t" << *u << " fix type " << fpu->toString() << "\n"
+                         << "Final format " << fp->toString() << "\n";);
 
-            valueInfo(v)->fixpType = fp;
-            valueInfo(u)->fixpType = fp;
+            iiv->IType = fp;
+            iiu->IType = fp;
 
             if (Argument *arg =  dyn_cast<Argument>(v)) {
               Function *fun =  arg->getParent();
@@ -209,7 +231,8 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
                 if (isa<CallInst>(*it) || isa<InvokeInst>(*it)) {
                   DEBUG(dbgs() << "Argument " << *arg << " nr. " << n
                                << " propagate fix type merge on callsite " << **it << "\n";);
-                  valueInfo(it->getOperand(n))->fixpType = fp;
+                  InputInfo *iiop = cast<InputInfo>(valueInfo(it->getOperand(n))->metadata.get());
+                  iiop->IType = fp;
                 }
               }
             }
@@ -255,24 +278,24 @@ std::vector<Function*> TaffoTuner::collapseFunction(Module &m) {
 
 
 Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
-  std::vector<std::pair<int,FixedPointType>> fixSign;
+  std::vector<std::pair<int, std::shared_ptr<MDInfo>>> fixSign;
 
   DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Search eq function for " << fun->getName()
     << " in " << origin->getName() << " pool\n";);
 
   if(isFloatType(fun->getReturnType())) {
-    fixSign.push_back(std::pair<int, FixedPointType>
-        (-1, valueInfo(*fun->user_begin())->fixpType) ); //ret value in signature
+    fixSign.push_back(std::pair<int, std::shared_ptr<MDInfo>>
+        (-1, valueInfo(*fun->user_begin())->metadata) ); //ret value in signature
     DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Return type : "
-        << valueInfo(*fun->user_begin())->fixpType << "\n";);
+        << valueInfo(*fun->user_begin())->metadata->toString() << "\n";);
   }
 
   int i=0;
   for (Argument &arg : fun->args()) {
     if (hasInfo(&arg)) {
-      fixSign.push_back(std::pair<int, FixedPointType>(i,valueInfo(&arg)->fixpType));
+      fixSign.push_back(std::pair<int, std::shared_ptr<MDInfo>>(i,valueInfo(&arg)->metadata));
       DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Arg "<< i << " type : "
-          << valueInfo(&arg)->fixpType << "\n";);
+          << valueInfo(&arg)->metadata->toString() << "\n";);
     }
     i++;
   }
@@ -292,28 +315,16 @@ Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
 }
 
 
-void TaffoTuner::attachFPMetaData(std::vector<llvm::Value *> &vals) {
-  mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
-
+void TaffoTuner::attachFPMetaData(std::vector<llvm::Value *> &vals)
+{
   for (Value *v : vals) {
     assert(info[v] && "Every value should have info");
-    FixedPointType fpty = valueInfo(v)->fixpType;
-    mdutils::FPType *fpMD = new mdutils::FPType(fpty.bitsAmt, fpty.fracBitsAmt, fpty.isSigned);
-
-    if (Instruction *inst = dyn_cast<Instruction>(v)) {
-      mdutils::InputInfo *II = MDManager.retrieveInputInfo(*inst);
-      II = II ? II : new mdutils::InputInfo();
-      II->IType.reset(fpMD);
-      mdutils::MetadataManager::setInputInfoMetadata(*inst, *II);
-
-    } else if (GlobalObject *go = dyn_cast<GlobalObject>(v)) {
-      mdutils::InputInfo *II = MDManager.retrieveInputInfo(*go);
-      II = II ? II : new mdutils::InputInfo();
-      II->IType.reset(fpMD);
-      mdutils::MetadataManager::setInputInfoMetadata(*go, *II);
-
-    } else if (!isa<Argument>(v)) {
-      dbgs() << "[WARNING] Cannot attach MetaData to " << *v << "\n";
+    assert(valueInfo(v)->metadata.get() && "every value should have metadata");
+    
+    if (isa<Instruction>(v) || isa<GlobalObject>(v)) {
+      mdutils::MetadataManager::setMDInfoMetadata(v, valueInfo(v)->metadata.get());
+    } else {
+      dbgs() << "[WARNING] Cannot attach MetaData to " << *v << " (normal for function args)\n";
     }
   }
 }
@@ -328,12 +339,9 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
     auto argsIt = argsII.begin();
     for (Argument &arg : f.args()) {
       if (*argsIt) {
-        // TODO: struct support
-        mdutils::InputInfo *iinfo = dyn_cast<mdutils::InputInfo>(*argsIt);
-        if (iinfo && hasInfo(&arg)) {
-          FixedPointType fpty = valueInfo(&arg)->fixpType;
-          mdutils::FPType* fpMD = new mdutils::FPType(fpty.bitsAmt, fpty.fracBitsAmt, fpty.isSigned);
-          iinfo->IType.reset(fpMD);
+        if (hasInfo(&arg)) {
+          MDInfo *mdi = valueInfo(&arg)->metadata.get();
+          *argsIt = mdi;
         }
       }
       argsIt++;
