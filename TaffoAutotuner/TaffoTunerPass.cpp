@@ -47,7 +47,7 @@ static RegisterPass<TaffoTuner> X(
 bool TaffoTuner::runOnModule(Module &m)
 {
   std::vector<Value*> vals;
-  retrieveValue(m, vals);
+  retrieveAllMetadata(m, vals);
 
   mergeFixFormat(vals);
 
@@ -64,19 +64,14 @@ bool TaffoTuner::runOnModule(Module &m)
 }
 
 
-void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
-
+void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<Value *> &vals)
+{
   mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
 
   for (GlobalObject &globObj : m.globals()) {
-    if (mdutils::InputInfo *II = MDManager.retrieveInputInfo(globObj)) {
-      mdutils::InputInfo *newII = cast<mdutils::InputInfo>(II->clone());
-      if (parseMDRange(&globObj, newII)) {
-        associateFixFormat(*newII);
-        valueInfo(&globObj)->metadata.reset(newII);
-        vals.push_back(&globObj);
-      }
-    }
+    MDInfo *MDI = MDManager.retrieveMDInfo(&globObj);
+    if (processMetadataOfValue(&globObj, MDI))
+      vals.push_back(&globObj);
   }
 
   for (Function &f : m.functions()) {
@@ -84,28 +79,15 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
     MDManager.retrieveArgumentInputInfo(f, argsII);
     auto arg = f.arg_begin();
     for (auto itII = argsII.begin(); itII != argsII.end(); itII++) {
-      if (*itII) {
-        // TODO: struct support
-        mdutils::InputInfo *ii = dyn_cast<mdutils::InputInfo>(*itII);
-        if (ii && parseMDRange(arg, ii)) {
-          mdutils::InputInfo *newII = cast<mdutils::InputInfo>(ii->clone());
-          associateFixFormat(*newII);
-          valueInfo(arg)->metadata.reset(newII);
-          vals.push_back(arg);
-        }
-      }
+      if (processMetadataOfValue(arg, *itII))
+        vals.push_back(arg);
       arg++;
     }
 
     for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
-      if (mdutils::InputInfo *II = MDManager.retrieveInputInfo(*iIt)) {
-        if (parseMDRange(&*iIt, II)) {
-          mdutils::InputInfo *newII = cast<mdutils::InputInfo>(II->clone());
-          associateFixFormat(*newII);
-          valueInfo(&*iIt)->metadata.reset(newII);
-          vals.push_back(&*iIt);
-        }
-      }
+      MDInfo *MDI = MDManager.retrieveMDInfo(&(*iIt));
+      if (processMetadataOfValue(&(*iIt), MDI))
+        vals.push_back(&*iIt);
     }
   }
 
@@ -113,23 +95,66 @@ void TaffoTuner::retrieveValue(Module &m, std::vector<Value *> &vals) {
 }
 
 
-bool TaffoTuner::parseMDRange(Value *v, InputInfo *II) {
-  mdutils::Range* rng = II->IRange.get();
-  if (!isFloatType(v->getType())) {
-    dbgs() << "[Info] Skipping value " << *v << " because not a float\n";
+bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
+{
+  if (!MDI)
     return false;
-  }
+  std::shared_ptr<MDInfo> newmdi(MDI->clone());
+  
+  bool skippedAll = true;
+  Type *fuwt = fullyUnwrapPointerOrArrayType(v->getType());
+  llvm::SmallVector<std::pair<MDInfo *, Type *>, 8> queue({std::make_pair(newmdi.get(), fuwt)});
 
-  return rng!=nullptr;
+  while (queue.size() > 0) {
+    std::pair<MDInfo *, Type *> elem = queue.pop_back_val();
+    
+    if (InputInfo *II = dyn_cast<InputInfo>(elem.first)) {
+      if (!isFloatType(elem.second)) {
+        dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n";
+        continue;
+      }
+      if (associateFixFormat(*II))
+        skippedAll = false;
+      
+    } else if (StructInfo *SI = dyn_cast<StructInfo>(elem.first)) {
+      if (!elem.second->isStructTy()) {
+        dbgs() << "[ERROR] found non conforming structinfo " << SI->toString() << " on value " << *v << "\n";
+        dbgs() << "contained type " << *elem.second << " is not a struct type\n";
+        dbgs() << "The top-level MDInfo was " << MDI->toString() << "\n";
+        assert(false);
+      }
+      int i=0;
+      for (std::shared_ptr<MDInfo> se: *SI) {
+        if (se.get() == nullptr)
+          continue;
+        Type *thisT = fullyUnwrapPointerOrArrayType(elem.second->getContainedType(i));
+        queue.push_back(std::make_pair(se.get(), thisT));
+        i++;
+      }
+      
+    } else {
+      assert(false && "unknown mdinfo subclass");
+    }
+  }
+  
+  if (!skippedAll)
+    valueInfo(v)->metadata = newmdi;
+  return !skippedAll;
 }
 
 
-void TaffoTuner::associateFixFormat(InputInfo& II)
+bool TaffoTuner::associateFixFormat(InputInfo& II)
 {
-  Range& rng = *(II.IRange);
-  bool isSigned = rng.Min < 0;
+  if (II.IType.get() != nullptr)
+    return true;
+  
+  Range* rng = II.IRange.get();
+  if (rng == nullptr)
+    return false;
 
-  int max = std::max(std::abs(rng.Min), std::abs(rng.Max));
+  bool isSigned = rng->Min < 0;
+
+  int max = std::max(std::abs(rng->Min), std::abs(rng->Max));
   int intBit = std::ceil(std::log2(max+1)) + (isSigned ? 1 : 0);
   int bitsAmt = TotalBits;
   int fracBitsAmt = bitsAmt - intBit;
@@ -144,16 +169,17 @@ void TaffoTuner::associateFixFormat(InputInfo& II)
   }
   
   II.IType.reset(new FPType(bitsAmt, fracBitsAmt, isSigned));
+  return true;
 }
 
 
-void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
+void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
+{
   size_t next = 0;
   while (next < vals.size()) {
     Value *v = vals.at(next);
 
     for (auto *u: v->users()) {
-
       /* Insert u at the end of the queue.
        * If u exists already in the queue, *move* it to the end instead. */
       for (int i=0; i<vals.size();) {
@@ -165,33 +191,32 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals) {
           i++;
         }
       }
+      
+      if (!isa<Instruction>(u) && !isa<GlobalObject>(u))
+        continue;
 
-      if (Instruction *inst = dyn_cast<Instruction>(u)) {
-        if (inst->getMetadata(INPUT_INFO_METADATA)) {
-          vals.push_back(u);
-          if (!hasInfo(u)) {
-            dbgs() << "[WARNING] Find Value " << *inst << " without range!\n";
-            valueInfo(u)->metadata.reset(valueInfo(v)->metadata->clone());
-          }
+      if (!MetadataManager::getMetadataManager().retrieveMDInfo(u)) {
+        dbgs() << "[WARNING] Find Value " << *u << " without TAFFO info!\n";
+        assert(false);
+      }
+      vals.push_back(u);
+      if (!hasInfo(u)) {
+        dbgs() << "[WARNING] Find Value " << *u << " without range!\n";
+        Type *utype = fullyUnwrapPointerOrArrayType(u->getType());
+        if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(v->getType())->isStructTy()) {
+          InputInfo *ii = cast<InputInfo>(valueInfo(v)->metadata->clone());
+          ii->IRange.reset();
+          valueInfo(u)->metadata.reset(ii);
         } else {
-          dbgs() << "[WARNING] Find Value " << *inst << " without TAFFO info!\n";
-          assert(false);
-        }
-
-      } else if (GlobalObject *go = dyn_cast<GlobalObject>(u)) {
-        if (go->getMetadata(INPUT_INFO_METADATA)) {
-          vals.push_back(u);
-          if (!hasInfo(u)) {
-            dbgs() << "[WARNING] Find Value " << *go << " without range!\n";
-            valueInfo(u)->metadata.reset(valueInfo(v)->metadata->clone());
-          }
-        } else {
-          dbgs() << "[WARNING] Find Value " << *go << " without TAFFO info!\n";
-          assert(false);
+          if (utype->isStructTy())
+            valueInfo(u)->metadata = StructInfo::constructFromLLVMType(utype);
+          else
+            valueInfo(u)->metadata.reset(new InputInfo());
+          dbgs() << "not copying metadata of " << *v << " to " << *u << " because at least one value has struct typing\n";
         }
       }
-
     }
+    
     next++;
   }
 }
@@ -202,9 +227,16 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
   for (Value *v : vals) {
     for (Value *u: v->users()) {
       if (std::find(vals.begin(),vals.end(),u) != vals.end()) {
-        // todo: bail out for structs
-        InputInfo *iiv = cast<InputInfo>(valueInfo(v)->metadata.get());
-        InputInfo *iiu = cast<InputInfo>(valueInfo(u)->metadata.get());
+        InputInfo *iiv = dyn_cast<InputInfo>(valueInfo(v)->metadata.get());
+        InputInfo *iiu = dyn_cast<InputInfo>(valueInfo(u)->metadata.get());
+        if (!iiv || !iiu) {
+          DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a struct\n");
+          continue;
+        }
+        if (!iiv->IType.get() || !iiu->IType.get()) {
+          DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
+          continue;
+        }
         FPType *fpv = cast<FPType>(iiv->IType.get());
         FPType *fpu = cast<FPType>(iiu->IType.get());
         if (!(*fpv == *fpu)) {

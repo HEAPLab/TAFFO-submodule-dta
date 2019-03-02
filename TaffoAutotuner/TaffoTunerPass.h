@@ -52,9 +52,9 @@ namespace tuner {
     TaffoTuner(): ModulePass(ID) { }
     bool runOnModule(llvm::Module &M) override;
 
-    void retrieveValue(llvm::Module &m, std::vector<llvm::Value *> &vals);
-    bool parseMDRange(llvm::Value *v, mdutils::InputInfo *II);
-    void associateFixFormat(mdutils::InputInfo& rng);
+    void retrieveAllMetadata(llvm::Module &m, std::vector<llvm::Value *> &vals);
+    bool processMetadataOfValue(llvm::Value *v, mdutils::MDInfo *MDI);
+    bool associateFixFormat(mdutils::InputInfo& rng);
     void sortQueue(std::vector<llvm::Value*> &vals);
     void mergeFixFormat(std::vector<llvm::Value*> &vals);
     std::vector<llvm::Function*> collapseFunction(llvm::Module &m);
