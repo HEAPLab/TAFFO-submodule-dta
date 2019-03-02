@@ -277,6 +277,45 @@ std::vector<Function*> TaffoTuner::collapseFunction(Module &m) {
 }
 
 
+bool compareTypesOfMDInfo(MDInfo& mdi1, MDInfo& mdi2)
+{
+  if (mdi1.getKind() != mdi2.getKind())
+    return false;
+  
+  if (isa<InputInfo>(&mdi1)) {
+    InputInfo& ii1 = cast<InputInfo>(mdi1);
+    InputInfo& ii2 = cast<InputInfo>(mdi2);
+    if (ii1.IType.get() && ii2.IType.get()) {
+      return *ii1.IType == *ii2.IType;
+    } else
+      return false;
+    
+  } else if (isa<StructInfo>(&mdi1)) {
+    StructInfo& si1 = cast<StructInfo>(mdi1);
+    StructInfo& si2 = cast<StructInfo>(mdi2);
+    if (si1.size() == si2.size()) {
+      int c = si1.size();
+      for (int i=0; i<c; i++) {
+        std::shared_ptr<MDInfo> p1 = si1.getField(i);
+        std::shared_ptr<MDInfo> p2 = si1.getField(i);
+        if ((p1.get() == nullptr) != (p2.get() == nullptr))
+          return false;
+        if (p1.get() != nullptr) {
+          if (!compareTypesOfMDInfo(*p1, *p2))
+            return false;
+        }
+      }
+      return true;
+      
+    } else
+      return false;
+  
+  } else {
+    return false;
+  }
+}
+
+
 Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
   std::vector<std::pair<int, std::shared_ptr<MDInfo>>> fixSign;
 
@@ -301,8 +340,17 @@ Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
   }
 
   for (FunInfo fi : functionPool[origin]) {
-    if (fi.fixArgs == fixSign) {
-      return fi.newFun;
+    if (fi.fixArgs.size() == fixSign.size()) {
+      auto fcheck = fi.fixArgs.begin();
+      auto fthis = fixSign.begin();
+      for (; fthis != fixSign.end(); fcheck++, fthis++) {
+        if (fcheck->first != fthis->first)
+          break;
+        if (!compareTypesOfMDInfo(*fcheck->second, *fthis->second))
+          break;
+      }
+      if (fthis == fixSign.end())
+        return fi.newFun;
     }
   }
 
