@@ -125,10 +125,10 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
       }
       int i=0;
       for (std::shared_ptr<MDInfo> se: *SI) {
-        if (se.get() == nullptr)
-          continue;
-        Type *thisT = fullyUnwrapPointerOrArrayType(elem.second->getContainedType(i));
-        queue.push_back(std::make_pair(se.get(), thisT));
+        if (se.get() != nullptr) {
+          Type *thisT = fullyUnwrapPointerOrArrayType(elem.second->getContainedType(i));
+          queue.push_back(std::make_pair(se.get(), thisT));
+        }
         i++;
       }
       
