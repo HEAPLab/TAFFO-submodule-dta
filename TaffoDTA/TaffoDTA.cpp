@@ -9,6 +9,7 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
+#include "TypeUtils.h"
 #include "TaffoDTA.h"
 #include "Metadata.h"
 
@@ -16,23 +17,7 @@
 using namespace llvm;
 using namespace tuner;
 using namespace mdutils;
-
-
-Type *fullyUnwrapPointerOrArrayType(Type *srct)
-{
-  if (srct->isPointerTy()) {
-    return fullyUnwrapPointerOrArrayType(srct->getPointerElementType());
-  } else if (srct->isArrayTy()) {
-    return fullyUnwrapPointerOrArrayType(srct->getArrayElementType());
-  }
-  return srct;
-}
-
-
-bool isFloatType(Type *srct)
-{
-  return fullyUnwrapPointerOrArrayType(srct)->isFloatingPointTy();
-}
+using namespace taffo;
 
 
 char TaffoTuner::ID = 0;
