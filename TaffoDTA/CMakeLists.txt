@@ -1,6 +1,6 @@
 add_llvm_loadable_module(TaffoDTA
-    TaffoTunerPass.cpp
-    TaffoTunerPass.h
+    TaffoDTA.cpp
+    TaffoDTA.h
   
   PLUGIN_TOOL
   opt

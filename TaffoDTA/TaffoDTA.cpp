@@ -9,7 +9,7 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
-#include "TaffoTunerPass.h"
+#include "TaffoDTA.h"
 #include "Metadata.h"
 
 
@@ -38,7 +38,7 @@ bool isFloatType(Type *srct)
 char TaffoTuner::ID = 0;
 
 static RegisterPass<TaffoTuner> X(
-  "taffotuner",
+  "taffodta",
   "TAFFO Framework Data Type Allocation",
   false /* does not affect the CFG */,
   true /* Optimization Pass */);

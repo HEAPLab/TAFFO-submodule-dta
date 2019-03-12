@@ -12,7 +12,7 @@
 #ifndef __TAFFO_TUNER_PASS_H__
 #define __TAFFO_TUNER_PASS_H__
 
-#define DEBUG_TYPE "taffo-tuner"
+#define DEBUG_TYPE "taffo-dta"
 #define DEBUG_FUN  "tunerfunction"
 
 
