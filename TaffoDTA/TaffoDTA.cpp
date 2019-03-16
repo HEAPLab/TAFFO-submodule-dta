@@ -130,6 +130,9 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
 
 bool TaffoTuner::associateFixFormat(InputInfo& II)
 {
+  if (II.IEnableConversion == false)
+    return false;
+  
   if (II.IType.get() != nullptr)
     return true;
   
@@ -182,8 +185,9 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
 
       if (!MetadataManager::getMetadataManager().retrieveMDInfo(u)) {
         dbgs() << "[WARNING] Find Value " << *u << " without TAFFO info!\n";
-        assert(false);
+        continue;
       }
+      
       vals.push_back(u);
       if (!hasInfo(u)) {
         dbgs() << "[WARNING] Find Value " << *u << " without range!\n";
@@ -363,8 +367,9 @@ Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
       for (; fthis != fixSign.end(); fcheck++, fthis++) {
         if (fcheck->first != fthis->first)
           break;
-        if (!compareTypesOfMDInfo(*fcheck->second, *fthis->second))
-          break;
+        if (fcheck->second != fthis->second)
+          if (!compareTypesOfMDInfo(*fcheck->second, *fthis->second))
+            break;
       }
       if (fthis == fixSign.end())
         return fi.newFun;
