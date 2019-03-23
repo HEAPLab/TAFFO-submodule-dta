@@ -86,6 +86,11 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
     return false;
   std::shared_ptr<MDInfo> newmdi(MDI->clone());
   
+  if (v->getType()->isVoidTy()) {
+    valueInfo(v)->metadata = newmdi;
+    return true;
+  }
+  
   bool skippedAll = true;
   Type *fuwt = fullyUnwrapPointerOrArrayType(v->getType());
   llvm::SmallVector<std::pair<MDInfo *, Type *>, 8> queue({std::make_pair(newmdi.get(), fuwt)});
