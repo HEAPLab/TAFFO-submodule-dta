@@ -255,10 +255,16 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
               int n = arg->getArgNo();
               for (auto it = fun->user_begin(); it != fun->user_end(); it++) {
                 if (isa<CallInst>(*it) || isa<InvokeInst>(*it)) {
+                  Value *arg = it->getOperand(n);
                   DEBUG(dbgs() << "Argument " << *arg << " nr. " << n
-                               << " propagate fix type merge on callsite " << **it << "\n";);
-                  InputInfo *iiop = cast<InputInfo>(valueInfo(it->getOperand(n))->metadata.get());
-                  iiop->IType = fp;
+                               << " propagate fix type merge on callsite " << **it << "\n"
+                               << "--> target of change: " << *arg << "\n");
+                  if (!hasInfo(arg)) {
+                    DEBUG(dbgs() << "--> argument doesn't get converted; skipping\n");
+                  } else {
+                    InputInfo *iiop = cast<InputInfo>(valueInfo(arg)->metadata.get());
+                    iiop->IType = fp;
+                  }
                 }
               }
             }
