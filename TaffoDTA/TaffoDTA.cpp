@@ -348,22 +348,25 @@ bool compareTypesOfMDInfo(MDInfo& mdi1, MDInfo& mdi2)
 }
 
 
-Function* TaffoTuner::findEqFunction(Function *fun, Function *origin) {
+Function* TaffoTuner::findEqFunction(Function *fun, Function *origin)
+{
   std::vector<std::pair<int, std::shared_ptr<MDInfo>>> fixSign;
 
   DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Search eq function for " << fun->getName()
     << " in " << origin->getName() << " pool\n";);
 
-  if(isFloatType(fun->getReturnType())) {
-    fixSign.push_back(std::pair<int, std::shared_ptr<MDInfo>>
-        (-1, valueInfo(*fun->user_begin())->metadata) ); //ret value in signature
-    DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Return type : "
-        << valueInfo(*fun->user_begin())->metadata->toString() << "\n";);
+  if (isFloatType(fun->getReturnType()) && hasInfo(*fun->user_begin())) {
+    std::shared_ptr<MDInfo> retval = valueInfo(*fun->user_begin())->metadata;
+    if (retval) {
+      fixSign.push_back(std::pair<int, std::shared_ptr<MDInfo>>(-1, retval)); //ret value in signature
+      DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Return type : "
+          << valueInfo(*fun->user_begin())->metadata->toString() << "\n";);
+    }
   }
 
   int i=0;
-  for (Argument &arg : fun->args()) {
-    if (hasInfo(&arg)) {
+  for (Argument &arg: fun->args()) {
+    if (hasInfo(&arg) && valueInfo(&arg)->metadata) {
       fixSign.push_back(std::pair<int, std::shared_ptr<MDInfo>>(i,valueInfo(&arg)->metadata));
       DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t\t Arg "<< i << " type : "
           << valueInfo(&arg)->metadata->toString() << "\n";);
