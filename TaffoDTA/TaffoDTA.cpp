@@ -216,7 +216,8 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
 }
 
 
-void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
+void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
+{
   bool merged = false;
   for (Value *v : vals) {
     for (Value *u: v->users()) {
@@ -229,6 +230,10 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals) {
         }
         if (!iiv->IType.get() || !iiu->IType.get()) {
           DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
+          continue;
+        }
+        if (v->getType()->isPointerTy() || u->getType()->isPointerTy()) {
+          DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a pointer\n");
           continue;
         }
         FPType *fpv = cast<FPType>(iiv->IType.get());
