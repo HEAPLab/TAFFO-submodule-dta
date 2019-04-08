@@ -300,7 +300,10 @@ std::vector<Function*> TaffoTuner::collapseFunction(Module &m) {
 
         ValueAsMetadata *md = dyn_cast<ValueAsMetadata>(*mdIt);
         Function *fClone = dyn_cast<Function>(md->getValue());
-        if (Function *eqFun = findEqFunction(fClone, &f)) {
+        if (fClone->user_begin() == fClone->user_end()) {
+          DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t Ignoring " << fClone->getName()
+            << " because it's not used anywhere\n");
+        } else if (Function *eqFun = findEqFunction(fClone, &f)) {
           DEBUG_WITH_TYPE(DEBUG_FUN, dbgs() << "\t Replace function " << fClone->getName()
             << " with " << eqFun->getName() << "\n";);
           fClone->replaceAllUsesWith(eqFun);
