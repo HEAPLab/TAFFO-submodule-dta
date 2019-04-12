@@ -59,6 +59,8 @@ namespace tuner {
     bool associateFixFormat(mdutils::InputInfo& rng);
     void sortQueue(std::vector<llvm::Value*> &vals);
     void mergeFixFormat(std::vector<llvm::Value*> &vals);
+    void restoreTypesAcrossFunctionCall(llvm::Value *arg_or_call_param);
+    void setTypesOnCallArgumentFromFunctionArgument(llvm::Argument *arg, std::shared_ptr<mdutils::MDInfo> finalMd);
     std::vector<llvm::Function*> collapseFunction(llvm::Module &m);
     llvm::Function *findEqFunction(llvm::Function *fun, llvm::Function *origin);
     void attachFPMetaData(std::vector<llvm::Value*> &vals);

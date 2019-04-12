@@ -220,7 +220,7 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
 {
   if (DisableTypeMerging)
     return;
-    
+  
   bool merged = false;
   for (Value *v : vals) {
     for (Value *u: v->users()) {
@@ -268,24 +268,8 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
             iiv->IType.reset(fp->clone());
             iiu->IType.reset(fp->clone());
 
-            if (Argument *arg =  dyn_cast<Argument>(v)) {
-              Function *fun =  arg->getParent();
-              int n = arg->getArgNo();
-              for (auto it = fun->user_begin(); it != fun->user_end(); it++) {
-                if (isa<CallInst>(*it) || isa<InvokeInst>(*it)) {
-                  Value *arg = it->getOperand(n);
-                  DEBUG(dbgs() << "Argument " << *arg << " nr. " << n
-                               << " propagate fix type merge on callsite " << **it << "\n"
-                               << "--> target of change: " << *arg << "\n");
-                  if (!hasInfo(arg)) {
-                    DEBUG(dbgs() << "--> argument doesn't get converted; skipping\n");
-                  } else {
-                    InputInfo *iiop = cast<InputInfo>(valueInfo(arg)->metadata.get());
-                    iiop->IType = fp;
-                  }
-                }
-              }
-            }
+            restoreTypesAcrossFunctionCall(v);
+            restoreTypesAcrossFunctionCall(u);
 
             merged = true;
           } else {
@@ -297,6 +281,63 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
   }
   if (merged)
     mergeFixFormat(vals);
+}
+
+
+void TaffoTuner::restoreTypesAcrossFunctionCall(Value *v)
+{
+  DEBUG(dbgs() << "restoreTypesAcrossFunctionCall(" << *v << ")\n");
+  if (!hasInfo(v)) {
+    DEBUG(dbgs() << " --> skipping restoring types because value is not converted\n");
+    return;
+  }
+  
+  std::shared_ptr<MDInfo> finalMd = valueInfo(v)->metadata;
+  
+  if (Argument *arg = dyn_cast<Argument>(v)) {
+    setTypesOnCallArgumentFromFunctionArgument(arg, finalMd);
+    return;
+  }
+  
+  for (Use& use: v->uses()) {
+    User *user = use.getUser();
+    CallSite call(user);
+    if (call.getInstruction() == nullptr)
+      continue;
+    
+    Function *fun = dyn_cast<Function>(call.getCalledFunction());
+    if (fun == nullptr) {
+      DEBUG(dbgs() << " --> skipping restoring types from call site " << *user << " because function reference cannot be resolved\n");
+      continue;
+    }
+    if (fun->isVarArg()) {
+      DEBUG(dbgs() << " --> skipping restoring types from call site " << *user << " because function is vararg\n");
+      continue;
+    }
+    
+    assert(fun->arg_size() > use.getOperandNo() && "invalid call to function; operandNo > numOperands");
+    Argument *arg = fun->arg_begin() + use.getOperandNo();
+    setTypesOnCallArgumentFromFunctionArgument(arg, finalMd);
+  }
+}
+
+
+void TaffoTuner::setTypesOnCallArgumentFromFunctionArgument(Argument *arg, std::shared_ptr<MDInfo> finalMd)
+{
+  Function *fun =  arg->getParent();
+  int n = arg->getArgNo();
+  DEBUG(dbgs() << " --> setting types to " << finalMd->toString() << " on call arguments from function " << fun->getName() << " argument " << n << "\n");
+  for (auto it = fun->user_begin(); it != fun->user_end(); it++) {
+    if (isa<CallInst>(*it) || isa<InvokeInst>(*it)) {
+      Value *callarg = it->getOperand(n);
+      DEBUG(dbgs() << " --> target " << *callarg << ", callsite " << **it << "\n");
+      if (!hasInfo(callarg)) {
+        DEBUG(dbgs() << " --> argument doesn't get converted; skipping\n");
+      } else {
+        valueInfo(callarg)->metadata.reset(finalMd->clone());
+      }
+    }
+  }
 }
 
 
