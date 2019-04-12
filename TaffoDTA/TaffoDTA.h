@@ -22,6 +22,8 @@ llvm::cl::opt<int> TotalBits("totalbits", llvm::cl::value_desc("bits"),
     llvm::cl::desc("Total amount of bits in fixed point numbers"), llvm::cl::init(32));
 llvm::cl::opt<int> SimilarBits("similarbits", llvm::cl::value_desc("bits"),
     llvm::cl::desc("Maximum number of difference bits that leads two fixp formats to merge"), llvm::cl::init(2));
+llvm::cl::opt<bool> DisableTypeMerging("notypemerge",
+    llvm::cl::desc("Disables adjacent type optimization"), llvm::cl::init(false));
 
 STATISTIC(FixCast, "Number of fixed point format cast");
 

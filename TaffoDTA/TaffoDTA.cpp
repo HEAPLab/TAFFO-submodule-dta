@@ -218,6 +218,9 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
 
 void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
 {
+  if (DisableTypeMerging)
+    return;
+    
   bool merged = false;
   for (Value *v : vals) {
     for (Value *u: v->users()) {
