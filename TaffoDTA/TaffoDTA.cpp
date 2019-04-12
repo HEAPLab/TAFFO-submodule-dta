@@ -243,10 +243,20 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
               std::abs((int)fpv->getPointPos() - (int)fpu->getPointPos())
               + (fpv->isSigned() == fpu->isSigned() ? 0 : 1) <= SimilarBits) {
 
-            std::shared_ptr<FPType> fp(new FPType(
-              fpv->getWidth(),
-              std::min(fpv->getPointPos(), fpu->getPointPos()),
-              fpv->isSigned() || fpu->isSigned()));
+            int sign_v = fpv->isSigned() ? 1 : 0;
+            int int_v = fpv->getWidth() - fpv->getPointPos() - sign_v;
+            int sign_u = fpu->isSigned() ? 1 : 0;
+            int int_u = fpu->getWidth() - fpu->getPointPos() - sign_v;
+            
+            int sign_res = std::max(sign_u, sign_v);
+            int int_res = std::max(int_u, int_v);
+            int size_res = std::max(fpv->getWidth(), fpu->getWidth());
+            int frac_res = size_res - int_res - sign_res;
+            std::shared_ptr<FPType> fp(new FPType(size_res, frac_res, sign_res));
+            if (sign_res + int_res + frac_res != size_res || frac_res < 0) {
+              DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because resulting type " << fp->toString() << " is invalid\n");
+              continue;
+            }
             DEBUG(dbgs() << "Merged fixp : \n"
                          << "\t" << *v << " fix type " << fpv->toString() << "\n"
                          << "\t" << *u << " fix type " << fpu->toString() << "\n"
