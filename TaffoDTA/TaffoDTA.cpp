@@ -317,7 +317,10 @@ void TaffoTuner::restoreTypesAcrossFunctionCall(Value *v)
     
     assert(fun->arg_size() > use.getOperandNo() && "invalid call to function; operandNo > numOperands");
     Argument *arg = fun->arg_begin() + use.getOperandNo();
-    setTypesOnCallArgumentFromFunctionArgument(arg, finalMd);
+    if (hasInfo(arg)) {
+      valueInfo(arg)->metadata.reset(finalMd->clone());
+      setTypesOnCallArgumentFromFunctionArgument(arg, finalMd);
+    }
   }
 }
 
