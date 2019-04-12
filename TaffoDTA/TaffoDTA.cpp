@@ -85,32 +85,32 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
   if (!MDI)
     return false;
   std::shared_ptr<MDInfo> newmdi(MDI->clone());
-  
+
   if (v->getType()->isVoidTy()) {
     valueInfo(v)->metadata = newmdi;
     return true;
   }
-  
+
   bool skippedAll = true;
   Type *fuwt = fullyUnwrapPointerOrArrayType(v->getType());
   llvm::SmallVector<std::pair<MDInfo *, Type *>, 8> queue({std::make_pair(newmdi.get(), fuwt)});
 
   while (queue.size() > 0) {
     std::pair<MDInfo *, Type *> elem = queue.pop_back_val();
-    
+
     if (InputInfo *II = dyn_cast<InputInfo>(elem.first)) {
       if (!isFloatType(elem.second)) {
-        dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n";
+        DEBUG(dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n");
         continue;
       }
       if (associateFixFormat(*II))
         skippedAll = false;
-      
+
     } else if (StructInfo *SI = dyn_cast<StructInfo>(elem.first)) {
       if (!elem.second->isStructTy()) {
-        dbgs() << "[ERROR] found non conforming structinfo " << SI->toString() << " on value " << *v << "\n";
-        dbgs() << "contained type " << *elem.second << " is not a struct type\n";
-        dbgs() << "The top-level MDInfo was " << MDI->toString() << "\n";
+        DEBUG(dbgs() << "[ERROR] found non conforming structinfo " << SI->toString() << " on value " << *v << "\n");
+        DEBUG(dbgs() << "contained type " << *elem.second << " is not a struct type\n");
+        DEBUG(dbgs() << "The top-level MDInfo was " << MDI->toString() << "\n");
         assert(false);
       }
       int i=0;
@@ -121,12 +121,12 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
         }
         i++;
       }
-      
+
     } else {
       assert(false && "unknown mdinfo subclass");
     }
   }
-  
+
   if (!skippedAll)
     valueInfo(v)->metadata = newmdi;
   return !skippedAll;
@@ -137,10 +137,10 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
 {
   if (II.IEnableConversion == false)
     return false;
-  
+
   if (II.IType.get() != nullptr)
     return true;
-  
+
   Range* rng = II.IRange.get();
   if (rng == nullptr)
     return false;
@@ -154,13 +154,13 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
 
   //Check dimension
   if (fracBitsAmt < FracThreshold) {
-    dbgs() << "[WARNING] Fractional part is too small!\n";
+    DEBUG(dbgs() << "[WARNING] Fractional part is too small!\n");
     fracBitsAmt = 0;
     if (intBit > bitsAmt) {
-      dbgs() << "[WARNING] Overflow may occur!\n";
+      DEBUG(dbgs() << "[WARNING] Overflow may occur!\n");
     }
   }
-  
+
   II.IType.reset(new FPType(bitsAmt, fracBitsAmt, isSigned));
   return true;
 }
@@ -184,18 +184,18 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
           i++;
         }
       }
-      
+
       if (!isa<Instruction>(u) && !isa<GlobalObject>(u))
         continue;
 
       if (!MetadataManager::getMetadataManager().retrieveMDInfo(u)) {
-        dbgs() << "[WARNING] Find Value " << *u << " without TAFFO info!\n";
+        DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without TAFFO info!\n");
         continue;
       }
-      
+
       vals.push_back(u);
       if (!hasInfo(u)) {
-        dbgs() << "[WARNING] Find Value " << *u << " without range!\n";
+        DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without range!\n");
         Type *utype = fullyUnwrapPointerOrArrayType(u->getType());
         if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(v->getType())->isStructTy()) {
           InputInfo *ii = cast<InputInfo>(valueInfo(v)->metadata->clone());
@@ -206,11 +206,11 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
             valueInfo(u)->metadata = StructInfo::constructFromLLVMType(utype);
           else
             valueInfo(u)->metadata.reset(new InputInfo());
-          dbgs() << "not copying metadata of " << *v << " to " << *u << " because at least one value has struct typing\n";
+          DEBUG(dbgs() << "not copying metadata of " << *v << " to " << *u << " because at least one value has struct typing\n");
         }
       }
     }
-    
+
     next++;
   }
 }
@@ -378,7 +378,7 @@ bool compareTypesOfMDInfo(MDInfo& mdi1, MDInfo& mdi2)
 {
   if (mdi1.getKind() != mdi2.getKind())
     return false;
-  
+
   if (isa<InputInfo>(&mdi1)) {
     InputInfo& ii1 = cast<InputInfo>(mdi1);
     InputInfo& ii2 = cast<InputInfo>(mdi2);
@@ -386,7 +386,7 @@ bool compareTypesOfMDInfo(MDInfo& mdi1, MDInfo& mdi2)
       return *ii1.IType == *ii2.IType;
     } else
       return false;
-    
+
   } else if (isa<StructInfo>(&mdi1)) {
     StructInfo& si1 = cast<StructInfo>(mdi1);
     StructInfo& si2 = cast<StructInfo>(mdi2);
@@ -403,10 +403,10 @@ bool compareTypesOfMDInfo(MDInfo& mdi1, MDInfo& mdi2)
         }
       }
       return true;
-      
+
     } else
       return false;
-  
+
   } else {
     return false;
   }
@@ -469,11 +469,11 @@ void TaffoTuner::attachFPMetaData(std::vector<llvm::Value *> &vals)
   for (Value *v : vals) {
     assert(info[v] && "Every value should have info");
     assert(valueInfo(v)->metadata.get() && "every value should have metadata");
-    
+
     if (isa<Instruction>(v) || isa<GlobalObject>(v)) {
       mdutils::MetadataManager::setMDInfoMetadata(v, valueInfo(v)->metadata.get());
     } else {
-      dbgs() << "[WARNING] Cannot attach MetaData to " << *v << " (normal for function args)\n";
+      DEBUG(dbgs() << "[WARNING] Cannot attach MetaData to " << *v << " (normal for function args)\n");
     }
   }
 }
