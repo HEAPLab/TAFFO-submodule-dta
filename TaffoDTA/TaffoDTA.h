@@ -3,7 +3,6 @@
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Constants.h"
-#include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
@@ -57,8 +56,8 @@ namespace tuner {
     void retrieveAllMetadata(llvm::Module &m, std::vector<llvm::Value *> &vals);
     bool processMetadataOfValue(llvm::Value *v, mdutils::MDInfo *MDI);
     bool associateFixFormat(mdutils::InputInfo& rng);
-    void sortQueue(std::vector<llvm::Value*> &vals);
-    void mergeFixFormat(std::vector<llvm::Value*> &vals);
+    void sortQueue(std::vector<llvm::Value *> &vals);
+    void mergeFixFormat(std::vector<llvm::Value *> &vals);
     void restoreTypesAcrossFunctionCall(llvm::Value *arg_or_call_param);
     void setTypesOnCallArgumentFromFunctionArgument(llvm::Argument *arg, std::shared_ptr<mdutils::MDInfo> finalMd);
     std::vector<llvm::Function*> collapseFunction(llvm::Module &m);
@@ -75,14 +74,12 @@ namespace tuner {
       } else {
         return vi->getSecond();
       }
-    };
+    }
 
     bool hasInfo(llvm::Value *val) {
       return info.find(val) != info.end();
-    };
+    }
   };
-
-
 }
 
 

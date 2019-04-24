@@ -31,7 +31,7 @@ static RegisterPass<TaffoTuner> X(
 
 bool TaffoTuner::runOnModule(Module &m)
 {
-  std::vector<Value*> vals;
+  std::vector<llvm::Value*> vals;
   retrieveAllMetadata(m, vals);
 
   mergeFixFormat(vals);
@@ -49,7 +49,7 @@ bool TaffoTuner::runOnModule(Module &m)
 }
 
 
-void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<Value *> &vals)
+void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<llvm::Value*> &vals)
 {
   mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
 
@@ -163,7 +163,7 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
   int bitsAmt = TotalBits;
   int fracBitsAmt = bitsAmt - intBit;
 
-  //Check dimension
+  // Check dimension
   if (fracBitsAmt < FracThreshold) {
     DEBUG(dbgs() << "[WARNING] Fractional part is too small!\n");
     fracBitsAmt = 0;
@@ -176,56 +176,40 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
   return true;
 }
 
-
 void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
 {
-  size_t next = 0;
-  while (next < vals.size()) {
-    Value *v = vals.at(next);
+  // Topological sort by means of a reversed DFS.
+  enum VState { Visited, Visiting };
+  DenseMap<Value *, VState> vstates;
+  std::vector<Value *> revQueue;
+  std::vector<Value *> stack;
+  revQueue.reserve(vals.size());
+  stack.reserve(vals.size());
 
-    for (auto *u: v->users()) {
-      /* Insert u at the end of the queue.
-       * If u exists already in the queue, *move* it to the end instead. */
-      for (int i=0; i<vals.size();) {
-        if (vals[i] == u) {
-          vals.erase(vals.begin() + i);
-          if (i < next)
-            next--;
-        } else {
-          i++;
-        }
-      }
+  for (Value *v : vals) {
+    if (vstates.count(v))
+      continue;
 
-      if (!isa<Instruction>(u) && !isa<GlobalObject>(u))
-        continue;
-
-      if (!MetadataManager::getMetadataManager().retrieveMDInfo(u)) {
-        DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without TAFFO info!\n");
-        continue;
-      }
-
-      vals.push_back(u);
-      if (!hasInfo(u)) {
-        DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without range!\n");
-        Type *utype = fullyUnwrapPointerOrArrayType(u->getType());
-        if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(v->getType())->isStructTy()) {
-          InputInfo *ii = cast<InputInfo>(valueInfo(v)->metadata->clone());
-          ii->IRange.reset();
-          valueInfo(u)->metadata.reset(ii);
-        } else {
-          if (utype->isStructTy())
-            valueInfo(u)->metadata = StructInfo::constructFromLLVMType(utype);
-          else
-            valueInfo(u)->metadata.reset(new InputInfo());
-          DEBUG(dbgs() << "not copying metadata of " << *v << " to " << *u << " because at least one value has struct typing\n");
-        }
+    stack.push_back(v);
+    while (!stack.empty()) {
+      Value *c = stack.back();
+      auto cstate = vstates.find(c);
+      if (cstate == vstates.end()) {
+	vstates[c] = Visiting;
+	for (Value *u : c->users()) {
+	  if ((isa<Instruction>(u) || isa<GlobalObject>(u)) && hasInfo(u))
+	    stack.push_back(u);
+	}
+      } else if (cstate->second == Visiting) {
+	revQueue.push_back(c);
+	stack.pop_back();
       }
     }
-
-    next++;
   }
-}
 
+  vals.clear();
+  vals.insert(vals.end(), revQueue.rbegin(), revQueue.rend());
+}
 
 void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
 {
