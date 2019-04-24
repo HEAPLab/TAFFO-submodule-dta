@@ -9,6 +9,7 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/ADT/SmallPtrSet.h"
 #include "TypeUtils.h"
 #include "TaffoDTA.h"
 #include "Metadata.h"
@@ -215,11 +216,12 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
 {
   if (DisableTypeMerging)
     return;
-  
+
+  SmallPtrSet<Value *, 8U> valset(vals.begin(), vals.end());
   bool merged = false;
   for (Value *v : vals) {
     for (Value *u: v->users()) {
-      if (std::find(vals.begin(),vals.end(),u) != vals.end()) {
+      if (valset.count(u)) {
         InputInfo *iiv = dyn_cast<InputInfo>(valueInfo(v)->metadata.get());
         InputInfo *iiu = dyn_cast<InputInfo>(valueInfo(u)->metadata.get());
         if (!iiv || !iiu) {
