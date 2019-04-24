@@ -111,7 +111,7 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
         DEBUG(dbgs() << "[ERROR] found non conforming structinfo " << SI->toString() << " on value " << *v << "\n");
         DEBUG(dbgs() << "contained type " << *elem.second << " is not a struct type\n");
         DEBUG(dbgs() << "The top-level MDInfo was " << MDI->toString() << "\n");
-        assert(false);
+        llvm_unreachable("Non-conforming StructInfo.");
       }
       int i=0;
       for (std::shared_ptr<MDInfo> se: *SI) {
@@ -123,7 +123,7 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
       }
 
     } else {
-      assert(false && "unknown mdinfo subclass");
+      llvm_unreachable("unknown mdinfo subclass");
     }
   }
 
@@ -145,10 +145,21 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
   if (rng == nullptr)
     return false;
 
+  if (std::isnan(rng->Min) || std::isnan(rng->Max)) {
+    DEBUG(dbgs() << "[WARNING] NaN range bound!\n");
+    return false;
+  }
+
   bool isSigned = rng->Min < 0;
 
-  int max = std::max(std::abs(rng->Min), std::abs(rng->Max));
-  int intBit = std::ceil(std::log2(max+1)) + (isSigned ? 1 : 0);
+  if (std::isinf(rng->Min) || std::isinf(rng->Max)) {
+    DEBUG(dbgs() << "[WARNING] Infinite range bound. Overflow may occur!\n");
+    II.IType.reset(new FPType(TotalBits, 0, isSigned));
+    return true;
+  }
+
+  double max = std::max(std::abs(rng->Min), std::abs(rng->Max));
+  int intBit = std::lround(std::ceil(std::log2(max+1.0))) + (isSigned ? 1 : 0);
   int bitsAmt = TotalBits;
   int fracBitsAmt = bitsAmt - intBit;
 
