@@ -175,6 +175,8 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
 
 void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
 {
+  mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
+
   // Topological sort by means of a reversed DFS.
   enum VState { Visited, Visiting };
   DenseMap<Value *, VState> vstates;
@@ -194,8 +196,30 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
       if (cstate == vstates.end()) {
 	vstates[c] = Visiting;
 	for (Value *u : c->users()) {
-	  if ((isa<Instruction>(u) || isa<GlobalObject>(u)) && hasInfo(u))
-	    stack.push_back(u);
+	  if (!isa<Instruction>(u) && !isa<GlobalObject>(u))
+	    continue;
+
+	  if (!MDManager.retrieveMDInfo(u)) {
+	    DEBUG(dbgs() << "[WARNING] Found Value " << *u << " without TAFFO info!\n");
+	    continue;
+	  }
+
+	  stack.push_back(u);
+	  if (!hasInfo(u)) {
+	    DEBUG(dbgs() << "[WARNING] Found Value " << *u << " without range!\n");
+	    Type *utype = fullyUnwrapPointerOrArrayType(u->getType());
+	    if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(c->getType())->isStructTy()) {
+	      InputInfo *ii = cast<InputInfo>(valueInfo(c)->metadata->clone());
+	      ii->IRange.reset();
+	      valueInfo(u)->metadata.reset(ii);
+	    } else {
+	      if (utype->isStructTy())
+		valueInfo(u)->metadata = StructInfo::constructFromLLVMType(utype);
+	      else
+		valueInfo(u)->metadata.reset(new InputInfo());
+	      DEBUG(dbgs() << "not copying metadata of " << *c << " to " << *u << " because at least one value has struct typing\n");
+	    }
+	  }
 	}
       } else if (cstate->second == Visiting) {
 	revQueue.push_back(c);
