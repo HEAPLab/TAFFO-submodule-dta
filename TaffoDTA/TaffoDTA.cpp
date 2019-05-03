@@ -4,7 +4,6 @@
 #include "llvm/IR/InstIterator.h"
 #include "llvm/IR/Metadata.h"
 #include "llvm/Support/Debug.h"
-#include "llvm/ADT/SmallPtrSet.h"
 
 #include "TaffoDTA.h"
 #include "TypeUtils.h"
@@ -29,9 +28,10 @@ static RegisterPass<TaffoTuner> X(
 bool TaffoTuner::runOnModule(Module &m)
 {
   std::vector<llvm::Value*> vals;
-  retrieveAllMetadata(m, vals);
+  llvm::SmallPtrSet<llvm::Value*, 8U> valset;
+  retrieveAllMetadata(m, vals, valset);
 
-  mergeFixFormat(vals);
+  mergeFixFormat(vals, valset);
 
   std::vector<Function*> toDel;
   toDel = collapseFunction(m);
@@ -46,7 +46,8 @@ bool TaffoTuner::runOnModule(Module &m)
 }
 
 
-void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<llvm::Value*> &vals)
+void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<llvm::Value*> &vals,
+				     llvm::SmallPtrSetImpl<llvm::Value *> &valset)
 {
   mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
 
@@ -73,7 +74,7 @@ void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<llvm::Value*> &vals)
     }
   }
 
-  sortQueue(vals);
+  sortQueue(vals, valset);
 }
 
 
@@ -173,7 +174,8 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
   return true;
 }
 
-void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
+void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals,
+			   llvm::SmallPtrSetImpl<llvm::Value *> &valset)
 {
   mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
 
@@ -233,15 +235,20 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
   }
 
   vals.clear();
-  vals.insert(vals.end(), revQueue.rbegin(), revQueue.rend());
+  valset.clear();
+  for (auto i = revQueue.rbegin(); i != revQueue.rend(); ++i) {
+    vals.push_back(*i);
+    valset.insert(*i);
+  }
 }
 
-void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
+void TaffoTuner::mergeFixFormat(const std::vector<llvm::Value *> &vals,
+				const llvm::SmallPtrSetImpl<llvm::Value *> &valset)
 {
   if (DisableTypeMerging)
     return;
 
-  SmallPtrSet<Value *, 8U> valset(vals.begin(), vals.end());
+  assert(vals.size() == valset.size() && "They must contain the same elements.");
   bool merged = false;
   for (Value *v : vals) {
     for (Value *u: v->users()) {
@@ -301,7 +308,7 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
     }
   }
   if (merged)
-    mergeFixFormat(vals);
+    mergeFixFormat(vals, valset);
 }
 
 

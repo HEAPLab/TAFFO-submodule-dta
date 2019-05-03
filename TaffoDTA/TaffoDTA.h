@@ -1,5 +1,7 @@
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
+#include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "InputInfo.h"
@@ -49,11 +51,13 @@ namespace tuner {
     TaffoTuner(): ModulePass(ID) { }
     bool runOnModule(llvm::Module &M) override;
 
-    void retrieveAllMetadata(llvm::Module &m, std::vector<llvm::Value *> &vals);
+    void retrieveAllMetadata(llvm::Module &m, std::vector<llvm::Value *> &vals,
+			     llvm::SmallPtrSetImpl<llvm::Value *> &valset);
     bool processMetadataOfValue(llvm::Value *v, mdutils::MDInfo *MDI);
     bool associateFixFormat(mdutils::InputInfo& rng);
-    void sortQueue(std::vector<llvm::Value *> &vals);
-    void mergeFixFormat(std::vector<llvm::Value *> &vals);
+    void sortQueue(std::vector<llvm::Value *> &vals, llvm::SmallPtrSetImpl<llvm::Value *> &valset);
+    void mergeFixFormat(const std::vector<llvm::Value *> &vals,
+			const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
     void restoreTypesAcrossFunctionCall(llvm::Value *arg_or_call_param);
     void setTypesOnCallArgumentFromFunctionArgument(llvm::Argument *arg, std::shared_ptr<mdutils::MDInfo> finalMd);
     std::vector<llvm::Function*> collapseFunction(llvm::Module &m);
