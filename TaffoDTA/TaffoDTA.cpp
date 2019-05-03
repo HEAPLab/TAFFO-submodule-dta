@@ -224,6 +224,10 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
       } else if (cstate->second == Visiting) {
 	revQueue.push_back(c);
 	stack.pop_back();
+	vstates[c] = Visited;
+      } else {
+	assert(cstate->second == Visited);
+	stack.pop_back();
       }
     }
   }
