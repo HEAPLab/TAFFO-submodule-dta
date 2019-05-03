@@ -100,7 +100,7 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
 
     if (InputInfo *II = dyn_cast<InputInfo>(elem.first)) {
       if (!isFloatType(elem.second)) {
-        DEBUG(dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n");
+        LLVM_DEBUG(dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n");
         continue;
       }
       if (associateFixFormat(*II))
@@ -108,9 +108,9 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
 
     } else if (StructInfo *SI = dyn_cast<StructInfo>(elem.first)) {
       if (!elem.second->isStructTy()) {
-        DEBUG(dbgs() << "[ERROR] found non conforming structinfo " << SI->toString() << " on value " << *v << "\n");
-        DEBUG(dbgs() << "contained type " << *elem.second << " is not a struct type\n");
-        DEBUG(dbgs() << "The top-level MDInfo was " << MDI->toString() << "\n");
+        LLVM_DEBUG(dbgs() << "[ERROR] found non conforming structinfo " << SI->toString() << " on value " << *v << "\n");
+        LLVM_DEBUG(dbgs() << "contained type " << *elem.second << " is not a struct type\n");
+        LLVM_DEBUG(dbgs() << "The top-level MDInfo was " << MDI->toString() << "\n");
         llvm_unreachable("Non-conforming StructInfo.");
       }
       int i=0;
@@ -146,14 +146,14 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
     return false;
 
   if (std::isnan(rng->Min) || std::isnan(rng->Max)) {
-    DEBUG(dbgs() << "[WARNING] NaN range bound!\n");
+    LLVM_DEBUG(dbgs() << "[WARNING] NaN range bound!\n");
     return false;
   }
 
   bool isSigned = rng->Min < 0;
 
   if (std::isinf(rng->Min) || std::isinf(rng->Max)) {
-    DEBUG(dbgs() << "[WARNING] Infinite range bound. Overflow may occur!\n");
+    LLVM_DEBUG(dbgs() << "[WARNING] Infinite range bound. Overflow may occur!\n");
     II.IType.reset(new FPType(TotalBits, 0, isSigned));
     return true;
   }
@@ -165,10 +165,10 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
 
   //Check dimension
   if (fracBitsAmt < FracThreshold) {
-    DEBUG(dbgs() << "[WARNING] Fractional part is too small!\n");
+    LLVM_DEBUG(dbgs() << "[WARNING] Fractional part is too small!\n");
     fracBitsAmt = 0;
     if (intBit > bitsAmt) {
-      DEBUG(dbgs() << "[WARNING] Overflow may occur!\n");
+      LLVM_DEBUG(dbgs() << "[WARNING] Overflow may occur!\n");
     }
   }
 
@@ -200,13 +200,13 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
         continue;
 
       if (!MetadataManager::getMetadataManager().retrieveMDInfo(u)) {
-        DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without TAFFO info!\n");
+        LLVM_DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without TAFFO info!\n");
         continue;
       }
 
       vals.push_back(u);
       if (!hasInfo(u)) {
-        DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without range!\n");
+        LLVM_DEBUG(dbgs() << "[WARNING] Find Value " << *u << " without range!\n");
         Type *utype = fullyUnwrapPointerOrArrayType(u->getType());
         if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(v->getType())->isStructTy()) {
           InputInfo *ii = cast<InputInfo>(valueInfo(v)->metadata->clone());
@@ -217,7 +217,7 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals)
             valueInfo(u)->metadata = StructInfo::constructFromLLVMType(utype);
           else
             valueInfo(u)->metadata.reset(new InputInfo());
-          DEBUG(dbgs() << "not copying metadata of " << *v << " to " << *u << " because at least one value has struct typing\n");
+          LLVM_DEBUG(dbgs() << "not copying metadata of " << *v << " to " << *u << " because at least one value has struct typing\n");
         }
       }
     }
@@ -239,15 +239,15 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
         InputInfo *iiv = dyn_cast<InputInfo>(valueInfo(v)->metadata.get());
         InputInfo *iiu = dyn_cast<InputInfo>(valueInfo(u)->metadata.get());
         if (!iiv || !iiu) {
-          DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a struct\n");
+          LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a struct\n");
           continue;
         }
         if (!iiv->IType.get() || !iiu->IType.get()) {
-          DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
+          LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
           continue;
         }
         if (v->getType()->isPointerTy() || u->getType()->isPointerTy()) {
-          DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a pointer\n");
+          LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a pointer\n");
           continue;
         }
         FPType *fpv = cast<FPType>(iiv->IType.get());
@@ -268,10 +268,10 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
             int frac_res = size_res - int_res - sign_res;
             std::shared_ptr<FPType> fp(new FPType(size_res, frac_res, sign_res));
             if (sign_res + int_res + frac_res != size_res || frac_res < 0) {
-              DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because resulting type " << fp->toString() << " is invalid\n");
+              LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because resulting type " << fp->toString() << " is invalid\n");
               continue;
             }
-            DEBUG(dbgs() << "Merged fixp : \n"
+            LLVM_DEBUG(dbgs() << "Merged fixp : \n"
                          << "\t" << *v << " fix type " << fpv->toString() << "\n"
                          << "\t" << *u << " fix type " << fpu->toString() << "\n"
                          << "Final format " << fp->toString() << "\n";);
@@ -297,9 +297,9 @@ void TaffoTuner::mergeFixFormat(std::vector<llvm::Value *> &vals)
 
 void TaffoTuner::restoreTypesAcrossFunctionCall(Value *v)
 {
-  DEBUG(dbgs() << "restoreTypesAcrossFunctionCall(" << *v << ")\n");
+  LLVM_DEBUG(dbgs() << "restoreTypesAcrossFunctionCall(" << *v << ")\n");
   if (!hasInfo(v)) {
-    DEBUG(dbgs() << " --> skipping restoring types because value is not converted\n");
+    LLVM_DEBUG(dbgs() << " --> skipping restoring types because value is not converted\n");
     return;
   }
   
@@ -318,11 +318,11 @@ void TaffoTuner::restoreTypesAcrossFunctionCall(Value *v)
     
     Function *fun = dyn_cast<Function>(call.getCalledFunction());
     if (fun == nullptr) {
-      DEBUG(dbgs() << " --> skipping restoring types from call site " << *user << " because function reference cannot be resolved\n");
+      LLVM_DEBUG(dbgs() << " --> skipping restoring types from call site " << *user << " because function reference cannot be resolved\n");
       continue;
     }
     if (fun->isVarArg()) {
-      DEBUG(dbgs() << " --> skipping restoring types from call site " << *user << " because function is vararg\n");
+      LLVM_DEBUG(dbgs() << " --> skipping restoring types from call site " << *user << " because function is vararg\n");
       continue;
     }
     
@@ -340,13 +340,13 @@ void TaffoTuner::setTypesOnCallArgumentFromFunctionArgument(Argument *arg, std::
 {
   Function *fun =  arg->getParent();
   int n = arg->getArgNo();
-  DEBUG(dbgs() << " --> setting types to " << finalMd->toString() << " on call arguments from function " << fun->getName() << " argument " << n << "\n");
+  LLVM_DEBUG(dbgs() << " --> setting types to " << finalMd->toString() << " on call arguments from function " << fun->getName() << " argument " << n << "\n");
   for (auto it = fun->user_begin(); it != fun->user_end(); it++) {
     if (isa<CallInst>(*it) || isa<InvokeInst>(*it)) {
       Value *callarg = it->getOperand(n);
-      DEBUG(dbgs() << " --> target " << *callarg << ", callsite " << **it << "\n");
+      LLVM_DEBUG(dbgs() << " --> target " << *callarg << ", callsite " << **it << "\n");
       if (!hasInfo(callarg)) {
-        DEBUG(dbgs() << " --> argument doesn't get converted; skipping\n");
+        LLVM_DEBUG(dbgs() << " --> argument doesn't get converted; skipping\n");
       } else {
         valueInfo(callarg)->metadata.reset(finalMd->clone());
       }
@@ -484,7 +484,7 @@ void TaffoTuner::attachFPMetaData(std::vector<llvm::Value *> &vals)
     if (isa<Instruction>(v) || isa<GlobalObject>(v)) {
       mdutils::MetadataManager::setMDInfoMetadata(v, valueInfo(v)->metadata.get());
     } else {
-      DEBUG(dbgs() << "[WARNING] Cannot attach MetaData to " << *v << " (normal for function args)\n");
+      LLVM_DEBUG(dbgs() << "[WARNING] Cannot attach MetaData to " << *v << " (normal for function args)\n");
     }
   }
 }
