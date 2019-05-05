@@ -1,4 +1,4 @@
-add_llvm_loadable_module(TaffoDTA
+add_llvm_library(TaffoDTA MODULE
     TaffoDTA.cpp
     TaffoDTA.h
   
