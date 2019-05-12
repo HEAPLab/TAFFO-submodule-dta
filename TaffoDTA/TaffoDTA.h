@@ -21,6 +21,9 @@ llvm::cl::opt<int> SimilarBits("similarbits", llvm::cl::value_desc("bits"),
     llvm::cl::desc("Maximum number of difference bits that leads two fixp formats to merge"), llvm::cl::init(2));
 llvm::cl::opt<bool> DisableTypeMerging("notypemerge",
     llvm::cl::desc("Disables adjacent type optimization"), llvm::cl::init(false));
+llvm::cl::opt<bool> IterativeMerging("iterative",
+    llvm::cl::desc("Enables old iterative merging"), llvm::cl::init(false));
+
 
 STATISTIC(FixCast, "Number of fixed point format cast");
 
@@ -29,6 +32,7 @@ namespace tuner {
 
   struct ValueInfo {
     std::shared_ptr<mdutils::MDInfo> metadata;
+    std::shared_ptr<mdutils::TType> initialType;
   };
 
   struct FunInfo {
@@ -58,6 +62,13 @@ namespace tuner {
     void sortQueue(std::vector<llvm::Value *> &vals, llvm::SmallPtrSetImpl<llvm::Value *> &valset);
     void mergeFixFormat(const std::vector<llvm::Value *> &vals,
 			const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
+
+    bool mergeFixFormat(llvm::Value *v, llvm::Value *u);
+    bool mergeFixFormatIterative(llvm::Value *v, llvm::Value *u);
+    bool isMergeable(mdutils::FPType *fpv, mdutils::FPType *fpu) const;
+    std::shared_ptr<mdutils::FPType> merge(mdutils::FPType *fpv, mdutils::FPType *fpu) const;
+
+
     void restoreTypesAcrossFunctionCall(llvm::Value *arg_or_call_param);
     void setTypesOnCallArgumentFromFunctionArgument(llvm::Argument *arg, std::shared_ptr<mdutils::MDInfo> finalMd);
     std::vector<llvm::Function*> collapseFunction(llvm::Module &m);

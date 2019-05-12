@@ -125,8 +125,12 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
     }
   }
 
-  if (!skippedAll)
-    valueInfo(v)->metadata = newmdi;
+  if (!skippedAll) {
+    std::shared_ptr<ValueInfo> vi = valueInfo(v);
+    vi->metadata = newmdi;
+    if (InputInfo *ii = dyn_cast<InputInfo>(newmdi.get()))
+      vi->initialType = ii->IType;
+  }
   return !skippedAll;
 }
 
@@ -213,7 +217,9 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals,
 	    if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(c->getType())->isStructTy()) {
 	      InputInfo *ii = cast<InputInfo>(valueInfo(c)->metadata->clone());
 	      ii->IRange.reset();
-	      valueInfo(u)->metadata.reset(ii);
+	      std::shared_ptr<ValueInfo> viu = valueInfo(u);
+	      viu->metadata.reset(ii);
+	      viu->initialType = ii->IType;
 	    } else {
 	      if (utype->isStructTy())
 		valueInfo(u)->metadata = StructInfo::constructFromLLVMType(utype);
@@ -253,62 +259,123 @@ void TaffoTuner::mergeFixFormat(const std::vector<llvm::Value *> &vals,
   for (Value *v : vals) {
     for (Value *u: v->users()) {
       if (valset.count(u)) {
-        InputInfo *iiv = dyn_cast<InputInfo>(valueInfo(v)->metadata.get());
-        InputInfo *iiu = dyn_cast<InputInfo>(valueInfo(u)->metadata.get());
-        if (!iiv || !iiu) {
-          LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a struct\n");
-          continue;
-        }
-        if (!iiv->IType.get() || !iiu->IType.get()) {
-          LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
-          continue;
-        }
-        if (v->getType()->isPointerTy() || u->getType()->isPointerTy()) {
-          LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a pointer\n");
-          continue;
-        }
-        FPType *fpv = cast<FPType>(iiv->IType.get());
-        FPType *fpu = cast<FPType>(iiu->IType.get());
-        if (!(*fpv == *fpu)) {
-          if (fpv->getWidth() == fpu->getWidth() &&
-              std::abs((int)fpv->getPointPos() - (int)fpu->getPointPos())
-              + (fpv->isSigned() == fpu->isSigned() ? 0 : 1) <= SimilarBits) {
-
-            int sign_v = fpv->isSigned() ? 1 : 0;
-            int int_v = fpv->getWidth() - fpv->getPointPos() - sign_v;
-            int sign_u = fpu->isSigned() ? 1 : 0;
-            int int_u = fpu->getWidth() - fpu->getPointPos() - sign_v;
-            
-            int sign_res = std::max(sign_u, sign_v);
-            int int_res = std::max(int_u, int_v);
-            int size_res = std::max(fpv->getWidth(), fpu->getWidth());
-            int frac_res = size_res - int_res - sign_res;
-            std::shared_ptr<FPType> fp(new FPType(size_res, frac_res, sign_res));
-            if (sign_res + int_res + frac_res != size_res || frac_res < 0) {
-              LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because resulting type " << fp->toString() << " is invalid\n");
-              continue;
-            }
-            LLVM_DEBUG(dbgs() << "Merged fixp : \n"
-                         << "\t" << *v << " fix type " << fpv->toString() << "\n"
-                         << "\t" << *u << " fix type " << fpu->toString() << "\n"
-                         << "Final format " << fp->toString() << "\n";);
-
-            iiv->IType.reset(fp->clone());
-            iiu->IType.reset(fp->clone());
-
+	if (IterativeMerging ? mergeFixFormatIterative(v, u) : mergeFixFormat(v, u)) {
             restoreTypesAcrossFunctionCall(v);
             restoreTypesAcrossFunctionCall(u);
 
             merged = true;
-          } else {
-            FixCast++;
-          }
-        }
+	}
       }
     }
   }
-  if (merged)
+  if (IterativeMerging && merged)
     mergeFixFormat(vals, valset);
+}
+
+bool TaffoTuner::mergeFixFormat(llvm::Value *v, llvm::Value *u) {
+  std::shared_ptr<ValueInfo> viv = valueInfo(v);
+  std::shared_ptr<ValueInfo> viu = valueInfo(u);
+  InputInfo *iiv = dyn_cast<InputInfo>(viv->metadata.get());
+  InputInfo *iiu = dyn_cast<InputInfo>(viu->metadata.get());
+  if (!iiv || !iiu) {
+    LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a struct\n");
+    return false;
+  }
+  if (!iiv->IType.get() || !iiu->IType.get()) {
+    LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
+    return false;
+  }
+  if (v->getType()->isPointerTy() || u->getType()->isPointerTy()) {
+    LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a pointer\n");
+    return false;
+  }
+  FPType *fpv = cast<FPType>(viv->initialType.get());
+  FPType *fpu = cast<FPType>(viu->initialType.get());
+  if (!(*fpv == *fpu)) {
+    if (isMergeable(fpv, fpu)) {
+      std::shared_ptr<mdutils::FPType> fp = merge(fpv, fpu);
+      if (!fp) {
+	LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because resulting type " << fp->toString() << " is invalid\n");
+	return false;
+      }
+      LLVM_DEBUG(dbgs() << "Merged fixp : \n"
+		 << "\t" << *v << " fix type " << fpv->toString() << "\n"
+		 << "\t" << *u << " fix type " << fpu->toString() << "\n"
+		 << "Final format " << fp->toString() << "\n";);
+
+      iiv->IType.reset(fp->clone());
+      iiu->IType.reset(fp->clone());
+      return true;
+    } else {
+      FixCast++;
+    }
+  }
+  return false;
+}
+
+bool TaffoTuner::mergeFixFormatIterative(llvm::Value *v, llvm::Value *u) {
+  std::shared_ptr<ValueInfo> viv = valueInfo(v);
+  std::shared_ptr<ValueInfo> viu = valueInfo(u);
+  InputInfo *iiv = dyn_cast<InputInfo>(viv->metadata.get());
+  InputInfo *iiu = dyn_cast<InputInfo>(viu->metadata.get());
+  if (!iiv || !iiu) {
+    LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a struct\n");
+    return false;
+  }
+  if (!iiv->IType.get() || !iiu->IType.get()) {
+    LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
+    return false;
+  }
+  if (v->getType()->isPointerTy() || u->getType()->isPointerTy()) {
+    LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a pointer\n");
+    return false;
+  }
+  FPType *fpv = cast<FPType>(iiv->IType.get());
+  FPType *fpu = cast<FPType>(iiu->IType.get());
+  if (!(*fpv == *fpu)) {
+    if (isMergeable(fpv, fpu)) {
+      std::shared_ptr<mdutils::FPType> fp = merge(fpv, fpu);
+      if (!fp) {
+	LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because resulting type " << fp->toString() << " is invalid\n");
+	return false;
+      }
+      LLVM_DEBUG(dbgs() << "Merged fixp : \n"
+		 << "\t" << *v << " fix type " << fpv->toString() << "\n"
+		 << "\t" << *u << " fix type " << fpu->toString() << "\n"
+		 << "Final format " << fp->toString() << "\n";);
+
+      iiv->IType.reset(fp->clone());
+      iiu->IType.reset(fp->clone());
+      return true;
+    } else {
+      FixCast++;
+    }
+  }
+  return false;
+}
+
+bool TaffoTuner::isMergeable(mdutils::FPType *fpv, mdutils::FPType *fpu) const
+{
+  return fpv->getWidth() == fpu->getWidth()
+    && (std::abs((int)fpv->getPointPos() - (int)fpu->getPointPos())
+	+ (fpv->isSigned() == fpu->isSigned() ? 0 : 1)) <= SimilarBits;
+}
+
+std::shared_ptr<mdutils::FPType> TaffoTuner::merge(mdutils::FPType *fpv, mdutils::FPType *fpu) const
+{
+  int sign_v = fpv->isSigned() ? 1 : 0;
+  int int_v = fpv->getWidth() - fpv->getPointPos() - sign_v;
+  int sign_u = fpu->isSigned() ? 1 : 0;
+  int int_u = fpu->getWidth() - fpu->getPointPos() - sign_v;
+
+  int sign_res = std::max(sign_u, sign_v);
+  int int_res = std::max(int_u, int_v);
+  int size_res = std::max(fpv->getWidth(), fpu->getWidth());
+  int frac_res = size_res - int_res - sign_res;
+  if (sign_res + int_res + frac_res != size_res || frac_res < 0)
+    return nullptr; // Invalid format.
+  else
+    return std::shared_ptr<FPType>(new FPType(size_res, frac_res, sign_res));
 }
 
 
