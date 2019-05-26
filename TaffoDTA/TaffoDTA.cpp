@@ -128,6 +128,10 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
   if (!skippedAll) {
     std::shared_ptr<ValueInfo> vi = valueInfo(v);
     vi->metadata = newmdi;
+    LLVM_DEBUG(dbgs() << "associated metadata '" << newmdi->toString() << "' to value " << *v);
+    if (Instruction *i = dyn_cast<Instruction>(v))
+      LLVM_DEBUG(dbgs() << " (parent function = " << i->getFunction()->getName() << ")");
+    LLVM_DEBUG(dbgs() << "\n");
     if (InputInfo *ii = dyn_cast<InputInfo>(newmdi.get()))
       vi->initialType = ii->IType;
   }
@@ -205,14 +209,14 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals,
 	  if (!isa<Instruction>(u) && !isa<GlobalObject>(u))
 	    continue;
 
-	  if (!MDManager.retrieveMDInfo(u)) {
-	    LLVM_DEBUG(dbgs() << "[WARNING] Found Value " << *u << " without TAFFO info!\n");
+	  if (conversionDisabled(u)) {
+	    LLVM_DEBUG(dbgs() << "[WARNING] Skipping " << *u << " without TAFFO info!\n");
 	    continue;
 	  }
 
 	  stack.push_back(u);
 	  if (!hasInfo(u)) {
-	    LLVM_DEBUG(dbgs() << "[WARNING] Found Value " << *u << " without range!\n");
+	    LLVM_DEBUG(dbgs() << "[WARNING] Found Value " << *u << " without range! (uses " << *c << ")\n");
 	    Type *utype = fullyUnwrapPointerOrArrayType(u->getType());
 	    if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(c->getType())->isStructTy()) {
 	      InputInfo *ii = cast<InputInfo>(valueInfo(c)->metadata->clone());

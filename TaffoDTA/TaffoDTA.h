@@ -5,6 +5,7 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "InputInfo.h"
+#include "Metadata.h"
 
 #ifndef __TAFFO_TUNER_PASS_H__
 #define __TAFFO_TUNER_PASS_H__
@@ -78,6 +79,7 @@ namespace tuner {
 
 
     std::shared_ptr<ValueInfo> valueInfo(llvm::Value *val) {
+      LLVM_DEBUG(llvm::dbgs() << "new valueinfo for " << *val << "\n");
       auto vi = info.find(val);
       if (vi == info.end()) {
         info[val] = std::make_shared<ValueInfo>(ValueInfo());
@@ -89,6 +91,14 @@ namespace tuner {
 
     bool hasInfo(llvm::Value *val) {
       return info.find(val) != info.end();
+    }
+    
+    bool conversionDisabled(llvm::Value *val) {
+      mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
+      mdutils::MDInfo *mdi = MDManager.retrieveMDInfo(val);
+      if (!mdi)
+        return true;
+      return !(mdi->getEnableConversion());
     }
   };
 }
