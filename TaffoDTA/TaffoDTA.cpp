@@ -218,18 +218,21 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals,
 	  if (!hasInfo(u)) {
 	    LLVM_DEBUG(dbgs() << "[WARNING] Found Value " << *u << " without range! (uses " << *c << ")\n");
 	    Type *utype = fullyUnwrapPointerOrArrayType(u->getType());
-	    if (!utype->isStructTy() && !fullyUnwrapPointerOrArrayType(c->getType())->isStructTy()) {
+	    Type *ctype = fullyUnwrapPointerOrArrayType(c->getType());
+	    if (!utype->isStructTy() && !ctype->isStructTy()) {
 	      InputInfo *ii = cast<InputInfo>(valueInfo(c)->metadata->clone());
 	      ii->IRange.reset();
 	      std::shared_ptr<ValueInfo> viu = valueInfo(u);
 	      viu->metadata.reset(ii);
 	      viu->initialType = ii->IType;
+	    } else if (utype->isStructTy() && ctype->isStructTy()) {
+	      valueInfo(u)->metadata.reset(valueInfo(c)->metadata->clone());
 	    } else {
 	      if (utype->isStructTy())
 		valueInfo(u)->metadata = StructInfo::constructFromLLVMType(utype);
 	      else
 		valueInfo(u)->metadata.reset(new InputInfo());
-	      LLVM_DEBUG(dbgs() << "not copying metadata of " << *c << " to " << *u << " because at least one value has struct typing\n");
+	      LLVM_DEBUG(dbgs() << "not copying metadata of " << *c << " to " << *u << " because one value has struct typing and the other has not.\n");
 	    }
 	  }
 	}
