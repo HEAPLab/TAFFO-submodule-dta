@@ -225,7 +225,8 @@ void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals,
 	      std::shared_ptr<ValueInfo> viu = valueInfo(u);
 	      viu->metadata.reset(ii);
 	      viu->initialType = ii->IType;
-	    } else if (utype->isStructTy() && ctype->isStructTy()) {
+	    } else if (utype->isStructTy() && ctype->isStructTy()
+		       && ctype->canLosslesslyBitCastTo(utype)) {
 	      valueInfo(u)->metadata.reset(valueInfo(c)->metadata->clone());
 	    } else {
 	      if (utype->isStructTy())
