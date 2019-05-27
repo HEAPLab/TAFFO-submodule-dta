@@ -96,7 +96,7 @@ namespace tuner {
     bool conversionDisabled(llvm::Value *val) {
       mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
       mdutils::MDInfo *mdi = MDManager.retrieveMDInfo(val);
-      return (!mdi || !(mdi->getEnableConversion()))
+      return !(mdi && mdi->getEnableConversion())
 	&& incomingValuesDisabled(val);
     }
 
@@ -111,7 +111,7 @@ namespace tuner {
 	  }
 	return disabled;
       } else {
-	return false;
+	return true;
       }
     }
   };
