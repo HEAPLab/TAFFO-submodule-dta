@@ -92,13 +92,27 @@ namespace tuner {
     bool hasInfo(llvm::Value *val) {
       return info.find(val) != info.end();
     }
-    
+
     bool conversionDisabled(llvm::Value *val) {
       mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
       mdutils::MDInfo *mdi = MDManager.retrieveMDInfo(val);
-      if (!mdi)
-        return true;
-      return !(mdi->getEnableConversion());
+      return (!mdi || !(mdi->getEnableConversion()))
+	&& incomingValuesDisabled(val);
+    }
+
+    bool incomingValuesDisabled(llvm::Value *v) {
+      using namespace llvm;
+      if (PHINode *phi = dyn_cast<PHINode>(v)) {
+	bool disabled = false;
+	for (Value *inc : phi->incoming_values())
+	  if (!isa<PHINode>(inc) && conversionDisabled(inc)) {
+	    disabled = true;
+	    break;
+	  }
+	return disabled;
+      } else {
+	return false;
+      }
     }
   };
 }
