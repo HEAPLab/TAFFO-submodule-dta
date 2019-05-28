@@ -94,6 +94,13 @@ namespace tuner {
     }
 
     bool conversionDisabled(llvm::Value *val) {
+      if (llvm::isa<llvm::Constant>(val))
+        return false;
+      if (llvm::isa<llvm::Argument>(val)) {
+        if (!hasInfo(val))
+          return true;
+        return !(valueInfo(val)->metadata && valueInfo(val)->metadata->getEnableConversion());
+      }
       mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
       mdutils::MDInfo *mdi = MDManager.retrieveMDInfo(val);
       return !(mdi && mdi->getEnableConversion())
@@ -104,11 +111,12 @@ namespace tuner {
       using namespace llvm;
       if (PHINode *phi = dyn_cast<PHINode>(v)) {
 	bool disabled = false;
-	for (Value *inc : phi->incoming_values())
+	for (Value *inc : phi->incoming_values()) {
 	  if (!isa<PHINode>(inc) && conversionDisabled(inc)) {
 	    disabled = true;
 	    break;
 	  }
+        }
 	return disabled;
       } else {
 	return true;
