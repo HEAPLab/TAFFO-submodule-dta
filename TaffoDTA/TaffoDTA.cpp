@@ -58,6 +58,9 @@ void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<llvm::Value*> &vals,
   }
 
   for (Function &f : m.functions()) {
+    if (f.isIntrinsic())
+      continue;
+    
     SmallVector<mdutils::MDInfo*, 5> argsII;
     MDManager.retrieveArgumentInputInfo(f, argsII);
     auto arg = f.arg_begin();
@@ -586,6 +589,9 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
   mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
 
   for (Function &f : m.functions()) {
+    if (f.isIntrinsic())
+      continue;
+      
     SmallVector<mdutils::MDInfo*, 5> argsII;
     MDManager.retrieveArgumentInputInfo(f, argsII);
     auto argsIt = argsII.begin();
