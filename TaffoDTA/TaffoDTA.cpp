@@ -292,7 +292,7 @@ bool TaffoTuner::mergeFixFormat(llvm::Value *v, llvm::Value *u) {
     LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one is a struct\n");
     return false;
   }
-  if (!iiv->IType.get() || !iiu->IType.get()) {
+  if (!iiv->IType || viv->initialType || !iiu->IType || viu->initialType) {
     LLVM_DEBUG(dbgs() << "not attempting merge of " << *v << ", " << *u << " because at least one does not change to a fixed point type\n");
     return false;
   }
