@@ -171,6 +171,10 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
   int intBit = std::lround(std::ceil(std::log2(max+1.0))) + (isSigned ? 1 : 0);
   int bitsAmt = TotalBits;
   int fracBitsAmt = bitsAmt - intBit;
+  while (fracBitsAmt < FracThreshold && bitsAmt < 64) {
+    bitsAmt *= 2;
+    fracBitsAmt = bitsAmt - intBit;
+  }
 
   // Check dimension
   if (fracBitsAmt < FracThreshold) {
