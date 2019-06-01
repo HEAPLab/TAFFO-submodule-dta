@@ -153,47 +153,21 @@ bool TaffoTuner::associateFixFormat(InputInfo& II)
   Range* rng = II.IRange.get();
   if (rng == nullptr)
     return false;
+  
+  FixedPointTypeGenError fpgerr;
+  FPType res = fixedPointTypeFromRange(*rng, &fpgerr, TotalBits, FracThreshold, 64, TotalBits);
 
-  if (std::isnan(rng->Min) || std::isnan(rng->Max)) {
-    LLVM_DEBUG(dbgs() << "[WARNING] NaN range bound!\n");
+  if (fpgerr == FixedPointTypeGenError::InvalidRange)
     return false;
-  }
 
-  bool isSigned = rng->Min < 0;
-
-  if (std::isinf(rng->Min) || std::isinf(rng->Max)) {
-    LLVM_DEBUG(dbgs() << "[WARNING] Infinite range bound. Overflow may occur!\n");
-    II.IType.reset(new FPType(TotalBits, 0, isSigned));
-    return true;
-  }
-
-  double max = std::max(std::abs(rng->Min), std::abs(rng->Max));
-  int intBit = std::lround(std::ceil(std::log2(max+1.0))) + (isSigned ? 1 : 0);
-  int bitsAmt = TotalBits;
-  int fracBitsAmt = bitsAmt - intBit;
-  while (fracBitsAmt < FracThreshold && bitsAmt < 64) {
-    bitsAmt *= 2;
-    fracBitsAmt = bitsAmt - intBit;
-  }
-
-  // Check dimension
-  if (fracBitsAmt < FracThreshold) {
-    LLVM_DEBUG(dbgs() << "[WARNING] Fractional part is too small!\n");
-    fracBitsAmt = 0;
-    if (intBit > bitsAmt) {
-      LLVM_DEBUG(dbgs() << "[WARNING] Overflow may occur!\n");
-    }
-  }
-
-  II.IType.reset(new FPType(bitsAmt, fracBitsAmt, isSigned));
+  II.IType.reset(res.clone());
   return true;
 }
+
 
 void TaffoTuner::sortQueue(std::vector<llvm::Value *> &vals,
 			   llvm::SmallPtrSetImpl<llvm::Value *> &valset)
 {
-  mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
-
   // Topological sort by means of a reversed DFS.
   enum VState { Visited, Visiting };
   DenseMap<Value *, VState> vstates;
