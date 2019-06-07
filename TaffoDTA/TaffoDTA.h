@@ -59,7 +59,7 @@ namespace tuner {
     void retrieveAllMetadata(llvm::Module &m, std::vector<llvm::Value *> &vals,
 			     llvm::SmallPtrSetImpl<llvm::Value *> &valset);
     bool processMetadataOfValue(llvm::Value *v, mdutils::MDInfo *MDI);
-    bool associateFixFormat(mdutils::InputInfo& rng);
+    bool associateFixFormat(mdutils::InputInfo& rng, bool force = false);
     void sortQueue(std::vector<llvm::Value *> &vals, llvm::SmallPtrSetImpl<llvm::Value *> &valset);
     void mergeFixFormat(const std::vector<llvm::Value *> &vals,
 			const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
@@ -109,6 +109,9 @@ namespace tuner {
 
     bool incomingValuesDisabled(llvm::Value *v) {
       using namespace llvm;
+      if (!v->getType()->isFloatTy())
+	return true;
+
       if (PHINode *phi = dyn_cast<PHINode>(v)) {
 	bool disabled = false;
 	for (Value *inc : phi->incoming_values()) {

@@ -128,6 +128,11 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
     }
   }
 
+  if (skippedAll && isa<PHINode>(v) && !conversionDisabled(v) && isa<InputInfo>(newmdi.get())) {
+    if (associateFixFormat(*cast<InputInfo>(newmdi.get()), true))
+      skippedAll = false;
+  }
+
   if (!skippedAll) {
     std::shared_ptr<ValueInfo> vi = valueInfo(v);
     vi->metadata = newmdi;
@@ -142,10 +147,14 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
 }
 
 
-bool TaffoTuner::associateFixFormat(InputInfo& II)
+bool TaffoTuner::associateFixFormat(InputInfo& II, bool force)
 {
-  if (II.IEnableConversion == false)
-    return false;
+  if (!II.IEnableConversion) {
+    if (force) {
+      II.IEnableConversion = true;
+    } else
+      return false;
+  }
 
   if (II.IType.get() != nullptr)
     return true;
