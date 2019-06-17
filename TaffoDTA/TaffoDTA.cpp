@@ -6,7 +6,6 @@
 #include "llvm/Support/Debug.h"
 
 #include "TaffoDTA.h"
-#include "TypeUtils.h"
 #include "Metadata.h"
 
 

@@ -6,6 +6,7 @@
 #include "llvm/Support/CommandLine.h"
 #include "InputInfo.h"
 #include "Metadata.h"
+#include "TypeUtils.h"
 
 #ifndef __TAFFO_TUNER_PASS_H__
 #define __TAFFO_TUNER_PASS_H__
@@ -109,7 +110,7 @@ namespace tuner {
 
     bool incomingValuesDisabled(llvm::Value *v) {
       using namespace llvm;
-      if (!v->getType()->isFloatTy())
+      if (!taffo::isFloatType(v->getType()))
 	return true;
 
       if (PHINode *phi = dyn_cast<PHINode>(v)) {
