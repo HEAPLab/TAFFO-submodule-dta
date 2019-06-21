@@ -90,6 +90,13 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
     valueInfo(v)->metadata = newmdi;
     return true;
   }
+  
+  /* HACK to set the enabled status on phis which compensates for a bug in vra.
+   * Affects axbench/sobel. */
+  bool forceEnableConv = false;
+  if (isa<PHINode>(v) && !conversionDisabled(v) && isa<InputInfo>(newmdi.get())) {
+    forceEnableConv = true;
+  }
 
   bool skippedAll = true;
   Type *fuwt = fullyUnwrapPointerOrArrayType(v->getType());
@@ -99,6 +106,8 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
     std::pair<MDInfo *, Type *> elem = queue.pop_back_val();
 
     if (InputInfo *II = dyn_cast<InputInfo>(elem.first)) {
+      if (forceEnableConv)
+        II->IEnableConversion = true;
       if (!isFloatType(elem.second)) {
         LLVM_DEBUG(dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n");
         continue;
@@ -127,11 +136,6 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
     }
   }
 
-  if (skippedAll && isa<PHINode>(v) && !conversionDisabled(v) && isa<InputInfo>(newmdi.get())) {
-    if (associateFixFormat(*cast<InputInfo>(newmdi.get()), true))
-      skippedAll = false;
-  }
-
   if (!skippedAll) {
     std::shared_ptr<ValueInfo> vi = valueInfo(v);
     vi->metadata = newmdi;
@@ -146,14 +150,10 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
 }
 
 
-bool TaffoTuner::associateFixFormat(InputInfo& II, bool force)
+bool TaffoTuner::associateFixFormat(InputInfo& II)
 {
-  if (!II.IEnableConversion) {
-    if (force) {
-      II.IEnableConversion = true;
-    } else
-      return false;
-  }
+  if (!II.IEnableConversion)
+    return false;
 
   if (II.IType.get() != nullptr)
     return true;

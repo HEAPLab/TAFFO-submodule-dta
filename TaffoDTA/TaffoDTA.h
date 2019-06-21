@@ -60,7 +60,7 @@ namespace tuner {
     void retrieveAllMetadata(llvm::Module &m, std::vector<llvm::Value *> &vals,
 			     llvm::SmallPtrSetImpl<llvm::Value *> &valset);
     bool processMetadataOfValue(llvm::Value *v, mdutils::MDInfo *MDI);
-    bool associateFixFormat(mdutils::InputInfo& rng, bool force = false);
+    bool associateFixFormat(mdutils::InputInfo& rng);
     void sortQueue(std::vector<llvm::Value *> &vals, llvm::SmallPtrSetImpl<llvm::Value *> &valset);
     void mergeFixFormat(const std::vector<llvm::Value *> &vals,
 			const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
