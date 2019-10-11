@@ -363,7 +363,7 @@ std::shared_ptr<mdutils::FPType> TaffoTuner::merge(mdutils::FPType *fpv, mdutils
   int sign_v = fpv->isSigned() ? 1 : 0;
   int int_v = fpv->getWidth() - fpv->getPointPos() - sign_v;
   int sign_u = fpu->isSigned() ? 1 : 0;
-  int int_u = fpu->getWidth() - fpu->getPointPos() - sign_v;
+  int int_u = fpu->getWidth() - fpu->getPointPos() - sign_u;
 
   int sign_res = std::max(sign_u, sign_v);
   int int_res = std::max(int_u, int_v);
