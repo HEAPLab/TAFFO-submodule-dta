@@ -82,11 +82,13 @@ void TaffoTuner::retrieveAllMetadata(Module &m, std::vector<llvm::Value*> &vals,
 
 bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
 {
+  LLVM_DEBUG(dbgs() << __FUNCTION__ << " v=" << *v << " MDI=" << (MDI ? MDI->toString() : std::string("(null)")) << "\n");
   if (!MDI)
     return false;
   std::shared_ptr<MDInfo> newmdi(MDI->clone());
 
   if (v->getType()->isVoidTy()) {
+    LLVM_DEBUG(dbgs() << "[Info] Value " << *v << " has void type, leaving metadata unchanged\n");
     valueInfo(v)->metadata = newmdi;
     return true;
   }
@@ -112,8 +114,9 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
         LLVM_DEBUG(dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n");
         continue;
       }
-      if (associateFixFormat(*II))
+      if (associateFixFormat(*II)) {
         skippedAll = false;
+      }
 
     } else if (StructInfo *SI = dyn_cast<StructInfo>(elem.first)) {
       if (!elem.second->isStructTy()) {
@@ -152,21 +155,29 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI)
 
 bool TaffoTuner::associateFixFormat(InputInfo& II)
 {
-  if (!II.IEnableConversion)
+  if (!II.IEnableConversion) {
+    LLVM_DEBUG(dbgs() << "[Info] Skipping " << II.toString() << ", conversion disabled\n");
     return false;
+  }
 
-  if (II.IType.get() != nullptr)
+  if (II.IType.get() != nullptr) {
+    LLVM_DEBUG(dbgs() << "[Info] Type of " << II.toString() << " already assigned\n");
     return true;
+  }
 
   Range* rng = II.IRange.get();
-  if (rng == nullptr)
+  if (rng == nullptr) {
+    LLVM_DEBUG(dbgs() << "[Info] Skipping " << II.toString() << ", no range\n");
     return false;
+  }
   
   FixedPointTypeGenError fpgerr;
   FPType res = fixedPointTypeFromRange(*rng, &fpgerr, TotalBits, FracThreshold, 64, TotalBits);
 
-  if (fpgerr == FixedPointTypeGenError::InvalidRange)
+  if (fpgerr == FixedPointTypeGenError::InvalidRange) {
+    LLVM_DEBUG(dbgs() << "[Info] Skipping " << II.toString() << ", FixedPointTypeGenError::InvalidRange\n");
     return false;
+  }
 
   II.IType.reset(res.clone());
   return true;
