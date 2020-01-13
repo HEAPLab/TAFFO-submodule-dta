@@ -1,6 +1,8 @@
 add_llvm_library(TaffoDTA MODULE
-    TaffoDTA.cpp
-    TaffoDTA.h
+  TaffoDTA.cpp
+  TaffoDTA.h
+  FunctionValuesConstraints.cpp
+  FunctionValuesConstraints.h
   
   PLUGIN_TOOL
   opt

@@ -34,7 +34,8 @@ struct TaffoTuner : public llvm::ModulePass {
   static char ID;
 
   TaffoTuner(): ModulePass(ID) { }
-  bool runOnModule(llvm::Module &M) override;
+  void getAnalysisUsage(llvm::AnalysisUsage &) const override;
+  bool runOnModule(llvm::Module &) override;
 };
 
 }
