@@ -1,0 +1,728 @@
+Args: /opt/llvm/build/bin/opt -load /home/nicola/dev/TAFFO/dist/usr/local/lib/TaffoInitializer.so -taffoinit -debug -S -o a.2.magiclangtmp.ll a.1.magiclangtmp.ll 
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.cond1
+	discovered a new reachable node %for.body3
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %for.inc9
+	discovered a new reachable node %for.end11
+	discovered a new reachable node %entry
+Annotated Function: 
+Global Set: 
+arrayLoad : 
+__isoc99_scanf : 
+arrayInit : 
+printArray : 
+printf : 
+cconv : 
+main : 
+Local Set: 
+ ->   %xn = alloca [10 x float], align 16
+ ->   %h = alloca [10 x float], align 16
+
+llvm.var.annotation : 
+***** begin void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+Initial conversion queue:
+bt=0 md=scalar(range(1, 20)) []   %xn = alloca [10 x float], align 16
+bt=0 md=scalar(range(1, 20)) []   %h = alloca [10 x float], align 16
+
+
+***** buildConversionQueueForRootValues iter 0 < 2
+[V]   %xn = alloca [10 x float], align 16[ main]
+    distance = 0
+[U]   %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+root distances: 4294967295 > 0 + 1
+createInfoOfUser copied MD from vinfo (  %xn = alloca [10 x float], align 16) scalar(range(1, 20))
+[  %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0] update fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+root distances: 4294967295 > 0 + 1
+createInfoOfUser copied MD from vinfo (  %xn = alloca [10 x float], align 16) scalar(range(1, 20))
+[  %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0] update fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %xn1 = bitcast [10 x float]* %xn to i8*[ main]
+root distances: 4294967295 > 0 + 1
+createInfoOfUser copied MD from vinfo (  %xn = alloca [10 x float], align 16) scalar(range(1, 20))
+[  %xn1 = bitcast [10 x float]* %xn to i8*] update fixpTypeRootDistance=1
+[V]   %h = alloca [10 x float], align 16[ main]
+    distance = 0
+[U]   %arraydecay6 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+root distances: 4294967295 > 0 + 1
+createInfoOfUser copied MD from vinfo (  %h = alloca [10 x float], align 16) scalar(range(1, 20))
+[  %arraydecay6 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0] update fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+root distances: 4294967295 > 0 + 1
+createInfoOfUser copied MD from vinfo (  %h = alloca [10 x float], align 16) scalar(range(1, 20))
+[  %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0] update fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %h2 = bitcast [10 x float]* %h to i8*[ main]
+root distances: 4294967295 > 0 + 1
+createInfoOfUser copied MD from vinfo (  %h = alloca [10 x float], align 16) scalar(range(1, 20))
+[  %h2 = bitcast [10 x float]* %h to i8*] update fixpTypeRootDistance=1
+[V]   %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)[ main]
+root distances: 4294967295 > 1 + 1
+createInfoOfUser copied MD from vinfo (  %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0) scalar(range(1, 20))
+[  call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)] update fixpTypeRootDistance=2
+[V]   %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @arrayLoad(float* %arraydecay, i32 10)[ main]
+root distances: 4294967295 > 1 + 1
+createInfoOfUser copied MD from vinfo (  %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0) scalar(range(1, 20))
+[  call void @arrayLoad(float* %arraydecay, i32 10)] update fixpTypeRootDistance=2
+[V]   %xn1 = bitcast [10 x float]* %xn to i8*[ main]
+    distance = 1
+[U]   call void @llvm.var.annotation(i8* %xn1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 40)[ main]
+root distances: 4294967295 > 1 + 1
+createInfoOfUser copied MD from vinfo (  %xn1 = bitcast [10 x float]* %xn to i8*) scalar(range(1, 20))
+[  call void @llvm.var.annotation(i8* %xn1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 40)] update fixpTypeRootDistance=2
+[V]   %arraydecay6 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)[ main]
+root distances: 2 > 1 + 1
+[  call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)] not updated fixpTypeRootDistance=2
+[V]   %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @arrayLoad(float* %arraydecay3, i32 10)[ main]
+root distances: 4294967295 > 1 + 1
+createInfoOfUser copied MD from vinfo (  %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0) scalar(range(1, 20))
+[  call void @arrayLoad(float* %arraydecay3, i32 10)] update fixpTypeRootDistance=2
+[V]   %h2 = bitcast [10 x float]* %h to i8*[ main]
+    distance = 1
+[U]   call void @llvm.var.annotation(i8* %h2, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 41)[ main]
+root distances: 4294967295 > 1 + 1
+createInfoOfUser copied MD from vinfo (  %h2 = bitcast [10 x float]* %h to i8*) scalar(range(1, 20))
+[  call void @llvm.var.annotation(i8* %h2, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 41)] update fixpTypeRootDistance=2
+[V]   call void @arrayLoad(float* %arraydecay, i32 10)[ main]
+    distance = 2
+[V]   call void @llvm.var.annotation(i8* %xn1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 40)[ main]
+    distance = 2
+[V]   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)[ main]
+    distance = 2
+[V]   call void @arrayLoad(float* %arraydecay3, i32 10)[ main]
+    distance = 2
+[V]   call void @llvm.var.annotation(i8* %h2, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 41)[ main]
+    distance = 2
+***** buildConversionQueueForRootValues iter 2 < 13
+[V]   %xn = alloca [10 x float], align 16[ main]
+    distance = 0
+[U]   %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+root distances: 1 > 0 + 1
+[  %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0] not updated fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+root distances: 1 > 0 + 1
+[  %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0] not updated fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %xn1 = bitcast [10 x float]* %xn to i8*[ main]
+root distances: 1 > 0 + 1
+[  %xn1 = bitcast [10 x float]* %xn to i8*] not updated fixpTypeRootDistance=1
+[V]   %h = alloca [10 x float], align 16[ main]
+    distance = 0
+[U]   %arraydecay6 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+root distances: 1 > 0 + 1
+[  %arraydecay6 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0] not updated fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+root distances: 1 > 0 + 1
+[  %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0] not updated fixpTypeRootDistance=1
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] source_element_type=[10 x float]
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[U]   %h2 = bitcast [10 x float]* %h to i8*[ main]
+root distances: 1 > 0 + 1
+[  %h2 = bitcast [10 x float]* %h to i8*] not updated fixpTypeRootDistance=1
+[V]   call void @arrayLoad(float* %arraydecay, i32 10)[ main]
+    distance = 2
+[V]   call void @llvm.var.annotation(i8* %xn1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 40)[ main]
+    distance = 2
+[V]   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)[ main]
+    distance = 2
+[V]   call void @arrayLoad(float* %arraydecay3, i32 10)[ main]
+    distance = 2
+[V]   call void @llvm.var.annotation(i8* %h2, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 41)[ main]
+    distance = 2
+[V]   %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)[ main]
+root distances: 2 > 1 + 1
+[  call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)] not updated fixpTypeRootDistance=2
+[V]   %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @arrayLoad(float* %arraydecay, i32 10)[ main]
+root distances: 2 > 1 + 1
+[  call void @arrayLoad(float* %arraydecay, i32 10)] not updated fixpTypeRootDistance=2
+[V]   %xn1 = bitcast [10 x float]* %xn to i8*[ main]
+    distance = 1
+[U]   call void @llvm.var.annotation(i8* %xn1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 40)[ main]
+root distances: 2 > 1 + 1
+[  call void @llvm.var.annotation(i8* %xn1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 40)] not updated fixpTypeRootDistance=2
+[V]   %arraydecay6 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)[ main]
+root distances: 2 > 1 + 1
+[  call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)] not updated fixpTypeRootDistance=2
+[V]   %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0[ main]
+    distance = 1
+[U]   call void @arrayLoad(float* %arraydecay3, i32 10)[ main]
+root distances: 2 > 1 + 1
+[  call void @arrayLoad(float* %arraydecay3, i32 10)] not updated fixpTypeRootDistance=2
+[V]   %h2 = bitcast [10 x float]* %h to i8*[ main]
+    distance = 1
+[U]   call void @llvm.var.annotation(i8* %h2, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 41)[ main]
+root distances: 2 > 1 + 1
+[  call void @llvm.var.annotation(i8* %h2, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 41)] not updated fixpTypeRootDistance=2
+[V]   call void @arrayLoad(float* %arraydecay, i32 10)[ main]
+    distance = 2
+[V]   call void @llvm.var.annotation(i8* %xn1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 40)[ main]
+    distance = 2
+[V]   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10)[ main]
+    distance = 2
+[V]   call void @arrayLoad(float* %arraydecay3, i32 10)[ main]
+    distance = 2
+[V]   call void @llvm.var.annotation(i8* %h2, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0), i32 41)[ main]
+    distance = 2
+***** end void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+***** begin void taffo::TaffoInitializer::generateFunctionSpace(taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, llvm::SmallPtrSet<llvm::Function*, 10>&)
+***** begin llvm::Function* taffo::TaffoInitializer::createFunctionAndQueue(llvm::CallSite*, taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, std::vector<llvm::Value*, std::allocator<llvm::Value*> >&)
+Create function from arrayLoad to arrayLoad.1
+  callsite instr   call void @arrayLoad(float* %arraydecay, i32 10), !taffo.initweight !6, !taffo.info !3 [main]
+  Arg nr. 0 processed, isRoot = 0
+    md = scalar(range(1, 20))
+    enqueued alloca of argument   %array.addr = alloca float*, align 8
+  Arg nr. 1 skipped, callOperand has no valueInfo
+***** begin void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+Initial conversion queue:
+bt=0 md=scalar(range(1, 20)) []   %array.addr = alloca float*, align 8
+
+
+***** buildConversionQueueForRootValues iter 0 < 1
+[V]   %array.addr = alloca float*, align 8[ arrayLoad.1]
+    distance = 3
+[U]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.1]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %array.addr = alloca float*, align 8) scalar(range(1, 20))
+[  %2 = load float*, float** %array.addr, align 8] update fixpTypeRootDistance=4
+[U]   store float* %array, float** %array.addr, align 8[ arrayLoad.1]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %array.addr = alloca float*, align 8) scalar(range(1, 20))
+[  store float* %array, float** %array.addr, align 8] update fixpTypeRootDistance=4
+[V]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.1]
+    distance = 4
+[U]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.1]
+root distances: 4294967295 > 4 + 1
+createInfoOfUser copied MD from vinfo (  %2 = load float*, float** %array.addr, align 8) scalar(range(1, 20))
+[  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom] update fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %array, float** %array.addr, align 8[ arrayLoad.1]
+    distance = 4
+[V]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.1]
+    distance = 5
+[U]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.1]
+root distances: 4294967295 > 5 + 1
+createInfoOfUser copied MD from vinfo (  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom) scalar(range(1, 20))
+[  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)] update fixpTypeRootDistance=6
+[V]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.1]
+    distance = 6
+***** buildConversionQueueForRootValues iter 1 < 5
+[V]   %array.addr = alloca float*, align 8[ arrayLoad.1]
+    distance = 3
+[U]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.1]
+root distances: 4 > 3 + 1
+[  %2 = load float*, float** %array.addr, align 8] not updated fixpTypeRootDistance=4
+[U]   store float* %array, float** %array.addr, align 8[ arrayLoad.1]
+root distances: 4 > 3 + 1
+[  store float* %array, float** %array.addr, align 8] not updated fixpTypeRootDistance=4
+[V]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.1]
+    distance = 5
+[U]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.1]
+root distances: 6 > 5 + 1
+[  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)] not updated fixpTypeRootDistance=6
+[V]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.1]
+    distance = 4
+[U]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.1]
+root distances: 5 > 4 + 1
+[  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom] not updated fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %array, float** %array.addr, align 8[ arrayLoad.1]
+    distance = 4
+[V]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.1]
+    distance = 6
+[V]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.1]
+    distance = 5
+[U]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.1]
+root distances: 6 > 5 + 1
+[  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)] not updated fixpTypeRootDistance=6
+[V]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.1]
+    distance = 6
+***** end void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+  enqueued   %array.addr = alloca float*, align 8 in arrayLoad.1
+  enqueued   %2 = load float*, float** %array.addr, align 8 in arrayLoad.1
+  enqueued   store float* %array, float** %array.addr, align 8 in arrayLoad.1
+  enqueued   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom in arrayLoad.1
+  enqueued   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx) in arrayLoad.1
+***** end llvm::Function* taffo::TaffoInitializer::createFunctionAndQueue(llvm::CallSite*, taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, std::vector<llvm::Value*, std::allocator<llvm::Value*> >&)
+***** begin llvm::Function* taffo::TaffoInitializer::createFunctionAndQueue(llvm::CallSite*, taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, std::vector<llvm::Value*, std::allocator<llvm::Value*> >&)
+Create function from cconv to cconv.2
+  callsite instr   call void @cconv(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10), !taffo.initweight !6, !taffo.info !3 [main]
+  Arg nr. 0 processed, isRoot = 0
+    md = scalar(range(1, 20))
+    enqueued alloca of argument   %xn.addr = alloca float*, align 8
+  Arg nr. 1 processed, isRoot = 0
+    md = scalar(range(1, 20))
+    enqueued alloca of argument   %h.addr = alloca float*, align 8
+  Arg nr. 2 skipped, callOperand has no valueInfo
+  Arg nr. 3 skipped, callOperand has no valueInfo
+***** begin void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+Initial conversion queue:
+bt=0 md=scalar(range(1, 20)) []   %xn.addr = alloca float*, align 8
+bt=0 md=scalar(range(1, 20)) []   %h.addr = alloca float*, align 8
+
+
+***** buildConversionQueueForRootValues iter 0 < 2
+[V]   %xn.addr = alloca float*, align 8[ cconv.2]
+    distance = 3
+[U]   %7 = load float*, float** %xn.addr, align 8[ cconv.2]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %xn.addr = alloca float*, align 8) scalar(range(1, 20))
+[  %7 = load float*, float** %xn.addr, align 8] update fixpTypeRootDistance=4
+[U]   store float* %xn, float** %xn.addr, align 8[ cconv.2]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %xn.addr = alloca float*, align 8) scalar(range(1, 20))
+[  store float* %xn, float** %xn.addr, align 8] update fixpTypeRootDistance=4
+[V]   %h.addr = alloca float*, align 8[ cconv.2]
+    distance = 3
+[U]   %4 = load float*, float** %h.addr, align 8[ cconv.2]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %h.addr = alloca float*, align 8) scalar(range(1, 20))
+[  %4 = load float*, float** %h.addr, align 8] update fixpTypeRootDistance=4
+[U]   store float* %h, float** %h.addr, align 8[ cconv.2]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %h.addr = alloca float*, align 8) scalar(range(1, 20))
+[  store float* %h, float** %h.addr, align 8] update fixpTypeRootDistance=4
+[V]   %7 = load float*, float** %xn.addr, align 8[ cconv.2]
+    distance = 4
+[U]   %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4[ cconv.2]
+root distances: 4294967295 > 4 + 1
+createInfoOfUser copied MD from vinfo (  %7 = load float*, float** %xn.addr, align 8) scalar(range(1, 20))
+[  %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4] update fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %xn, float** %xn.addr, align 8[ cconv.2]
+    distance = 4
+[V]   %4 = load float*, float** %h.addr, align 8[ cconv.2]
+    distance = 4
+[U]   %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom[ cconv.2]
+root distances: 4294967295 > 4 + 1
+createInfoOfUser copied MD from vinfo (  %4 = load float*, float** %h.addr, align 8) scalar(range(1, 20))
+[  %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom] update fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %h, float** %h.addr, align 8[ cconv.2]
+    distance = 4
+[V]   %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4[ cconv.2]
+    distance = 5
+[U]   %10 = load float, float* %arrayidx5, align 4[ cconv.2]
+root distances: 4294967295 > 5 + 1
+createInfoOfUser copied MD from vinfo (  %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4) scalar(range(1, 20))
+[  %10 = load float, float* %arrayidx5, align 4] update fixpTypeRootDistance=6
+[V]   %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom[ cconv.2]
+    distance = 5
+[U]   %6 = load float, float* %arrayidx, align 4[ cconv.2]
+root distances: 4294967295 > 5 + 1
+createInfoOfUser copied MD from vinfo (  %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom) scalar(range(1, 20))
+[  %6 = load float, float* %arrayidx, align 4] update fixpTypeRootDistance=6
+[V]   %10 = load float, float* %arrayidx5, align 4[ cconv.2]
+    distance = 6
+[U]   %mul = fmul float %6, %10[ cconv.2]
+root distances: 4294967295 > 6 + 1
+createInfoOfUser copied MD from vinfo (  %10 = load float, float* %arrayidx5, align 4) scalar(range(1, 20))
+[  %mul = fmul float %6, %10] update fixpTypeRootDistance=7
+[V]   %6 = load float, float* %arrayidx, align 4[ cconv.2]
+    distance = 6
+[U]   %mul = fmul float %6, %10[ cconv.2]
+root distances: 7 > 6 + 1
+[  %mul = fmul float %6, %10] not updated fixpTypeRootDistance=7
+[V]   %mul = fmul float %6, %10[ cconv.2]
+    distance = 7
+[U]   %add8 = fadd float %13, %mul[ cconv.2]
+root distances: 4294967295 > 7 + 1
+createInfoOfUser copied MD from vinfo (  %mul = fmul float %6, %10) scalar(range(1, 20))
+[  %add8 = fadd float %13, %mul] update fixpTypeRootDistance=8
+[V]   %add8 = fadd float %13, %mul[ cconv.2]
+    distance = 8
+[U]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+root distances: 4294967295 > 8 + 1
+createInfoOfUser copied MD from vinfo (  %add8 = fadd float %13, %mul) scalar(range(1, 20))
+[  store float %add8, float* %arrayidx7, align 4] update fixpTypeRootDistance=9
+[V]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+    distance = 9
+***** buildConversionQueueForRootValues iter 2 < 13
+[V]   %xn.addr = alloca float*, align 8[ cconv.2]
+    distance = 3
+[U]   %7 = load float*, float** %xn.addr, align 8[ cconv.2]
+root distances: 4 > 3 + 1
+[  %7 = load float*, float** %xn.addr, align 8] not updated fixpTypeRootDistance=4
+[U]   store float* %xn, float** %xn.addr, align 8[ cconv.2]
+root distances: 4 > 3 + 1
+[  store float* %xn, float** %xn.addr, align 8] not updated fixpTypeRootDistance=4
+[V]   %h.addr = alloca float*, align 8[ cconv.2]
+    distance = 3
+[U]   %4 = load float*, float** %h.addr, align 8[ cconv.2]
+root distances: 4 > 3 + 1
+[  %4 = load float*, float** %h.addr, align 8] not updated fixpTypeRootDistance=4
+[U]   store float* %h, float** %h.addr, align 8[ cconv.2]
+root distances: 4 > 3 + 1
+[  store float* %h, float** %h.addr, align 8] not updated fixpTypeRootDistance=4
+[V]   %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4[ cconv.2]
+    distance = 5
+[U]   %10 = load float, float* %arrayidx5, align 4[ cconv.2]
+root distances: 6 > 5 + 1
+[  %10 = load float, float* %arrayidx5, align 4] not updated fixpTypeRootDistance=6
+[V]   %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom[ cconv.2]
+    distance = 5
+[U]   %6 = load float, float* %arrayidx, align 4[ cconv.2]
+root distances: 6 > 5 + 1
+[  %6 = load float, float* %arrayidx, align 4] not updated fixpTypeRootDistance=6
+[V]   %mul = fmul float %6, %10[ cconv.2]
+    distance = 7
+[U]   %add8 = fadd float %13, %mul[ cconv.2]
+root distances: 8 > 7 + 1
+[  %add8 = fadd float %13, %mul] not updated fixpTypeRootDistance=8
+[V]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+    distance = 9
+[V]   %7 = load float*, float** %xn.addr, align 8[ cconv.2]
+    distance = 4
+[U]   %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4[ cconv.2]
+root distances: 5 > 4 + 1
+[  %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4] not updated fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %xn, float** %xn.addr, align 8[ cconv.2]
+    distance = 4
+[V]   %4 = load float*, float** %h.addr, align 8[ cconv.2]
+    distance = 4
+[U]   %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom[ cconv.2]
+root distances: 5 > 4 + 1
+[  %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom] not updated fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %h, float** %h.addr, align 8[ cconv.2]
+    distance = 4
+[V]   %10 = load float, float* %arrayidx5, align 4[ cconv.2]
+    distance = 6
+[U]   %mul = fmul float %6, %10[ cconv.2]
+root distances: 7 > 6 + 1
+[  %mul = fmul float %6, %10] not updated fixpTypeRootDistance=7
+[V]   %6 = load float, float* %arrayidx, align 4[ cconv.2]
+    distance = 6
+[U]   %mul = fmul float %6, %10[ cconv.2]
+root distances: 7 > 6 + 1
+[  %mul = fmul float %6, %10] not updated fixpTypeRootDistance=7
+[V]   %add8 = fadd float %13, %mul[ cconv.2]
+    distance = 8
+[U]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+root distances: 9 > 8 + 1
+[  store float %add8, float* %arrayidx7, align 4] not updated fixpTypeRootDistance=9
+[V]   %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4[ cconv.2]
+    distance = 5
+[U]   %10 = load float, float* %arrayidx5, align 4[ cconv.2]
+root distances: 6 > 5 + 1
+[  %10 = load float, float* %arrayidx5, align 4] not updated fixpTypeRootDistance=6
+[V]   %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom[ cconv.2]
+    distance = 5
+[U]   %6 = load float, float* %arrayidx, align 4[ cconv.2]
+root distances: 6 > 5 + 1
+[  %6 = load float, float* %arrayidx, align 4] not updated fixpTypeRootDistance=6
+[V]   %mul = fmul float %6, %10[ cconv.2]
+    distance = 7
+[U]   %add8 = fadd float %13, %mul[ cconv.2]
+root distances: 8 > 7 + 1
+[  %add8 = fadd float %13, %mul] not updated fixpTypeRootDistance=8
+[V]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+    distance = 9
+[V]   %10 = load float, float* %arrayidx5, align 4[ cconv.2]
+    distance = 6
+[U]   %mul = fmul float %6, %10[ cconv.2]
+root distances: 7 > 6 + 1
+[  %mul = fmul float %6, %10] not updated fixpTypeRootDistance=7
+[V]   %6 = load float, float* %arrayidx, align 4[ cconv.2]
+    distance = 6
+[U]   %mul = fmul float %6, %10[ cconv.2]
+root distances: 7 > 6 + 1
+[  %mul = fmul float %6, %10] not updated fixpTypeRootDistance=7
+[V]   %add8 = fadd float %13, %mul[ cconv.2]
+    distance = 8
+[U]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+root distances: 9 > 8 + 1
+[  store float %add8, float* %arrayidx7, align 4] not updated fixpTypeRootDistance=9
+[V]   %mul = fmul float %6, %10[ cconv.2]
+    distance = 7
+[U]   %add8 = fadd float %13, %mul[ cconv.2]
+root distances: 8 > 7 + 1
+[  %add8 = fadd float %13, %mul] not updated fixpTypeRootDistance=8
+[V]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+    distance = 9
+[V]   %add8 = fadd float %13, %mul[ cconv.2]
+    distance = 8
+[U]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+root distances: 9 > 8 + 1
+[  store float %add8, float* %arrayidx7, align 4] not updated fixpTypeRootDistance=9
+[V]   store float %add8, float* %arrayidx7, align 4[ cconv.2]
+    distance = 9
+***** end void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+  enqueued   %xn.addr = alloca float*, align 8 in cconv.2
+  enqueued   %h.addr = alloca float*, align 8 in cconv.2
+  enqueued   %7 = load float*, float** %xn.addr, align 8 in cconv.2
+  enqueued   store float* %xn, float** %xn.addr, align 8 in cconv.2
+  enqueued   %4 = load float*, float** %h.addr, align 8 in cconv.2
+  enqueued   store float* %h, float** %h.addr, align 8 in cconv.2
+  enqueued   %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4 in cconv.2
+  enqueued   %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom in cconv.2
+  enqueued   %10 = load float, float* %arrayidx5, align 4 in cconv.2
+  enqueued   %6 = load float, float* %arrayidx, align 4 in cconv.2
+  enqueued   %mul = fmul float %6, %10 in cconv.2
+  enqueued   %add8 = fadd float %13, %mul in cconv.2
+  enqueued   store float %add8, float* %arrayidx7, align 4 in cconv.2
+***** end llvm::Function* taffo::TaffoInitializer::createFunctionAndQueue(llvm::CallSite*, taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, std::vector<llvm::Value*, std::allocator<llvm::Value*> >&)
+***** begin llvm::Function* taffo::TaffoInitializer::createFunctionAndQueue(llvm::CallSite*, taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, std::vector<llvm::Value*, std::allocator<llvm::Value*> >&)
+Create function from arrayLoad to arrayLoad.3
+  callsite instr   call void @arrayLoad(float* %arraydecay3, i32 10), !taffo.initweight !6, !taffo.info !3 [main]
+  Arg nr. 0 processed, isRoot = 0
+    md = scalar(range(1, 20))
+    enqueued alloca of argument   %array.addr = alloca float*, align 8
+  Arg nr. 1 skipped, callOperand has no valueInfo
+***** begin void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+Initial conversion queue:
+bt=0 md=scalar(range(1, 20)) []   %array.addr = alloca float*, align 8
+
+
+***** buildConversionQueueForRootValues iter 0 < 1
+[V]   %array.addr = alloca float*, align 8[ arrayLoad.3]
+    distance = 3
+[U]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.3]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %array.addr = alloca float*, align 8) scalar(range(1, 20))
+[  %2 = load float*, float** %array.addr, align 8] update fixpTypeRootDistance=4
+[U]   store float* %array, float** %array.addr, align 8[ arrayLoad.3]
+root distances: 4294967295 > 3 + 1
+createInfoOfUser copied MD from vinfo (  %array.addr = alloca float*, align 8) scalar(range(1, 20))
+[  store float* %array, float** %array.addr, align 8] update fixpTypeRootDistance=4
+[V]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.3]
+    distance = 4
+[U]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.3]
+root distances: 4294967295 > 4 + 1
+createInfoOfUser copied MD from vinfo (  %2 = load float*, float** %array.addr, align 8) scalar(range(1, 20))
+[  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom] update fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %array, float** %array.addr, align 8[ arrayLoad.3]
+    distance = 4
+[V]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.3]
+    distance = 5
+[U]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.3]
+root distances: 4294967295 > 5 + 1
+createInfoOfUser copied MD from vinfo (  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom) scalar(range(1, 20))
+[  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)] update fixpTypeRootDistance=6
+[V]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.3]
+    distance = 6
+***** buildConversionQueueForRootValues iter 1 < 5
+[V]   %array.addr = alloca float*, align 8[ arrayLoad.3]
+    distance = 3
+[U]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.3]
+root distances: 4 > 3 + 1
+[  %2 = load float*, float** %array.addr, align 8] not updated fixpTypeRootDistance=4
+[U]   store float* %array, float** %array.addr, align 8[ arrayLoad.3]
+root distances: 4 > 3 + 1
+[  store float* %array, float** %array.addr, align 8] not updated fixpTypeRootDistance=4
+[V]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.3]
+    distance = 5
+[U]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.3]
+root distances: 6 > 5 + 1
+[  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)] not updated fixpTypeRootDistance=6
+[V]   %2 = load float*, float** %array.addr, align 8[ arrayLoad.3]
+    distance = 4
+[U]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.3]
+root distances: 5 > 4 + 1
+[  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom] not updated fixpTypeRootDistance=5
+[extractGEPIMetadata] begin
+[extractGEPIMetadata] end, used_mdi=scalar(range(1, 20))
+[V]   store float* %array, float** %array.addr, align 8[ arrayLoad.3]
+    distance = 4
+[V]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.3]
+    distance = 6
+[V]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom[ arrayLoad.3]
+    distance = 5
+[U]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.3]
+root distances: 6 > 5 + 1
+[  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)] not updated fixpTypeRootDistance=6
+[V]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)[ arrayLoad.3]
+    distance = 6
+***** end void taffo::TaffoInitializer::buildConversionQueueForRootValues(const ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&)
+  enqueued   %array.addr = alloca float*, align 8 in arrayLoad.3
+  enqueued   %2 = load float*, float** %array.addr, align 8 in arrayLoad.3
+  enqueued   store float* %array, float** %array.addr, align 8 in arrayLoad.3
+  enqueued   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom in arrayLoad.3
+  enqueued   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx) in arrayLoad.3
+***** end llvm::Function* taffo::TaffoInitializer::createFunctionAndQueue(llvm::CallSite*, taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, std::vector<llvm::Value*, std::allocator<llvm::Value*> >&)
+***** end void taffo::TaffoInitializer::generateFunctionSpace(taffo::TaffoInitializer::ConvQueueT&, taffo::TaffoInitializer::ConvQueueT&, llvm::SmallPtrSet<llvm::Function*, 10>&)
+conversion queue:
+bt=0 md=scalar(range(1, 20)) [  %xn = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %xn = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %h = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %h = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %xn = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %arraydecay5 = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0, !taffo.initweight !5, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %xn = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %arraydecay = getelementptr inbounds [10 x float], [10 x float]* %xn, i32 0, i32 0, !taffo.initweight !5, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %xn = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %xn1 = bitcast [10 x float]* %xn to i8*, !taffo.initweight !5, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %h = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %arraydecay6 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0, !taffo.initweight !5, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %h = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %arraydecay3 = getelementptr inbounds [10 x float], [10 x float]* %h, i32 0, i32 0, !taffo.initweight !5, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %h = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   %h2 = bitcast [10 x float]* %h to i8*, !taffo.initweight !5, !taffo.info !3
+bt=0 md=scalar(range(1, 20)) [  %xn = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   call void @arrayLoad.1(float* %arraydecay, i32 10), !taffo.initweight !6, !taffo.info !3, !taffo.originalCall !7
+bt=0 md=scalar(range(1, 20)) [  %h = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3   %xn = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   call void @cconv.2(float* %arraydecay5, float* %arraydecay6, float* %arraydecay7, i32 10), !taffo.initweight !6, !taffo.info !3, !taffo.originalCall !8
+bt=0 md=scalar(range(1, 20)) [  %h = alloca [10 x float], align 16, !taffo.initweight !2, !taffo.info !3 ]   call void @arrayLoad.3(float* %arraydecay3, i32 10), !taffo.initweight !6, !taffo.info !3, !taffo.originalCall !7
+bt=0 md=scalar(range(1, 20)) [] float* %array
+bt=0 md=scalar(range(1, 20)) []   %array.addr = alloca float*, align 8
+bt=0 md=scalar(range(1, 20)) [  %2 = load float*, float** %array.addr, align 8 ]   %2 = load float*, float** %array.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  store float* %array, float** %array.addr, align 8 ]   store float* %array, float** %array.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom ]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom
+bt=0 md=scalar(range(1, 20)) [  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx) ]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)
+bt=0 md=scalar(range(1, 20)) [] float* %xn
+bt=0 md=scalar(range(1, 20)) []   %xn.addr = alloca float*, align 8
+bt=0 md=scalar(range(1, 20)) [] float* %h
+bt=0 md=scalar(range(1, 20)) []   %h.addr = alloca float*, align 8
+bt=0 md=scalar(range(1, 20)) [  %7 = load float*, float** %xn.addr, align 8 ]   %7 = load float*, float** %xn.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  store float* %xn, float** %xn.addr, align 8 ]   store float* %xn, float** %xn.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  %4 = load float*, float** %h.addr, align 8 ]   %4 = load float*, float** %h.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  store float* %h, float** %h.addr, align 8 ]   store float* %h, float** %h.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4 ]   %arrayidx5 = getelementptr inbounds float, float* %7, i64 %idxprom4
+bt=0 md=scalar(range(1, 20)) [  %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom ]   %arrayidx = getelementptr inbounds float, float* %4, i64 %idxprom
+bt=0 md=scalar(range(1, 20)) [  %10 = load float, float* %arrayidx5, align 4 ]   %10 = load float, float* %arrayidx5, align 4
+bt=0 md=scalar(range(1, 20)) [  %6 = load float, float* %arrayidx, align 4 ]   %6 = load float, float* %arrayidx, align 4
+bt=0 md=scalar(range(1, 20)) [  %mul = fmul float %6, %10 ]   %mul = fmul float %6, %10
+bt=0 md=scalar(range(1, 20)) [  %add8 = fadd float %13, %mul ]   %add8 = fadd float %13, %mul
+bt=0 md=scalar(range(1, 20)) [  store float %add8, float* %arrayidx7, align 4 ]   store float %add8, float* %arrayidx7, align 4
+bt=0 md=scalar(range(1, 20)) [] float* %array
+bt=0 md=scalar(range(1, 20)) []   %array.addr = alloca float*, align 8
+bt=0 md=scalar(range(1, 20)) [  %2 = load float*, float** %array.addr, align 8 ]   %2 = load float*, float** %array.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  store float* %array, float** %array.addr, align 8 ]   store float* %array, float** %array.addr, align 8
+bt=0 md=scalar(range(1, 20)) [  %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom ]   %arrayidx = getelementptr inbounds float, float* %2, i64 %idxprom
+bt=0 md=scalar(range(1, 20)) [  %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx) ]   %call = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), float* %arrayidx)
+
+
+Processing function arrayLoad
+Processing arg float* %array
+Processing arg i32 %elem
+Processing function __isoc99_scanf
+Processing arg i8* %0
+Processing function arrayInit
+Processing arg float* %array
+Processing arg i32 %elem
+Processing arg float %value
+Processing function printArray
+Processing arg float* %array
+Processing arg i32 %elem
+Processing function printf
+Processing arg i8* %0
+Processing function cconv
+Processing arg float* %xn
+Processing arg float* %h
+Processing arg float* %res
+Processing arg i32 %elem
+Processing function main
+Processing function llvm.var.annotation
+Processing arg i8* %0
+Processing arg i8* %1
+Processing arg i8* %2
+Processing arg i32 %3
+Processing function arrayLoad.1
+Processing arg float* %array
+Info found.
+Processing arg i32 %elem
+Processing function cconv.2
+Processing arg float* %xn
+Info found.
+Processing arg float* %h
+Info found.
+Processing arg float* %res
+Processing arg i32 %elem
+Processing function arrayLoad.3
+Processing arg float* %array
+Info found.
+Processing arg i32 %elem
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.cond1
+	discovered a new reachable node %for.body3
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %for.inc9
+	discovered a new reachable node %for.end11
+	discovered a new reachable node %entry
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.cond1
+	discovered a new reachable node %for.body3
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
+	discovered a new reachable node %for.inc9
+	discovered a new reachable node %for.end11
+	discovered a new reachable node %entry
+	discovered a new reachable node %for.cond
+	discovered a new reachable node %for.body
+	discovered a new reachable node %for.inc
+	discovered a new reachable node %for.end
