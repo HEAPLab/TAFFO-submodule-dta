@@ -1,2 +1,0 @@
-opt: for the -debug option: may only occur zero or one times!
-Args: /opt/llvm/build/bin/opt -debug -load /home/nicola/dev/TAFFO/dist/usr/local/lib/TaffoVRA.so -mem2reg -taffoVRA -debug -S -o a.3.magiclangtmp.ll a.2.magiclangtmp.ll 
