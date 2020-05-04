@@ -1,6 +1,10 @@
 add_llvm_library(TaffoDTA MODULE
     TaffoDTA.cpp
     TaffoDTA.h
+    Optimizer.h
+    Optimizer.cpp
+    Infos.h
+        OptimizerInfo.h
   
   PLUGIN_TOOL
   opt

@@ -58,4 +58,6 @@ test/*.s
 
 test/*.ll
 test/*.txt
+test/*.out
+test/a
 

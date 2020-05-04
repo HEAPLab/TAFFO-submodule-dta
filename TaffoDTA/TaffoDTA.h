@@ -37,18 +37,6 @@ STATISTIC(FixCast, "Number of fixed point format cast");
 
 namespace tuner {
 
-    struct ValueInfo {
-        std::shared_ptr<mdutils::MDInfo> metadata;
-        std::shared_ptr<mdutils::TType> initialType;
-    };
-
-    struct FunInfo {
-        llvm::Function *newFun;
-        /* {function argument index, type of argument}
-         * argument idx is -1 for return value */
-        std::vector<std::pair<int, std::shared_ptr<mdutils::MDInfo>>> fixArgs;
-    };
-
 
     struct TaffoTuner : public llvm::ModulePass {
         static char ID;
@@ -73,6 +61,9 @@ namespace tuner {
         void sortQueue(std::vector<llvm::Value *> &vals, llvm::SmallPtrSetImpl<llvm::Value *> &valset);
 
         void mergeFixFormat(const std::vector<llvm::Value *> &vals,
+                            const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
+
+        void buildModelAndOptimze(Module &m, const std::vector<llvm::Value *> &vals,
                             const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
 
         bool mergeFixFormat(llvm::Value *v, llvm::Value *u);

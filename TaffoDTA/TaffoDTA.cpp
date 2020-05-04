@@ -4,6 +4,7 @@
 #include "llvm/IR/InstIterator.h"
 #include "llvm/IR/Metadata.h"
 #include "llvm/Support/Debug.h"
+#include "Optimizer.h"
 
 #include "TaffoDTA.h"
 #include "Metadata.h"
@@ -29,7 +30,9 @@ bool TaffoTuner::runOnModule(Module &m) {
     llvm::SmallPtrSet<llvm::Value *, 8U> valset;
     retrieveAllMetadata(m, vals, valset);
 
-    mergeFixFormat(vals, valset);
+    //mergeFixFormat(vals, valset);
+
+    buildModelAndOptimze(m, vals, valset);
 
     std::vector<Function *> toDel;
     toDel = collapseFunction(m);
@@ -629,3 +632,80 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
         MDManager.setArgumentInputInfoMetadata(f, argsII);
     }
 }
+
+//TODO: in un primo momento andiamo a supportare una versione basica, supportando solo operazioni di base e niente strutture e puntatori
+
+void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &vals, const SmallPtrSetImpl<llvm::Value *> &valset) {
+    assert(vals.size() == valset.size() && "They must contain the same elements.");
+
+    Optimizer optimizer;
+
+    dbgs() << "\n============ GLOBALS ============\n";
+
+    for (GlobalObject &globObj : m.globals()) {
+        globObj.print(dbgs());
+        dbgs() << "     -having-     ";
+        if(!hasInfo(&globObj)){
+            dbgs() << "No info available, skipping.";
+        }else{
+            dbgs() << valueInfo(&globObj)->metadata->toString() << "\n";
+            if(valueInfo(&globObj)->metadata->getKind() == MDInfo::K_Field){
+                optimizer.handleGlobal(&globObj, valueInfo(&globObj));
+            }else{
+                dbgs() << "This is not a filed, skipping as struct unsupported at the moment.\n";
+            }
+        }
+        dbgs() << "\n\n";
+    }
+
+
+
+    for (Function &f : m.functions()) {
+        //Skip compiler provided functions
+        if (f.isIntrinsic())
+            continue;
+
+        //Skip empty functions
+        if(f.empty())
+            continue;
+
+        dbgs() << "\n============ FUNCTION " << f.getName() << " ============\n";
+
+
+        auto arg = f.arg_begin();
+        for (auto arg = f.arg_begin(); arg != f.arg_end(); arg++) {
+            //TODO: find a way to handle arguments
+        }
+
+        //TODO: think about treating a function as a separate domain OR as a whole with the caller
+        for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
+            //C++ is horrible
+            (*iIt).print(dbgs());
+            dbgs() << "     -having-     ";
+            if(!hasInfo(&(*iIt))){
+                dbgs() << "No info available.";
+            }else{
+                dbgs() << valueInfo(&(*iIt))->metadata->toString() << "\n";
+                if(valueInfo(&(*iIt))->metadata->getKind() == MDInfo::K_Field){
+                }else{
+                    dbgs() << "This is not a filed, skipping as struct unsupported at the moment.\n";
+                }
+            }
+
+            optimizer.handleInstruction(&(*iIt), valueInfo(&(*iIt)));
+            dbgs() << "\n\n";
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
