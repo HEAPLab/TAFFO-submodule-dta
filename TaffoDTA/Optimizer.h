@@ -1,4 +1,5 @@
 #include <set>
+#include <fstream>
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
 #include "llvm/ADT/DenseMap.h"
@@ -10,6 +11,7 @@
 #include "TypeUtils.h"
 #include "Infos.h"
 #include "OptimizerInfo.h"
+#include "Model.h"
 
 #ifndef __TAFFO_DTA_OPTIMIZER_H__
 #define __TAFFO_DTA_OPTIMIZER_H__
@@ -29,12 +31,13 @@ namespace tuner {
     class Optimizer {
 
         DenseMap<llvm::Value *, std::shared_ptr<OptimizerInfo>> valueToVariableName;
-        set<string> variablesPool;
+        Model model;
+
     public:
         void handleInstruction(Instruction * instruction, shared_ptr <ValueInfo> valueInfo);
         void handleGlobal(GlobalObject * glob, shared_ptr<ValueInfo> valueInfo);
+        void finish();
 
-        enum ConstraintType{EQ, LE, GE}; //Equal, less or equal, greater or equal; strict inequalities are not handled by the tools usually
 
     protected:
         string allocateNewVariableForValue(Value* value, unsigned minBits, unsigned maxBits,  string functionName);
@@ -54,11 +57,13 @@ namespace tuner {
         void handleFAdd(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
 
         string allocateNewVariableWithCastCost(Value *toUse, Value *whereToUse);
-        void insertLinearConstraint(const vector<pair<string, double>>& variables, ConstraintType constraintType);
+
 
         void handleStore(Instruction *instruction, const shared_ptr<ValueInfo> &valueInfo);
 
         void handleFPPrecisionShift(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
+
     };
 
 

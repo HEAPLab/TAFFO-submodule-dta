@@ -696,6 +696,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
             dbgs() << "\n\n";
         }
     }
+    optimizer.finish();
 
 }
 

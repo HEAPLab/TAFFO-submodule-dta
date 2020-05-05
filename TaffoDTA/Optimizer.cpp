@@ -49,7 +49,7 @@ Optimizer::allocateNewVariableForValue(Value *value, unsigned int minBits, unsig
     string varName(varNameBase);
 
     int counter = 0;
-    while (variablesPool.count(varName)) {
+    while (model.isVariableDeclared(varName)) {
         varName = string(varNameBase.append("_").append(to_string(counter)));
         counter++;
     }
@@ -58,11 +58,9 @@ Optimizer::allocateNewVariableForValue(Value *value, unsigned int minBits, unsig
 
     auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits);
     valueToVariableName.insert(make_pair(value, optimizerInfo));
-    variablesPool.insert(varName);
-
-    //TODO: allocate the new value in the actual model
 
     dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits << "];\n";
+    model.createVariable(varName, minBits, maxBits);
 
     return varName;
 
@@ -77,27 +75,7 @@ shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
     return nullptr;
 }
 
-void Optimizer::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType) {
-    //TODO: implement call to the actual solver constraint inserter
-    dbgs() << "inserting constraint: ";
-    for (auto p : variables) {
-        dbgs() << " + (" << p.second << ")*" << p.first;
-    }
 
-    switch (constraintType) {
-        case EQ:
-            dbgs() << "=";
-            break;
-        case LE:
-            dbgs() << "<=";
-            break;
-        case GE:
-            dbgs() << ">=";
-            break;
-    }
-
-    dbgs() << "0\n";
-}
 
 void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
     //This will be a mess. God bless you.
@@ -107,7 +85,8 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
     if (opCode == Instruction::Call) {
         emitError("Call not handled atm.");
     } else if (Instruction::isTerminator(opCode)) {
-        llvm_unreachable("Not handled.");
+        //Returns :D
+        emitError("Returns not handlet atm.");
     } else if (Instruction::isCast(opCode)) {
         dbgs() << "Handling casting instruction...\n";
 
@@ -338,14 +317,14 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     //Argument must be equals
     constraint.push_back(make_pair(varCast1, 1.0));
     constraint.push_back(make_pair(varCast2, -1.0));
-    insertLinearConstraint(constraint, EQ);
+    model.insertLinearConstraint(constraint, Model::EQ);
 
 
     constraint.clear();
     //Result will be equal to one of the argument
     constraint.push_back(make_pair(varCast1, 1.0));
     constraint.push_back(make_pair(result, -1.0));
-    insertLinearConstraint(constraint, EQ);
+    model.insertLinearConstraint(constraint, Model::EQ);
 
 
 }
@@ -420,7 +399,7 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
     //Argument must be equals
     constraint.push_back(make_pair(variable, 1.0));
     constraint.push_back(make_pair(info1_t->getVariableName(), -1.0));
-    insertLinearConstraint(constraint, EQ);
+    model.insertLinearConstraint(constraint, Model::EQ);
 
 
 }
@@ -441,7 +420,7 @@ string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUs
     string varName(varNameBase);
 
     int counter = 0;
-    while (variablesPool.count(varName)) {
+    while (model.isVariableDeclared(varName)) {
         varName = string(varNameBase.append("_").append(to_string(counter)));
         counter++;
     }
@@ -453,13 +432,14 @@ string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUs
     unsigned maxBits = info->maxBits;
 
     auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits);
-    variablesPool.insert(varName);
 
-    //TODO: allocate the new value in the actual model
+
     //TODO: we will have to handle casting cost between value and the new variable
 
     dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits
            << "] with casting cost from " << info->getVariableName() << "\n";
+
+    model.createVariable(varName, minBits, maxBits);
 
     return varName;
 }
@@ -483,4 +463,8 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
     dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getVariableName() << "\n";
 
 
+}
+
+void Optimizer::finish(){
+    model.finalizeAndSolve();
 }
