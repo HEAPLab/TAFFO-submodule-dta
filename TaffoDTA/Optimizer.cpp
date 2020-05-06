@@ -72,9 +72,12 @@ shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
         return findIt->second;
     }
 
+    if (auto constant = dyn_cast_or_null<ConstantExpr>(value)) {
+        llvm_unreachable("Constant exp still not handled");
+    }
+
     return nullptr;
 }
-
 
 
 void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
@@ -415,7 +418,9 @@ string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUs
         llvm_unreachable("Here we should only have floating variable, not aggregate.");
     }
 
-    string varNameBase((info->getVariableName() + ("_") + whereToUse->getName().str()));
+    auto originalVar = info->getVariableName();
+
+    string varNameBase((originalVar + ("_") + whereToUse->getName().str()));
 
     string varName(varNameBase);
 
@@ -434,12 +439,31 @@ string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUs
     auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits);
 
 
-    //TODO: we will have to handle casting cost between value and the new variable
-
     dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits
            << "] with casting cost from " << info->getVariableName() << "\n";
 
     model.createVariable(varName, minBits, maxBits);
+
+
+    //Variables for cost:
+    auto C1 = "C1_" + varName;
+    auto C2 = "C2_" + varName;
+    model.createVariable(C1, 0, 1);
+    model.createVariable(C2, 0, 1);
+
+    auto constraint = vector<pair<string, double>>();
+    //Constraint for binary value to activate
+    constraint.push_back(make_pair(originalVar, 1.0));
+    constraint.push_back(make_pair(varName, -1.0));
+    constraint.push_back(make_pair(C1, -HUGE_VAL));
+    model.insertLinearConstraint(constraint, Model::LE);
+
+    constraint.clear();
+    //Constraint for binary value to activate
+    constraint.push_back(make_pair(originalVar, -1.0));
+    constraint.push_back(make_pair(varName, 1.0));
+    constraint.push_back(make_pair(C2, -HUGE_VAL));
+    model.insertLinearConstraint(constraint, Model::LE);
 
     return varName;
 }
@@ -465,6 +489,6 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
 
 }
 
-void Optimizer::finish(){
+void Optimizer::finish() {
     model.finalizeAndSolve();
 }

@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cmath>
 #include "Model.h"
 
 using namespace tuner;
@@ -6,6 +7,10 @@ void Model::insertLinearConstraint(const vector<pair<string, double>> &variables
     modelFile << "inserting constraint: ";
     for (auto p : variables) {
         assert(isVariableDeclared(p.first) && "Variable not declared!");
+        if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
+            modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
+            continue;
+        }
         modelFile << " + (" << p.second << ")*" << p.first;
     }
 
