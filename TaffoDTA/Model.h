@@ -11,13 +11,24 @@ using namespace std;
 
 namespace tuner {
     class Model {
+    public:
+        enum ProblemType{
+            MIN, MAX
+        };
+
     private:
         set<string> variablesPool;
         ofstream modelFile;
 
+        vector<pair<string, double>> objectiveFunction;
+        ProblemType  problemType;
+        Model();
     public:
 
-        Model();
+
+
+
+        Model(ProblemType type);
 
         enum ConstraintType {
             EQ, LE, GE
@@ -26,12 +37,19 @@ namespace tuner {
 
         void insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType);
 
+
+
         bool isVariableDeclared(const string &variable);
 
 
         void finalizeAndSolve();
 
         void createVariable(const string &varName, double min, double max);
+
+
+        void insertObjectiveElement(const pair<string, double> &variables);
+
+        void writeOutObjectiveFunction();
     };
 }
 

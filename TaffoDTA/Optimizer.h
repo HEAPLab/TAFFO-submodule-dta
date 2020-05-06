@@ -38,6 +38,10 @@ namespace tuner {
         void handleGlobal(GlobalObject * glob, shared_ptr<ValueInfo> valueInfo);
         void finish();
 
+        Optimizer() : model(Model::MIN){
+
+        }
+
 
     protected:
         string allocateNewVariableForValue(Value* value, unsigned minBits, unsigned maxBits,  string functionName);

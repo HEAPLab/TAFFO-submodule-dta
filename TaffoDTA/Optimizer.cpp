@@ -3,6 +3,11 @@
 using namespace tuner;
 using namespace mdutils;
 
+//FIXME: I_COST should absolutely not be constant
+//FIXME: K_COST should be tunable in some way
+#define I_COST 1
+#define K_COST 1
+
 
 void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo) {
     dbgs() << "handleGlobal called.\n";
@@ -464,6 +469,12 @@ string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUs
     constraint.push_back(make_pair(varName, 1.0));
     constraint.push_back(make_pair(C2, -HUGE_VAL));
     model.insertLinearConstraint(constraint, Model::LE);
+
+
+
+    //Costs!
+    model.insertObjectiveElement(make_pair(C1, I_COST * K_COST));
+    model.insertObjectiveElement(make_pair(C2, I_COST * K_COST));
 
     return varName;
 }
