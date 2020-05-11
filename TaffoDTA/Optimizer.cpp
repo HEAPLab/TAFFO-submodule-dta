@@ -6,7 +6,12 @@ using namespace mdutils;
 //FIXME: I_COST should absolutely not be constant
 //FIXME: K_COST should be tunable in some way
 #define I_COST 1
-#define K_COST 1
+#define K_SHIF 1
+#define K_FIX_AND_FLOAT 1
+#define K_FIX_AND_DOUBLE 1
+#define K_FLOAT_AND_DOUBLE 1
+#define P_COST 1
+#define M 10000
 
 
 void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo) {
@@ -26,11 +31,8 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
             return;
         }
 
-        //Get fractional bits. As we have just got infos about this variable, we should have the maximum number of bits.
-        unsigned maxFractionalBits = fptype->getPointPos();
-        unsigned minFractionalBits = 0;
 
-        allocateNewVariableForValue(glob, minFractionalBits, maxFractionalBits, "");
+        allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, "");
 
     } else {
         dbgs() << " ^ this is a pointer, skipping as it is unsupported at the moment.\n";
@@ -39,35 +41,72 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 
 }
 
-string
-Optimizer::allocateNewVariableForValue(Value *value, unsigned int minBits, unsigned int maxBits, string functionName) {
+shared_ptr<OptimizerScalarInfo>
+Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo,
+                                       string functionName) {
     if (valueToVariableName.find(value) != valueToVariableName.end()) {
         llvm_unreachable("Trying to associate a new variable to the same value!\n");
     }
+
+    assert(fpInfo && "fpInfo should not be nullptr here!");
+    assert(rangeInfo && "rangeInfo should not be nullptr here!");
 
     if (!functionName.empty()) {
         functionName = functionName.append("_");
     }
 
-    string varNameBase(string("x_" + functionName).append(value->getName()));
 
+    string varNameBase(string(functionName).append(value->getName()));
     string varName(varNameBase);
 
     int counter = 0;
-    while (model.isVariableDeclared(varName)) {
+    while (model.isVariableDeclared(varName + "_fixp")) {
         varName = string(varNameBase.append("_").append(to_string(counter)));
         counter++;
     }
 
     dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
 
-    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits);
+    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos());
     valueToVariableName.insert(make_pair(value, optimizerInfo));
 
-    dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits << "];\n";
-    model.createVariable(varName, minBits, maxBits);
+    dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
+           << optimizerInfo->maxBits << "];\n";
+    model.createVariable(optimizerInfo->getFractBitsVariable(), optimizerInfo->minBits, optimizerInfo->maxBits);
 
-    return varName;
+    //binary variables for mixed precision
+    model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
+    model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
+    model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
+
+
+    //introducing precision cost: the more a variable is precise, the better it is
+    model.insertObjectiveElement(make_pair(optimizerInfo->getFractBitsVariable(), (-1) * P_COST));
+
+    //La variabile indica solo se il costo è attivo o meno, senza indicare nulla riguardo ENOB
+    //Enob is computed from Range
+    int ENOBfloat = getENOBFromRange(rangeInfo, FloatType::Float_float);
+    int ENOBdouble = getENOBFromRange(rangeInfo, FloatType::Float_float);
+    model.insertObjectiveElement(make_pair(optimizerInfo->getFloatSelectedVariable(), (-1) * P_COST * ENOBfloat));
+    model.insertObjectiveElement(make_pair(optimizerInfo->getDoubleSelectedVariable(), (-1) * P_COST * ENOBdouble));
+
+    auto constraint = vector<pair<string, double>>();
+    //Constraint for mixed precision: only one constraint active at one time:
+    //_float + _double + _fixed = 1
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 1);
+
+    //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
+    //x_bits - M * x_fixp <= 0
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    return optimizerInfo;
 
 }
 
@@ -217,12 +256,10 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
             return;
         }
 
-        //Get fractional bits. As we have just got infos about this variable, we should have the maximum number of bits.
-        unsigned maxFractionalBits = fptype->getPointPos();
-        unsigned minFractionalBits = 0;
 
-        allocateNewVariableForValue(instruction, minFractionalBits, maxFractionalBits,
-                                    instruction->getFunction()->getName());
+        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+                                                                               instruction->getFunction()->getName());
+
 
     } else {
         dbgs() << " ^ this is a pointer, skipping as it is unsupported at the moment.\n";
@@ -311,29 +348,20 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     }
 
 
-    string varCast1 = allocateNewVariableWithCastCost(op1, instr);
-    string varCast2 = allocateNewVariableWithCastCost(op2, instr);
+    shared_ptr<OptimizerScalarInfo> varCast1 = allocateNewVariableWithCastCost(op1, instr);
+    shared_ptr<OptimizerScalarInfo> varCast2 = allocateNewVariableWithCastCost(op2, instr);
 
 
 
     //Obviously the type should be sufficient to contain the result
-    string result = allocateNewVariableForValue(instr, 0, fptype->getPointPos(), instr->getFunction()->getName());
+    shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instr, fptype, inputInfo->IRange,
+                                                                         instr->getFunction()->getName());
 
-    //Forcing restriction on I/O
-    auto constraint = vector<pair<string, double>>();
+    insertTypeEqualityConstraint(varCast1, varCast2);
+    insertTypeEqualityConstraint(varCast1, result);
 
-    //Argument must be equals
-    constraint.push_back(make_pair(varCast1, 1.0));
-    constraint.push_back(make_pair(varCast2, -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ);
-
-
-    constraint.clear();
-    //Result will be equal to one of the argument
-    constraint.push_back(make_pair(varCast1, 1.0));
-    constraint.push_back(make_pair(result, -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ);
-
+    //Precision cost
+    //Handloed in allocating variable
 
 }
 
@@ -358,11 +386,11 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
             emitError("Loaded a variable with no information attached...");
         }
 
-        valueToVariableName.insert(make_pair(instruction, make_shared<OptimizerScalarInfo>(sinfos->getVariableName(),
+        valueToVariableName.insert(make_pair(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                                            sinfos->getMinBits(),
                                                                                            sinfos->getMaxBits())));
 
-        dbgs() << "For this load, reusing variable" << sinfos->getVariableName() << "\n";
+        dbgs() << "For this load, reusing variable" << sinfos->getBaseName() << "\n";
 
     } else {
         dbgs() << "Loading a non floating point, ingoring.\n";
@@ -397,22 +425,16 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
         return;
     }
 
-    auto info1_t = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info1);
+    auto info_pointer = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info1);
 
-    string variable = allocateNewVariableWithCastCost(opRegister, instruction);
+    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableWithCastCost(opRegister, instruction);
 
-    //Forcing restriction on I/O
-    auto constraint = vector<pair<string, double>>();
-
-    //Argument must be equals
-    constraint.push_back(make_pair(variable, 1.0));
-    constraint.push_back(make_pair(info1_t->getVariableName(), -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ);
+    insertTypeEqualityConstraint(info_pointer, variable);
 
 
 }
 
-string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUse) {
+shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUse) {
     auto info_t = getInfoOfValue(toUse);
     if (!info_t) {
         llvm_unreachable("Every value should have an info here!");
@@ -423,14 +445,14 @@ string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUs
         llvm_unreachable("Here we should only have floating variable, not aggregate.");
     }
 
-    auto originalVar = info->getVariableName();
+    auto originalVar = info->getBaseName();
 
     string varNameBase((originalVar + ("_") + whereToUse->getName().str()));
 
     string varName(varNameBase);
 
     int counter = 0;
-    while (model.isVariableDeclared(varName)) {
+    while (model.isVariableDeclared(varName + "_fixp")) {
         varName = string(varNameBase.append("_").append(to_string(counter)));
         counter++;
     }
@@ -445,38 +467,142 @@ string Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUs
 
 
     dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits
-           << "] with casting cost from " << info->getVariableName() << "\n";
+           << "] with casting cost from " << info->getBaseName() << "\n";
 
-    model.createVariable(varName, minBits, maxBits);
+    model.createVariable(optimizerInfo->getFractBitsVariable(), minBits, maxBits);
+
+    //binary variables for mixed precision
+    model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
+    model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
+    model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
+
+    auto constraint = vector<pair<string, double>>();
+    //Constraint for mixed precision: only one constraint active at one time:
+    //_float + _double + _fixed = 1
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 1);
+
+    //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
+    //x_bits - M * x_fixp <= 0
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
 
 
-    //Variables for cost:
+    //Variables for costs:
+
+    //Shift cost
     auto C1 = "C1_" + varName;
     auto C2 = "C2_" + varName;
     model.createVariable(C1, 0, 1);
     model.createVariable(C2, 0, 1);
 
-    auto constraint = vector<pair<string, double>>();
     //Constraint for binary value to activate
-    constraint.push_back(make_pair(originalVar, 1.0));
-    constraint.push_back(make_pair(varName, -1.0));
-    constraint.push_back(make_pair(C1, -HUGE_VAL));
-    model.insertLinearConstraint(constraint, Model::LE);
+    constraint.clear();
+    constraint.push_back(make_pair(info->getFractBitsVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), -1.0));
+    constraint.push_back(make_pair(C1, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
 
     constraint.clear();
     //Constraint for binary value to activate
-    constraint.push_back(make_pair(originalVar, -1.0));
-    constraint.push_back(make_pair(varName, 1.0));
-    constraint.push_back(make_pair(C2, -HUGE_VAL));
-    model.insertLinearConstraint(constraint, Model::LE);
+    constraint.push_back(make_pair(info->getFractBitsVariable(), -1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
+    constraint.push_back(make_pair(C2, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    //Casting costs
+    model.insertObjectiveElement(make_pair(C1, I_COST * K_SHIF));
+    model.insertObjectiveElement(make_pair(C2, I_COST * K_SHIF));
 
 
 
-    //Costs!
-    model.insertObjectiveElement(make_pair(C1, I_COST * K_COST));
-    model.insertObjectiveElement(make_pair(C2, I_COST * K_COST));
 
-    return varName;
+
+    //FIX & FLOAT
+    auto C3 = "C3_" + varName;
+    auto C4 = "C4_" + varName;
+    model.createVariable(C3, 0, 1);
+    model.createVariable(C4, 0, 1);
+
+    //Constraint for binary value to activate
+    constraint.clear();
+    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), -1.0));
+    constraint.push_back(make_pair(C3, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    constraint.clear();
+    //Constraint for binary value to activate
+    constraint.push_back(make_pair(info->getFixedSelectedVariable(), -1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C4, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    //Casting costs
+    model.insertObjectiveElement(make_pair(C3, I_COST * K_FIX_AND_FLOAT));
+    model.insertObjectiveElement(make_pair(C4, I_COST * K_FIX_AND_FLOAT));
+
+
+
+
+
+    //FIX & DOUBLE
+    auto C5 = "C5_" + varName;
+    auto C6 = "C6_" + varName;
+    model.createVariable(C5, 0, 1);
+    model.createVariable(C6, 0, 1);
+
+    //Constraint for binary value to activate
+    constraint.clear();
+    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), -1.0));
+    constraint.push_back(make_pair(C5, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    constraint.clear();
+    //Constraint for binary value to activate
+    constraint.push_back(make_pair(info->getFixedSelectedVariable(), -1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C6, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    //Casting costs
+    model.insertObjectiveElement(make_pair(C5, I_COST * K_FIX_AND_DOUBLE));
+    model.insertObjectiveElement(make_pair(C6, I_COST * K_FIX_AND_DOUBLE));
+
+
+
+
+    //FIX & DOUBLE
+    auto C7 = "C7_" + varName;
+    auto C8 = "C8_" + varName;
+    model.createVariable(C7, 0, 1);
+    model.createVariable(C8, 0, 1);
+
+    //Constraint for binary value to activate
+    constraint.clear();
+    constraint.push_back(make_pair(info->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), -1.0));
+    constraint.push_back(make_pair(C7, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    constraint.clear();
+    //Constraint for binary value to activate
+    constraint.push_back(make_pair(info->getFloatSelectedVariable(), -1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C8, -M));
+    model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    //Casting costs
+    model.insertObjectiveElement(make_pair(C7, I_COST * K_FLOAT_AND_DOUBLE));
+    model.insertObjectiveElement(make_pair(C8, I_COST * K_FLOAT_AND_DOUBLE));
+
+    return optimizerInfo;
 }
 
 void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
@@ -491,11 +617,11 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
     }
 
 
-    valueToVariableName.insert(make_pair(instruction, make_shared<OptimizerScalarInfo>(sinfos->getVariableName(),
+    valueToVariableName.insert(make_pair(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                                        sinfos->getMinBits(),
                                                                                        sinfos->getMaxBits())));
 
-    dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getVariableName() << "\n";
+    dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getBaseName() << "\n";
 
 
 }
@@ -503,3 +629,89 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
 void Optimizer::finish() {
     model.finalizeAndSolve();
 }
+
+void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2) {
+    assert(op1 && op2 && "On of the info is nullptr!");
+
+
+    auto constraint = vector<pair<string, double>>();
+    //Inserting constraint about of the very same type
+    constraint.clear();
+    constraint.push_back(make_pair(op1->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(op2->getFixedSelectedVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 0);
+
+    constraint.clear();
+    constraint.push_back(make_pair(op1->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(op2->getFloatSelectedVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 0);
+
+    constraint.clear();
+    constraint.push_back(make_pair(op1->getDoubleSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(op2->getDoubleSelectedVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 0);
+
+    constraint.clear();
+    constraint.push_back(make_pair(op1->getFractBitsVariable(), 1.0));
+    constraint.push_back(make_pair(op2->getFractBitsVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 0);
+
+
+}
+
+
+int Optimizer::getENOBFromRange(shared_ptr<mdutils::Range> range, mdutils::FloatType::FloatStandard standard) {
+    assert(range && "We must have a valid range here!");
+
+    int fractionalDigits;
+    int minExponentPower; //eheheh look at this
+    switch (standard) {
+        case mdutils::FloatType::Float_float:
+            fractionalDigits = 23;
+            minExponentPower = -126;
+            break;
+        case mdutils::FloatType::Float_double:
+            fractionalDigits = 52;
+            minExponentPower = -1022;
+            break;
+        default:
+            llvm_unreachable("Unsupported type here!");
+    }
+
+    //We explore the range in order to understand where to compute the number of bits
+    //TODO: implement other less pessimistics algorithm, like medium value, or wathever
+    double smallestRepresentableNumber;
+    if (range->Min <= 0 && range->Max >= 0) {
+        //range overlapping 0
+        smallestRepresentableNumber = 0;
+    } else if (range->Min >= 0) {
+        //both are greater than 0
+        smallestRepresentableNumber = range->Min;
+    } else {
+        //Both are less than 0
+        smallestRepresentableNumber = abs(range->Max);
+    }
+
+    double exponentOfExponent = log2(smallestRepresentableNumber);
+    int exponentInt = floor(exponentOfExponent);
+
+    if (exponentInt < minExponentPower) exponentInt = minExponentPower;
+
+
+    return (-exponentInt) + fractionalDigits;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

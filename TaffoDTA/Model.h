@@ -35,7 +35,7 @@ namespace tuner {
         }; //Equal, less or equal, greater or equal; strict inequalities are not handled by the tools usually
         void createVariable(const string &varName);
 
-        void insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType);
+        void insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType,  double rightSide);
 
 
 

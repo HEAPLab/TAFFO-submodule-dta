@@ -3,7 +3,7 @@
 #include "Model.h"
 
 using namespace tuner;
-void Model::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType) {
+void Model::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType, double rightSide) {
     //modelFile << "inserting constraint: ";
     for (auto p : variables) {
         assert(isVariableDeclared(p.first) && "Variable not declared!");
@@ -26,7 +26,7 @@ void Model::insertLinearConstraint(const vector<pair<string, double>> &variables
             break;
     }
 
-    modelFile << "0\n";
+    modelFile << rightSide << "\n";
 }
 
 void Model::createVariable(const string& varName) {

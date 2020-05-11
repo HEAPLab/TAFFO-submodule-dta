@@ -40,26 +40,26 @@ private:
 /// Structure containing pointers to Type, Range, and initial Error
 /// of an LLVM Value.
 struct OptimizerScalarInfo : public OptimizerInfo {
-    std::shared_ptr <string> variableName;
+    std::shared_ptr <string> baseName;
     unsigned minBits;
     unsigned maxBits;
 
-    const string getVariableName() const {
-        return *variableName.get();
+    const string getBaseName() const {
+        return *baseName.get();
     }
 
     OptimizerScalarInfo(string _variableName, unsigned _minBits, unsigned _maxBits)
             : OptimizerInfo(K_Field) {
         minBits = _minBits;
         maxBits = _maxBits;
-        variableName = make_shared<string>(_variableName);
+        baseName = make_shared<string>(_variableName);
     }
 
 
     virtual std::string toString() const override {
         std::stringstream sstm;
         sstm << "ScalarInfo(";
-        sstm << *(variableName.get());
+        sstm << *(baseName.get());
         sstm << ")";
         return sstm.str();
     };
@@ -71,6 +71,23 @@ struct OptimizerScalarInfo : public OptimizerInfo {
     unsigned int getMaxBits() const {
         return maxBits;
     }
+
+    const string getFixedSelectedVariable(){
+        return *baseName + "_fixp";
+    }
+
+    const string getFloatSelectedVariable(){
+        return *baseName + "_float";
+    }
+
+    const string getDoubleSelectedVariable(){
+        return *baseName + "_double";
+    }
+
+    const string getFractBitsVariable(){
+        return *baseName + "_fixbits";
+    }
+
 
 
     static bool classof(const OptimizerInfo *M) { return M->getKind() == K_Field; }

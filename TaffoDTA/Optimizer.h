@@ -44,7 +44,7 @@ namespace tuner {
 
 
     protected:
-        string allocateNewVariableForValue(Value* value, unsigned minBits, unsigned maxBits,  string functionName);
+        shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value* value, shared_ptr<mdutils::FPType> fpInfo, shared_ptr<mdutils::Range> rangeInfo,  string functionName);
 
 
         void emitError(const string stringhina);
@@ -60,7 +60,7 @@ namespace tuner {
 
         void handleFAdd(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
 
-        string allocateNewVariableWithCastCost(Value *toUse, Value *whereToUse);
+        shared_ptr<OptimizerScalarInfo> allocateNewVariableWithCastCost(Value *toUse, Value *whereToUse);
 
 
         void handleStore(Instruction *instruction, const shared_ptr<ValueInfo> &valueInfo);
@@ -68,6 +68,10 @@ namespace tuner {
         void handleFPPrecisionShift(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
 
 
+        void insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2);
+
+
+        int getENOBFromRange(shared_ptr<mdutils::Range> sharedPtr, mdutils::FloatType::FloatStandard standard);
     };
 
 
