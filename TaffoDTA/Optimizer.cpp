@@ -6,10 +6,13 @@ using namespace mdutils;
 //FIXME: I_COST should absolutely not be constant
 //FIXME: K_COST should be tunable in some way
 #define I_COST 1
-#define K_SHIF 1
-#define K_FIX_AND_FLOAT 1
-#define K_FIX_AND_DOUBLE 1
-#define K_FLOAT_AND_DOUBLE 1
+#define K_SHIFT 1
+#define K_FIX_TO_FLOAT 1
+#define K_FLOAT_TO_FIX 1
+#define K_FIX_TO_DOUBLE 1
+#define K_DOUBLE_TO_FIX 1
+#define K_FLOAT_TO_DOUBLE 1
+#define K_DOUBLE_TO_FLOAT 1
 #define P_COST 1
 #define M 10000
 
@@ -86,7 +89,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     //La variabile indica solo se il costo è attivo o meno, senza indicare nulla riguardo ENOB
     //Enob is computed from Range
     int ENOBfloat = getENOBFromRange(rangeInfo, FloatType::Float_float);
-    int ENOBdouble = getENOBFromRange(rangeInfo, FloatType::Float_float);
+    int ENOBdouble = getENOBFromRange(rangeInfo, FloatType::Float_double);
     model.insertObjectiveElement(make_pair(optimizerInfo->getFloatSelectedVariable(), (-1) * P_COST * ENOBfloat));
     model.insertObjectiveElement(make_pair(optimizerInfo->getDoubleSelectedVariable(), (-1) * P_COST * ENOBdouble));
 
@@ -516,91 +519,84 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     model.insertLinearConstraint(constraint, Model::LE, 0);
 
     //Casting costs
-    model.insertObjectiveElement(make_pair(C1, I_COST * K_SHIF));
-    model.insertObjectiveElement(make_pair(C2, I_COST * K_SHIF));
+    model.insertObjectiveElement(make_pair(C1, I_COST * K_SHIFT));
+    model.insertObjectiveElement(make_pair(C2, I_COST * K_SHIFT));
 
 
 
 
 
-    //FIX & FLOAT
+    //TYPE CAST
     auto C3 = "C3_" + varName;
     auto C4 = "C4_" + varName;
-    model.createVariable(C3, 0, 1);
-    model.createVariable(C4, 0, 1);
-
-    //Constraint for binary value to activate
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), -1.0));
-    constraint.push_back(make_pair(C3, -M));
-    model.insertLinearConstraint(constraint, Model::LE, 0);
-
-    constraint.clear();
-    //Constraint for binary value to activate
-    constraint.push_back(make_pair(info->getFixedSelectedVariable(), -1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C4, -M));
-    model.insertLinearConstraint(constraint, Model::LE, 0);
-
-    //Casting costs
-    model.insertObjectiveElement(make_pair(C3, I_COST * K_FIX_AND_FLOAT));
-    model.insertObjectiveElement(make_pair(C4, I_COST * K_FIX_AND_FLOAT));
-
-
-
-
-
-    //FIX & DOUBLE
     auto C5 = "C5_" + varName;
     auto C6 = "C6_" + varName;
-    model.createVariable(C5, 0, 1);
-    model.createVariable(C6, 0, 1);
-
-    //Constraint for binary value to activate
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), -1.0));
-    constraint.push_back(make_pair(C5, -M));
-    model.insertLinearConstraint(constraint, Model::LE, 0);
-
-    constraint.clear();
-    //Constraint for binary value to activate
-    constraint.push_back(make_pair(info->getFixedSelectedVariable(), -1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C6, -M));
-    model.insertLinearConstraint(constraint, Model::LE, 0);
-
-    //Casting costs
-    model.insertObjectiveElement(make_pair(C5, I_COST * K_FIX_AND_DOUBLE));
-    model.insertObjectiveElement(make_pair(C6, I_COST * K_FIX_AND_DOUBLE));
-
-
-
-
-    //FIX & DOUBLE
     auto C7 = "C7_" + varName;
     auto C8 = "C8_" + varName;
+
+
+    model.createVariable(C3, 0, 1);
+    model.createVariable(C4, 0, 1);
+    model.createVariable(C5, 0, 1);
+    model.createVariable(C6, 0, 1);
     model.createVariable(C7, 0, 1);
     model.createVariable(C8, 0, 1);
 
-    //Constraint for binary value to activate
+
+    //FIX to FLOAT
+    constraint.clear();
+    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C3, -1));
+    model.insertLinearConstraint(constraint, Model::LE, 1);
+    model.insertObjectiveElement(make_pair(C3, I_COST * K_FIX_TO_FLOAT));
+
+
+    //FLOAT to FIX
     constraint.clear();
     constraint.push_back(make_pair(info->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), -1.0));
-    constraint.push_back(make_pair(C7, -M));
-    model.insertLinearConstraint(constraint, Model::LE, 0);
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C4, -1));
+    model.insertLinearConstraint(constraint, Model::LE, 1);
+    model.insertObjectiveElement(make_pair(C4, I_COST * K_FLOAT_TO_FIX));
 
+    //FIX to DOUBLE
     constraint.clear();
-    //Constraint for binary value to activate
-    constraint.push_back(make_pair(info->getFloatSelectedVariable(), -1.0));
+    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C8, -M));
-    model.insertLinearConstraint(constraint, Model::LE, 0);
+    constraint.push_back(make_pair(C5, -1));
+    model.insertLinearConstraint(constraint, Model::LE, 1);
+    model.insertObjectiveElement(make_pair(C5, I_COST * K_FIX_TO_DOUBLE));
 
-    //Casting costs
-    model.insertObjectiveElement(make_pair(C7, I_COST * K_FLOAT_AND_DOUBLE));
-    model.insertObjectiveElement(make_pair(C8, I_COST * K_FLOAT_AND_DOUBLE));
+
+    //DOUBLE to FIX
+    constraint.clear();
+    constraint.push_back(make_pair(info->getDoubleSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C6, -1));
+    model.insertLinearConstraint(constraint, Model::LE, 1);
+    model.insertObjectiveElement(make_pair(C6, I_COST * K_DOUBLE_TO_FIX));
+
+
+
+    //FLOAT to DOUBLE
+    constraint.clear();
+    constraint.push_back(make_pair(info->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C7, -1));
+    model.insertLinearConstraint(constraint, Model::LE, 1);
+    model.insertObjectiveElement(make_pair(C7, I_COST * K_FLOAT_TO_DOUBLE));
+
+
+    //DOUBLE to FLOAT
+    constraint.clear();
+    constraint.push_back(make_pair(info->getDoubleSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
+    constraint.push_back(make_pair(C8, -1));
+    model.insertLinearConstraint(constraint, Model::LE, 1);
+    model.insertObjectiveElement(make_pair(C8, I_COST * K_DOUBLE_TO_FLOAT));
+
+
 
     return optimizerInfo;
 }
@@ -631,7 +627,7 @@ void Optimizer::finish() {
 }
 
 void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2) {
-    assert(op1 && op2 && "On of the info is nullptr!");
+    assert(op1 && op2 && "One of the info is nullptr!");
 
 
     auto constraint = vector<pair<string, double>>();
