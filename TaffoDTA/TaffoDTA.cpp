@@ -683,7 +683,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
             (*iIt).print(dbgs());
             dbgs() << "     -having-     ";
             if(!hasInfo(&(*iIt))){
-                dbgs() << "No info available.";
+                dbgs() << "No info available.\n";
             }else{
                 dbgs() << valueInfo(&(*iIt))->metadata->toString() << "\n";
                 if(valueInfo(&(*iIt))->metadata->getKind() == MDInfo::K_Field){

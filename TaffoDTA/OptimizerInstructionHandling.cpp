@@ -1,4 +1,7 @@
 #include "Optimizer.h"
+#include "llvm/Support/Debug.h"
+
+#define DEBUG_TYPE ""
 
 using namespace tuner;
 using namespace mdutils;
@@ -89,7 +92,7 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
     auto opRegister = store->getValueOperand();
 
     if (!opRegister->getType()->isFloatingPointTy()) {
-        dbgs() << "Store not on a floating point, skipping...\n";
+        dbgs() << "Storing a non-floating point, skipping...\n";
         return;
     }
 
@@ -131,4 +134,138 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
     dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getBaseName() << "\n";
 
 
+}
+
+void
+Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo){
+    auto * phi = dyn_cast<PHINode>(instruction);
+
+    if(!phi->getType()->isFloatingPointTy()){
+        dbgs() << "Phi node with non float value, skipping...\n";
+        return;
+    }
+    //FIXME: this is very important to implement!
+    llvm_unreachable("PHI with floating point still not supported.");
+}
+
+
+
+void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
+    dbgs() << "Handling casting instruction...\n";
+
+
+    if (isa<BitCastInst>(instruction)) {
+        emitError("BitCast not handled.");
+        return;
+    }
+
+    if (isa<FPExtInst>(instruction) ||
+        isa<FPTruncInst>(instruction)) {
+        handleFPPrecisionShift(instruction, valueInfo);
+        return;
+    }
+
+    if(isa<TruncInst>(instruction) ||
+       isa<ZExtInst>(instruction)||
+       isa<SExtInst>(instruction)){
+        dbgs() << "Cast between integers, skipping...\n";
+        return;
+    }
+
+    if(isa<UIToFPInst>(instruction) ||
+       isa<SIToFPInst>(instruction)){
+        //FIXME: this will generate a new register, simply allocate a new variable!
+        llvm_unreachable("Casting to FP not handled!");
+    }
+
+    if(isa<FPToSIInst>(instruction) ||
+       isa<FPToUIInst>(instruction)){
+        dbgs() << "Casting Floating point to integer, no costs introduced.\n";
+        return;
+    }
+
+
+    llvm_unreachable("Did I really forgot something?");
+}
+
+
+void Optimizer::handleGEPInstr(llvm::Instruction *gep, shared_ptr<ValueInfo> valueInfo) {
+    const llvm::GetElementPtrInst *gep_i = dyn_cast<llvm::GetElementPtrInst>(gep);
+    dbgs() << "Handling GEP. \n";
+
+    Value *operand = gep_i->getOperand(0);
+    dbgs() << "Operand: ";
+    operand->print(dbgs());
+    dbgs() << "\n";
+
+    std::vector<unsigned> offset;
+
+    if (extractGEPOffset(gep_i->getSourceElementType(),
+                         iterator_range<User::const_op_iterator>(gep_i->idx_begin(),
+                                                                 gep_i->idx_end()),
+                         offset)) {
+        dbgs() << "Exctracted offset: [";
+        for (int i = 0; i < offset.size(); i++) {
+            dbgs() << offset[i] << ", ";
+        }
+        dbgs() << "]\n";
+        //When we load an address from a "thing" we need to store a reference to it in order to successfully update the error
+        auto optInfo=getInfoOfValue(operand);
+        if(!optInfo){
+            dbgs() << "Probably trying to access a non float element, bailing out.\n";
+            return;
+        }
+        //This will only contain displacements for struct fields...
+        for (int i = 0; i < offset.size(); i++) {
+            auto structInfo = dynamic_ptr_cast_or_null<OptimizerStructInfo>(optInfo);
+            if(!structInfo){
+                dbgs() << "Probably trying to access a non float element, bailing out.\n";
+                return;
+            }
+
+            optInfo=structInfo->getField(offset[i]);
+        }
+
+
+        dbgs() << "Infos associated: " << optInfo->toString() << "\n";
+        valueToVariableName.insert(make_pair(gep, optInfo));
+        return;
+    }
+    emitError("Cannot extract GEPOffset!");
+}
+
+bool Optimizer::extractGEPOffset(const llvm::Type *source_element_type,
+                                                     const llvm::iterator_range<llvm::User::const_op_iterator> indices,
+                                                     std::vector<unsigned> &offset) {
+    assert(source_element_type != nullptr);
+    (dbgs() << "indices: ");
+    for (auto idx_it = indices.begin() + 1; // skip first index
+         idx_it != indices.end(); ++idx_it) {
+
+        const llvm::ConstantInt *int_i = dyn_cast<llvm::ConstantInt>(*idx_it);
+        if (int_i) {
+            int n = static_cast<int>(int_i->getSExtValue());
+            if (isa<SequentialType>(source_element_type)) {
+                //This is needed to skip the array element in array of structures
+                //In facts, we treats arrays as "scalar" things, so we just do not want to deal with them
+                source_element_type = cast<SequentialType>(source_element_type)->getTypeAtIndex(n);
+                dbgs() << "continuing...   ";
+                continue;
+            }
+
+
+            offset.push_back(n);
+            /*source_element_type =
+                    cast<StructType>(source_element_type)->getTypeAtIndex(n);*/
+            (dbgs() << n << " ");
+        } else {
+            //We can skip only if is a sequential i.e. we are accessing an index of an array
+            if (!isa<SequentialType>(source_element_type)) {
+                emitError("Index of GEP not constant");
+                return false;
+            }
+        }
+    }
+    (dbgs() << "--end indices\n");
+    return true;
 }

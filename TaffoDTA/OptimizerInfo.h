@@ -144,7 +144,7 @@ public:
 
 
     virtual std::string toString() const override {
-
+        return "STRUCT TO STRING NOT IMPLEMENTED!";
     };
 
 

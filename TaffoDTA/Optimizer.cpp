@@ -114,6 +114,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
 }
 
 shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
+    assert(value);
     auto findIt = valueToVariableName.find(value);
     if (findIt != valueToVariableName.end()) {
         return findIt->second;
@@ -122,6 +123,10 @@ shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
     if (auto constant = dyn_cast_or_null<ConstantExpr>(value)) {
         llvm_unreachable("Constant exp still not handled");
     }
+
+    dbgs() << "Could not find any info for ";
+    value->print(dbgs());
+    dbgs() << "!\n";
 
     return nullptr;
 }
@@ -138,20 +143,7 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
         //Returns :D
         emitError("Returns not handlet atm.");
     } else if (Instruction::isCast(opCode)) {
-        dbgs() << "Handling casting instruction...\n";
-
-
-        if (isa<BitCastInst>(instruction)) {
-            emitError("BitCast not handled.");
-            return;
-        }
-
-        if (isa<FPExtInst>(instruction) ||
-            isa<FPTruncInst>(instruction)) {
-            handleFPPrecisionShift(instruction, valueInfo);
-            return;
-        }
-        llvm_unreachable("Not handled.");
+        handleCastInstruction(instruction, valueInfo);
 
     } else if (Instruction::isBinaryOp(opCode)) {
         handleBinaryInstruction(instruction, opCode, valueInfo);
@@ -172,7 +164,7 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
                 handleStore(instruction, valueInfo);
                 break;
             case llvm::Instruction::GetElementPtr:
-                llvm_unreachable("Not handled.");
+                handleGEPInstr(instruction, valueInfo);
                 break;
             case llvm::Instruction::Fence:
                 emitError("Handling of Fence not supported yet");
@@ -185,13 +177,16 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
                 break; // TODO implement
 
                 // other operations
-            case llvm::Instruction::ICmp:
+            case llvm::Instruction::ICmp:{
+                dbgs() << "Comparing two integers, skipping...\n";
+                break;
+            }
             case llvm::Instruction::FCmp: {
                 llvm_unreachable("Not handled.");
             }
                 break;
             case llvm::Instruction::PHI: {
-                llvm_unreachable("Not handled.");
+                handlePhi(instruction, valueInfo);
             }
                 break;
             case llvm::Instruction::Select:
@@ -477,6 +472,8 @@ int Optimizer::getENOBFromRange(shared_ptr<mdutils::Range> range, mdutils::Float
 
     return (-exponentInt) + fractionalDigits;
 }
+
+
 
 
 

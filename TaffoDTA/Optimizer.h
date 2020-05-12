@@ -72,6 +72,15 @@ namespace tuner {
 
 
         int getENOBFromRange(shared_ptr<mdutils::Range> sharedPtr, mdutils::FloatType::FloatStandard standard);
+
+        void handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
+        void handleCastInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
+        void handleGEPInstr(Instruction *gep, shared_ptr<ValueInfo> valueInfo);
+
+        bool extractGEPOffset(const Type *source_element_type, const iterator_range<User::const_op_iterator> indices,
+                              vector<unsigned int> &offset);
     };
 
 
