@@ -114,19 +114,21 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
 }
 
 shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
-    assert(value);
+    assert(value && "Value must not be nullptr!");
+
+    //Global object are constant too but we have already seen them :)
     auto findIt = valueToVariableName.find(value);
     if (findIt != valueToVariableName.end()) {
         return findIt->second;
     }
 
-    if (auto constant = dyn_cast_or_null<ConstantExpr>(value)) {
-        llvm_unreachable("Constant exp still not handled");
+    if (auto constant = dyn_cast_or_null<Constant>(value)) {
+        return processConstant(constant);
     }
 
     dbgs() << "Could not find any info for ";
     value->print(dbgs());
-    dbgs() << "!\n";
+    dbgs() << "     :( \n";
 
     return nullptr;
 }

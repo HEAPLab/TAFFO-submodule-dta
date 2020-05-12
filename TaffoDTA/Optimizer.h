@@ -81,6 +81,10 @@ namespace tuner {
 
         bool extractGEPOffset(const Type *source_element_type, const iterator_range<User::const_op_iterator> indices,
                               vector<unsigned int> &offset);
+
+        shared_ptr<OptimizerInfo> processConstant(Constant *constant);
+
+        shared_ptr<OptimizerInfo> handleGEPConstant(const ConstantExpr *cexp_i);
     };
 
 

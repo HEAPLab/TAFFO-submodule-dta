@@ -176,6 +176,7 @@ bool TaffoTuner::associateFixFormat(InputInfo &II, Type::TypeID origType) {
 
 
     //New super performing algorithm to compute a lot of things
+    //FIXME: fix this mess
     if (ForceFloat >= 0){
         auto standard = static_cast<mdutils::FloatType::FloatStandard>(ForceFloat.getValue());
 

@@ -44,7 +44,6 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
 }
 
 
-
 void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo> &valueInfo) {
     if (!valueInfo) {
         dbgs() << "No value info, skipping...\n";
@@ -137,17 +136,16 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
 }
 
 void
-Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo){
-    auto * phi = dyn_cast<PHINode>(instruction);
+Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
+    auto *phi = dyn_cast<PHINode>(instruction);
 
-    if(!phi->getType()->isFloatingPointTy()){
+    if (!phi->getType()->isFloatingPointTy()) {
         dbgs() << "Phi node with non float value, skipping...\n";
         return;
     }
     //FIXME: this is very important to implement!
     llvm_unreachable("PHI with floating point still not supported.");
 }
-
 
 
 void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
@@ -165,21 +163,21 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
         return;
     }
 
-    if(isa<TruncInst>(instruction) ||
-       isa<ZExtInst>(instruction)||
-       isa<SExtInst>(instruction)){
+    if (isa<TruncInst>(instruction) ||
+        isa<ZExtInst>(instruction) ||
+        isa<SExtInst>(instruction)) {
         dbgs() << "Cast between integers, skipping...\n";
         return;
     }
 
-    if(isa<UIToFPInst>(instruction) ||
-       isa<SIToFPInst>(instruction)){
+    if (isa<UIToFPInst>(instruction) ||
+        isa<SIToFPInst>(instruction)) {
         //FIXME: this will generate a new register, simply allocate a new variable!
         llvm_unreachable("Casting to FP not handled!");
     }
 
-    if(isa<FPToSIInst>(instruction) ||
-       isa<FPToUIInst>(instruction)){
+    if (isa<FPToSIInst>(instruction) ||
+        isa<FPToUIInst>(instruction)) {
         dbgs() << "Casting Floating point to integer, no costs introduced.\n";
         return;
     }
@@ -210,20 +208,20 @@ void Optimizer::handleGEPInstr(llvm::Instruction *gep, shared_ptr<ValueInfo> val
         }
         dbgs() << "]\n";
         //When we load an address from a "thing" we need to store a reference to it in order to successfully update the error
-        auto optInfo=getInfoOfValue(operand);
-        if(!optInfo){
+        auto optInfo = getInfoOfValue(operand);
+        if (!optInfo) {
             dbgs() << "Probably trying to access a non float element, bailing out.\n";
             return;
         }
         //This will only contain displacements for struct fields...
         for (int i = 0; i < offset.size(); i++) {
             auto structInfo = dynamic_ptr_cast_or_null<OptimizerStructInfo>(optInfo);
-            if(!structInfo){
+            if (!structInfo) {
                 dbgs() << "Probably trying to access a non float element, bailing out.\n";
                 return;
             }
 
-            optInfo=structInfo->getField(offset[i]);
+            optInfo = structInfo->getField(offset[i]);
         }
 
 
@@ -235,8 +233,8 @@ void Optimizer::handleGEPInstr(llvm::Instruction *gep, shared_ptr<ValueInfo> val
 }
 
 bool Optimizer::extractGEPOffset(const llvm::Type *source_element_type,
-                                                     const llvm::iterator_range<llvm::User::const_op_iterator> indices,
-                                                     std::vector<unsigned> &offset) {
+                                 const llvm::iterator_range<llvm::User::const_op_iterator> indices,
+                                 std::vector<unsigned> &offset) {
     assert(source_element_type != nullptr);
     (dbgs() << "indices: ");
     for (auto idx_it = indices.begin() + 1; // skip first index
@@ -269,3 +267,4 @@ bool Optimizer::extractGEPOffset(const llvm::Type *source_element_type,
     (dbgs() << "--end indices\n");
     return true;
 }
+

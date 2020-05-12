@@ -9,6 +9,7 @@ add_llvm_library(TaffoDTA MODULE
         Model.h
         OptimizerBinaryInstructions.cpp
         OptimizerInstructionHandling.cpp
+        OptimizerConstantsHandling.cpp
 
         PLUGIN_TOOL
         opt
