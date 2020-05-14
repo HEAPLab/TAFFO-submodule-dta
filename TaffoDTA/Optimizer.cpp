@@ -419,16 +419,19 @@ void Optimizer::finish() {
     model.finalizeAndSolve();
 }
 
-void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2) {
+void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2, bool forceFixBitsConstraint) {
     assert(op1 && op2 && "One of the info is nullptr!");
 
 
     auto constraint = vector<pair<string, double>>();
     //Inserting constraint about of the very same type
-    constraint.clear();
-    constraint.push_back(make_pair(op1->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(op2->getFixedSelectedVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 0);
+
+    if(forceFixBitsConstraint) {
+        constraint.clear();
+        constraint.push_back(make_pair(op1->getFixedSelectedVariable(), 1.0));
+        constraint.push_back(make_pair(op2->getFixedSelectedVariable(), -1.0));
+        model.insertLinearConstraint(constraint, Model::EQ, 0);
+    }
 
     constraint.clear();
     constraint.push_back(make_pair(op1->getFloatSelectedVariable(), 1.0));

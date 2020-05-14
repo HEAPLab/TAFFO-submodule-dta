@@ -70,7 +70,7 @@ namespace tuner {
         void handleFPPrecisionShift(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
 
 
-        void insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2);
+        void insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2, bool forceFixBitsConstraint);
 
 
         int getENOBFromRange(shared_ptr<mdutils::Range> sharedPtr, mdutils::FloatType::FloatStandard standard);
@@ -89,6 +89,14 @@ namespace tuner {
         shared_ptr<OptimizerInfo> handleGEPConstant(const ConstantExpr *cexp_i);
 
         shared_ptr<OptimizerStructInfo> loadStructInfo(Value * glob, shared_ptr<mdutils::StructInfo> pInfo, string name);
+
+        void handleFSub(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
+
+        void handleFMul(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
+
+        void handleFDiv(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
+
+        void handleFRem(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
     };
 
 

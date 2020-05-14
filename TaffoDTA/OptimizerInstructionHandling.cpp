@@ -121,7 +121,7 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
 
     shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableWithCastCost(opRegister, instruction);
 
-    insertTypeEqualityConstraint(info_pointer, variable);
+    insertTypeEqualityConstraint(info_pointer, variable, true);
 
 
 }
