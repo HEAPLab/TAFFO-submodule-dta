@@ -177,12 +177,12 @@ bool TaffoTuner::associateFixFormat(InputInfo &II, Type::TypeID origType) {
 
     //New super performing algorithm to compute a lot of things
     //FIXME: fix this mess
-    if (ForceFloat >= 0){
+    if (ForceFloat >= 0) {
         auto standard = static_cast<mdutils::FloatType::FloatStandard>(ForceFloat.getValue());
 
         double greatest = abs(II.IRange->Min);
         double max = abs(II.IRange->Max);
-        if(max>greatest) greatest=max;
+        if (max > greatest) greatest = max;
 
         FloatType res = FloatType(standard, greatest);
 
@@ -192,7 +192,7 @@ bool TaffoTuner::associateFixFormat(InputInfo &II, Type::TypeID origType) {
         return true;
 
 
-    }else{
+    } else {
         FixedPointTypeGenError fpgerr;
         FPType res = fixedPointTypeFromRange(*rng, &fpgerr, TotalBits, FracThreshold, 64, TotalBits);
         if (fpgerr == FixedPointTypeGenError::InvalidRange) {
@@ -202,7 +202,6 @@ bool TaffoTuner::associateFixFormat(InputInfo &II, Type::TypeID origType) {
         II.IType.reset(res.clone());
         return true;
     }
-
 
 
 }
@@ -636,7 +635,8 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
 
 //TODO: in un primo momento andiamo a supportare una versione basica, supportando solo operazioni di base e niente strutture e puntatori
 
-void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &vals, const SmallPtrSetImpl<llvm::Value *> &valset) {
+void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &vals,
+                                      const SmallPtrSetImpl<llvm::Value *> &valset) {
     assert(vals.size() == valset.size() && "They must contain the same elements.");
 
     Optimizer optimizer;
@@ -646,19 +646,15 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
     for (GlobalObject &globObj : m.globals()) {
         globObj.print(dbgs());
         dbgs() << "     -having-     ";
-        if(!hasInfo(&globObj)){
+        if (!hasInfo(&globObj)) {
             dbgs() << "No info available, skipping.";
-        }else{
+        } else {
             dbgs() << valueInfo(&globObj)->metadata->toString() << "\n";
-            if(valueInfo(&globObj)->metadata->getKind() == MDInfo::K_Field){
-                optimizer.handleGlobal(&globObj, valueInfo(&globObj));
-            }else{
-                dbgs() << "This is not a filed, skipping as struct unsupported at the moment.\n";
-            }
+
+            optimizer.handleGlobal(&globObj, valueInfo(&globObj));
         }
         dbgs() << "\n\n";
     }
-
 
 
     for (Function &f : m.functions()) {
@@ -667,7 +663,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
             continue;
 
         //Skip empty functions
-        if(f.empty())
+        if (f.empty())
             continue;
 
         dbgs() << "\n============ FUNCTION " << f.getName() << " ============\n";
@@ -679,18 +675,15 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
         }
 
         //TODO: think about treating a function as a separate domain OR as a whole with the caller
+        //As we have copy of the same function for
         for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
             //C++ is horrible
             (*iIt).print(dbgs());
             dbgs() << "     -having-     ";
-            if(!hasInfo(&(*iIt))){
+            if (!hasInfo(&(*iIt))) {
                 dbgs() << "No info available.\n";
-            }else{
+            } else {
                 dbgs() << valueInfo(&(*iIt))->metadata->toString() << "\n";
-                if(valueInfo(&(*iIt))->metadata->getKind() == MDInfo::K_Field){
-                }else{
-                    dbgs() << "This is not a filed, skipping as struct unsupported at the moment.\n";
-                }
             }
 
             optimizer.handleInstruction(&(*iIt), valueInfo(&(*iIt)));

@@ -44,7 +44,9 @@ namespace tuner {
 
 
     protected:
-        shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value* value, shared_ptr<mdutils::FPType> fpInfo, shared_ptr<mdutils::Range> rangeInfo,  string functionName);
+        shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value* value, shared_ptr<mdutils::FPType> fpInfo,
+                shared_ptr<mdutils::Range> rangeInfo,  string functionName, bool insertInList=true,
+                string nameAppendix="");
 
 
         void emitError(const string stringhina);
@@ -85,6 +87,8 @@ namespace tuner {
         shared_ptr<OptimizerInfo> processConstant(Constant *constant);
 
         shared_ptr<OptimizerInfo> handleGEPConstant(const ConstantExpr *cexp_i);
+
+        shared_ptr<OptimizerStructInfo> loadStructInfo(Value * glob, shared_ptr<mdutils::StructInfo> pInfo, string name);
     };
 
 

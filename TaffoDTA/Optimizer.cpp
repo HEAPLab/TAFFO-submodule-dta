@@ -21,21 +21,36 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
     dbgs() << "handleGlobal called.\n";
 
     if (!glob->getValueType()->isPointerTy()) {
-        dbgs() << " ^ This is a real field\n";
-        auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
-        if (!fieldInfo) {
-            dbgs() << "Not enough information. Bailing out.\n\n";
-            return;
+        if (valueInfo->metadata->getKind() == MDInfo::K_Field) {
+            dbgs() << " ^ This is a real field\n";
+            auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
+            if (!fieldInfo) {
+                dbgs() << "Not enough information. Bailing out.\n\n";
+                return;
+            }
+
+            auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
+            if (!fptype) {
+                dbgs() << "No fixed point info associated. Bailing out.\n";
+                return;
+            }
+            allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, "");
+        } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
+            dbgs() << " ^ This is a real structure\n";
+
+            auto fieldInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata);
+            if (!fieldInfo) {
+                dbgs() << "No struct info. Bailing out.\n";
+                return;
+            }
+
+            auto optInfo = loadStructInfo(glob, fieldInfo, "");
+            valueToVariableName.insert(make_pair(glob, optInfo));
+
+        } else {
+            llvm_unreachable("Unknown metadata!");
         }
 
-        auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
-        if (!fptype) {
-            dbgs() << "No fixed point info associated. Bailing out.\n";
-            return;
-        }
-
-
-        allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, "");
 
     } else {
         dbgs() << " ^ this is a pointer, skipping as it is unsupported at the moment.\n";
@@ -46,7 +61,7 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 
 shared_ptr<OptimizerScalarInfo>
 Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo,
-                                       string functionName) {
+                                       string functionName, bool insertInList, string nameAppendix) {
     if (valueToVariableName.find(value) != valueToVariableName.end()) {
         llvm_unreachable("Trying to associate a new variable to the same value!\n");
     }
@@ -59,7 +74,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     }
 
 
-    string varNameBase(string(functionName).append(value->getName()));
+    string varNameBase(string(functionName).append(value->getName()).append(nameAppendix));
     string varName(varNameBase);
 
     int counter = 0;
@@ -71,7 +86,9 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
 
     auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos());
-    valueToVariableName.insert(make_pair(value, optimizerInfo));
+    if (insertInList) {
+        valueToVariableName.insert(make_pair(value, optimizerInfo));
+    }
 
     dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
            << optimizerInfo->maxBits << "];\n";
@@ -179,7 +196,7 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
                 break; // TODO implement
 
                 // other operations
-            case llvm::Instruction::ICmp:{
+            case llvm::Instruction::ICmp: {
                 dbgs() << "Comparing two integers, skipping...\n";
                 break;
             }
@@ -394,10 +411,8 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     model.insertObjectiveElement(make_pair(C8, I_COST * K_DOUBLE_TO_FLOAT));
 
 
-
     return optimizerInfo;
 }
-
 
 
 void Optimizer::finish() {
@@ -475,6 +490,31 @@ int Optimizer::getENOBFromRange(shared_ptr<mdutils::Range> range, mdutils::Float
     return (-exponentInt) + fractionalDigits;
 }
 
+shared_ptr<OptimizerStructInfo> Optimizer::loadStructInfo(Value *glob, shared_ptr<StructInfo> pInfo, string name) {
+    shared_ptr<OptimizerStructInfo> optInfo = make_shared<OptimizerStructInfo>(pInfo->size());
+
+
+    int i = 0;
+    for (auto it = pInfo->begin(); it != pInfo->end(); it++) {
+        if (auto structInfo = dynamic_ptr_cast_or_null<StructInfo>(*it)) {
+            optInfo->setField(i, loadStructInfo(glob, structInfo, (name + "_" + to_string(i))));
+        } else if (auto ii = dyn_cast<InputInfo>(it->get())) {
+            auto fptype = dynamic_ptr_cast_or_null<FPType>(ii->IType);
+            if (!fptype) {
+                dbgs() << "No fixed point info associated. Bailing out.\n";
+
+            }else {
+                auto info = allocateNewVariableForValue(glob, fptype, ii->IRange, "", false, name + "_" + to_string(i));
+                optInfo->setField(i, info);
+            }
+        } else {
+
+        }
+        i++;
+    }
+
+    return optInfo;
+}
 
 
 

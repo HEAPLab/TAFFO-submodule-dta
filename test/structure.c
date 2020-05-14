@@ -9,13 +9,15 @@ struct astruct a __attribute((annotate("target('a') struct[scalar(range(-7,7)),s
 struct astruct b __attribute((annotate("target('a') struct[scalar(range(-7,7)),scalar(range(-8,8))]")));
 struct astruct z[2] __attribute((annotate("target('z') struct[scalar(range(-7,7)),scalar(range(-8,8))]")));
 
+int u __attribute((annotate("target('u') scalar(range(-7,7))")));
+
 int main(){
 
     float x __attribute((annotate("target('x') scalar(range(-25,25))")));
     scanf("%lf %lf", &a.b, &x);
     x++;
 
-    //a.b = a.b + a.a;
+    a.b = a.b + a.a;
     //z[0].b+=x;
     z[1].b++;
 

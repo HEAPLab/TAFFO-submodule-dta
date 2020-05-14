@@ -20,7 +20,7 @@ int main(){
     }
 
     printf("%d", d);
-    printf("%d", calledSum(b, d));
+    //printf("%d", calledSum(b, d));
 
     return 0;
 }

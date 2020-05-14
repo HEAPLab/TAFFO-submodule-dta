@@ -69,7 +69,7 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
                                                                                            sinfos->getMinBits(),
                                                                                            sinfos->getMaxBits())));
 
-        dbgs() << "For this load, reusing variable" << sinfos->getBaseName() << "\n";
+        dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
 
     } else {
         dbgs() << "Loading a non floating point, ingoring.\n";
@@ -172,8 +172,22 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
 
     if (isa<UIToFPInst>(instruction) ||
         isa<SIToFPInst>(instruction)) {
-        //FIXME: this will generate a new register, simply allocate a new variable!
-        llvm_unreachable("Casting to FP not handled!");
+        auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
+        if (!fieldInfo) {
+            dbgs() << "Not enough information. Bailing out.\n\n";
+            return;
+        }
+
+        auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
+        if (!fptype) {
+            dbgs() << "No fixed point info associated. Bailing out.\n";
+            return;
+        }
+
+
+        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+                                                                               instruction->getFunction()->getName());
+        return;
     }
 
     if (isa<FPToSIInst>(instruction) ||
