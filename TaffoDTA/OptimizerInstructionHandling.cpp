@@ -81,6 +81,7 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
 
         if (!sinfos) {
             emitError("Loaded a variable with no information attached...");
+            return;
         }
 
         valueToVariableName.insert(make_pair(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
@@ -298,5 +299,33 @@ bool Optimizer::extractGEPOffset(const llvm::Type *source_element_type,
     }
     (dbgs() << "--end indices\n");
     return true;
+}
+
+void Optimizer::handleFCmp(Instruction *instr, shared_ptr<ValueInfo> valueInfo) {
+    assert(instr->getOpcode() == llvm::Instruction::FCmp && "Operand mismatch!");
+
+    auto op1 = instr->getOperand(0);
+    auto op2 = instr->getOperand(1);
+
+
+    auto info1 = getInfoOfValue(op1);
+    auto info2 = getInfoOfValue(op2);
+
+    if (!info1 || !info2) {
+        dbgs() << "One of the two values does not have info, ignoring...\n";
+        return;
+    }
+
+
+
+    shared_ptr<OptimizerScalarInfo> varCast1 = allocateNewVariableWithCastCost(op1, instr);
+    shared_ptr<OptimizerScalarInfo> varCast2 = allocateNewVariableWithCastCost(op2, instr);
+
+
+
+    //The two variables must only contain the same data type, no floating point value returned.
+    insertTypeEqualityConstraint(varCast1, varCast2, true);
+
+
 }
 

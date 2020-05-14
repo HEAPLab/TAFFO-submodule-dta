@@ -97,6 +97,8 @@ namespace tuner {
         void handleFDiv(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
 
         void handleFRem(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
+
+        void handleFCmp(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
     };
 
 

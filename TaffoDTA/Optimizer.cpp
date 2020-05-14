@@ -201,7 +201,7 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
                 break;
             }
             case llvm::Instruction::FCmp: {
-                llvm_unreachable("Not handled.");
+                handleFCmp(instruction, valueInfo);
             }
                 break;
             case llvm::Instruction::PHI: {
