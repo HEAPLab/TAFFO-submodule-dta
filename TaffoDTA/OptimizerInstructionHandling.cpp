@@ -13,6 +13,11 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
         return;
     }
 
+    if(!valueInfo->metadata){
+        dbgs() << "No value metadata, skipping...\n";
+        return;
+    }
+
     auto *alloca = dyn_cast<AllocaInst>(instruction);
 
 
