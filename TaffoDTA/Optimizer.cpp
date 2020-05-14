@@ -493,6 +493,11 @@ int Optimizer::getENOBFromRange(shared_ptr<mdutils::Range> range, mdutils::Float
 shared_ptr<OptimizerStructInfo> Optimizer::loadStructInfo(Value *glob, shared_ptr<StructInfo> pInfo, string name) {
     shared_ptr<OptimizerStructInfo> optInfo = make_shared<OptimizerStructInfo>(pInfo->size());
 
+    string function = "";
+    if(auto instr = dyn_cast_or_null<Instruction>(glob)){
+        function=instr->getFunction()->getName();
+    }
+
 
     int i = 0;
     for (auto it = pInfo->begin(); it != pInfo->end(); it++) {
@@ -504,7 +509,7 @@ shared_ptr<OptimizerStructInfo> Optimizer::loadStructInfo(Value *glob, shared_pt
                 dbgs() << "No fixed point info associated. Bailing out.\n";
 
             }else {
-                auto info = allocateNewVariableForValue(glob, fptype, ii->IRange, "", false, name + "_" + to_string(i));
+                auto info = allocateNewVariableForValue(glob, fptype, ii->IRange, function, false, name + "_" + to_string(i));
                 optInfo->setField(i, info);
             }
         } else {

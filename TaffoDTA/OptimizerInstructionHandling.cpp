@@ -17,22 +17,35 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
 
 
     if (!alloca->getAllocatedType()->isPointerTy()) {
-        dbgs() << " ^ This is a real field\n";
-        auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
-        if (!fieldInfo) {
-            dbgs() << "Not enough information. Bailing out.\n\n";
-            return;
+        if (valueInfo->metadata->getKind() == MDInfo::K_Field) {
+            dbgs() << " ^ This is a real field\n";
+            auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
+            if (!fieldInfo) {
+                dbgs() << "Not enough information. Bailing out.\n\n";
+                return;
+            }
+
+            auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
+            if (!fptype) {
+                dbgs() << "No fixed point info associated. Bailing out.\n";
+                return;
+            }
+            allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, alloca->getFunction()->getName());
+        } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
+            dbgs() << " ^ This is a real structure\n";
+
+            auto fieldInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata);
+            if (!fieldInfo) {
+                dbgs() << "No struct info. Bailing out.\n";
+                return;
+            }
+
+            auto optInfo = loadStructInfo(alloca, fieldInfo, "");
+            valueToVariableName.insert(make_pair(alloca, optInfo));
+
+        } else {
+            llvm_unreachable("Unknown metadata!");
         }
-
-        auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
-        if (!fptype) {
-            dbgs() << "No fixed point info associated. Bailing out.\n";
-            return;
-        }
-
-
-        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
-                                                                               instruction->getFunction()->getName());
 
 
     } else {
