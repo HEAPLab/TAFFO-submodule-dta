@@ -45,7 +45,7 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
             }
 
             auto optInfo = loadStructInfo(glob, fieldInfo, "");
-            valueToVariableName.insert(make_pair(glob, optInfo));
+            saveInfoForValue(glob, optInfo);
 
         } else {
             llvm_unreachable("Unknown metadata!");
@@ -62,9 +62,7 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 shared_ptr<OptimizerScalarInfo>
 Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo,
                                        string functionName, bool insertInList, string nameAppendix) {
-    if (valueToVariableName.find(value) != valueToVariableName.end()) {
-        llvm_unreachable("Trying to associate a new variable to the same value!\n");
-    }
+    assert(!valueHasInfo(value) && "The value considered already have an info!");
 
     assert(fpInfo && "fpInfo should not be nullptr here!");
     assert(rangeInfo && "rangeInfo should not be nullptr here!");
@@ -87,7 +85,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
 
     auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos());
     if (insertInList) {
-        valueToVariableName.insert(make_pair(value, optimizerInfo));
+        saveInfoForValue(value, optimizerInfo);
     }
 
     dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
@@ -524,7 +522,17 @@ shared_ptr<OptimizerStructInfo> Optimizer::loadStructInfo(Value *glob, shared_pt
     return optInfo;
 }
 
+void Optimizer::saveInfoForValue(Value* value, shared_ptr<OptimizerInfo> optInfo){
+    assert(value && "Value must not be nullptr!");
+    assert(optInfo && "optInfo must be a valid info!");
+    assert(!valueHasInfo(value) && "Double insertion of value info!");
 
+    valueToVariableName.insert(make_pair(value, optInfo));
+}
+
+bool Optimizer::valueHasInfo(Value*value){
+    return valueToVariableName.find(value) != valueToVariableName.end();
+}
 
 
 

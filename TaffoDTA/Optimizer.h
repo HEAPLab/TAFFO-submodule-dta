@@ -99,6 +99,10 @@ namespace tuner {
         void handleFRem(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
 
         void handleFCmp(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
+        void saveInfoForValue(Value *value, shared_ptr<OptimizerInfo> optInfo);
+
+        bool valueHasInfo(Value *value);
     };
 
 
