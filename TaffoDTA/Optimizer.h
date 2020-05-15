@@ -28,32 +28,55 @@ namespace tuner {
         }
     }
 
+
+    //This class contains references to phi node that has no been closed yet
+    class PhiWatcher {
+    private:
+        DenseMap<llvm::Value *, vector<PHINode*>> pairsToClose;
+
+
+    public:
+        void openPhiLoop(PHINode *phiNode, Value *requestedValue);
+
+        bool canClosePhiLoop(Value *value);
+
+        PHINode *getPhiNodeToClose(Value *value);
+
+        void closePhiLoop(PHINode *phiNode, Value *requestedNode);
+
+    };
+
     class Optimizer {
 
         DenseMap<llvm::Value *, std::shared_ptr<OptimizerInfo>> valueToVariableName;
         Model model;
 
+        PhiWatcher phiWatcher;
+
     public:
-        void handleInstruction(Instruction * instruction, shared_ptr <ValueInfo> valueInfo);
-        void handleGlobal(GlobalObject * glob, shared_ptr<ValueInfo> valueInfo);
+        void handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
+        void handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo);
+
         void finish();
 
-        Optimizer() : model(Model::MIN){
+        Optimizer() : model(Model::MIN) {
 
         }
 
 
     protected:
-        shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value* value, shared_ptr<mdutils::FPType> fpInfo,
-                shared_ptr<mdutils::Range> rangeInfo,  string functionName, bool insertInList=true,
-                string nameAppendix="");
+        shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value *value, shared_ptr<mdutils::FPType> fpInfo,
+                                                                    shared_ptr<mdutils::Range> rangeInfo,
+                                                                    string functionName, bool insertInList = true,
+                                                                    string nameAppendix = "");
 
 
         void emitError(const string stringhina);
 
         void handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
 
-        void handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>& valueInfo);
+        void handleLoad(Instruction *instruction, const shared_ptr<ValueInfo> &valueInfo);
 
         shared_ptr<OptimizerInfo> getInfoOfValue(Value *value);
 
@@ -70,7 +93,8 @@ namespace tuner {
         void handleFPPrecisionShift(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
 
 
-        void insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2, bool forceFixBitsConstraint);
+        void insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2,
+                                          bool forceFixBitsConstraint);
 
 
         int getENOBFromRange(shared_ptr<mdutils::Range> sharedPtr, mdutils::FloatType::FloatStandard standard);
@@ -88,7 +112,7 @@ namespace tuner {
 
         shared_ptr<OptimizerInfo> handleGEPConstant(const ConstantExpr *cexp_i);
 
-        shared_ptr<OptimizerStructInfo> loadStructInfo(Value * glob, shared_ptr<mdutils::StructInfo> pInfo, string name);
+        shared_ptr<OptimizerStructInfo> loadStructInfo(Value *glob, shared_ptr<mdutils::StructInfo> pInfo, string name);
 
         void handleFSub(BinaryOperator *instr, const unsigned int OpCode, const shared_ptr<ValueInfo> &valueInfos);
 
@@ -103,15 +127,14 @@ namespace tuner {
         void saveInfoForValue(Value *value, shared_ptr<OptimizerInfo> optInfo);
 
         bool valueHasInfo(Value *value);
+
+        void closePhiLoop(PHINode *phiNode, Value *requestedValue);
+
+        void openPhiLoop(PHINode *phiNode, Value *value);
     };
 
 
-
-
-
-
-
-
 }
+
 
 #endif

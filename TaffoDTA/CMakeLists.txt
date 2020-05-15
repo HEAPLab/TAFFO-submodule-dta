@@ -10,6 +10,7 @@ add_llvm_library(TaffoDTA MODULE
         OptimizerBinaryInstructions.cpp
         OptimizerInstructionHandling.cpp
         OptimizerConstantsHandling.cpp
+        PhiWatcher.cpp
 
         PLUGIN_TOOL
         opt

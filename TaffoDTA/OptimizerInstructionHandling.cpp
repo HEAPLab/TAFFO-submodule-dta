@@ -13,7 +13,7 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
         return;
     }
 
-    if(!valueInfo->metadata){
+    if (!valueInfo->metadata) {
         dbgs() << "No value metadata, skipping...\n";
         return;
     }
@@ -46,7 +46,7 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
             }
 
             auto optInfo = loadStructInfo(alloca, fieldInfo, "");
-            valueToVariableName.insert(make_pair(alloca, optInfo));
+            saveInfoForValue(alloca, optInfo);
 
         } else {
             llvm_unreachable("Unknown metadata!");
@@ -84,9 +84,9 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
             return;
         }
 
-        valueToVariableName.insert(make_pair(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
-                                                                                           sinfos->getMinBits(),
-                                                                                           sinfos->getMaxBits())));
+        saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
+                                                                       sinfos->getMinBits(),
+                                                                       sinfos->getMaxBits()));
 
         dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
 
@@ -145,9 +145,9 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
     }
 
 
-    valueToVariableName.insert(make_pair(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
-                                                                                       sinfos->getMinBits(),
-                                                                                       sinfos->getMaxBits())));
+    saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
+                                                                   sinfos->getMinBits(),
+                                                                   sinfos->getMaxBits()));
 
     dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getBaseName() << "\n";
 
@@ -162,8 +162,62 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
         dbgs() << "Phi node with non float value, skipping...\n";
         return;
     }
-    //FIXME: this is very important to implement!
-    llvm_unreachable("PHI with floating point still not supported.");
+
+    //We can have two scenarios here: we can have value that came from a precedent basic block, and therefore we have
+    //already infos on it, or from a successor basic block, in this case we cannot have info about the value (ex. loops)
+
+    //In the former case we proceed as usual, in the latter case, we need to insert the value in a special set that will
+    //be monitored in case of insertions. In that case, the phi loop can be closed.
+
+    //We treat phi as normal assignment, without looking at the real "backend" implementation. This may be quite different
+    //from the real execution, but the overall meaning is the same.
+
+    auto *phi_n = dyn_cast<llvm::PHINode>(phi);
+    if (!phi_n) {
+        llvm_unreachable("Could not convert Phi instruction to PHINode");
+    }
+    if (phi_n->getNumIncomingValues() < 1) {
+        //This phi node has no value, really?
+        llvm_unreachable("Why on earth there is a Phi instruction with no incoming values?");
+    }
+
+    auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
+    if (!fieldInfo) {
+        dbgs() << "Not enough information. Bailing out.\n\n";
+        return;
+    }
+
+    auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
+    if (!fptype) {
+        dbgs() << "No fixed point info associated. Bailing out.\n";
+        return;
+    }
+
+    //Allocating variable for result
+    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+                                                                           instruction->getFunction()->getName());
+
+
+    int missing=0;
+
+    for (unsigned index = 0; index < phi_n->getNumIncomingValues(); index++) {
+        dbgs() << "[Phi] Handlign operator " << index << "...\n";
+        Value *op = phi_n->getIncomingValue(index);
+        if(valueHasInfo(op)) {
+            dbgs() << "[Phi] We have infos, treating as usual.\n";
+            closePhiLoop(phi_n, op);
+
+        }else{
+            dbgs() << "[Phi] No value available, inserting in delayed set.\n";
+            openPhiLoop(phi_n, op);
+            missing++;
+        }
+    }
+
+    dbgs() << "[Phi] Elaboration concluded. Missing " << missing << " values.\n";
+
+
+
 }
 
 
@@ -259,7 +313,7 @@ void Optimizer::handleGEPInstr(llvm::Instruction *gep, shared_ptr<ValueInfo> val
 
 
         dbgs() << "Infos associated: " << optInfo->toString() << "\n";
-        valueToVariableName.insert(make_pair(gep, optInfo));
+        saveInfoForValue(gep, optInfo);
         return;
     }
     emitError("Cannot extract GEPOffset!");
@@ -317,7 +371,6 @@ void Optimizer::handleFCmp(Instruction *instr, shared_ptr<ValueInfo> valueInfo) 
     }
 
 
-
     shared_ptr<OptimizerScalarInfo> varCast1 = allocateNewVariableWithCastCost(op1, instr);
     shared_ptr<OptimizerScalarInfo> varCast2 = allocateNewVariableWithCastCost(op2, instr);
 
@@ -328,4 +381,38 @@ void Optimizer::handleFCmp(Instruction *instr, shared_ptr<ValueInfo> valueInfo) 
 
 
 }
+
+void Optimizer::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
+    dbgs() << "Closing PhiNode reference!\n";
+    auto phiInfo = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(phiNode));
+    auto destInfo = allocateNewVariableWithCastCost(requestedValue, phiNode);
+
+    assert(phiInfo && "phiInfo not available!");
+    assert(destInfo && "destInfo not available!");
+
+    insertTypeEqualityConstraint(phiInfo, destInfo, true);
+    phiWatcher.closePhiLoop(phiNode, requestedValue);
+
+}
+
+void Optimizer::openPhiLoop(PHINode *phiNode, Value *value) {
+    phiWatcher.openPhiLoop(phiNode, value);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

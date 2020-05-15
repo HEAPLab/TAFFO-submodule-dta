@@ -528,22 +528,15 @@ void Optimizer::saveInfoForValue(Value* value, shared_ptr<OptimizerInfo> optInfo
     assert(!valueHasInfo(value) && "Double insertion of value info!");
 
     valueToVariableName.insert(make_pair(value, optInfo));
+
+    while (PHINode * phiNode = phiWatcher.getPhiNodeToClose(value)){
+        closePhiLoop(phiNode, value);
+    }
 }
 
 bool Optimizer::valueHasInfo(Value*value){
     return valueToVariableName.find(value) != valueToVariableName.end();
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

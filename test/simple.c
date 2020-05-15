@@ -9,7 +9,7 @@ int main(){
     scanf("%f", &b);
 
     c = exp((a*b)/a);
-    int d=0;
+    float d=0;
 
     if (a == b) {
         d=c;
