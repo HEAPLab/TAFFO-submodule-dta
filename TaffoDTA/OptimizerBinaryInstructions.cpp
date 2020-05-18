@@ -72,6 +72,7 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfos->metadata);
     if (!inputInfo) {
         dbgs() << "No info on destination, bailing out, bug in VRA?\n";
+        return;
     }
 
     auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
@@ -117,6 +118,7 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfos->metadata);
     if (!inputInfo) {
         dbgs() << "No info on destination, bailing out, bug in VRA?\n";
+        return;
     }
 
     auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
@@ -161,6 +163,7 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfos->metadata);
     if (!inputInfo) {
         dbgs() << "No info on destination, bailing out, bug in VRA?\n";
+        return;
     }
 
     auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
@@ -205,6 +208,7 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfos->metadata);
     if (!inputInfo) {
         dbgs() << "No info on destination, bailing out, bug in VRA?\n";
+        return;
     }
 
     auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
@@ -249,6 +253,7 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
     auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfos->metadata);
     if (!inputInfo) {
         dbgs() << "No info on destination, bailing out, bug in VRA?\n";
+        return;
     }
 
     auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
