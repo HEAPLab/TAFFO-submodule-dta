@@ -157,10 +157,9 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
 
     const unsigned opCode = instruction->getOpcode();
     if (opCode == Instruction::Call) {
-        emitError("Call not handled atm.");
+        handleCall(instruction, valueInfo);
     } else if (Instruction::isTerminator(opCode)) {
-        //Returns :D
-        emitError("Returns not handlet atm.");
+        handleTerminators(instruction, valueInfo);
     } else if (Instruction::isCast(opCode)) {
         handleCastInstruction(instruction, valueInfo);
 
@@ -243,6 +242,47 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
         // TODO here be dragons
     } // end else
 
+}
+
+void Optimizer::handleTerminators(llvm::Instruction *term, shared_ptr<ValueInfo> valueInfo) {
+    const unsigned opCode = term->getOpcode();
+    switch (opCode) {
+        case llvm::Instruction::Ret:
+            handleReturn(term, valueInfo);
+            break;
+        case llvm::Instruction::Br:
+            // TODO improve by checking condition and relatevely update BB weigths
+            // do nothing
+            break;
+        case llvm::Instruction::Switch:
+            emitError("Handling of Switch not implemented yet");
+            break; // TODO implement
+        case llvm::Instruction::IndirectBr:
+            emitError("Handling of IndirectBr not implemented yet");
+            break; // TODO implement
+        case llvm::Instruction::Invoke:
+            handleCall(term, valueInfo);
+            break;
+        case llvm::Instruction::Resume:
+            emitError("Handling of Resume not implemented yet");
+            break; // TODO implement
+        case llvm::Instruction::Unreachable:
+            emitError("Handling of Unreachable not implemented yet");
+            break; // TODO implement
+        case llvm::Instruction::CleanupRet:
+            emitError("Handling of CleanupRet not implemented yet");
+            break; // TODO implement
+        case llvm::Instruction::CatchRet:
+            emitError("Handling of CatchRet not implemented yet");
+            break; // TODO implement
+        case llvm::Instruction::CatchSwitch:
+            emitError("Handling of CatchSwitch not implemented yet");
+            break; // TODO implement
+        default:
+            break;
+    }
+
+    return;
 }
 
 void Optimizer::emitError(string stringhina) {

@@ -9,6 +9,8 @@
 #include "TaffoDTA.h"
 #include "Metadata.h"
 
+#include "DTAConfig.h"
+
 
 using namespace llvm;
 using namespace tuner;
@@ -633,13 +635,14 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
     }
 }
 
-//TODO: in un primo momento andiamo a supportare una versione basica, supportando solo operazioni di base e niente strutture e puntatori
+//TODO: in un primo momento andiamo a supportare una versione basica, supportando solo operazioni di base e niente puntatori
 
 void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &vals,
                                       const SmallPtrSetImpl<llvm::Value *> &valset) {
     assert(vals.size() == valset.size() && "They must contain the same elements.");
 
-    Optimizer optimizer;
+    Optimizer optimizer(m, this);
+    optimizer.initialize();
 
     dbgs() << "\n============ GLOBALS ============\n";
 
@@ -671,7 +674,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
         auto arg = f.arg_begin();
         for (auto arg = f.arg_begin(); arg != f.arg_end(); arg++) {
-            //TODO: find a way to handle arguments
+            //FIXME: MOVE ALL TO CALL THE OTHER FUNCTION THAT MANAGES THIS MESS ALL
         }
 
         //TODO: think about treating a function as a separate domain OR as a whole with the caller
@@ -683,7 +686,10 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
             if (!hasInfo(&(*iIt))) {
                 dbgs() << "No info available.\n";
             } else {
-                dbgs() << valueInfo(&(*iIt))->metadata->toString() << "\n";
+                if(valueInfo(&(*iIt))->metadata){
+                    dbgs() << valueInfo(&(*iIt))->metadata->toString() << "\n";
+                }
+
             }
 
             optimizer.handleInstruction(&(*iIt), valueInfo(&(*iIt)));

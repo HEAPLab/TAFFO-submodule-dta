@@ -1,5 +1,7 @@
 #include <set>
 #include <fstream>
+#include <unordered_map>
+#include <stack>
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
 #include "llvm/ADT/DenseMap.h"
@@ -12,6 +14,8 @@
 #include "Infos.h"
 #include "OptimizerInfo.h"
 #include "Model.h"
+
+#include "TaffoDTA.h"
 
 #ifndef __TAFFO_DTA_OPTIMIZER_H__
 #define __TAFFO_DTA_OPTIMIZER_H__
@@ -50,8 +54,18 @@ namespace tuner {
 
     class Optimizer {
 
+        ///Data related to function call
+        std::unordered_map<std::string, llvm::Function *> known_functions;
+        std::unordered_map<std::string, llvm::Function *> functions_still_to_visit;
+        std::vector<llvm::Function *> call_stack;
+        std::stack<shared_ptr<OptimizerInfo>> retStack;
+
+
+
         DenseMap<llvm::Value *, std::shared_ptr<OptimizerInfo>> valueToVariableName;
         Model model;
+        Module &module;
+        TaffoTuner *tuner;
 
         PhiWatcher phiWatcher;
 
@@ -62,10 +76,13 @@ namespace tuner {
 
         void finish();
 
-        Optimizer() : model(Model::MIN) {
+        explicit Optimizer(Module & mm, TaffoTuner * tuner) : model(Model::MIN), module(mm), tuner(tuner) {
 
         }
 
+        Optimizer();
+
+        void initialize();
 
     protected:
         shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value *value, shared_ptr<mdutils::FPType> fpInfo,
@@ -133,6 +150,15 @@ namespace tuner {
         void closePhiLoop(PHINode *phiNode, Value *requestedValue);
 
         void openPhiLoop(PHINode *phiNode, Value *value);
+
+        void handleCall(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
+        void
+        processFunction(Function &function, list<shared_ptr<OptimizerInfo>> argInfo, shared_ptr<OptimizerInfo> retInfo);
+
+        void handleTerminators(Instruction *term, shared_ptr<ValueInfo> valueInfo);
+
+        void handleReturn(Instruction *instr, shared_ptr<ValueInfo> valueInfo);
     };
 
 

@@ -11,6 +11,7 @@ add_llvm_library(TaffoDTA MODULE
         OptimizerInstructionHandling.cpp
         OptimizerConstantsHandling.cpp
         PhiWatcher.cpp
+        DTAConfig.h
 
         PLUGIN_TOOL
         opt

@@ -18,7 +18,13 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
     dbgs() << "Processing constant...\n";
 
     if(auto global = dyn_cast_or_null<GlobalObject>(constant)){
-        llvm_unreachable("This should already have been handled!");
+        if(tuner->hasInfo(constant)){
+            llvm_unreachable("This should already have been handled!");
+        }else{
+            dbgs() << "Trying to process a non float global...";
+            return nullptr;
+        }
+
     }
 
     if (auto constantData = dyn_cast_or_null<ConstantData>(constant)) {

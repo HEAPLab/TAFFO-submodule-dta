@@ -1,5 +1,8 @@
+#include <llvm/IR/Intrinsics.h>
 #include "Optimizer.h"
 #include "llvm/Support/Debug.h"
+
+#include "llvm/IR/InstIterator.h"
 
 #define DEBUG_TYPE ""
 
@@ -198,18 +201,18 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
                                                                            instruction->getFunction()->getName());
 
 
-    int missing=0;
+    int missing = 0;
 
     for (unsigned index = 0; index < phi_n->getNumIncomingValues(); index++) {
         dbgs() << "[Phi] Handlign operator " << index << "...\n";
         Value *op = phi_n->getIncomingValue(index);
 
-        if(getInfoOfValue(op)) {
+        if (getInfoOfValue(op)) {
             dbgs() << "[Phi] We have infos, treating as usual.\n";
             //because yes, integrity checks....
             openPhiLoop(phi_n, op);
             closePhiLoop(phi_n, op);
-        }else{
+        } else {
             dbgs() << "[Phi] No value available, inserting in delayed set.\n";
             openPhiLoop(phi_n, op);
             missing++;
@@ -400,6 +403,257 @@ void Optimizer::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
 
 void Optimizer::openPhiLoop(PHINode *phiNode, Value *value) {
     phiWatcher.openPhiLoop(phiNode, value);
+}
+
+void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
+    const auto *call_i = dyn_cast<CallBase>(instruction);
+    if (!call_i) {
+        llvm_unreachable("Cannot cast a call instruction to llvm::CallBase");
+        return;
+    }
+
+    // fetch function name
+    llvm::Function *callee = call_i->getCalledFunction();
+    if (callee == nullptr) {
+        emitError("Indirect calls not supported!");
+        return;
+    }
+
+
+
+    const std::string calledFunctionName = callee->getName();
+    dbgs() << ("We are calling " + calledFunctionName + "\n");
+
+
+    auto function = known_functions.find(calledFunctionName);
+    if (function == known_functions.end()){
+        dbgs() << "Calling an external function, UNSUPPORTED at the moment.\n";
+        return;
+    }
+
+    // fetch ranges of arguments
+    std::list<shared_ptr<OptimizerInfo>> arg_errors;
+    std::list<shared_ptr<OptimizerScalarInfo>> arg_scalar_errors;
+    dbgs() << ("Arguments:\n");
+    for (auto arg_it = call_i->arg_begin(); arg_it != call_i->arg_end(); ++arg_it) {
+        dbgs() << "info for ";
+        (*arg_it)->print(dbgs());
+        dbgs() << " --> ";
+
+        //if a variable was declared for type
+        auto info = getInfoOfValue(*arg_it);
+        if (!info) {
+            //This is needed to resolve eventual constants in function call (I'm looking at you, LLVM)
+            dbgs() << "No error for the argument!\n";
+        } else {
+            dbgs() << "Got this error: " << info->toString() << "\n";
+        }
+
+        //Even if is a null value, we push it!
+        arg_errors.push_back(info);
+
+        /*if (const generic_range_ptr_t arg_info = fetchInfo(*arg_it)) {*/
+        //If the error is a scalar, collect it also as a scalar
+        auto arg_info_scalar = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
+        if (arg_info_scalar) {
+            arg_scalar_errors.push_back(arg_info_scalar);
+        }
+        //}
+        dbgs() << "\n\n";
+    }
+    dbgs() << ("Arguments end.");
+
+
+    auto it = functions_still_to_visit.find(calledFunctionName);
+    if (it != functions_still_to_visit.end()) {
+        //We mark the called function as visited from the global queue, so we will not visit it starting from root.
+        functions_still_to_visit.erase(calledFunctionName);
+        dbgs() << "Function " << calledFunctionName << " marked as visited in global queue.\n";
+    } else {
+        emitError("Cannot find function " + calledFunctionName + " in global queue!\n");
+    }
+
+    //Allocating variable for result: all returns will have the same type, and therefore a cast, if needed
+    shared_ptr<OptimizerInfo> retInfo;
+    if (auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata)) {
+        auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
+        if (fptype) {
+            dbgs() << fptype->toString();
+            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange,
+                                                                                 instruction->getFunction()->getName());
+            retInfo = result;
+        } else {
+            dbgs() << "There was an input info but no fix point associated.\n";
+        }
+    } else if (auto pInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata)) {
+        auto info = loadStructInfo(instruction, pInfo, "");
+        saveInfoForValue(instruction, info);
+        retInfo = info;
+    } else {
+        dbgs() << "No info available on return value, maybe it is not a floating point call.\n";
+    }
+
+    //in retInfo we now have a variable for the return value of the function. Every return should be casted against it!
+
+
+
+
+    //Obviously the type should be sufficient to contain the result
+
+
+
+
+    //In this case we have no known math function.
+    //We will have, when enabled, math functions. In this case these will be handled here!
+    //TODO: handle known fix point math functions
+
+    // if not a whitelisted then try to fetch it from Module
+    // fetch llvm::Function
+    if (function != known_functions.end()) {
+        dbgs() << ("The function belongs to the current module.");
+        // got the llvm::Function
+        llvm::Function *f = function->second;
+
+        // check for recursion
+        size_t call_count = 0;
+        for (size_t i = 0; i < call_stack.size(); i++) {
+            if (call_stack[i] == f) {
+                call_count++;
+            }
+        }
+
+        //WE DO NOT SUPPORT RECURSION!
+        if (call_count <= 1) {
+            // Can process
+            // update parameter metadata
+            dbgs() << ("Processing function...\n");
+            processFunction(*f, arg_errors, retInfo);
+            dbgs() << "Finished processing call " << calledFunctionName << " : ";
+        } else {
+            emitError("Recursion NOT supported!");
+            return;
+        }
+
+    } else {
+        //FIXME: this branch is totally avoided as it is handled before, make the correct corrections
+        //the function was not found in current module: it is undeclared
+        const auto intrinsicsID = callee->getIntrinsicID();
+        if (intrinsicsID == llvm::Intrinsic::not_intrinsic) {
+            // TODO: handle case of external function call: element must be in original type form and result is forced to be a double
+        } else {
+            switch (intrinsicsID) {
+                case llvm::Intrinsic::memcpy:
+                    //handleMemCpyIntrinsics(call_i);
+                    llvm_unreachable("Memcpy not handled atm!");
+                    break;
+                default:
+                    emitError("skipping intrinsic " + calledFunctionName);
+            }
+            // TODO handle case of llvm intrinsics function call
+        }
+    }
+
+
+    return;
+
+}
+
+void Optimizer::initialize() {
+    for (llvm::Function &f : module.functions()) {
+        dbgs() << "\nGetting info of " << f.getName() << ":\n";
+        if (f.empty()) {
+            continue;
+        }
+        const std::string name = f.getName();
+        known_functions[name] = &f;
+        functions_still_to_visit[name] = &f;
+    }
+
+}
+
+void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> argInfo,
+                                shared_ptr<OptimizerInfo> retInfo) {
+    dbgs() << "\n============ FUNCTION " << f.getName() << " ============\n";
+
+    if(f.arg_size() != argInfo.size()){
+        llvm_unreachable("Sizes should be equal!");
+    }
+
+    auto argInfoIt = argInfo.begin();
+    for (auto arg = f.arg_begin(); arg != f.arg_end(); arg++, argInfoIt++) {
+        if(*argInfoIt){
+            dbgs() << "Copying info of this value.\n";
+            saveInfoForValue(&(*arg), *argInfoIt);
+        }else{
+            dbgs() << "No info for this value.\n";
+        }
+
+    }
+
+    //Even if null, we push this on the stack. The return will handle it hopefully
+    retStack.push(retInfo);
+
+
+    //As we have copy of the same function for
+    for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
+        //C++ is horrible
+        (*iIt).print(dbgs());
+        dbgs() << "     -having-     ";
+        if (!tuner->hasInfo(&(*iIt))) {
+            dbgs() << "No info available.\n";
+        } else {
+            dbgs() << tuner->valueInfo(&(*iIt))->metadata->toString() << "\n";
+        }
+
+        handleInstruction(&(*iIt), tuner->valueInfo(&(*iIt)));
+        dbgs() << "\n\n";
+    }
+
+    //When the analysis is completed, we remove the info from the stack, as it is no more necessary.
+    retStack.pop();
+
+}
+
+void Optimizer::handleReturn(Instruction *instr, shared_ptr<ValueInfo> valueInfo) {
+    const auto *ret_i = dyn_cast<llvm::ReturnInst>(instr);
+    if (!ret_i) {
+        llvm_unreachable("Could not convert Return Instruction to ReturnInstr");
+        return;
+    }
+
+    llvm::Value *ret_val = ret_i->getReturnValue();
+
+    if (!ret_val) {
+        dbgs() << "Handling return void, doing nothing.\n";
+        return;
+    }
+
+
+    //When returning, we must return the same data type used.
+    //Therefore we should eventually take into account the conversion cost.
+    auto regInfo = getInfoOfValue(ret_val);
+    if (!regInfo) {
+        dbgs() << "No info on returned value, maybe a non float return, forgetting about it.\n";
+        return;
+    }
+
+
+    auto info = retStack.top();
+    if (!info) {
+        emitError("We wanted to save a result, but on the stack there is not an info available. This maybe an error!");
+        return;
+    }
+
+    auto infoLinear=dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
+    if(!infoLinear){
+        llvm_unreachable("Structure return still not handled!");
+    }
+
+    auto allocated = allocateNewVariableWithCastCost(ret_val, instr);
+    insertTypeEqualityConstraint(infoLinear, allocated, true);
+
+
+
 }
 
 
