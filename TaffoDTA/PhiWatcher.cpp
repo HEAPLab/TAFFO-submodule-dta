@@ -4,7 +4,7 @@ using namespace tuner;
 
 void PhiWatcher::openPhiLoop(PHINode *phiNode, Value *requestedValue) {
     if (pairsToClose.find(requestedValue) == pairsToClose.end()) {
-        pairsToClose.insert(make_pair(phiNode, vector<PHINode *>()));
+        pairsToClose.insert(make_pair(requestedValue, vector<PHINode *>()));
     }
 
     pairsToClose[requestedValue].push_back(phiNode);
@@ -35,5 +35,20 @@ void PhiWatcher::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
         pairsToClose.erase(workingEntry);
     }
 
+
+}
+
+void PhiWatcher::dumpState() {
+    if(pairsToClose.empty()){
+        dbgs() << "All Phi loops closed!\n";
+    }
+    for(auto pair :pairsToClose){
+        pair.first->print(dbgs());
+        dbgs() << " STILL MISSING; will close:\n";
+        for(auto a : pair.second){
+            a->print(dbgs());
+            dbgs() << "\n";
+        }
+    }
 
 }

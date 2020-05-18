@@ -15,6 +15,7 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
     //In fact, the same constant may be used in different ways, but by the fact that
     //it is a constant, it may be modified in the final code
     //For example, a double 1.00 can become a float 1.00 in one place and a fixp 1 in another!
+    dbgs() << "Processing constant...\n";
 
     if(auto global = dyn_cast_or_null<GlobalObject>(constant)){
         llvm_unreachable("This should already have been handled!");
@@ -23,6 +24,7 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
     if (auto constantData = dyn_cast_or_null<ConstantData>(constant)) {
         //ATM: only handling FP types, should be enough
         if (auto constantFP = dyn_cast_or_null<ConstantFP>(constant)) {
+            dbgs() << "Processing FPconstant...\n";
 
             APFloat tmp = constantFP->getValueAPF();
             bool losesInfo;

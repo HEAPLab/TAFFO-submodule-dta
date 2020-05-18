@@ -203,10 +203,12 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     for (unsigned index = 0; index < phi_n->getNumIncomingValues(); index++) {
         dbgs() << "[Phi] Handlign operator " << index << "...\n";
         Value *op = phi_n->getIncomingValue(index);
-        if(valueHasInfo(op)) {
-            dbgs() << "[Phi] We have infos, treating as usual.\n";
-            closePhiLoop(phi_n, op);
 
+        if(getInfoOfValue(op)) {
+            dbgs() << "[Phi] We have infos, treating as usual.\n";
+            //because yes, integrity checks....
+            openPhiLoop(phi_n, op);
+            closePhiLoop(phi_n, op);
         }else{
             dbgs() << "[Phi] No value available, inserting in delayed set.\n";
             openPhiLoop(phi_n, op);
@@ -216,6 +218,7 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
 
     dbgs() << "[Phi] Elaboration concluded. Missing " << missing << " values.\n";
 
+    phiWatcher.dumpState();
 
 
 }

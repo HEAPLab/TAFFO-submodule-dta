@@ -84,9 +84,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
 
     auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos());
-    if (insertInList) {
-        saveInfoForValue(value, optimizerInfo);
-    }
+
 
     dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
            << optimizerInfo->maxBits << "];\n";
@@ -123,6 +121,10 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -M));
     model.insertLinearConstraint(constraint, Model::LE, 0);
+
+    if (insertInList) {
+        saveInfoForValue(value, optimizerInfo);
+    }
 
     return optimizerInfo;
 
@@ -415,6 +417,9 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
 
 void Optimizer::finish() {
     model.finalizeAndSolve();
+
+    dbgs() << "[Phi] Phi node state:\n";
+    phiWatcher.dumpState();
 }
 
 void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2, bool forceFixBitsConstraint) {
@@ -529,9 +534,12 @@ void Optimizer::saveInfoForValue(Value* value, shared_ptr<OptimizerInfo> optInfo
 
     valueToVariableName.insert(make_pair(value, optInfo));
 
+    int closed = 0;
     while (PHINode * phiNode = phiWatcher.getPhiNodeToClose(value)){
         closePhiLoop(phiNode, value);
+        closed ++;
     }
+    dbgs() << "Closed " << closed << " PHI loops\n";
 }
 
 bool Optimizer::valueHasInfo(Value*value){

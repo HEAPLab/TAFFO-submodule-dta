@@ -1,15 +1,29 @@
 #include <cassert>
 #include <cmath>
 #include "Model.h"
+#include "llvm/Support/Debug.h"
+#include "llvm/Pass.h"
+#include "llvm/IR/Module.h"
+#include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/SmallPtrSet.h"
+#include "llvm/ADT/Statistic.h"
+#include "llvm/Support/CommandLine.h"
+#include "InputInfo.h"
+#include "Metadata.h"
+#include "TypeUtils.h"
+#include "Infos.h"
+#include "OptimizerInfo.h"
+#include "Model.h"
 
 using namespace tuner;
+using namespace llvm;
 void Model::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType, double rightSide) {
     //modelFile << "inserting constraint: ";
     //solver.Add(x + 7 * y <= 17.5)
     //Example of
     modelFile<<"solver.Add(";
     for (auto p : variables) {
-        assert(isVariableDeclared(p.first) && "Variable not declared!");
+        assert(isVariableDeclared(p.first) || VARIABLE_NOT_DECLARED(p.first));
         if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
             modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
             continue;
@@ -97,4 +111,15 @@ void Model::writeOutObjectiveFunction() {
 
     modelFile<<")\n\n";
 
+}
+
+bool Model::VARIABLE_NOT_DECLARED(string var){
+    dbgs() << "THIS VARIABLE WAS NOT DECLARED >>" << var <<"<<\n";
+    dbgs() << "Here is a list of declared vars:\n";
+
+    for(string a : variablesPool){
+        dbgs() << ">>"<<a<<"<<\n";
+    }
+
+    assert(false);
 }

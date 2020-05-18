@@ -50,6 +50,8 @@ namespace tuner {
         void insertObjectiveElement(const pair<string, double> &variables);
 
         void writeOutObjectiveFunction();
+
+        bool VARIABLE_NOT_DECLARED(string var);
     };
 }
 

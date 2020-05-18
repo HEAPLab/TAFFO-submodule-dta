@@ -44,6 +44,8 @@ namespace tuner {
 
         void closePhiLoop(PHINode *phiNode, Value *requestedNode);
 
+        void dumpState();
+
     };
 
     class Optimizer {
