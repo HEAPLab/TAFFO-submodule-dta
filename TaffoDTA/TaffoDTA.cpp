@@ -641,7 +641,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
                                       const SmallPtrSetImpl<llvm::Value *> &valset) {
     assert(vals.size() == valset.size() && "They must contain the same elements.");
 
-    Optimizer optimizer(m, this);
+    Optimizer optimizer(m, this, "dummyModel.csv");
     optimizer.initialize();
 
     dbgs() << "\n============ GLOBALS ============\n";

@@ -16,6 +16,7 @@
 #include "Model.h"
 
 #include "TaffoDTA.h"
+#include "CPUCosts.h"
 
 #ifndef __TAFFO_DTA_OPTIMIZER_H__
 #define __TAFFO_DTA_OPTIMIZER_H__
@@ -36,7 +37,7 @@ namespace tuner {
     //This class contains references to phi node that has no been closed yet
     class PhiWatcher {
     private:
-        DenseMap<llvm::Value *, vector<PHINode*>> pairsToClose;
+        DenseMap<llvm::Value *, vector<PHINode *>> pairsToClose;
 
 
     public:
@@ -61,12 +62,12 @@ namespace tuner {
         std::stack<shared_ptr<OptimizerInfo>> retStack;
 
 
-
         DenseMap<llvm::Value *, std::shared_ptr<OptimizerInfo>> valueToVariableName;
         Model model;
         Module &module;
         TaffoTuner *tuner;
 
+        CPUCosts cpuCosts;
         PhiWatcher phiWatcher;
 
     public:
@@ -76,8 +77,8 @@ namespace tuner {
 
         void finish();
 
-        explicit Optimizer(Module & mm, TaffoTuner * tuner) : model(Model::MIN), module(mm), tuner(tuner) {
-
+        explicit Optimizer(Module &mm, TaffoTuner *tuner, string modelFile) : model(Model::MIN), module(mm), tuner(tuner), cpuCosts(modelFile) {
+            cpuCosts.dump();
         }
 
         Optimizer();

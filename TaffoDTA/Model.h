@@ -22,7 +22,7 @@ namespace tuner {
 
         vector<pair<string, double>> objectiveFunction;
         ProblemType  problemType;
-        Model();
+        Model() = delete;
     public:
 
 
