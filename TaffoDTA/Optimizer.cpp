@@ -6,13 +6,13 @@ using namespace mdutils;
 //FIXME: I_COST should absolutely not be constant
 //FIXME: K_COST should be tunable in some way
 #define I_COST 1
-#define K_SHIFT 1
+/*#define K_SHIFT 1
 #define K_FIX_TO_FLOAT 1
 #define K_FLOAT_TO_FIX 1
 #define K_FIX_TO_DOUBLE 1
 #define K_DOUBLE_TO_FIX 1
 #define K_FLOAT_TO_DOUBLE 1
-#define K_DOUBLE_TO_FLOAT 1
+#define K_DOUBLE_TO_FLOAT 1*/
 #define P_COST 1
 #define M 10000
 
@@ -373,8 +373,8 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     model.insertLinearConstraint(constraint, Model::LE, 0);
 
     //Casting costs
-    model.insertObjectiveElement(make_pair(C1, I_COST * K_SHIFT));
-    model.insertObjectiveElement(make_pair(C2, I_COST * K_SHIFT));
+    model.insertObjectiveElement(make_pair(C1, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)));
+    model.insertObjectiveElement(make_pair(C2, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)));
 
 
 
@@ -403,7 +403,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C3, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1);
-    model.insertObjectiveElement(make_pair(C3, I_COST * K_FIX_TO_FLOAT));
+    model.insertObjectiveElement(make_pair(C3, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FLOAT)));
 
 
     //FLOAT to FIX
@@ -412,7 +412,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C4, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1);
-    model.insertObjectiveElement(make_pair(C4, I_COST * K_FLOAT_TO_FIX));
+    model.insertObjectiveElement(make_pair(C4, I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_FIX)));
 
     //FIX to DOUBLE
     constraint.clear();
@@ -420,7 +420,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C5, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1);
-    model.insertObjectiveElement(make_pair(C5, I_COST * K_FIX_TO_DOUBLE));
+    model.insertObjectiveElement(make_pair(C5, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_DOUBLE)));
 
 
     //DOUBLE to FIX
@@ -429,7 +429,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C6, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1);
-    model.insertObjectiveElement(make_pair(C6, I_COST * K_DOUBLE_TO_FIX));
+    model.insertObjectiveElement(make_pair(C6, I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FIX)));
 
 
 
@@ -439,7 +439,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C7, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1);
-    model.insertObjectiveElement(make_pair(C7, I_COST * K_FLOAT_TO_DOUBLE));
+    model.insertObjectiveElement(make_pair(C7, I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_DOUBLE)));
 
 
     //DOUBLE to FLOAT
@@ -448,7 +448,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C8, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1);
-    model.insertObjectiveElement(make_pair(C8, I_COST * K_DOUBLE_TO_FLOAT));
+    model.insertObjectiveElement(make_pair(C8, I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FLOAT)));
 
 
     return optimizerInfo;

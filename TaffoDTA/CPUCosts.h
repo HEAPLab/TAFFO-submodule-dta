@@ -50,6 +50,8 @@ namespace tuner {
         string CostsIdToString(CostsId id);
 
         void dump();
+
+        double getCost(CostsId id);
     };
 
 

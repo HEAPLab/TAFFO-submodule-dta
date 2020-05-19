@@ -87,3 +87,12 @@ void CPUCosts::dump(){
         llvm::dbgs() << "[" << CostsIdToString(pair.first) << ", " << pair.second << "]\n";
     }
 }
+
+double CPUCosts::getCost(CPUCosts::CostsId id) {
+    auto it = costsMap.find(id);
+    if(it!=costsMap.end()){
+        return it->second;
+    }
+
+    llvm_unreachable("This cost was not loaded from model file!");
+}

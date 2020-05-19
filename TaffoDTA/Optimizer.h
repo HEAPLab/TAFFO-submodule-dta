@@ -160,6 +160,10 @@ namespace tuner {
         void handleTerminators(Instruction *term, shared_ptr<ValueInfo> valueInfo);
 
         void handleReturn(Instruction *instr, shared_ptr<ValueInfo> valueInfo);
+
+        shared_ptr<OptimizerScalarInfo>
+        handleBinOpCommon(Instruction *instr, Value *op1, Value *op2, bool forceFixEquality,
+                          shared_ptr<ValueInfo> valueInfos);
     };
 
 
