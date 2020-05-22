@@ -38,7 +38,8 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
                 dbgs() << "No fixed point info associated. Bailing out.\n";
                 return;
             }
-            allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, alloca->getFunction()->getName());
+            auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, alloca->getFunction()->getName(), false);
+            saveInfoForValue(alloca, make_shared<OptimizerPointerInfo>(info));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
             dbgs() << " ^ This is a real structure\n";
 
@@ -80,8 +81,13 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         auto loaded = load->getPointerOperand();
         shared_ptr<OptimizerInfo> infos = getInfoOfValue(loaded);
 
-        shared_ptr<OptimizerScalarInfo> sinfos = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(infos);
+        auto pinfos = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(infos);
+        if(!pinfos){
+            emitError("Loaded a variable with no information attached, or attached info not a Pointer type!");
+            return;
+        }
 
+        auto sinfos = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(pinfos->getOptInfo());
         if (!sinfos) {
             emitError("Loaded a variable with no information attached...");
             return;
@@ -126,7 +132,14 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
         return;
     }
 
-    auto info_pointer = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info1);
+    auto info_pointer_t = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info1);
+    if(!info_pointer_t){
+        emitError("No info on pointer value!");
+        return;
+    }
+
+
+    auto info_pointer = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info_pointer_t->getOptInfo());
 
     shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableWithCastCost(opRegister, instruction);
 
@@ -301,11 +314,20 @@ void Optimizer::handleGEPInstr(llvm::Instruction *gep, shared_ptr<ValueInfo> val
         }
         dbgs() << "]\n";
         //When we load an address from a "thing" we need to store a reference to it in order to successfully update the error
-        auto optInfo = getInfoOfValue(operand);
+        auto optInfo_t = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(getInfoOfValue(operand));
+        if (!optInfo_t) {
+            dbgs() << "Probably trying to access a non float element, bailing out.\n";
+            return;
+        }
+
+
+        auto optInfo = optInfo_t->getOptInfo();
         if (!optInfo) {
             dbgs() << "Probably trying to access a non float element, bailing out.\n";
             return;
         }
+
+
         //This will only contain displacements for struct fields...
         for (int i = 0; i < offset.size(); i++) {
             auto structInfo = dynamic_ptr_cast_or_null<OptimizerStructInfo>(optInfo);
@@ -319,7 +341,7 @@ void Optimizer::handleGEPInstr(llvm::Instruction *gep, shared_ptr<ValueInfo> val
 
 
         dbgs() << "Infos associated: " << optInfo->toString() << "\n";
-        saveInfoForValue(gep, optInfo);
+        saveInfoForValue(gep, make_shared<OptimizerPointerInfo>(optInfo));
         return;
     }
     emitError("Cannot extract GEPOffset!");

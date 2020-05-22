@@ -94,7 +94,14 @@ shared_ptr<OptimizerInfo> Optimizer::handleGEPConstant(const ConstantExpr *cexp_
         }
         dbgs() << "]\n";
         //When we load an address from a "thing" we need to store a reference to it in order to successfully update the error
-        auto optInfo = getInfoOfValue(operand);
+        auto optInfo_t = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(getInfoOfValue(operand));
+        if (!optInfo_t) {
+            dbgs() << "Probably trying to access a non float element, bailing out.\n";
+            return nullptr;
+        }
+
+
+        auto optInfo = optInfo_t->getOptInfo();
         if (!optInfo) {
             dbgs() << "Probably trying to access a non float element, bailing out.\n";
             return nullptr;
@@ -111,7 +118,7 @@ shared_ptr<OptimizerInfo> Optimizer::handleGEPConstant(const ConstantExpr *cexp_
         }
 
 
-        return optInfo;
+        return make_shared<OptimizerPointerInfo>(optInfo);
     }
     return nullptr;
 }

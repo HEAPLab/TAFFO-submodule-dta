@@ -34,7 +34,8 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
                 dbgs() << "No fixed point info associated. Bailing out.\n";
                 return;
             }
-            allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, "");
+            auto optInfo = allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, "", false);
+            saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(optInfo));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
             dbgs() << " ^ This is a real structure\n";
 
@@ -579,7 +580,10 @@ void Optimizer::saveInfoForValue(Value* value, shared_ptr<OptimizerInfo> optInfo
         closePhiLoop(phiNode, value);
         closed ++;
     }
-    dbgs() << "Closed " << closed << " PHI loops\n";
+
+    if(closed) {
+        dbgs() << "Closed " << closed << " PHI loops\n";
+    }
 }
 
 bool Optimizer::valueHasInfo(Value*value){

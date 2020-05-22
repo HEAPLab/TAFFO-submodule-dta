@@ -43,8 +43,6 @@ namespace tuner {
     public:
         void openPhiLoop(PHINode *phiNode, Value *requestedValue);
 
-        bool canClosePhiLoop(Value *value);
-
         PHINode *getPhiNodeToClose(Value *value);
 
         void closePhiLoop(PHINode *phiNode, Value *requestedNode);
