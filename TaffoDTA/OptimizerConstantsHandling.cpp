@@ -21,7 +21,7 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
         if(tuner->hasInfo(constant)){
             llvm_unreachable("This should already have been handled!");
         }else{
-            dbgs() << "Trying to process a non float global...";
+            dbgs() << "Trying to process a non float global...\n";
             return nullptr;
         }
 

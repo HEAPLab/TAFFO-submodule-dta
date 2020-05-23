@@ -9,7 +9,7 @@ int main(){
 
     scanf("%lf", &x);
     scanf("%lf", &y);
-    result_ptr = &result;
+    result_ptr = &x;
 
     *result_ptr = x + y;
 

@@ -38,7 +38,8 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
                 dbgs() << "No fixed point info associated. Bailing out.\n";
                 return;
             }
-            auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, alloca->getFunction()->getName(), false);
+            auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, alloca->getFunction()->getName(),
+                                                    false);
             saveInfoForValue(alloca, make_shared<OptimizerPointerInfo>(info));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
             dbgs() << " ^ This is a real structure\n";
@@ -73,19 +74,20 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
     }
 
     auto *load = dyn_cast<LoadInst>(instruction);
+    auto loaded = load->getPointerOperand();
+    shared_ptr<OptimizerInfo> infos = getInfoOfValue(loaded);
+
+    auto pinfos = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(infos);
+    if (!pinfos) {
+        emitError("Loaded a variable with no information attached, or attached info not a Pointer type!");
+        return;
+    }
 
 
     if (load->getType()->isFloatingPointTy()) {
         //We are loading a floating point, which means we have it's value in a register.
         //As we cannot cast anything during a load, the register will use the very same variable
-        auto loaded = load->getPointerOperand();
-        shared_ptr<OptimizerInfo> infos = getInfoOfValue(loaded);
 
-        auto pinfos = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(infos);
-        if(!pinfos){
-            emitError("Loaded a variable with no information attached, or attached info not a Pointer type!");
-            return;
-        }
 
         auto sinfos = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(pinfos->getOptInfo());
         if (!sinfos) {
@@ -93,14 +95,25 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
             return;
         }
 
+        //We are copying the infos.
         saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                        sinfos->getMinBits(),
                                                                        sinfos->getMaxBits()));
 
         dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
 
+    } else if (load->getType()->isPointerTy()) {
+        dbgs() << "Handling load of a pointer...\n";
+        //Unvrap the pointer, hoping that it is pointing to something
+        auto info = pinfos->getOptInfo();
+        if (info->getKind() != OptimizerInfo::K_Pointer) {
+            emitError("Expecting a pointer info when unwrapping a pointer...");
+            return;
+        }
+        saveInfoForValue(instruction, info);
+
     } else {
-        dbgs() << "Loading a non floating point, ingoring.\n";
+        dbgs() << "Loading a non floating point value, ingoring.\n";
         return;
     }
 
@@ -117,33 +130,52 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
 
     auto opWhereToStore = store->getPointerOperand();
     auto opRegister = store->getValueOperand();
+    auto info2 = getInfoOfValue(opRegister);
 
-    if (!opRegister->getType()->isFloatingPointTy()) {
+    if (opRegister->getType()->isFloatingPointTy()) {
+        auto info1 = getInfoOfValue(opWhereToStore);
+        if (!info1 || !info2) {
+            dbgs() << "One of the two values does not have info, ignoring...\n";
+            return;
+        }
+
+        auto info_pointer_t = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info1);
+        if (!info_pointer_t) {
+            emitError("No info on pointer value!");
+            return;
+        }
+
+
+        auto info_pointer = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info_pointer_t->getOptInfo());
+
+        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableWithCastCost(opRegister, instruction);
+
+        insertTypeEqualityConstraint(info_pointer, variable, true);
+    } else if (opRegister->getType()->isPointerTy()) {
+        //Storing a pointer. In the value there should be a pointer already, and the value where to store is, in fact,
+        //a pointer to a pointer
+        dbgs() << "The register is: ";
+        opRegister->print(dbgs());
+        dbgs() << "\n";
+        dbgs() << "Storing a pointer...\n";
+        if (!info2) {
+            dbgs() << "Skipping, as the value to save does not have any info...\n";
+            return;
+        }
+
+        if (info2->getKind() != OptimizerInfo::K_Pointer) {
+            emitError("Storing to a pointer a value that is not a pointer, ouch!");
+            return;
+        }
+
+        //We wrap the info with a dereference information
+        //When a double load occours, for example, this will be handled succesfully, hopefully!
+        saveInfoForPointer(opWhereToStore, make_shared<OptimizerPointerInfo>(info2));
+
+    } else {
         dbgs() << "Storing a non-floating point, skipping...\n";
         return;
     }
-
-
-    auto info1 = getInfoOfValue(opWhereToStore);
-    auto info2 = getInfoOfValue(opRegister);
-
-    if (!info1 || !info2) {
-        dbgs() << "One of the two values does not have info, ignoring...\n";
-        return;
-    }
-
-    auto info_pointer_t = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info1);
-    if(!info_pointer_t){
-        emitError("No info on pointer value!");
-        return;
-    }
-
-
-    auto info_pointer = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info_pointer_t->getOptInfo());
-
-    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableWithCastCost(opRegister, instruction);
-
-    insertTypeEqualityConstraint(info_pointer, variable, true);
 
 
 }
@@ -442,13 +474,12 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
     }
 
 
-
     const std::string calledFunctionName = callee->getName();
     dbgs() << ("We are calling " + calledFunctionName + "\n");
 
 
     auto function = known_functions.find(calledFunctionName);
-    if (function == known_functions.end()){
+    if (function == known_functions.end()) {
         dbgs() << "Calling an external function, UNSUPPORTED at the moment.\n";
         return;
     }
@@ -597,16 +628,16 @@ void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> arg
                                 shared_ptr<OptimizerInfo> retInfo) {
     dbgs() << "\n============ FUNCTION " << f.getName() << " ============\n";
 
-    if(f.arg_size() != argInfo.size()){
+    if (f.arg_size() != argInfo.size()) {
         llvm_unreachable("Sizes should be equal!");
     }
 
     auto argInfoIt = argInfo.begin();
     for (auto arg = f.arg_begin(); arg != f.arg_end(); arg++, argInfoIt++) {
-        if(*argInfoIt){
+        if (*argInfoIt) {
             dbgs() << "Copying info of this value.\n";
             saveInfoForValue(&(*arg), *argInfoIt);
-        }else{
+        } else {
             dbgs() << "No info for this value.\n";
         }
 
@@ -666,14 +697,68 @@ void Optimizer::handleReturn(Instruction *instr, shared_ptr<ValueInfo> valueInfo
         return;
     }
 
-    auto infoLinear=dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
-    if(!infoLinear){
+    auto infoLinear = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
+    if (!infoLinear) {
         llvm_unreachable("Structure return still not handled!");
     }
 
     auto allocated = allocateNewVariableWithCastCost(ret_val, instr);
     insertTypeEqualityConstraint(infoLinear, allocated, true);
 
+
+}
+
+void Optimizer::saveInfoForPointer(Value *value, shared_ptr<OptimizerPointerInfo> pointerInfo) {
+    assert(value && "Value cannot be null!");
+    assert(pointerInfo && "Pointer info cannot be nullptr!");
+
+    auto info = getInfoOfValue(value);
+    if (!info) {
+        dbgs() << "Storing new info for the value!\n";
+        saveInfoForValue(value, pointerInfo);
+        return;
+    }
+
+    dbgs() << "Updating info of pointer...";
+
+    //PointerInfo() -> PointerInfo() -> Value[s]
+    auto info_old = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info);
+    assert(info_old && info_old->getOptInfo()->getKind() == OptimizerInfo::K_Pointer);
+    info_old = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info_old->getOptInfo());
+    assert(info_old);
+    //We here should have info about the pointed element
+    auto info_old_pointee = info_old->getOptInfo();
+    if (info_old_pointee->getKind() == OptimizerInfo::K_Pointer) {
+        dbgs() << "[WARNING] not handling pointer to pointer update!\n";
+        return;
+    }
+
+    //Same code but for new data
+    auto info_new = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(pointerInfo);
+    assert(info_new && info_new->getOptInfo()->getKind() == OptimizerInfo::K_Pointer);
+    info_new = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info_new->getOptInfo());
+    assert(info_new);
+    //We here should have info about the pointed element
+    auto info_new_pointee = info_new->getOptInfo();
+    if (info_new_pointee->getKind() == OptimizerInfo::K_Pointer) {
+        dbgs() << "[WARNING] not handling pointer to pointer update (and also unpredicted state!)!\n";
+        return;
+    }
+
+    if (info_old_pointee->getKind() != info_new_pointee->getKind()) {
+        dbgs()
+                << "[WARNING] This pointer will in a point refer to two different variable that may have different data types.\n"
+                   "The results may be unpredictable, you have been warned!\n";
+    }
+
+    if (!info_old_pointee->operator==(*info_new_pointee)) {
+        dbgs()
+                << "[WARNING] This pointer will in a point refer to two different variable that may have different data types.\n"
+                   "The results may be unpredictable, you have been warned!\n";
+    }
+
+
+    valueToVariableName[value] = pointerInfo;
 
 
 }

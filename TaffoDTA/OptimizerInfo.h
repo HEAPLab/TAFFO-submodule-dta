@@ -32,6 +32,10 @@ namespace tuner {
             return "OptimizerInfo";
         };
 
+        virtual bool operator==(const OptimizerInfo &b) const {
+            return Kind == b.Kind;
+        }
+
 
     private:
         const OptimizerInfoKind Kind;
@@ -86,6 +90,15 @@ namespace tuner {
 
         const string getFractBitsVariable() {
             return *baseName + "_fixbits";
+        }
+
+        bool operator==(const OptimizerInfo &other) const override {
+            if (!OptimizerInfo::operator==(other)) {
+                return false;
+            }
+
+            auto *b2 = llvm::cast<OptimizerScalarInfo>(&other);
+            return baseName == b2->baseName;
         }
 
 
@@ -146,6 +159,33 @@ namespace tuner {
             return "STRUCT TO STRING NOT IMPLEMENTED!";
         };
 
+        bool operator==(const OptimizerInfo &other) const override {
+            if (!OptimizerInfo::operator==(other)) {
+                return false;
+            }
+
+            auto *b2 = llvm::cast<OptimizerStructInfo>(&other);
+            if (Fields.size() != b2->Fields.size()) {
+                return false;
+            }
+
+            for (int i = 0; i < Fields.size(); i++) {
+                if(Fields[i]== nullptr && b2->Fields[i]== nullptr){
+                    continue;
+                }
+                if(Fields[i]== nullptr){
+                    return false;
+                }
+                if(b2->Fields[i]== nullptr){
+                    return false;
+                }
+                if(!Fields[i]->operator==(*b2->Fields[i])){
+                    return false;
+                }
+
+            }
+        }
+
 
         static bool classof(const OptimizerInfo *M) { return M->getKind() == K_Struct; }
     };
@@ -160,7 +200,7 @@ namespace tuner {
         OptimizerPointerInfo(shared_ptr<OptimizerInfo> pointee)
                 : OptimizerInfo(K_Pointer) {
             assert(pointee && "Pointee should not be null!");
-            optInfo=pointee;
+            optInfo = pointee;
         }
 
         const shared_ptr<OptimizerInfo> &getOptInfo() const {

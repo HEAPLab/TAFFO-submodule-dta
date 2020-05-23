@@ -162,6 +162,8 @@ namespace tuner {
         shared_ptr<OptimizerScalarInfo>
         handleBinOpCommon(Instruction *instr, Value *op1, Value *op2, bool forceFixEquality,
                           shared_ptr<ValueInfo> valueInfos);
+
+        void saveInfoForPointer(Value *value, shared_ptr<OptimizerPointerInfo> pointerInfo);
     };
 
 
