@@ -64,9 +64,11 @@ void Model::createVariable(const string& varName, double min, double max) {
 }
 
 Model::Model(ProblemType type) {
-    modelFile.open("./model_test.txt", ios::out|ios::trunc);
+    modelFile.open("./model_test.py", ios::out|ios::trunc);
     assert(modelFile.is_open() && "File open failed!");
     this->problemType=type;
+
+
 }
 
 void Model::finalizeAndSolve() {
@@ -74,6 +76,79 @@ void Model::finalizeAndSolve() {
     writeOutObjectiveFunction();
     modelFile<<"# Model declaration end.";
     modelFile.close();
+
+
+    //We should run solver.py that automatically imports the predeclared file
+    //FIXME: AAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAH
+    int result = system("python3 solver.py");
+    assert(!result && "Error while running the solver!");
+
+    loadResultsFromFile("model_results.txt");
+
+    dbgs() << "Dumping results:\n\n";
+    for(auto var : variablesPool){
+        dbgs() << var << " = " << getVariableValue(var) << "\n";
+    }
+
+}
+
+void Model::loadResultsFromFile(string modelFile) {
+    fstream fin;
+
+    fin.open(modelFile, ios::in);
+
+    assert(fin.is_open() && "Cannot open results file!");
+
+    string line, field, temp;
+    vector<string> row;
+
+    //for each line in the file
+    int nline=0;
+    while (getline(fin, line)) {
+
+        //read the file until a newline is found (discarded from final string)
+        row.clear();
+        double value = 0;
+        nline++;
+
+
+        //Generate a stream in order to be used by getLine
+        stringstream lineStream(line);
+        //llvm::dbgs() << "Line: " << line << "\n";
+
+        while (getline(lineStream, field, ',')) {
+            row.push_back(field);
+        }
+
+        if (row.size() != 2) {
+            llvm::dbgs() << "Malformed line found: [" << line << "] on line"<< nline << ", skipping...\n";
+            continue;
+        }
+
+        string varName = row[0];
+        value = stod(row[1]);
+
+        if(varName == "__ERROR__"){
+            assert(value == 0 && "An error was made during the execution of the model.");
+            continue;
+        }
+
+        if(!isVariableDeclared(varName)){
+            dbgs() << "Trying to load results for an unknown variable!\nThis may be signal of a more problematic error!\n\n";
+            VARIABLE_NOT_DECLARED(varName);
+        }
+
+        if(variableValues.find(varName) != variableValues.end()){
+            llvm::dbgs() << "Found duplicated result: [" << line << "], skipping...\n";
+            continue;
+        }
+
+        variableValues.insert(make_pair(varName, value));
+
+
+    }
+
+    assert(variableValues.size() == variablesPool.size() && "Some variables were not loaded!");
 }
 
 bool Model::isVariableDeclared(const string& variable) {
@@ -122,4 +197,15 @@ bool Model::VARIABLE_NOT_DECLARED(string var){
     }
 
     assert(false);
+}
+
+double Model::getVariableValue(string variable){
+    if(!isVariableDeclared(variable)){
+        VARIABLE_NOT_DECLARED(variable);
+    }
+
+    auto res = variableValues.find(variable);
+    assert(res!=variableValues.end() && "The value of this variable was not found in the model!");
+
+    return res->second;
 }

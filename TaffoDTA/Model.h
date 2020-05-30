@@ -2,6 +2,7 @@
 #include <vector>
 #include <set>
 #include <fstream>
+#include <map>
 
 
 #ifndef __TAFFO_DTA_MODEL_H__
@@ -18,6 +19,7 @@ namespace tuner {
 
     private:
         set<string> variablesPool;
+        map<string, double> variableValues;
         ofstream modelFile;
 
         vector<pair<string, double>> objectiveFunction;
@@ -52,6 +54,10 @@ namespace tuner {
         void writeOutObjectiveFunction();
 
         bool VARIABLE_NOT_DECLARED(string var);
+
+        void loadResultsFromFile(string modelFile);
+
+        double getVariableValue(string variable);
     };
 }
 

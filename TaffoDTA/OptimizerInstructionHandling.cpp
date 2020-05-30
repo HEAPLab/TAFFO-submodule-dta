@@ -110,6 +110,7 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
             emitError("Expecting a pointer info when unwrapping a pointer...");
             return;
         }
+        dbgs() << "The final register will have as info: " << info->toString() << "\n";
         saveInfoForValue(instruction, info);
 
     } else {
@@ -144,6 +145,8 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
             emitError("No info on pointer value!");
             return;
         }
+
+        dbgs() << "Storing " << info2->toString() << " into " << info1->toString() << "\n";
 
 
         auto info_pointer = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info_pointer_t->getOptInfo());
@@ -719,7 +722,7 @@ void Optimizer::saveInfoForPointer(Value *value, shared_ptr<OptimizerPointerInfo
         return;
     }
 
-    dbgs() << "Updating info of pointer...";
+    dbgs() << "Updating info of pointer...\n";
 
     //PointerInfo() -> PointerInfo() -> Value[s]
     auto info_old = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info);
