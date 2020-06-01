@@ -469,6 +469,9 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
         return;
     }
 
+    //FIXME: each time a call is not handled, a forced casting to the older type is needed.
+    //Therefore this should be added as a cost, not simply ignored
+
     // fetch function name
     llvm::Function *callee = call_i->getCalledFunction();
     if (callee == nullptr) {
@@ -566,7 +569,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
     // if not a whitelisted then try to fetch it from Module
     // fetch llvm::Function
     if (function != known_functions.end()) {
-        dbgs() << ("The function belongs to the current module.");
+        dbgs() << ("The function belongs to the current module.\n");
         // got the llvm::Function
         llvm::Function *f = function->second;
 
@@ -763,6 +766,138 @@ void Optimizer::saveInfoForPointer(Value *value, shared_ptr<OptimizerPointerInfo
 
     valueToVariableName[value] = pointerInfo;
 
+
+}
+
+
+void Optimizer::handleCallFromRoot(Function *f) {
+    //Therefore this should be added as a cost, not simply ignored
+
+
+
+
+    const std::string calledFunctionName = f->getName();
+    dbgs() << ("We are calling " + calledFunctionName + "\n");
+
+
+    auto function = known_functions.find(calledFunctionName);
+    if (function == known_functions.end()) {
+        dbgs() << "Calling an external function, UNSUPPORTED at the moment.\n";
+        return;
+    }
+
+
+    //In teoria non dobbiamo mai pushare variabili per quanto riguarda una chiamata da root
+    //Infatti, la chiamata da root implica la compatibilità con codice esterno che si aspetta che non vengano modificate
+    //le call ad altri tipi. Per lo stesso motivo non serve nulla per il valore di ritorno.
+    /*
+    // fetch ranges of arguments
+    std::list<shared_ptr<OptimizerInfo>> arg_errors;
+    std::list<shared_ptr<OptimizerScalarInfo>> arg_scalar_errors;
+    dbgs() << ("Arguments:\n");
+    for (auto arg = f->arg_begin(); arg != f->arg_end(); arg++) {
+        dbgs() << "info for ";
+        (arg)->print(dbgs());
+        dbgs() << " --> ";
+
+        //if a variable was declared for type
+        auto info = getInfoOfValue(arg);
+        if (!info) {
+            //This is needed to resolve eventual constants in function call (I'm looking at you, LLVM)
+            dbgs() << "No error for the argument!\n";
+        } else {
+            dbgs() << "Got this error: " << info->toString() << "\n";
+        }
+
+        //Even if is a null value, we push it!
+        arg_errors.push_back(info);
+
+        //If the error is a scalar, collect it also as a scalar
+        auto arg_info_scalar = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
+        if (arg_info_scalar) {
+            arg_scalar_errors.push_back(arg_info_scalar);
+        }
+        //}
+        dbgs() << "\n\n";
+    }
+    dbgs() << ("Arguments end.");*/
+
+
+    auto it = functions_still_to_visit.find(calledFunctionName);
+    if (it != functions_still_to_visit.end()) {
+        //We mark the called function as visited from the global queue, so we will not visit it starting from root.
+        functions_still_to_visit.erase(calledFunctionName);
+        dbgs() << "Function " << calledFunctionName << " marked as visited in global queue.\n";
+    } else {
+        dbgs()
+                << "[WARNING] We already visited this function, for example when called from another function. Ignoring.\n";
+
+        return;
+    }
+
+    //Allocating variable for result: all returns will have the same type, and therefore a cast, if needed
+    //SEE COMMENT BEFORE!
+    /*shared_ptr<OptimizerInfo> retInfo;
+    if (auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata)) {
+        auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
+        if (fptype) {
+            dbgs() << fptype->toString();
+            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange,
+                                                                                 instruction->getFunction()->getName());
+            retInfo = result;
+        } else {
+            dbgs() << "There was an input info but no fix point associated.\n";
+        }
+    } else if (auto pInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata)) {
+        auto info = loadStructInfo(instruction, pInfo, "");
+        saveInfoForValue(instruction, info);
+        retInfo = info;
+    } else {
+        dbgs() << "No info available on return value, maybe it is not a floating point call.\n";
+    }*/
+
+    //in retInfo we now have a variable for the return value of the function. Every return should be casted against it!
+
+
+
+
+    //Obviously the type should be sufficient to contain the result
+
+
+
+
+    //In this case we have no known math function.
+    //We will have, when enabled, math functions. In this case these will be handled here!
+
+
+    dbgs() << ("The function belongs to the current module.\n");
+    // got the llvm::Function
+
+
+    // check for recursion
+    //no stack check for recursion from root, I hope
+    /*size_t call_count = 0;
+    for (size_t i = 0; i < call_stack.size(); i++) {
+        if (call_stack[i] == f) {
+            call_count++;
+        }
+    }*/
+
+    std::list<shared_ptr<OptimizerInfo>> arg_errors;
+    dbgs() << ("Arguments:\n");
+    for (auto arg_i = f->arg_begin(); arg_i != f->arg_end(); arg_i++) {
+        //Even if is a null value, we push it!
+        arg_errors.push_back(nullptr);
+    }
+
+
+    dbgs() << ("Processing function...\n");
+
+    //See comment before to understand why these variable are set to nulls here
+    processFunction(*f, arg_errors, nullptr);
+
+
+    return;
 
 }
 

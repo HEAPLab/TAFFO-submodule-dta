@@ -79,7 +79,7 @@ void Model::finalizeAndSolve() {
 
 
     //We should run solver.py that automatically imports the predeclared file
-    //FIXME: AAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAH
+    //FIXME: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH
     int result = system("python3 solver.py");
     assert(!result && "Error while running the solver!");
 
@@ -130,6 +130,9 @@ void Model::loadResultsFromFile(string modelFile) {
 
         if(varName == "__ERROR__"){
             assert(value == 0 && "An error was made during the execution of the model.");
+            if(value==0){
+                dbgs() << "The model was solved correctly!\n";
+            }
             continue;
         }
 

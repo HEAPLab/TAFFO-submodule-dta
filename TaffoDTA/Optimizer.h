@@ -69,7 +69,7 @@ namespace tuner {
         PhiWatcher phiWatcher;
 
     public:
-        void handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
 
         void handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo);
 
@@ -83,7 +83,11 @@ namespace tuner {
 
         void initialize();
 
+        void handleCallFromRoot(Function *f);
+
     protected:
+        void handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
+
         shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value *value, shared_ptr<mdutils::FPType> fpInfo,
                                                                     shared_ptr<mdutils::Range> rangeInfo,
                                                                     string functionName, bool insertInList = true,
@@ -164,6 +168,8 @@ namespace tuner {
                           shared_ptr<ValueInfo> valueInfos);
 
         void saveInfoForPointer(Value *value, shared_ptr<OptimizerPointerInfo> pointerInfo);
+
+
     };
 
 

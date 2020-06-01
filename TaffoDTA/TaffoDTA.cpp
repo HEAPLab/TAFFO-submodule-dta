@@ -662,39 +662,25 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
     for (Function &f : m.functions()) {
         //Skip compiler provided functions
-        if (f.isIntrinsic())
+        if (f.isIntrinsic()) {
+            dbgs() << "Skipping intrinsic function " << f.getName() << "\n";
             continue;
+        }
 
         //Skip empty functions
-        if (f.empty())
+        if (f.empty()) {
+            dbgs() << "Skipping empty function " << f.getName() << "\n";
             continue;
+        }
 
         dbgs() << "\n============ FUNCTION " << f.getName() << " ============\n";
 
 
-        auto arg = f.arg_begin();
-        for (auto arg = f.arg_begin(); arg != f.arg_end(); arg++) {
-            //FIXME: MOVE ALL TO CALL THE OTHER FUNCTION THAT MANAGES THIS MESS ALL
-        }
+        optimizer.handleCallFromRoot(&f);
 
-        //TODO: think about treating a function as a separate domain OR as a whole with the caller
-        //As we have copy of the same function for
-        for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
-            //C++ is horrible
-            (*iIt).print(dbgs());
-            dbgs() << "     -having-     ";
-            if (!hasInfo(&(*iIt))) {
-                dbgs() << "No info available.\n";
-            } else {
-                if(valueInfo(&(*iIt))->metadata){
-                    dbgs() << valueInfo(&(*iIt))->metadata->toString() << "\n";
-                }
 
-            }
 
-            optimizer.handleInstruction(&(*iIt), valueInfo(&(*iIt)));
-            dbgs() << "\n\n";
-        }
+
     }
     optimizer.finish();
 
