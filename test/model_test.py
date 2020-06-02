@@ -94,6 +94,7 @@ main_a_div_float = solver.IntVar(0, 1, 'main_a_div_float')
 main_a_div_double = solver.IntVar(0, 1, 'main_a_div_double')
 solver.Add( + (1)*main_a_div_fixp + (1)*main_a_div_float + (1)*main_a_div_double==1)
 solver.Add( + (1)*main_a_div_fixbits + (-10000)*main_a_div_fixp<=0)
+solver.Add(main_a_div_float ==1);
 C1_main_a_div = solver.IntVar(0, 1, 'C1_main_a_div')
 C2_main_a_div = solver.IntVar(0, 1, 'C2_main_a_div')
 solver.Add( + (1)*main_a_fixbits + (-1)*main_a_div_fixbits + (-10000)*C1_main_a_div<=0)

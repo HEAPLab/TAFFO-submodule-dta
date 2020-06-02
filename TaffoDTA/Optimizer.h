@@ -21,6 +21,20 @@
 #ifndef __TAFFO_DTA_OPTIMIZER_H__
 #define __TAFFO_DTA_OPTIMIZER_H__
 
+
+//FIXME: I_COST should absolutely not be constant
+
+#define I_COST 1
+
+//This means how much the casting cost will be relevant for the computation
+#define TUNING_CASTING 1
+#define TUNING_MATH 1
+#define TUNING_ENOB 1
+
+#define P_COST 1
+#define M 10000
+
+
 using namespace llvm;
 
 namespace tuner {
