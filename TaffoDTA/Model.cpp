@@ -17,7 +17,7 @@
 
 using namespace tuner;
 using namespace llvm;
-void Model::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType, double rightSide) {
+void Model::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType, double rightSide, string comment) {
     //modelFile << "inserting constraint: ";
     //solver.Add(x + 7 * y <= 17.5)
     //Example of
@@ -43,7 +43,7 @@ void Model::insertLinearConstraint(const vector<pair<string, double>> &variables
             break;
     }
 
-    modelFile << rightSide << ")\n";
+    modelFile << rightSide << ")    #" << comment <<"\n";
 }
 
 void Model::createVariable(const string& varName) {

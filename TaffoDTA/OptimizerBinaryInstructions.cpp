@@ -70,9 +70,9 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
     if(!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)));
+    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)));
+    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)));
+    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)));
 
     //Precision cost
     //Handloed in allocating variable
@@ -89,9 +89,9 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
     if(!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)));
+    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FIX)));
+    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FLOAT)));
+    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)));
 
     //Precision cost
     //Handloed in allocating variable
@@ -108,9 +108,9 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
     if(!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)));
+    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FIX)));
+    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FLOAT)));
+    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)));
 
     //Precision cost
     //Handloed in allocating variable
@@ -127,9 +127,9 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
     if(!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)));
+    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FIX)));
+    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FLOAT)));
+    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)));
     //Precision cost
     //Handloed in allocating variable
 
@@ -146,9 +146,9 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
 
     if(!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)));
+    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FIX)));
+    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FLOAT)));
+    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)));
     //Precision cost
     //Handloed in allocating variable
 
