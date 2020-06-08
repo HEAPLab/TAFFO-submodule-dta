@@ -635,7 +635,6 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
     }
 }
 
-//TODO: in un primo momento andiamo a supportare una versione basica, supportando solo operazioni di base e niente puntatori
 
 void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &vals,
                                       const SmallPtrSetImpl<llvm::Value *> &valset) {
@@ -679,12 +678,43 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
         optimizer.handleCallFromRoot(&f);
 
 
-
-
     }
-    optimizer.finish();
+
+    assert(optimizer.finish() && "Optimizer did not find a solution!");
+
+
+    for (Value *v : vals) {
+        std::shared_ptr<ValueInfo> viu = valueInfo(v);
+        InputInfo *iiv = dyn_cast<InputInfo>(viu->metadata.get());
+
+        if(!iiv){
+            dbgs() << "[WARINING] Nullptr or struct, skipping as unsupported atm.\n";
+            continue;
+        }
+
+        if (valset.count(v)) {
+            //Read from the model, search for the data type associated with that value and convert it!
+            std::shared_ptr<mdutils::TType> fp = optimizer.getAssociatedMetadata(v);
+            if (!fp) {
+                dbgs() << "Invalid datatype returned!\n";
+                continue;
+            }
+
+            dbgs() << "Assigning " << fp->toString() << " to " ;
+            v->print(dbgs());
+            dbgs() << "\n";
+
+            //FIXME: add reset type in function!!!
+
+            iiv->IType.reset(fp->clone());
+        }
+    }
+
 
 }
+
+
+
 
 
 

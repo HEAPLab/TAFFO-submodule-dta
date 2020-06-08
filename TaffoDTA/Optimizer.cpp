@@ -71,7 +71,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
 
     dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
 
-    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos());
+    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos(), fpInfo->getWidth(), fpInfo->isSigned());
 
 
     dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
@@ -309,7 +309,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     unsigned minBits = info->minBits;
     unsigned maxBits = info->maxBits;
 
-    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits);
+    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits, info->totalBits, info->isSigned);
 
 
     dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits
@@ -446,11 +446,14 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
 }
 
 
-void Optimizer::finish() {
-    model.finalizeAndSolve();
-
+bool Optimizer::finish() {
     dbgs() << "[Phi] Phi node state:\n";
     phiWatcher.dumpState();
+
+
+    bool result = model.finalizeAndSolve();
+
+    return result;
 }
 
 void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1, shared_ptr<OptimizerScalarInfo> op2,
@@ -582,6 +585,59 @@ void Optimizer::saveInfoForValue(Value *value, shared_ptr<OptimizerInfo> optInfo
 bool Optimizer::valueHasInfo(Value *value) {
     return valueToVariableName.find(value) != valueToVariableName.end();
 }
+
+shared_ptr<mdutils::TType> Optimizer::getAssociatedMetadata(Value *pValue) {
+    auto res = getInfoOfValue(pValue);
+    if(!res){
+        return nullptr;
+    }
+
+    if(res->getKind() == OptimizerInfo::K_Field){
+        return modelvarToTType(dynamic_ptr_cast_or_null<OptimizerScalarInfo>(res));
+    }
+
+    if(res->getKind() == OptimizerInfo::K_Pointer){
+        auto res1 = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(res);
+        auto res2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(res1->getOptInfo());
+        assert(res2->getKind() == OptimizerInfo::K_Field && "Pointer struct still not supported!");
+        return modelvarToTType(res2);
+    }
+
+    llvm_unreachable("Not handled at the moment!");
+}
+
+shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalarInfo> scalarInfo) {
+    double selectedFixed = model.getVariableValue(scalarInfo->getFixedSelectedVariable());
+    double selectedFloat = model.getVariableValue(scalarInfo->getFloatSelectedVariable());
+    double selectedDouble = model.getVariableValue(scalarInfo->getDoubleSelectedVariable());
+    double fracbits = model.getVariableValue(scalarInfo->getFractBitsVariable());
+
+    assert(selectedDouble+selectedFixed+selectedFloat == 1 && "OMG! Catastrophic failure! Exactly one variable should be selected here!!!");
+
+    if(selectedFixed == 1){
+        return make_shared<mdutils::FPType>(scalarInfo->getTotalBits(), (int)fracbits, scalarInfo->isSigned);
+    }
+
+    //FIXME: should greatest number be given a value here?
+
+    if(selectedFloat == 1){
+        return make_shared<mdutils::FloatType>(FloatType::Float_float, 0);
+    }
+
+    if(selectedDouble == 1){
+        return make_shared<mdutils::FloatType>(FloatType::Float_double, 0);
+    }
+
+}
+
+
+
+
+
+
+
+
+
 
 
 

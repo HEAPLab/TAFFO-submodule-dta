@@ -98,7 +98,7 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         //We are copying the infos.
         saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                        sinfos->getMinBits(),
-                                                                       sinfos->getMaxBits()));
+                                                                       sinfos->getMaxBits(), sinfos->getTotalBits(), sinfos->isSigned));
 
         dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
 
@@ -198,7 +198,7 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
 
     saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                    sinfos->getMinBits(),
-                                                                   sinfos->getMaxBits()));
+                                                                   sinfos->getMaxBits(), sinfos->getTotalBits(), sinfos->isSigned));
 
     dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getBaseName() << "\n";
 
@@ -900,6 +900,7 @@ void Optimizer::handleCallFromRoot(Function *f) {
     return;
 
 }
+
 
 
 

@@ -71,7 +71,7 @@ Model::Model(ProblemType type) {
 
 }
 
-void Model::finalizeAndSolve() {
+bool Model::finalizeAndSolve() {
     assert(modelFile.is_open() && "Model not opened!");
     writeOutObjectiveFunction();
     modelFile<<"# Model declaration end.";
@@ -81,7 +81,11 @@ void Model::finalizeAndSolve() {
     //We should run solver.py that automatically imports the predeclared file
     //FIXME: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH
     int result = system("python3 solver.py");
-    assert(!result && "Error while running the solver!");
+    if(result){
+
+        dbgs() << "[ERROR] There was an error while solving the model!\n\n";
+        return false;
+    }
 
     loadResultsFromFile("model_results.txt");
 
@@ -90,9 +94,11 @@ void Model::finalizeAndSolve() {
         dbgs() << var << " = " << getVariableValue(var) << "\n";
     }
 
+    return true;
+
 }
 
-void Model::loadResultsFromFile(string modelFile) {
+bool Model::loadResultsFromFile(string modelFile) {
     fstream fin;
 
     fin.open(modelFile, ios::in);
@@ -129,10 +135,13 @@ void Model::loadResultsFromFile(string modelFile) {
         value = stod(row[1]);
 
         if(varName == "__ERROR__"){
-            assert(value == 0 && "An error was made during the execution of the model.");
             if(value==0){
                 dbgs() << "The model was solved correctly!\n";
+            }else{
+                dbgs() << "[ERROR] The Python solver signalled an error!\n\n";
+                return false;
             }
+            //Skips any other computation as this is a state message
             continue;
         }
 
@@ -151,7 +160,11 @@ void Model::loadResultsFromFile(string modelFile) {
 
     }
 
-    assert(variableValues.size() == variablesPool.size() && "Some variables were not loaded!");
+    if(variableValues.size() != variablesPool.size()){
+        dbgs() << "[ERROR] The number of variables in the file and in the model does not match!\n";
+        return false;
+    }
+    return true;
 }
 
 bool Model::isVariableDeclared(const string& variable) {

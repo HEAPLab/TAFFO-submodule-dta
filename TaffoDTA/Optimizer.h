@@ -87,7 +87,7 @@ namespace tuner {
 
         void handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo);
 
-        void finish();
+        bool finish();
 
         explicit Optimizer(Module &mm, TaffoTuner *tuner, string modelFile) : model(Model::MIN), module(mm), tuner(tuner), cpuCosts(modelFile) {
             cpuCosts.dump();
@@ -98,6 +98,8 @@ namespace tuner {
         void initialize();
 
         void handleCallFromRoot(Function *f);
+
+        std::shared_ptr<mdutils::TType> getAssociatedMetadata(Value *pValue);
 
     protected:
         void handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
@@ -184,6 +186,7 @@ namespace tuner {
         void saveInfoForPointer(Value *value, shared_ptr<OptimizerPointerInfo> pointerInfo);
 
 
+        shared_ptr<mdutils::TType> modelvarToTType(shared_ptr<OptimizerScalarInfo> sharedPtr);
     };
 
 

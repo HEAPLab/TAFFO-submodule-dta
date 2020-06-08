@@ -47,16 +47,21 @@ namespace tuner {
         std::shared_ptr<string> baseName;
         unsigned minBits;
         unsigned maxBits;
+        unsigned totalBits;
+        bool isSigned;
 
         const string getBaseName() const {
             return *baseName.get();
         }
 
-        OptimizerScalarInfo(string _variableName, unsigned _minBits, unsigned _maxBits)
+        OptimizerScalarInfo(string _variableName, unsigned _minBits, unsigned _maxBits, unsigned _totalBits,
+                            bool _isSigned)
                 : OptimizerInfo(K_Field) {
             minBits = _minBits;
             maxBits = _maxBits;
             baseName = make_shared<string>(_variableName);
+            totalBits = _totalBits;
+            isSigned = _isSigned;
         }
 
 
@@ -90,6 +95,14 @@ namespace tuner {
 
         const string getFractBitsVariable() {
             return *baseName + "_fixbits";
+        }
+
+        unsigned int getTotalBits() const {
+            return totalBits;
+        }
+
+        bool isSigned1() const {
+            return isSigned;
         }
 
         bool operator==(const OptimizerInfo &other) const override {
@@ -170,16 +183,16 @@ namespace tuner {
             }
 
             for (int i = 0; i < Fields.size(); i++) {
-                if(Fields[i]== nullptr && b2->Fields[i]== nullptr){
+                if (Fields[i] == nullptr && b2->Fields[i] == nullptr) {
                     continue;
                 }
-                if(Fields[i]== nullptr){
+                if (Fields[i] == nullptr) {
                     return false;
                 }
-                if(b2->Fields[i]== nullptr){
+                if (b2->Fields[i] == nullptr) {
                     return false;
                 }
-                if(!Fields[i]->operator==(*b2->Fields[i])){
+                if (!Fields[i]->operator==(*b2->Fields[i])) {
                     return false;
                 }
 

@@ -44,7 +44,7 @@ namespace tuner {
         bool isVariableDeclared(const string &variable);
 
 
-        void finalizeAndSolve();
+        bool finalizeAndSolve();
 
         void createVariable(const string &varName, double min, double max);
 
@@ -55,7 +55,7 @@ namespace tuner {
 
         bool VARIABLE_NOT_DECLARED(string var);
 
-        void loadResultsFromFile(string modelFile);
+        bool loadResultsFromFile(string modelFile);
 
         double getVariableValue(string variable);
     };
