@@ -47,11 +47,11 @@ void Model::insertLinearConstraint(const vector<pair<string, double>> &variables
 }
 
 void Model::createVariable(const string& varName) {
-    assert(false && "Not tested");
+    assert(false && "Not working");
     assert(!isVariableDeclared(varName) && "Variable already declared!");
     variablesPool.insert(varName);
 
-    modelFile<<"allocate "<<varName<<";\n";
+    modelFile<<varName<<" = solver.IntVar('"<<varName<<"')\n";
 }
 
 void Model::createVariable(const string& varName, double min, double max) {

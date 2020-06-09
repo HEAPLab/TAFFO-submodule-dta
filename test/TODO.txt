@@ -8,10 +8,9 @@ Implement inserting cost proportional to number of execution
 
 Refactor optimizer to create different variables for each cost, for better readability (Not so important...)
 
-Casting after load: questo è un problema che avviene quando l'algoritmo mette le variabili in cui fa l'effettivo store (le alloca)
-alla massima precisione, mentre poi sposta a meno precisione le operazioni matematiche, introducendo cast. Questo può essere
-evitato imponendo lo stesso tipo sia per il dato di storing, sia per l'utilizzo nell'operazione, se l'operazione riutilizza
-immediatamente il registro in cui si è fatta la load
+Enob propagation (WIP)
+
+Actually use the model result and propagate to conversion (WIP only non aggregate values works)
 
 
 TESTING:

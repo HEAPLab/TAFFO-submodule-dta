@@ -64,8 +64,8 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     auto op2 = instr->getOperand(1);
 
 
-    auto info1 = getInfoOfValue(op1);
-    auto info2 = getInfoOfValue(op2);
+    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op1));
+    auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
 
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
     if(!res) return;
@@ -73,6 +73,20 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)));
     model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)));
     model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)));
+
+    //enob constraint
+    auto constraint = vector<pair<string, double>>();
+    //Enob constraints
+    constraint.clear();
+    constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sum first addend");
+
+    //Enob constraints
+    constraint.clear();
+    constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sum second addend");
 
     //Precision cost
     //Handloed in allocating variable
@@ -86,6 +100,9 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     auto op1 = instr->getOperand(0);
     auto op2 = instr->getOperand(1);
 
+    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op1));
+    auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
+
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
     if(!res) return;
 
@@ -96,6 +113,20 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     //Precision cost
     //Handloed in allocating variable
 
+
+    auto constraint = vector<pair<string, double>>();
+    //Enob constraints
+    constraint.clear();
+    constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sub first addend");
+
+    //Enob constraints
+    constraint.clear();
+    constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sub second addend");
+
 }
 
 void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const shared_ptr<ValueInfo> &valueInfos) {
@@ -104,6 +135,8 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     auto op1 = instr->getOperand(0);
     auto op2 = instr->getOperand(1);
 
+    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op1));
+    auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
 
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
     if(!res) return;
@@ -114,6 +147,14 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
 
     //Precision cost
     //Handloed in allocating variable
+
+    auto constraint = vector<pair<string, double>>();
+    //Enob constraints
+    constraint.clear();
+    constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
+    constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in product");
 
 }
 
@@ -133,6 +174,8 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     //Precision cost
     //Handloed in allocating variable
 
+    //FIXME: insert enob propagation
+
 }
 
 void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const shared_ptr<ValueInfo> &valueInfos) {
@@ -151,6 +194,8 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)));
     //Precision cost
     //Handloed in allocating variable
+
+    //FIXME: insert enob propagation
 
 }
 

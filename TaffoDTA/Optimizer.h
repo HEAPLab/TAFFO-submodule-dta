@@ -27,7 +27,7 @@
 #define I_COST 1
 
 //This means how much the casting cost will be relevant for the computation
-#define TUNING_CASTING 20
+#define TUNING_CASTING 10
 #define TUNING_MATH 10
 #define TUNING_ENOB 0.5
 

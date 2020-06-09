@@ -83,19 +83,45 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
 
+    //ENOB propagation, free variable
+    model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
 
-    //introducing precision cost: the more a variable is precise, the better it is
+    auto constraint = vector<pair<string, double>>();
+    int ENOBfloat = getENOBFromRange(rangeInfo, FloatType::Float_float);
+    int ENOBdouble = getENOBFromRange(rangeInfo, FloatType::Float_double);
+    //Enob constraints fix
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), -1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
+
+    //Enob constraints float
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER+ENOBfloat, "Enob constraint for float");
+
+    //Enob constraints float
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER+ENOBdouble, "Enob constraint for double");
+
+
+    /*//introducing precision cost: the more a variable is precise, the better it is
     model.insertObjectiveElement(make_pair(optimizerInfo->getFractBitsVariable(), (-1) * TUNING_ENOB));
 
     //La variabile indica solo se il costo è attivo o meno, senza indicare nulla riguardo ENOB
     //Enob is computed from Range
-    int ENOBfloat = getENOBFromRange(rangeInfo, FloatType::Float_float);
-    int ENOBdouble = getENOBFromRange(rangeInfo, FloatType::Float_double);
+
     model.insertObjectiveElement(make_pair(optimizerInfo->getFloatSelectedVariable(), (-1) * TUNING_ENOB * ENOBfloat));
     model.insertObjectiveElement(
-            make_pair(optimizerInfo->getDoubleSelectedVariable(), (-1) * TUNING_ENOB * ENOBdouble));
+            make_pair(optimizerInfo->getDoubleSelectedVariable(), (-1) * TUNING_ENOB * ENOBdouble));*/
+    model.insertObjectiveElement(
+            make_pair(optimizerInfo->getRealEnobVariable(), (-1) * TUNING_ENOB));
 
-    auto constraint = vector<pair<string, double>>();
+
     //Constraint for mixed precision: only one constraint active at one time:
     //_float + _double + _fixed = 1
     constraint.clear();
@@ -110,6 +136,9 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
     model.insertLinearConstraint(constraint, Model::LE, 0, "If not fix, frac part to zero");
+
+
+
 
     if (insertInList) {
         saveInfoForValue(value, optimizerInfo);
@@ -321,6 +350,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
+    model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
 
     auto constraint = vector<pair<string, double>>();
     //Constraint for mixed precision: only one constraint active at one time:
@@ -330,6 +360,13 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
     model.insertLinearConstraint(constraint, Model::EQ, 1, "exactly 1 type");
+
+
+    //Real enob is still the same!
+    constraint.clear();
+    constraint.push_back(make_pair(info->getRealEnobVariable(), -1.0));
+    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "The ENOB is less or equal!");
 
     //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
     //x_bits - M * x_fixp <= 0

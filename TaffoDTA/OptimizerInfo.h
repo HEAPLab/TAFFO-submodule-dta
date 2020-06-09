@@ -97,6 +97,10 @@ namespace tuner {
             return *baseName + "_fixbits";
         }
 
+        const string getRealEnobVariable() {
+            return *baseName + "_enob";
+        }
+
         unsigned int getTotalBits() const {
             return totalBits;
         }

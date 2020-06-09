@@ -12,7 +12,7 @@ int main(){
 
 
     e=a+b;
-    f=d+e;
+    f=c+d;
 
     g=f*e;
 
