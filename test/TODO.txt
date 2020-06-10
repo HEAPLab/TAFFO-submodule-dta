@@ -8,9 +8,9 @@ Implement inserting cost proportional to number of execution
 
 Refactor optimizer to create different variables for each cost, for better readability (Not so important...)
 
-Enob propagation (WIP)
+Enob propagation (WIP, divisions and external calls not handled)
 
-Actually use the model result and propagate to conversion (WIP only non aggregate values works)
+Actually use the model result and propagate to conversion (WIP Should work but still to even run...)
 
 
 TESTING:

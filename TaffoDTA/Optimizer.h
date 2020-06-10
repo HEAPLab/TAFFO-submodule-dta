@@ -99,7 +99,7 @@ namespace tuner {
 
         void handleCallFromRoot(Function *f);
 
-        std::shared_ptr<mdutils::TType> getAssociatedMetadata(Value *pValue);
+        std::shared_ptr<mdutils::MDInfo> getAssociatedMetadata(Value *pValue);
 
     protected:
         void handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
@@ -187,6 +187,8 @@ namespace tuner {
 
 
         shared_ptr<mdutils::TType> modelvarToTType(shared_ptr<OptimizerScalarInfo> sharedPtr);
+
+        shared_ptr<mdutils::MDInfo> buildDataHierarchy(shared_ptr<OptimizerInfo> info);
     };
 
 

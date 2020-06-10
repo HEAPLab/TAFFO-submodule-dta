@@ -117,6 +117,8 @@ namespace tuner {
                 return true;
             }
         }
+
+        void mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdutils::MDInfo> model);
     };
 }
 

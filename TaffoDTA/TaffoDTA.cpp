@@ -684,32 +684,57 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
 
     for (Value *v : vals) {
-        std::shared_ptr<ValueInfo> viu = valueInfo(v);
-        InputInfo *iiv = dyn_cast<InputInfo>(viu->metadata.get());
-
-        if(!iiv){
-            dbgs() << "[WARINING] Nullptr or struct, skipping as unsupported atm.\n";
+        if (!valset.count(v)) {
+            dbgs() << "Not in the conversion queue! Skipping!\n";
             continue;
         }
 
-        if (valset.count(v)) {
-            //Read from the model, search for the data type associated with that value and convert it!
-            std::shared_ptr<mdutils::TType> fp = optimizer.getAssociatedMetadata(v);
-            if (!fp) {
-                dbgs() << "Invalid datatype returned!\n";
-                continue;
-            }
+        std::shared_ptr<ValueInfo> viu = valueInfo(v);
 
-            dbgs() << "Assigning " << fp->toString() << " to " ;
-            v->print(dbgs());
-            dbgs() << "\n";
-
-            //FIXME: add reset type in function!!!
-
-            iiv->IType.reset(fp->clone());
+        //Read from the model, search for the data type associated with that value and convert it!
+        auto fp = optimizer.getAssociatedMetadata(v);
+        if (!fp) {
+            dbgs() << "Invalid datatype returned!\n";
+            continue;
         }
+
+        dbgs() << "Assigning " << fp->toString() << " to ";
+        v->print(dbgs());
+        dbgs() << "\n";
+
+        //FIXME: add reset type in function!!!
+
+        mergeDataTypes(viu->metadata, fp);
+
+        /*auto *iiv = dyn_cast<InputInfo>(viu->metadata.get());
+
+        iiv->IType.reset(fp->clone());*/
+
     }
 
+
+}
+
+void TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdutils::MDInfo> model) {
+    if(!old||!model) return;
+
+    if(old->getKind() == mdutils::MDInfo::K_Field){
+        assert(model->getKind() == mdutils::MDInfo::K_Field && "Mismatching metadata infos!!!");
+
+        auto old1 = dynamic_ptr_cast_or_null<InputInfo>(old);
+        auto model1 = dynamic_ptr_cast_or_null<InputInfo>(model);
+
+        old1->IType.reset(model1->IType->clone());
+        return;
+    }else if(old->getKind() == mdutils::MDInfo::K_Struct){
+        auto old1 = dynamic_ptr_cast_or_null<StructInfo>(old);
+        auto model1 = dynamic_ptr_cast_or_null<StructInfo>(model);
+
+        for(int i =0; i<old1->size(); i++){
+            mergeDataTypes(old1->getField(i), model1->getField(i));
+        }
+        return;
+    }
 
 }
 

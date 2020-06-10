@@ -623,27 +623,49 @@ bool Optimizer::valueHasInfo(Value *value) {
     return valueToVariableName.find(value) != valueToVariableName.end();
 }
 
-shared_ptr<mdutils::TType> Optimizer::getAssociatedMetadata(Value *pValue) {
+
+/*This is ugly as hell, but we use this data type to prevent creating other custom classes for nothing*/
+shared_ptr<mdutils::MDInfo> Optimizer::getAssociatedMetadata(Value *pValue) {
     auto res = getInfoOfValue(pValue);
     if(!res){
         return nullptr;
     }
 
-    if(res->getKind() == OptimizerInfo::K_Field){
-        return modelvarToTType(dynamic_ptr_cast_or_null<OptimizerScalarInfo>(res));
-    }
-
     if(res->getKind() == OptimizerInfo::K_Pointer){
+        //FIXME: do we support double pointers?
         auto res1 = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(res);
-        auto res2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(res1->getOptInfo());
-        assert(res2->getKind() == OptimizerInfo::K_Field && "Pointer struct still not supported!");
-        return modelvarToTType(res2);
+        //Unwrap pointer
+        res = res1->getOptInfo();
     }
 
-    llvm_unreachable("Not handled at the moment!");
+    return buildDataHierarchy(res);
+}
+
+shared_ptr<mdutils::MDInfo> Optimizer::buildDataHierarchy(shared_ptr<OptimizerInfo> info){
+    if(info->getKind() == OptimizerInfo::K_Field){
+        auto i = modelvarToTType(dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info));
+        auto result= make_shared<InputInfo>();
+        result->IType = i;
+        return result;
+    }else if(info->getKind() == OptimizerInfo::K_Struct){
+        auto sti = dynamic_ptr_cast_or_null<OptimizerStructInfo>(info);
+        auto result = make_shared<StructInfo>(sti->size());
+        for(int i=0; i<sti->size(); i++){
+            result->setField(i, buildDataHierarchy(sti->getField(i)));
+        }
+
+        return result;
+    }
+
+
+    llvm_unreachable("Unnknown data type");
 }
 
 shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalarInfo> scalarInfo) {
+    if(!scalarInfo){
+        dbgs() << "Nullptr scalar info!";
+        return nullptr;
+    }
     double selectedFixed = model.getVariableValue(scalarInfo->getFixedSelectedVariable());
     double selectedFloat = model.getVariableValue(scalarInfo->getFloatSelectedVariable());
     double selectedDouble = model.getVariableValue(scalarInfo->getDoubleSelectedVariable());
