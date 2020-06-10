@@ -324,7 +324,11 @@ solver.Add( + (1)*f_mul_double + (-1)*e_mul_double==0)    #double equality
 solver.Add( + (1)*f_mul_fixp + (-1)*main_mul_fixp==0)    #fix equality
 solver.Add( + (1)*f_mul_float + (-1)*main_mul_float==0)    #float equality
 solver.Add( + (1)*f_mul_double + (-1)*main_mul_double==0)    #double equality
-solver.Add( + (1)*main_mul_enob + (-1)*f_enob + (-1)*e_enob<=0)    #Enob propagation in product
+mul_enob_1 = solver.IntVar(0, 1, 'mul_enob_1')
+mul_enob_2 = solver.IntVar(0, 1, 'mul_enob_2')
+solver.Add( + (1)*mul_enob_1 + (1)*mul_enob_2==1)    #Enob: one selected constraint
+solver.Add( + (1)*main_mul_enob + (-1)*e_enob + (-10000)*mul_enob_1<=3)    #Enob: propagation in product 1
+solver.Add( + (1)*main_mul_enob + (-1)*f_enob + (-10000)*mul_enob_2<=3)    #Enob: propagation in product 1
 main_mul__fixbits = solver.IntVar(0, 30, 'main_mul__fixbits')
 main_mul__fixp = solver.IntVar(0, 1, 'main_mul__fixp')
 main_mul__float = solver.IntVar(0, 1, 'main_mul__float')

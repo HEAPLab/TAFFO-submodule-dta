@@ -687,6 +687,7 @@ shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalar
         return make_shared<mdutils::FloatType>(FloatType::Float_double, 0);
     }
 
+    llvm_unreachable("Trying to implement a new datatype? look here :D");
 }
 
 

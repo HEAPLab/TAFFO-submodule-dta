@@ -223,6 +223,11 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     //We treat phi as normal assignment, without looking at the real "backend" implementation. This may be quite different
     //from the real execution, but the overall meaning is the same.
 
+    //FIXME: we here does not propagate the enob. It is not so easy as we have to get the mazimum enob. With product is easy
+    //As we only have two. Here the most handy solution is to actually pre declare all the needed bynary 1-0 variable, put the
+    //Sum of them to 1 and therefore using the M trick to enable only one constraint. In this function the declaration, in
+    //closephiLoop() the actual insertion of the constraint
+
     auto *phi_n = dyn_cast<llvm::PHINode>(phi);
     if (!phi_n) {
         llvm_unreachable("Could not convert Phi instruction to PHINode");
@@ -549,7 +554,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
         saveInfoForValue(instruction, info);
         retInfo = info;
     } else {
-        dbgs() << "No info available on return value, maybe it is not a floating point call.\n";
+        dbgs() << "No info available on return value, maybe it is not a floating point returning function.\n";
     }
 
     //in retInfo we now have a variable for the return value of the function. Every return should be casted against it!
@@ -564,7 +569,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
 
     //In this case we have no known math function.
     //We will have, when enabled, math functions. In this case these will be handled here!
-    //TODO: handle known fix point math functions
+    //TODO: handle known fix point math functions, such as implemented cos and sin
 
     // if not a whitelisted then try to fetch it from Module
     // fetch llvm::Function
@@ -898,6 +903,60 @@ void Optimizer::handleCallFromRoot(Function *f) {
 
 
     return;
+
+}
+
+string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
+    assert(value && "Value must not be null!");
+    assert(cardinal>=0 && "Cardinal should be a positive number!");
+
+    string valueName = value->getName();
+
+    assert(!valueName.empty() && "The value should have a name!!!");
+
+    string toreturn = valueName + "_enob_" + to_string(cardinal);
+
+    return toreturn;
+}
+
+int Optimizer::getMinIntBitOfValue(Value *pValue) {
+    int bits = -1024;
+
+    if (!tuner->hasInfo(pValue)) {
+        dbgs() << "No info available for IntBit computation. Using default value\n";
+        return bits;
+    }
+
+    auto metadata = tuner->valueInfo(pValue)->metadata;
+
+    if(!metadata){
+        dbgs() << "No metadata available for IntBit computation. Using default value\n";
+        return bits;
+    }
+
+
+
+    auto metadata_InputInfo = dynamic_ptr_cast_or_null<InputInfo>(metadata);
+    assert(metadata_InputInfo && "Not an InputInfo!");
+
+    auto range = metadata_InputInfo->IRange;
+
+    double smallestRepresentableNumber;
+    if (range->Min <= 0 && range->Max >= 0) {
+        dbgs() << "The lowest possible number is a 0, infinite ENOB wooooo.\n";
+        return bits;
+    } else if (range->Min >= 0) {
+        //both are greater than 0
+        smallestRepresentableNumber = range->Min;
+    } else {
+        //Both are less than 0
+        smallestRepresentableNumber = abs(range->Max);
+    }
+
+    double exponentOfExponent = log2(smallestRepresentableNumber);
+    bits = round(exponentOfExponent);
+
+    return bits;
 
 }
 

@@ -189,6 +189,10 @@ namespace tuner {
         shared_ptr<mdutils::TType> modelvarToTType(shared_ptr<OptimizerScalarInfo> sharedPtr);
 
         shared_ptr<mdutils::MDInfo> buildDataHierarchy(shared_ptr<OptimizerInfo> info);
+
+        string getEnobActivationVariable(Value *value, int cardinal);
+
+        int getMinIntBitOfValue(Value *pValue);
     };
 
 
