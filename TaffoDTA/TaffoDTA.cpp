@@ -702,9 +702,12 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
         v->print(dbgs());
         dbgs() << "\n";
 
-        //FIXME: add reset type in function!!!
-
-        mergeDataTypes(viu->metadata, fp);
+        bool result = mergeDataTypes(viu->metadata, fp);
+        if(result){
+            //Some datatype has changed, restore in function call
+            dbgs() << "Restoring call type...\n";
+            restoreTypesAcrossFunctionCall(v);
+        }
 
         /*auto *iiv = dyn_cast<InputInfo>(viu->metadata.get());
 
@@ -715,25 +718,29 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
 }
 
-void TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdutils::MDInfo> model) {
-    if(!old||!model) return;
+bool TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdutils::MDInfo> model) {
+    if(!old||!model) return false;
 
     if(old->getKind() == mdutils::MDInfo::K_Field){
         assert(model->getKind() == mdutils::MDInfo::K_Field && "Mismatching metadata infos!!!");
 
         auto old1 = dynamic_ptr_cast_or_null<InputInfo>(old);
         auto model1 = dynamic_ptr_cast_or_null<InputInfo>(model);
+        if(old1->IType->operator==(*model1->IType)){
+            return false;
+        }
 
         old1->IType.reset(model1->IType->clone());
-        return;
+        return true;
     }else if(old->getKind() == mdutils::MDInfo::K_Struct){
         auto old1 = dynamic_ptr_cast_or_null<StructInfo>(old);
         auto model1 = dynamic_ptr_cast_or_null<StructInfo>(model);
 
+        bool changed = false;
         for(int i =0; i<old1->size(); i++){
-            mergeDataTypes(old1->getField(i), model1->getField(i));
+            changed |= mergeDataTypes(old1->getField(i), model1->getField(i));
         }
-        return;
+        return changed;
     }
 
 }
