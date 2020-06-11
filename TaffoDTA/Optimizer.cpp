@@ -61,6 +61,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
 
 
     string varNameBase(string(functionName).append(value->getName()).append(nameAppendix));
+    std::replace(varNameBase.begin(), varNameBase.end(), '.', '_');
     string varName(varNameBase);
 
     int counter = 0;
@@ -69,9 +70,11 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
         counter++;
     }
 
+
     dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
 
-    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos(), fpInfo->getWidth(), fpInfo->isSigned());
+    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos(), fpInfo->getWidth(),
+                                                          fpInfo->isSigned());
 
 
     dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
@@ -100,13 +103,13 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER+ENOBfloat, "Enob constraint for float");
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBfloat, "Enob constraint for float");
 
     //Enob constraints float
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER+ENOBdouble, "Enob constraint for double");
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
 
 
     /*//introducing precision cost: the more a variable is precise, the better it is
@@ -136,8 +139,6 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
     model.insertLinearConstraint(constraint, Model::LE, 0, "If not fix, frac part to zero");
-
-
 
 
     if (insertInList) {
@@ -322,7 +323,10 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
 
     auto originalVar = info->getBaseName();
 
-    string varNameBase((originalVar + ("_") + whereToUse->getName().str()));
+    string endName = whereToUse->getName().str();
+    std::replace(endName.begin(), endName.end(), '.', '_');
+
+    string varNameBase((originalVar + ("_") + endName));
 
     string varName(varNameBase);
 
@@ -627,11 +631,11 @@ bool Optimizer::valueHasInfo(Value *value) {
 /*This is ugly as hell, but we use this data type to prevent creating other custom classes for nothing*/
 shared_ptr<mdutils::MDInfo> Optimizer::getAssociatedMetadata(Value *pValue) {
     auto res = getInfoOfValue(pValue);
-    if(!res){
+    if (!res) {
         return nullptr;
     }
 
-    if(res->getKind() == OptimizerInfo::K_Pointer){
+    if (res->getKind() == OptimizerInfo::K_Pointer) {
         //FIXME: do we support double pointers?
         auto res1 = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(res);
         //Unwrap pointer
@@ -641,16 +645,16 @@ shared_ptr<mdutils::MDInfo> Optimizer::getAssociatedMetadata(Value *pValue) {
     return buildDataHierarchy(res);
 }
 
-shared_ptr<mdutils::MDInfo> Optimizer::buildDataHierarchy(shared_ptr<OptimizerInfo> info){
-    if(info->getKind() == OptimizerInfo::K_Field){
+shared_ptr<mdutils::MDInfo> Optimizer::buildDataHierarchy(shared_ptr<OptimizerInfo> info) {
+    if (info->getKind() == OptimizerInfo::K_Field) {
         auto i = modelvarToTType(dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info));
-        auto result= make_shared<InputInfo>();
+        auto result = make_shared<InputInfo>();
         result->IType = i;
         return result;
-    }else if(info->getKind() == OptimizerInfo::K_Struct){
+    } else if (info->getKind() == OptimizerInfo::K_Struct) {
         auto sti = dynamic_ptr_cast_or_null<OptimizerStructInfo>(info);
         auto result = make_shared<StructInfo>(sti->size());
-        for(int i=0; i<sti->size(); i++){
+        for (int i = 0; i < sti->size(); i++) {
             result->setField(i, buildDataHierarchy(sti->getField(i)));
         }
 
@@ -662,7 +666,7 @@ shared_ptr<mdutils::MDInfo> Optimizer::buildDataHierarchy(shared_ptr<OptimizerIn
 }
 
 shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalarInfo> scalarInfo) {
-    if(!scalarInfo){
+    if (!scalarInfo) {
         dbgs() << "Nullptr scalar info!";
         return nullptr;
     }
@@ -671,19 +675,20 @@ shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalar
     double selectedDouble = model.getVariableValue(scalarInfo->getDoubleSelectedVariable());
     double fracbits = model.getVariableValue(scalarInfo->getFractBitsVariable());
 
-    assert(selectedDouble+selectedFixed+selectedFloat == 1 && "OMG! Catastrophic failure! Exactly one variable should be selected here!!!");
+    assert(selectedDouble + selectedFixed + selectedFloat == 1 &&
+           "OMG! Catastrophic failure! Exactly one variable should be selected here!!!");
 
-    if(selectedFixed == 1){
-        return make_shared<mdutils::FPType>(scalarInfo->getTotalBits(), (int)fracbits, scalarInfo->isSigned);
+    if (selectedFixed == 1) {
+        return make_shared<mdutils::FPType>(scalarInfo->getTotalBits(), (int) fracbits, scalarInfo->isSigned);
     }
 
     //FIXME: should greatest number be given a value here?
 
-    if(selectedFloat == 1){
+    if (selectedFloat == 1) {
         return make_shared<mdutils::FloatType>(FloatType::Float_float, 0);
     }
 
-    if(selectedDouble == 1){
+    if (selectedDouble == 1) {
         return make_shared<mdutils::FloatType>(FloatType::Float_double, 0);
     }
 

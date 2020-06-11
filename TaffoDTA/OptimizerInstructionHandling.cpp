@@ -98,7 +98,8 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         //We are copying the infos.
         saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                        sinfos->getMinBits(),
-                                                                       sinfos->getMaxBits(), sinfos->getTotalBits(), sinfos->isSigned));
+                                                                       sinfos->getMaxBits(), sinfos->getTotalBits(),
+                                                                       sinfos->isSigned));
 
         dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
 
@@ -198,7 +199,8 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
 
     saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                    sinfos->getMinBits(),
-                                                                   sinfos->getMaxBits(), sinfos->getTotalBits(), sinfos->isSigned));
+                                                                   sinfos->getMaxBits(), sinfos->getTotalBits(),
+                                                                   sinfos->isSigned));
 
     dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getBaseName() << "\n";
 
@@ -252,7 +254,16 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     //Allocating variable for result
     shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
                                                                            instruction->getFunction()->getName());
+    auto constraint = vector<pair<string, double>>();
+    constraint.clear();
 
+
+    for (unsigned index = 0; index < phi_n->getNumIncomingValues(); index++) {
+        string enob_selection = getEnobActivationVariable(instruction, index);
+        model.createVariable(enob_selection, 0, 1);
+        constraint.push_back(make_pair(enob_selection, 1.0));
+    }
+    model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
 
     int missing = 0;
 
@@ -458,7 +469,30 @@ void Optimizer::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
     assert(phiInfo && "phiInfo not available!");
     assert(destInfo && "destInfo not available!");
 
+    string enob_var;
+
+    for (int index = 0; index < phiNode->getNumIncomingValues(); index++) {
+        if (phiNode->getIncomingValue(index) == requestedValue) {
+            enob_var = getEnobActivationVariable(phiNode, index);
+            break;
+        }
+    }
+
+    assert(!enob_var.empty() && "Enob var not found!");
+
     insertTypeEqualityConstraint(phiInfo, destInfo, true);
+
+    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(requestedValue));
+
+
+    auto constraint = vector<pair<string, double>>();
+    constraint.clear();
+    constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
+    constraint.push_back(make_pair(enob_var, -BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob: forcing phi enob");
+
+
     phiWatcher.closePhiLoop(phiNode, requestedValue);
 
 }
@@ -908,10 +942,10 @@ void Optimizer::handleCallFromRoot(Function *f) {
 
 string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
     assert(value && "Value must not be null!");
-    assert(cardinal>=0 && "Cardinal should be a positive number!");
+    assert(cardinal >= 0 && "Cardinal should be a positive number!");
 
     string valueName = value->getName();
-
+    std::replace( valueName.begin(), valueName.end(), '.', '_');
     assert(!valueName.empty() && "The value should have a name!!!");
 
     string toreturn = valueName + "_enob_" + to_string(cardinal);
@@ -929,11 +963,10 @@ int Optimizer::getMinIntBitOfValue(Value *pValue) {
 
     auto metadata = tuner->valueInfo(pValue)->metadata;
 
-    if(!metadata){
+    if (!metadata) {
         dbgs() << "No metadata available for IntBit computation. Using default value\n";
         return bits;
     }
-
 
 
     auto metadata_InputInfo = dynamic_ptr_cast_or_null<InputInfo>(metadata);
