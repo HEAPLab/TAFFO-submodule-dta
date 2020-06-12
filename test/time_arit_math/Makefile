@@ -6,7 +6,7 @@
 # without any warranty.
 
 C99 	= c99
-CFLAGS	= -g -Ofast -DNOFLT80 -DNOFLT128 -DITERATIONS=128 -DMAXMEM=10000000 #-DNOMEMALIGN 
+CFLAGS	= -g -Ofast -DNOFLT80 -DNOFLT128 -DNBRUN=128 -DMEMSIZE=10000000 #-DNOMEMALIGN
 LDFLAGS	=
 LDLIBS	= -lm -lrt
 
@@ -16,12 +16,10 @@ CHDR	= $(wildcard *.h)
 
 default	: time_arit time_math
 	@echo "["
-	@taskset -c 0 ./time_arit 2>/dev/null \
-		| sed -e 's/\[i\]//g' -e 's/^/[/' -e 's/$$/],/'
+	@taskset -c 0 ./time_arit 2>/dev/null
 	@echo "]"
 	@echo "["
-	@taskset -c 0 ./time_math 2>/dev/null \
-		| sed -e 's/\[i\]//g' -e 's/^/[/' -e 's/$$/],/'
+	@taskset -c 0 ./time_math 2>/dev/null
 	@echo "]"
 
 time_arit	: time_arit.o timing.o

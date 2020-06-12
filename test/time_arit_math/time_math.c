@@ -70,6 +70,7 @@ static int cmpf(const void * a, const void * b) {
 	}								\
 	qsort(cpuclock, nbrun, sizeof(float), &cmpf);			\
 	T = nbops / 1E6 / cpuclock[nbrun/2];				\
+	T = 1000.0/T; \
     }
 
 /* multi flt type macro */
@@ -79,8 +80,8 @@ static int cmpf(const void * a, const void * b) {
 	TIME(OP, flt64, t2);					\
 	if (RUNFLT80) TIME(OP, flt80, t3);			\
 	if (RUNFLT128) TIME(OP, flt128, t4);			\
-	printf("'%s',\t %6.1f,\t %6.1f,\t %6.1f,\t %6.1f\n",	\
-	       #OP, t1, t2, t3, t4);				\
+	printf("'%-16s', %16.10f, %16.10f, %16.10f, %16.10f\n",	\
+	       #OP, t1, t2, t3, t4);			\
     }
 
 #ifndef MEMSIZE
@@ -142,7 +143,7 @@ int main(void) {
         b_flt128[i] = (flt128) b_flt32[i];
     }
 #endif
-
+    printf("'%-16s', %16s, %16s, %16s, %16s\n", "Operation", "flt32", "flt64", "flt80", "flt128");
     INFO("Single-Instruction Functions");
     FTIME(c[i]=a[i]+b[i]);
     FTIME(c[i]=a[i]*b[i]);

@@ -85,7 +85,7 @@ static int cmpf(const void * a, const void * b) {
 	TIME(OP, int16, t2);					\
 	TIME(OP, int32, t3);					\
 	TIME(OP, int64, t4);					\
-	printf("'%s',\t %6.10f,\t %6.10f,\t %6.10f,\t %6.10f\n",	\
+	printf("'%-16s', %16.10f, %16.10f, %16.10f, %16.10f\n",	\
 	       #OP, t1, t2, t3, t4);				\
     fflush(stdout);\
     }
@@ -98,8 +98,8 @@ static int cmpf(const void * a, const void * b) {
 	TIME(OP, flt64, t2);					\
 	if (RUNFLT80) TIME(OP, flt80, t3);			\
 	if (RUNFLT128) TIME(OP, flt128, t4);			\
-	printf("'%s',\t %6.10f,\t %6.10f,\t %6.10f,\t %6.10f\n",	\
-	       #OP, t1, t2, t3, t4);				\
+	printf("'%-16s', %16.10f, %16.10f, %16.10f, %16.10f\n",	\
+	       #OP, t1, t2, t3, t4);			\
     }
 
 #ifndef MEMSIZE
@@ -130,6 +130,7 @@ int main(void) {
          memsize / 1000, nbrun);
 
     INFO("Integer Arithmetics");
+    printf("'%-16s', %16s, %16s, %16s, %16s\n", "Operation", "int8", "int16", "int32", "int64");
     ITIME(c[i]=a[i]+b[i]);
     ITIME(c[i]=a[i]&b[i]);
     ITIME(c[i]=a[i]|b[i]);
@@ -139,6 +140,7 @@ int main(void) {
     ITIME(c[i]=a[i]%b[i]);
 
     INFO("Floating-point Arithmetics");
+    printf("'%-16s', %16s, %16s, %16s, %16s\n", "Operation", "flt32", "flt64", "flt80", "flt128");
     FTIME(c[i]=a[i]+b[i]);
     FTIME(c[i]=a[i]*b[i]);
     FTIME(c[i]=a[i]/b[i]);
