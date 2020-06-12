@@ -19,7 +19,7 @@ default	: time_arit time_math
 	@taskset -c 0 ./time_arit 2>/dev/null
 	@echo "]"
 	@echo "["
-	@taskset -c 0 ./time_math 2>/dev/null
+	#@taskset -c 0 ./time_math 2>/dev/null
 	@echo "]"
 
 time_arit	: time_arit.o timing.o
