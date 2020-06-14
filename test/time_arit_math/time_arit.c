@@ -200,14 +200,14 @@ int main(void) {
 
     fprintf(stderr, "'%-20s', %16s, %16s, %16s, %16s, %16s\n", " --- To --->", "flt32", "flt64", "int32", "flt80", "flt128");
     CTIME(int32);
-    times[CAST_FIX_FLOAT] = t1;
-    times[CAST_FIX_DOUBLE] = t2;
+    times[CAST_FIX_FLOAT] = t1+times[DIV_FLOAT];
+    times[CAST_FIX_DOUBLE] = t2+times[DIV_DOUBLE];
     CTIME(flt32);
-    times[CAST_FLOAT_FIX] = t3;
+    times[CAST_FLOAT_FIX] = t3+times[MUL_FLOAT];
     times[CAST_FLOAT_DOUBLE] = t2;
     CTIME(flt64);
     times[CAST_DOUBLE_FLOAT] = t1;
-    times[CAST_DOUBLE_FIX] = t3;
+    times[CAST_DOUBLE_FIX] = t3+times[MUL_DOUBLE];
 
     xfree((void *) _a);
     xfree((void *) _b);
@@ -221,7 +221,7 @@ int main(void) {
     }
 
     for (int i = 0; i < COLLECTION_SIZE; i++) {
-        //times[i] /= min;
+        times[i] /= min;
     }
 
     for (int i = 0; i < COLLECTION_SIZE; i++) {
