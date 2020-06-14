@@ -15,12 +15,12 @@ CSRC	= $(wildcard *.c)
 CHDR	= $(wildcard *.h)
 
 default	: time_arit time_math
-	@echo "["
-	@taskset -c 0 ./time_arit 2>/dev/null
-	@echo "]"
-	@echo "["
+	#@echo "["
+	@taskset -c 0 ./time_arit > ./dummyModel.csv
+	#@echo "]"
+	#@echo "["
 	#@taskset -c 0 ./time_math 2>/dev/null
-	@echo "]"
+	#@echo "]"
 
 time_arit	: time_arit.o timing.o
 	$(C99) $(LDFLAGS) $^ $(LDLIBS) -o $@

@@ -87,9 +87,9 @@ static int cmpf(const void *a, const void *b) {
     TIME(OP, int16, t2);                    \
     TIME(OP, int32, t3);                    \
     TIME(OP, int64, t4);                    \
-    printf("'%-20s', %16.10f, %16.10f, %16.10f, %16.10f\n",    \
+    fprintf(stderr, "'%-20s', %16.10f, %16.10f, %16.10f, %16.10f\n",    \
            #OP, t1, t2, t3, t4);                \
-    fflush(stdout);\
+    fflush(stderr);\
     }
 
 
@@ -100,11 +100,12 @@ static int cmpf(const void *a, const void *b) {
     TIME(OP, flt64, t2);                    \
     if (RUNFLT80) TIME(OP, flt80, t3);            \
     if (RUNFLT128) TIME(OP, flt128, t4);            \
-    printf("'%-20s', %16.10f, %16.10f, %16.10f, %16.10f\n",    \
+    fprintf(stderr, "'%-20s', %16.10f, %16.10f, %16.10f, %16.10f\n",    \
            #OP, t1, t2, t3, t4);            \
+    fflush(stderr);\
     }
 
-#define max(X,Y) (((X) > (Y)) ? (X) : (Y))
+#define max(X, Y) (((X) > (Y)) ? (X) : (Y))
 #define CTIME(STYPE) {                        \
     t1=0; t2=0; t3=0; t4=0; t5=0;                \
     CONVTIME(STYPE, flt32, t1);                    \
@@ -112,8 +113,9 @@ static int cmpf(const void *a, const void *b) {
     CONVTIME(STYPE, int32, t3);            \
     if (RUNFLT80) CONVTIME(STYPE, flt80, t4);            \
     if (RUNFLT128) CONVTIME(STYPE, flt128, t5);            \
-    printf("'%-20s', %16.10f, %16.10f, %16.10f, %16.10f, %16.10f\n",    \
+    fprintf(stderr, "'%-20s', %16.10f, %16.10f, %16.10f, %16.10f, %16.10f\n",    \
            "Cast from " #STYPE, t1, t2, t3, t4, t5);            \
+    fflush(stderr);\
     }
 
 /* single type macro */
@@ -163,7 +165,7 @@ int main(void) {
     float t1, t2, t3, t4, t5;
 
     INFO("Integer Arithmetics");
-    printf("'%-20s', %16s, %16s, %16s, %16s\n", "Operation", "int8", "int16", "int32", "int64");
+    fprintf(stderr, "'%-20s', %16s, %16s, %16s, %16s\n", "Operation", "int8", "int16", "int32", "int64");
     ITIME(c[i] = a[i] + b[i]);
     times[ADD_FIX] = t3;
     times[SUB_FIX] = t3;
@@ -180,7 +182,7 @@ int main(void) {
     times[REM_FIX] = t3;
 
     INFO("Floating-point Arithmetics");
-    printf("'%-20s', %16s, %16s, %16s, %16s\n", "Operation", "flt32", "flt64", "flt80", "flt128");
+    fprintf(stderr, "'%-20s', %16s, %16s, %16s, %16s\n", "Operation", "flt32", "flt64", "flt80", "flt128");
     FTIME(c[i] = a[i] + b[i]);
     times[ADD_FLOAT] = t1;
     times[SUB_FLOAT] = t1;
@@ -196,7 +198,7 @@ int main(void) {
     times[REM_FLOAT] = t1;
     times[REM_DOUBLE] = t2;
 
-    printf("'%-20s', %16s, %16s, %16s, %16s, %16s\n", " --- To --->", "flt32", "flt64", "int32", "flt80", "flt128");
+    fprintf(stderr, "'%-20s', %16s, %16s, %16s, %16s, %16s\n", " --- To --->", "flt32", "flt64", "int32", "flt80", "flt128");
     CTIME(int32);
     times[CAST_FIX_FLOAT] = t1;
     times[CAST_FIX_DOUBLE] = t2;
@@ -211,18 +213,18 @@ int main(void) {
     xfree((void *) _b);
     xfree((void *) _c);
 
-    double min=9E22;
-    for(int i=0; i<COLLECTION_SIZE; i++){
-        if(times[i]<min){
-            min=times[i];
+    double min = 9E22;
+    for (int i = 0; i < COLLECTION_SIZE; i++) {
+        if (times[i] < min) {
+            min = times[i];
         }
     }
 
-    for(int i=0; i<COLLECTION_SIZE; i++){
+    for (int i = 0; i < COLLECTION_SIZE; i++) {
         //times[i] /= min;
     }
 
-    for(int i=0; i<COLLECTION_SIZE; i++){
+    for (int i = 0; i < COLLECTION_SIZE; i++) {
         printf("%s,\t%lf\n", coll[i], times[i]);
     }
 
