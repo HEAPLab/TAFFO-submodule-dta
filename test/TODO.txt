@@ -1,18 +1,12 @@
 TODOS:
 
-Handle pointers (WIP) (OUCH, should work but it is still to be tested very much, moreover, what happens when more than a variable is inserted?)
-
-Insert parameter to tune between computation time reduction and precision (Ok, but move as an argument on the opt call)
-
 Implement inserting cost proportional to number of execution
 
 Refactor optimizer to create different variables for each cost, for better readability (Not so important...)
 
 Enob propagation (WIP, divisions, phi and external (math) calls not handled)
 
-Actually use the model result and propagate to conversion (WIP Should work but still to even run corner test cases...)
-
-[Not sure] if only storing in a variable, maybe to force the precision in some way?
+[Not sure] if only storing in a variable, maybe to force the precision in some way? This is important when loading from a variable and storing into another
 
 [Not sure] structured phi node (?)
 
@@ -23,9 +17,12 @@ Implement phi node (should be ok)
 Implement call (there are some problem because of the VRA)
 Implement the cost of function in terms o energy/time
 Fix execution of function from root (does not use correct function now)
+Actually use the model result and propagate to conversion (Should work but still to even run corner test cases...)
+Handle pointers (WIP) (OUCH, should work but it is still to be tested very much, moreover, what happens when more than a variable is inserted? General pointers are still not handled)
 
 
 DONE:
 Refactoring of inserting value info
 Implement loading costs from file
 Really solve the model, and then re-associate the selected variables
+Insert parameter to tune between computation time reduction and precision
