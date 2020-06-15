@@ -58,6 +58,8 @@ namespace tuner {
         bool loadResultsFromFile(string modelFile);
 
         double getVariableValue(string variable);
+
+        void insertComment(string comment, int spaceBefore=0, int spaceAfter=0);
     };
 }
 

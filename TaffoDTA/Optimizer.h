@@ -112,7 +112,7 @@ namespace tuner {
         shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value *value, shared_ptr<mdutils::FPType> fpInfo,
                                                                     shared_ptr<mdutils::Range> rangeInfo,
                                                                     string functionName, bool insertInList = true,
-                                                                    string nameAppendix = "");
+                                                                    string nameAppendix = "", bool insertENOBinMin = true);
 
 
         void emitError(const string stringhina);

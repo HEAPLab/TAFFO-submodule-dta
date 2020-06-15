@@ -61,7 +61,7 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 
 shared_ptr<OptimizerScalarInfo>
 Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo,
-                                       string functionName, bool insertInList, string nameAppendix) {
+                                       string functionName, bool insertInList, string nameAppendix, bool insertENOBinMin) {
     assert(!valueHasInfo(value) && "The value considered already have an info!");
 
     assert(fpInfo && "fpInfo should not be nullptr here!");
@@ -78,7 +78,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
 
     int counter = 0;
     while (model.isVariableDeclared(varName + "_fixp")) {
-        varName = string(varNameBase.append("_").append(to_string(counter)));
+        varName = string(varNameBase).append("_").append(to_string(counter));
         counter++;
     }
 
@@ -91,6 +91,13 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
 
     dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
            << optimizerInfo->maxBits << "];\n";
+
+    string out;
+    raw_string_ostream stream(out);
+    value->print(stream);
+
+    model.insertComment("Stuff for " + stream.str(), 3);
+
     model.createVariable(optimizerInfo->getFractBitsVariable(), optimizerInfo->minBits, optimizerInfo->maxBits);
 
     //binary variables for mixed precision
@@ -133,9 +140,10 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     model.insertObjectiveElement(make_pair(optimizerInfo->getFloatSelectedVariable(), (-1) * TUNING_ENOB * ENOBfloat));
     model.insertObjectiveElement(
             make_pair(optimizerInfo->getDoubleSelectedVariable(), (-1) * TUNING_ENOB * ENOBdouble));*/
-    model.insertObjectiveElement(
-            make_pair(optimizerInfo->getRealEnobVariable(), (-1) * TUNING_ENOB));
-
+    if(insertENOBinMin) {
+        model.insertObjectiveElement(
+                make_pair(optimizerInfo->getRealEnobVariable(), (-1) * TUNING_ENOB));
+    }
 
     //Constraint for mixed precision: only one constraint active at one time:
     //_float + _double + _fixed = 1
@@ -336,15 +344,23 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     auto originalVar = info->getBaseName();
 
     string endName = whereToUse->getName().str();
+    if(endName.empty()){
+        if(auto istr = dyn_cast_or_null<Instruction>(whereToUse)){
+            endName = string(istr->getOpcodeName());
+        }
+
+    }
     std::replace(endName.begin(), endName.end(), '.', '_');
 
-    string varNameBase((originalVar + ("_") + endName));
+
+
+    string varNameBase((originalVar + ("_CAST_") + endName));
 
     string varName(varNameBase);
 
     int counter = 0;
     while (model.isVariableDeclared(varName + "_fixp")) {
-        varName = string(varNameBase.append("_").append(to_string(counter)));
+        varName = string(varNameBase).append("_").append(to_string(counter));
         counter++;
     }
 
@@ -359,6 +375,12 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
 
     dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits
            << "] with casting cost from " << info->getBaseName() << "\n";
+
+    string out;
+    raw_string_ostream stream(out);
+    whereToUse->print(stream);
+
+    model.insertComment("Constraint for cast for " + stream.str(), 3);
 
     model.createVariable(optimizerInfo->getFractBitsVariable(), minBits, maxBits);
 

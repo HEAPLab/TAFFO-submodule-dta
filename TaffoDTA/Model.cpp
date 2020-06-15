@@ -68,7 +68,6 @@ Model::Model(ProblemType type) {
     assert(modelFile.is_open() && "File open failed!");
     this->problemType=type;
 
-
 }
 
 bool Model::finalizeAndSolve() {
@@ -171,9 +170,28 @@ bool Model::isVariableDeclared(const string& variable) {
     return variablesPool.count(variable)!=0;
 }
 
+bool created = false;
+
 void Model::insertObjectiveElement(const pair<string, double> &p) {
     assert(isVariableDeclared(p.first) && "Variable not declared!");
-    objectiveFunction.push_back(p);
+
+    string operand = " += ";
+    if(!created){
+        operand = " = ";
+        created = true;
+    }
+
+    modelFile << "objectiveFunction" << operand;
+
+    if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
+        modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
+
+    }else {
+        modelFile << " + (" << p.second << ")*" << p.first;
+    }
+
+    modelFile << "\n";
+    //objectiveFunction.push_back(p);
 
 }
 
@@ -190,14 +208,15 @@ void Model::writeOutObjectiveFunction() {
 
     modelFile<<"(";
 
-    for (auto p : objectiveFunction) {
+    /*for (auto p : objectiveFunction) {
         if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
             modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
             continue;
         }
         modelFile << " + (" << p.second << ")*" << p.first;
-    }
+    }*/
 
+    modelFile << "objectiveFunction";
 
 
     modelFile<<")\n\n";
@@ -224,4 +243,23 @@ double Model::getVariableValue(string variable){
     assert(res!=variableValues.end() && "The value of this variable was not found in the model!");
 
     return res->second;
+}
+
+void Model::insertComment(string comment, int spaceBefore, int spaceAfter) {
+    int i;
+
+    for(i=0; i<spaceBefore; i++){
+        modelFile << "\n";
+    }
+
+
+    //delete newline
+    std::replace(comment.begin(), comment.end(), '\n', '_');
+    std::replace(comment.begin(), comment.end(), '\r', '_');
+    modelFile << "#" << comment << "\n";
+
+    for(i=0; i<spaceAfter; i++){
+        modelFile << "\n";
+    }
+
 }
