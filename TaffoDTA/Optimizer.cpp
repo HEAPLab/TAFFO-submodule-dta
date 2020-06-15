@@ -3,6 +3,18 @@
 using namespace tuner;
 using namespace mdutils;
 
+void Optimizer::initialize() {
+    for (llvm::Function &f : module.functions()) {
+        dbgs() << "\nGetting info of " << f.getName() << ":\n";
+        if (f.empty()) {
+            continue;
+        }
+        const std::string name = f.getName();
+        known_functions[name] = &f;
+        functions_still_to_visit[name] = &f;
+    }
+
+}
 
 void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo) {
     dbgs() << "handleGlobal called.\n";

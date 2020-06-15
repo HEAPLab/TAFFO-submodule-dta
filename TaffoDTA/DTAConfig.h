@@ -21,11 +21,11 @@ llvm::cl::opt<bool> IterativeMerging("iterative",
 llvm::cl::opt<bool> MixedMode("mixedmode",
                                      llvm::cl::desc("Enable or disable the experimental mixed-precision mode"), llvm::cl::init(false));
 
-llvm::cl::opt<double> MixedTuningENOB("mixedtuningenob", llvm::cl::value_desc("bits"),
+llvm::cl::opt<double> MixedTuningENOB("mixedtuningenob", llvm::cl::value_desc("Enob importance"),
                                llvm::cl::desc("Set the importance given to the best ENOB preservation in mixed precision mode"),
                                llvm::cl::init(1));
 
-llvm::cl::opt<double> MixedTuningTime("mixedtuningenob", llvm::cl::value_desc("bits"),
+llvm::cl::opt<double> MixedTuningTime("mixedtuningtime", llvm::cl::value_desc("Time importance"),
                                       llvm::cl::desc("Set the importance to keep down the computation time in mixed precision mode"),
                                       llvm::cl::init(1));
 

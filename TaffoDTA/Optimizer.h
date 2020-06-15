@@ -92,7 +92,10 @@ namespace tuner {
         bool finish();
 
         explicit Optimizer(Module &mm, TaffoTuner *tuner, string modelFile) : model(Model::MIN), module(mm), tuner(tuner), cpuCosts(modelFile) {
+            dbgs() << "\n\n\n[WARNING] Mixed precision mode enabled. This is an experimental feature. Use it at your own risk!\n\n\n";
             cpuCosts.dump();
+            dbgs() << "ENOB tuning knob: " << to_string(TUNING_ENOB) << "\n";
+            dbgs() << "Time tuning knob: " << to_string(TUNING_MATH) << "\n";
         }
 
         Optimizer();

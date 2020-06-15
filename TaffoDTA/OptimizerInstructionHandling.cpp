@@ -656,18 +656,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
 
 }
 
-void Optimizer::initialize() {
-    for (llvm::Function &f : module.functions()) {
-        dbgs() << "\nGetting info of " << f.getName() << ":\n";
-        if (f.empty()) {
-            continue;
-        }
-        const std::string name = f.getName();
-        known_functions[name] = &f;
-        functions_still_to_visit[name] = &f;
-    }
 
-}
 
 void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> argInfo,
                                 shared_ptr<OptimizerInfo> retInfo) {
