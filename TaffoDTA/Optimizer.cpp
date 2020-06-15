@@ -610,6 +610,10 @@ void Optimizer::saveInfoForValue(Value *value, shared_ptr<OptimizerInfo> optInfo
     assert(optInfo && "optInfo must be a valid info!");
     assert(!valueHasInfo(value) && "Double insertion of value info!");
 
+    dbgs() << "Saved info " << optInfo->toString() << " for ";
+    value->print(dbgs());
+    dbgs()<<"\n";
+
     valueToVariableName.insert(make_pair(value, optInfo));
 
     int closed = 0;

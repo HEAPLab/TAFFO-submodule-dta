@@ -296,7 +296,7 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
 
 
     if (isa<BitCastInst>(instruction)) {
-        emitError("BitCast not handled.");
+        dbgs() << "[Warning] Bitcasting not supported for model generation.";
         return;
     }
 
@@ -697,7 +697,7 @@ void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> arg
         //C++ is horrible
         (*iIt).print(dbgs());
         dbgs() << "     -having-     ";
-        if (!tuner->hasInfo(&(*iIt))) {
+        if (!tuner->hasInfo(&(*iIt)) || !tuner->valueInfo(&(*iIt))->metadata) {
             dbgs() << "No info available.\n";
         } else {
             dbgs() << tuner->valueInfo(&(*iIt))->metadata->toString() << "\n";

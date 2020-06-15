@@ -14,43 +14,37 @@ Optimizer::handleBinaryInstruction(Instruction *instr, const unsigned OpCode, co
 
 
     switch (OpCode) {
-        //case llvm::Instruction::Add:
         case llvm::Instruction::FAdd:
             handleFAdd(binop, OpCode, valueInfos);
             break;
-            //case llvm::Instruction::Sub:
         case llvm::Instruction::FSub:
-            //return handleSub(op1, op2, destRange);
             handleFSub(binop, OpCode, valueInfos);
             break;
-            //case llvm::Instruction::Mul:
         case llvm::Instruction::FMul:
-            //return handleMul(op1, op2, destRange);
             handleFMul(binop, OpCode, valueInfos);
             break;
-            //case llvm::Instruction::UDiv:
-            //case llvm::Instruction::SDiv:
-        case llvm::Instruction::FDiv:
-            //return handleDiv(op1, op2, destRange);
+        case llvm::Instruction::FDiv:;
             handleFDiv(binop, OpCode, valueInfos);
             break;
-            //case llvm::Instruction::URem:
-            //case llvm::Instruction::SRem:
         case llvm::Instruction::FRem:
-            //return handleRem(op1, op2, destRange);
             handleFRem(binop, OpCode, valueInfos);
             break;
-            /*case llvm::Instruction::Shl:
-                return handleShl(op1, op2, destRange);
-            case llvm::Instruction::LShr:
-            case llvm::Instruction::AShr:
-                return handleAShr(op1, op2, destRange);
-                llvm_unreachable("No implemented");
-            case llvm::Instruction::And:
-            case llvm::Instruction::Or:
-            case llvm::Instruction::Xor:
-                //This is even ok to implement? :/
-                break;*/
+
+        case llvm::Instruction::Add:
+        case llvm::Instruction::Sub:
+        case llvm::Instruction::Mul:
+        case llvm::Instruction::UDiv:
+        case llvm::Instruction::SDiv:
+        case llvm::Instruction::URem:
+        case llvm::Instruction::SRem:
+        case llvm::Instruction::Shl:
+        case llvm::Instruction::LShr:
+        case llvm::Instruction::AShr:
+        case llvm::Instruction::And:
+        case llvm::Instruction::Or:
+        case llvm::Instruction::Xor:
+            dbgs() << "Skipping operation between integers...\n";
+            break;
         default:
             emitError("Unhandled binary operator " + to_string(OpCode)); // unsupported operation
             break;
@@ -68,11 +62,14 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
 
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
-    if(!res) return;
+    if (!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)));
+    model.insertObjectiveElement(
+            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)));
+    model.insertObjectiveElement(
+            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)));
+    model.insertObjectiveElement(
+            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)));
 
     //enob constraint
     auto constraint = vector<pair<string, double>>();
@@ -104,11 +101,14 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
 
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
-    if(!res) return;
+    if (!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)));
+    model.insertObjectiveElement(
+            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FIX)));
+    model.insertObjectiveElement(
+            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FLOAT)));
+    model.insertObjectiveElement(
+            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)));
 
     //Precision cost
     //Handloed in allocating variable
@@ -139,11 +139,14 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
 
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
-    if(!res) return;
+    if (!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)));
+    model.insertObjectiveElement(
+            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FIX)));
+    model.insertObjectiveElement(
+            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FLOAT)));
+    model.insertObjectiveElement(
+            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)));
 
     //Precision cost
     //Handloed in allocating variable
@@ -162,12 +165,8 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     model.createVariable(enob_selection_2, 0, 1);
 
 
-
     int intbit_1 = getMinIntBitOfValue(op1);
     int intbit_2 = getMinIntBitOfValue(op1);
-
-
-
 
 
     constraint.clear();
@@ -203,11 +202,14 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
 
 
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
-    if(!res) return;
+    if (!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)));
+    model.insertObjectiveElement(
+            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FIX)));
+    model.insertObjectiveElement(
+            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FLOAT)));
+    model.insertObjectiveElement(
+            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)));
     //Precision cost
     //Handloed in allocating variable
 
@@ -224,11 +226,14 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
 
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
 
-    if(!res) return;
+    if (!res) return;
 
-    model.insertObjectiveElement(make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FIX)));
-    model.insertObjectiveElement(make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FLOAT)));
-    model.insertObjectiveElement(make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)));
+    model.insertObjectiveElement(
+            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FIX)));
+    model.insertObjectiveElement(
+            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FLOAT)));
+    model.insertObjectiveElement(
+            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)));
     //Precision cost
     //Handloed in allocating variable
 
@@ -236,7 +241,9 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
 
 }
 
-shared_ptr<OptimizerScalarInfo> Optimizer::handleBinOpCommon(Instruction* instr, Value * op1, Value * op2, bool forceFixEquality, shared_ptr<ValueInfo> valueInfos){
+shared_ptr<OptimizerScalarInfo>
+Optimizer::handleBinOpCommon(Instruction *instr, Value *op1, Value *op2, bool forceFixEquality,
+                             shared_ptr<ValueInfo> valueInfos) {
     auto info1 = getInfoOfValue(op1);
     auto info2 = getInfoOfValue(op2);
 

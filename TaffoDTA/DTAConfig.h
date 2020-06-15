@@ -18,8 +18,16 @@ llvm::cl::opt<bool> DisableTypeMerging("notypemerge",
 llvm::cl::opt<bool> IterativeMerging("iterative",
                                      llvm::cl::desc("Enables old iterative merging"), llvm::cl::init(false));
 
-llvm::cl::opt<int> ForceFloat("forcefloat",
-                              llvm::cl::desc("Force a specific floating point type as output [0=half, 1=float, 2=double, 3=fp128]"), llvm::cl::init(-1));
+llvm::cl::opt<bool> MixedMode("mixedmode",
+                                     llvm::cl::desc("Enable or disable the experimental mixed-precision mode"), llvm::cl::init(false));
+
+llvm::cl::opt<double> MixedTuningENOB("mixedtuningenob", llvm::cl::value_desc("bits"),
+                               llvm::cl::desc("Set the importance given to the best ENOB preservation in mixed precision mode"),
+                               llvm::cl::init(1));
+
+llvm::cl::opt<double> MixedTuningTime("mixedtuningenob", llvm::cl::value_desc("bits"),
+                                      llvm::cl::desc("Set the importance to keep down the computation time in mixed precision mode"),
+                                      llvm::cl::init(1));
 
 STATISTIC(FixCast, "Number of fixed point format cast");
 #endif

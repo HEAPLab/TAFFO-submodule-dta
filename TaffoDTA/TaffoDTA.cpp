@@ -32,9 +32,12 @@ bool TaffoTuner::runOnModule(Module &m) {
     llvm::SmallPtrSet<llvm::Value *, 8U> valset;
     retrieveAllMetadata(m, vals, valset);
 
-    //mergeFixFormat(vals, valset);
 
-    buildModelAndOptimze(m, vals, valset);
+    if (MixedMode) {
+        buildModelAndOptimze(m, vals, valset);
+    } else {
+        mergeFixFormat(vals, valset);
+    }
 
     std::vector<Function *> toDel;
     toDel = collapseFunction(m);
@@ -178,8 +181,8 @@ bool TaffoTuner::associateFixFormat(InputInfo &II, Type::TypeID origType) {
 
 
     //New super performing algorithm to compute a lot of things
-    //FIXME: fix this mess
-    if (ForceFloat >= 0) {
+    //Preserving this code just in case, shold be not necessary
+    /*if (ForceFloat >= 0) {
         auto standard = static_cast<mdutils::FloatType::FloatStandard>(ForceFloat.getValue());
 
         double greatest = abs(II.IRange->Min);
@@ -194,16 +197,16 @@ bool TaffoTuner::associateFixFormat(InputInfo &II, Type::TypeID origType) {
         return true;
 
 
-    } else {
-        FixedPointTypeGenError fpgerr;
-        FPType res = fixedPointTypeFromRange(*rng, &fpgerr, TotalBits, FracThreshold, 64, TotalBits);
-        if (fpgerr == FixedPointTypeGenError::InvalidRange) {
-            LLVM_DEBUG(dbgs() << "[Info] Skipping " << II.toString() << ", FixedPointTypeGenError::InvalidRange\n");
-            return false;
-        }
-        II.IType.reset(res.clone());
-        return true;
+    } else {*/
+    FixedPointTypeGenError fpgerr;
+    FPType res = fixedPointTypeFromRange(*rng, &fpgerr, TotalBits, FracThreshold, 64, TotalBits);
+    if (fpgerr == FixedPointTypeGenError::InvalidRange) {
+        LLVM_DEBUG(dbgs() << "[Info] Skipping " << II.toString() << ", FixedPointTypeGenError::InvalidRange\n");
+        return false;
     }
+    II.IType.reset(res.clone());
+    return true;
+    //}
 
 
 }
@@ -703,7 +706,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
         dbgs() << "\n";
 
         bool result = mergeDataTypes(viu->metadata, fp);
-        if(result){
+        if (result) {
             //Some datatype has changed, restore in function call
             dbgs() << "Restoring call type...\n";
             restoreTypesAcrossFunctionCall(v);
@@ -719,25 +722,25 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 }
 
 bool TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdutils::MDInfo> model) {
-    if(!old||!model) return false;
+    if (!old || !model) return false;
 
-    if(old->getKind() == mdutils::MDInfo::K_Field){
+    if (old->getKind() == mdutils::MDInfo::K_Field) {
         assert(model->getKind() == mdutils::MDInfo::K_Field && "Mismatching metadata infos!!!");
 
         auto old1 = dynamic_ptr_cast_or_null<InputInfo>(old);
         auto model1 = dynamic_ptr_cast_or_null<InputInfo>(model);
-        if(old1->IType->operator==(*model1->IType)){
+        if (old1->IType->operator==(*model1->IType)) {
             return false;
         }
 
         old1->IType.reset(model1->IType->clone());
         return true;
-    }else if(old->getKind() == mdutils::MDInfo::K_Struct){
+    } else if (old->getKind() == mdutils::MDInfo::K_Struct) {
         auto old1 = dynamic_ptr_cast_or_null<StructInfo>(old);
         auto model1 = dynamic_ptr_cast_or_null<StructInfo>(model);
 
         bool changed = false;
-        for(int i =0; i<old1->size(); i++){
+        for (int i = 0; i < old1->size(); i++) {
             changed |= mergeDataTypes(old1->getField(i), model1->getField(i));
         }
         return changed;

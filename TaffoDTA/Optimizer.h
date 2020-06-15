@@ -27,9 +27,11 @@
 #define I_COST 1
 
 //This means how much the casting cost will be relevant for the computation
-#define TUNING_CASTING 10
-#define TUNING_MATH 10
-#define TUNING_ENOB 0.5
+extern llvm::cl::opt<double> MixedTuningTime;
+extern llvm::cl::opt<double> MixedTuningENOB;
+#define TUNING_CASTING (MixedTuningTime)
+#define TUNING_MATH (MixedTuningTime)
+#define TUNING_ENOB (MixedTuningENOB)
 
 #define P_COST 1
 #define BIG_NUMBER 10000
