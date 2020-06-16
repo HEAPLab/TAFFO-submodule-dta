@@ -61,6 +61,7 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op1));
     auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
 
+
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
     if (!res) return;
 

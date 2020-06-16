@@ -86,7 +86,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
 
     auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos(), fpInfo->getWidth(),
-                                                          fpInfo->isSigned());
+                                                          fpInfo->isSigned(), *rangeInfo, "");
 
 
     dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
@@ -370,7 +370,9 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     unsigned minBits = info->minBits;
     unsigned maxBits = info->maxBits;
 
-    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits, info->totalBits, info->isSigned);
+    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits, info->totalBits, info->isSigned, *info->getRange(), info->getOverridedEnob());
+
+
 
 
     dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits
@@ -388,7 +390,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
-    model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
+    //model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
 
     auto constraint = vector<pair<string, double>>();
     //Constraint for mixed precision: only one constraint active at one time:
@@ -401,10 +403,10 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
 
 
     //Real enob is still the same!
-    constraint.clear();
-    constraint.push_back(make_pair(info->getRealEnobVariable(), -1.0));
-    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "The ENOB is less or equal!");
+    //constraint.clear();
+    //constraint.push_back(make_pair(info->getRealEnobVariable(), -1.0));
+    //constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
+    //model.insertLinearConstraint(constraint, Model::LE, 0, "The ENOB is less or equal!");
 
     //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
     //x_bits - M * x_fixp <= 0

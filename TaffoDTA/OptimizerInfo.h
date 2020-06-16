@@ -49,19 +49,31 @@ namespace tuner {
         unsigned maxBits;
         unsigned totalBits;
         bool isSigned;
+        string overridedEnob;
+        shared_ptr<mdutils::Range> range;
 
         const string getBaseName() const {
             return *baseName.get();
         }
 
         OptimizerScalarInfo(string _variableName, unsigned _minBits, unsigned _maxBits, unsigned _totalBits,
-                            bool _isSigned)
+                            bool _isSigned, mdutils::Range _range, string _overriddenEnob)
                 : OptimizerInfo(K_Field) {
             minBits = _minBits;
             maxBits = _maxBits;
             baseName = make_shared<string>(_variableName);
             totalBits = _totalBits;
             isSigned = _isSigned;
+            range = make_shared<mdutils::Range>(_range);
+            overridedEnob = _overriddenEnob;
+        }
+
+        shared_ptr<mdutils::Range> getRange() {
+            return range;
+        }
+
+        string getOverridedEnob() {
+            return overridedEnob;
         }
 
 
@@ -69,6 +81,8 @@ namespace tuner {
             std::stringstream sstm;
             sstm << "ScalarInfo(";
             sstm << *(baseName.get());
+            sstm << ", ";
+            sstm << overridedEnob;
             sstm << ")";
             return sstm.str();
         };
@@ -98,6 +112,9 @@ namespace tuner {
         }
 
         const string getRealEnobVariable() {
+            if(!overridedEnob.empty()){
+                return overridedEnob;
+            }
             return *baseName + "_enob";
         }
 
@@ -107,6 +124,10 @@ namespace tuner {
 
         bool isSigned1() const {
             return isSigned;
+        }
+
+        void overrideEnob(string newEnob){
+            overridedEnob = newEnob;
         }
 
         bool operator==(const OptimizerInfo &other) const override {

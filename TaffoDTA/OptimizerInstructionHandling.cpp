@@ -96,10 +96,14 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         }
 
         //We are copying the infos.
-        saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
-                                                                       sinfos->getMinBits(),
-                                                                       sinfos->getMaxBits(), sinfos->getTotalBits(),
-                                                                       sinfos->isSigned));
+        auto a = make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
+                                                  sinfos->getMinBits(),
+                                                  sinfos->getMaxBits(), sinfos->getTotalBits(),
+                                                  sinfos->isSigned,
+                                                  *sinfos->getRange(), sinfos->getOverridedEnob());
+
+        saveInfoForValue(instruction, a);
+
 
         dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
 
@@ -147,6 +151,12 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
             return;
         }
 
+        auto info_variable_oeig_t = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info2);
+        if (!info_variable_oeig_t) {
+            emitError("No info on register value!");
+            return;
+        }
+
         dbgs() << "Storing " << info2->toString() << " into " << info1->toString() << "\n";
 
 
@@ -155,6 +165,47 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
         shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableWithCastCost(opRegister, instruction);
 
         insertTypeEqualityConstraint(info_pointer, variable, true);
+
+        model.insertComment("Restriction for new enob", 1);
+
+        //FIXME: what if branches with memory accesses?
+
+        string newEnobVariable=info_pointer->getRealEnobVariable();
+        newEnobVariable.append("_storeENOB");
+        model.createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
+        info_pointer->overrideEnob(newEnobVariable);
+
+        //We force the enob back to the variable type, just in case!
+        auto constraint = vector<pair<string, double>>();
+        int ENOBfloat = getENOBFromRange(info_pointer->getRange(), FloatType::Float_float);
+        int ENOBdouble = getENOBFromRange(info_pointer->getRange(), FloatType::Float_double);
+
+
+
+        constraint.clear();
+        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+        constraint.push_back(make_pair(info_pointer->getFractBitsVariable(), -1.0));
+        constraint.push_back(make_pair(info_pointer->getFixedSelectedVariable(), BIG_NUMBER));
+        model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
+
+        //Enob constraints float
+        constraint.clear();
+        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+        constraint.push_back(make_pair(info_pointer->getFloatSelectedVariable(), BIG_NUMBER));
+        model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBfloat, "Enob constraint for float");
+
+        //Enob constraints float
+        constraint.clear();
+        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+        constraint.push_back(make_pair(info_pointer->getDoubleSelectedVariable(), BIG_NUMBER));
+        model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
+
+
+        constraint.clear();
+        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+        constraint.push_back(make_pair(info_variable_oeig_t->getRealEnobVariable(), -1.0));
+        model.insertLinearConstraint(constraint, Model::LE, 0, "Enob constraint ENOB propagation in load/store");
+
     } else if (opRegister->getType()->isPointerTy()) {
         //Storing a pointer. In the value there should be a pointer already, and the value where to store is, in fact,
         //a pointer to a pointer
@@ -196,11 +247,11 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
         return;
     }
 
-
+    //Copy information as for us is like a NOP
     saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                    sinfos->getMinBits(),
                                                                    sinfos->getMaxBits(), sinfos->getTotalBits(),
-                                                                   sinfos->isSigned));
+                                                                   sinfos->isSigned, *sinfos->getRange(), sinfos->getOverridedEnob()));
 
     dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getBaseName() << "\n";
 
@@ -225,7 +276,7 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     //We treat phi as normal assignment, without looking at the real "backend" implementation. This may be quite different
     //from the real execution, but the overall meaning is the same.
 
-    //FIXME: we here does not propagate the enob. It is not so easy as we have to get the mazimum enob. With product is easy
+    //FIXME: we here does not propagate the enob. It is not so easy as we have to get the maximum enob. With product is easy
     //As we only have two. Here the most handy solution is to actually pre declare all the needed bynary 1-0 variable, put the
     //Sum of them to 1 and therefore using the M trick to enable only one constraint. In this function the declaration, in
     //closephiLoop() the actual insertion of the constraint
