@@ -2,13 +2,11 @@ TODOS:
 
 Implement inserting cost proportional to number of execution
 
-Refactor optimizer to create different variables for each cost, for better readability (Not so important...)
+Enob propagation (WIP, external (math) calls not handled)
 
-Enob propagation (WIP, divisions, phi and external (math) calls not handled)
+SSA should be used in propagation of enob against load/store
 
-[Not sure] if only storing in a variable, maybe to force the precision in some way? This is important when loading from a variable and storing into another
-
-[Not sure] structured phi node (?)
+Implement SELECT instruction
 
 
 
