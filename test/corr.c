@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-double __attribute((annotate("scalar(range(-512, 512) final)"))) mean[10];
-double __attribute((annotate("scalar(range(-512, 512) final)"))) data[10][10];
+double __attribute((annotate("scalar(range(1, 50000) final)"))) mean[10];
+double __attribute((annotate("scalar(range(1, 5) final)"))) data[10][10];
 double __attribute((annotate("scalar(range(1, 3000))"))) float_n;
 
 

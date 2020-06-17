@@ -988,6 +988,16 @@ string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
     std::replace( valueName.begin(), valueName.end(), '.', '_');
     assert(!valueName.empty() && "The value should have a name!!!");
 
+    string fname;
+    if(auto instr = dyn_cast_or_null<Instruction>(value)){
+        fname = instr->getFunction()->getName();
+        std::replace( fname.begin(), fname.end(), '.', '_');
+    }
+
+    if(!fname.empty()){
+        valueName = fname + "_" + valueName;
+    }
+
     string toreturn = valueName + "_enob_" + to_string(cardinal);
 
     return toreturn;
