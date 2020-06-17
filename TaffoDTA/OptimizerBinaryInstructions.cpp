@@ -167,7 +167,7 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
 
 
     int intbit_1 = getMinIntBitOfValue(op1);
-    int intbit_2 = getMinIntBitOfValue(op1);
+    int intbit_2 = getMinIntBitOfValue(op2);
 
 
     constraint.clear();
@@ -191,7 +191,7 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_selection_2, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, -intbit_2, "Enob: propagation in product 1");
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_2, "Enob: propagation in product 2");
 
 }
 
@@ -201,6 +201,8 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     auto op1 = instr->getOperand(0);
     auto op2 = instr->getOperand(1);
 
+    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op1));
+    auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op2));
 
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
     if (!res) return;
@@ -214,7 +216,44 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     //Precision cost
     //Handloed in allocating variable
 
-    //FIXME: insert enob propagation
+
+
+    auto constraint = vector<pair<string, double>>();
+    //Enob propagation
+    string enob_selection_1 = getEnobActivationVariable(instr, 1);
+    model.createVariable(enob_selection_1, 0, 1);
+    string enob_selection_2 = getEnobActivationVariable(instr, 2);
+    model.createVariable(enob_selection_2, 0, 1);
+
+
+    int intbit_1 = getMinIntBitOfValue(op1);
+    int intbit_2 = getMinIntBitOfValue(op2);
+
+    int maxbits2 = getMaxIntBitOfValue(op2);
+
+
+    constraint.clear();
+    constraint.push_back(make_pair(enob_selection_1, 1.0));
+    constraint.push_back(make_pair(enob_selection_2, 1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+
+
+    //New enob constraint (tighter)
+    //c <= a+b-intbit_a-a+My
+    //That is
+    //c<=b-intbit_a+my
+    constraint.clear();
+    constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
+    constraint.push_back(make_pair(enob_selection_1, -BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_1+2*maxbits2, "Enob: propagation in division 1");
+
+
+    constraint.clear();
+    constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
+    constraint.push_back(make_pair(enob_selection_2, -BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_2+2*maxbits2, "Enob: propagation in division 2");
 
 }
 
@@ -239,6 +278,7 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
     //Handloed in allocating variable
 
     //FIXME: insert enob propagation
+    assert(false && "Enob propagation in frem not handled!");
 
 }
 

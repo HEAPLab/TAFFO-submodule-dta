@@ -198,6 +198,8 @@ namespace tuner {
         string getEnobActivationVariable(Value *value, int cardinal);
 
         int getMinIntBitOfValue(Value *pValue);
+
+        int getMaxIntBitOfValue(Value *pValue);
     };
 
 

@@ -1033,6 +1033,35 @@ int Optimizer::getMinIntBitOfValue(Value *pValue) {
 
 }
 
+int Optimizer::getMaxIntBitOfValue(Value *pValue) {
+    int bits = 1024;
+
+    if (!tuner->hasInfo(pValue)) {
+        dbgs() << "No info available for IntBit computation. Using default value\n";
+        return bits;
+    }
+
+    auto metadata = tuner->valueInfo(pValue)->metadata;
+
+    if (!metadata) {
+        dbgs() << "No metadata available for IntBit computation. Using default value\n";
+        return bits;
+    }
+
+
+    auto metadata_InputInfo = dynamic_ptr_cast_or_null<InputInfo>(metadata);
+    assert(metadata_InputInfo && "Not an InputInfo!");
+
+    auto range = metadata_InputInfo->IRange;
+
+    double biggestRepresentableNumber = max(abs(range->Min), abs(range->Max));
+
+    double exponentOfExponent = log2(biggestRepresentableNumber);
+    bits = round(exponentOfExponent);
+
+    return bits;
+
+}
 
 
 
