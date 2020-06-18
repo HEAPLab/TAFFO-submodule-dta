@@ -33,7 +33,7 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
                 dbgs() << "No fixed point info associated. Bailing out.\n";
                 return;
             }
-            auto optInfo = allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, "", false);
+            auto optInfo = allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, fieldInfo->IError, "", false);
             saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(optInfo));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
             dbgs() << " ^ This is a real structure\n";
@@ -60,7 +60,7 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 }
 
 shared_ptr<OptimizerScalarInfo>
-Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo,
+Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo, shared_ptr<double> suggestedMinError,
                                        string functionName, bool insertInList, string nameAppendix, bool insertENOBinMin) {
     assert(!valueHasInfo(value) && "The value considered already have an info!");
 
@@ -129,6 +129,20 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), BIG_NUMBER));
     model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
+
+    if(suggestedMinError){
+        /*If we have a suggested min initial error, that is used for error propagation, we should cap the enob to that erro.
+         * In facts, it is not really necessary to "unbound" the minimum error while the input variables are not error free
+         * Think about a reading from a sensor (ADC) or something similar, the error there will be even if we use a double to
+         * store its result. Therefore we limit the enob to a useful value even for floating points.*/
+        dbgs() << "We have a suggested min error, limiting the enob in the model.\n";
+
+        double errorEnob = getENOBFromError(*suggestedMinError);
+
+        constraint.clear();
+        constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
+        model.insertLinearConstraint(constraint, Model::LE, errorEnob, "Enob constraint for error maximal");
+    }
 
     if(!MixedDoubleEnabled){
         constraint.clear();
@@ -609,6 +623,9 @@ int Optimizer::getENOBFromRange(shared_ptr<mdutils::Range> range, mdutils::Float
     double exponentOfExponent = log2(smallestRepresentableNumber);
     int exponentInt = floor(exponentOfExponent);
 
+    /*dbgs() << "smallestNumber: " << smallestRepresentableNumber << "\n";
+    dbgs() << "exponentInt: " << exponentInt << "\n";*/
+
     if (exponentInt < minExponentPower) exponentInt = minExponentPower;
 
 
@@ -634,7 +651,7 @@ shared_ptr<OptimizerStructInfo> Optimizer::loadStructInfo(Value *glob, shared_pt
                 dbgs() << "No fixed point info associated. Bailing out.\n";
 
             } else {
-                auto info = allocateNewVariableForValue(glob, fptype, ii->IRange, function, false,
+                auto info = allocateNewVariableForValue(glob, fptype, ii->IRange, ii->IError, function, false,
                                                         name + "_" + to_string(i));
                 optInfo->setField(i, info);
             }
@@ -743,6 +760,15 @@ shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalar
 
 
 
+int Optimizer::getENOBFromError(double error) {
+    int enob=floor(log2(error));
+
+
+
+
+    //Fix enob to be at least 0.
+    return max(-enob, 0);
+}
 
 
 

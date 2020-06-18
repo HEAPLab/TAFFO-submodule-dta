@@ -113,6 +113,7 @@ namespace tuner {
 
         shared_ptr<OptimizerScalarInfo> allocateNewVariableForValue(Value *value, shared_ptr<mdutils::FPType> fpInfo,
                                                                     shared_ptr<mdutils::Range> rangeInfo,
+                                                                    shared_ptr<double> suggestedMinError,
                                                                     string functionName, bool insertInList = true,
                                                                     string nameAppendix = "", bool insertENOBinMin = true);
 
@@ -202,6 +203,8 @@ namespace tuner {
         int getMinIntBitOfValue(Value *pValue);
 
         int getMaxIntBitOfValue(Value *pValue);
+
+        int getENOBFromError(double d);
     };
 
 

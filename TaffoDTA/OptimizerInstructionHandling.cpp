@@ -38,7 +38,7 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
                 dbgs() << "No fixed point info associated. Bailing out.\n";
                 return;
             }
-            auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, alloca->getFunction()->getName(),
+            auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, fieldInfo->IError, alloca->getFunction()->getName(),
                                                     false);
             saveInfoForValue(alloca, make_shared<OptimizerPointerInfo>(info));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
@@ -303,7 +303,7 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     }
 
     //Allocating variable for result
-    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange, fieldInfo->IError,
                                                                            instruction->getFunction()->getName());
     auto constraint = vector<pair<string, double>>();
     constraint.clear();
@@ -379,7 +379,7 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
         }
 
 
-        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange, fieldInfo->IError,
                                                                                instruction->getFunction()->getName());
         return;
     }
@@ -628,7 +628,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
         auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
         if (fptype) {
             dbgs() << fptype->toString();
-            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange,
+            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange, inputInfo->IError,
                                                                                  instruction->getFunction()->getName());
             retInfo = result;
         } else {
@@ -1072,6 +1072,7 @@ int Optimizer::getMaxIntBitOfValue(Value *pValue) {
     return bits;
 
 }
+
 
 
 

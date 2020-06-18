@@ -312,7 +312,7 @@ Optimizer::handleBinOpCommon(Instruction *instr, Value *op1, Value *op2, bool fo
 
 
     //Obviously the type should be sufficient to contain the result
-    shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instr, fptype, inputInfo->IRange,
+    shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instr, fptype, inputInfo->IRange, inputInfo->IError,
                                                                          instr->getFunction()->getName());
 
     insertTypeEqualityConstraint(varCast1, varCast2, forceFixEquality);

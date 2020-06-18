@@ -53,7 +53,7 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
 
             string fname = "ConstantValue";
             //ENOB should not be considered for constant.... It is a constant and will be converted as best as possible
-            return allocateNewVariableForValue(constantFP, make_shared<FPType>(fpInfo), make_shared<Range>(rangeInfo), fname, true, "", false);
+            return allocateNewVariableForValue(constantFP, make_shared<FPType>(fpInfo), make_shared<Range>(rangeInfo), nullptr, fname, true, "", false);
         }
 
         dbgs() << "[ERROR] handling unknown ConstantData, I don't know what to do: ";

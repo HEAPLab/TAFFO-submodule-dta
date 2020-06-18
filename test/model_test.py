@@ -8,8 +8,9 @@ mean_float = solver.IntVar(0, 1, 'mean_float')
 mean_double = solver.IntVar(0, 1, 'mean_double')
 mean_enob = solver.IntVar(-10000, 10000, 'mean_enob')
 solver.Add( + (1)*mean_enob + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*mean_enob + (10000)*mean_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*mean_enob + (10000)*mean_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*mean_enob + (10000)*mean_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*mean_enob + (10000)*mean_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*mean_enob<=4)    #Enob constraint for error maximal
 solver.Add( + (1)*mean_double<=0)    #Disable double data type
 objectiveFunction =  + (-100)*mean_enob
 solver.Add( + (1)*mean_fixp + (1)*mean_float + (1)*mean_double==1)    #Exactly one selected type
@@ -17,15 +18,15 @@ solver.Add( + (1)*mean_fixbits + (-10000)*mean_fixp<=0)    #If not fix, frac par
 
 
 
-#Stuff for @data = common dso_local global [10 x [10 x double]] zeroinitializer, align 16, !taffo.initweight !0, !taffo.info !3
+#Stuff for @data = common dso_local global [10 x [10 x double]] zeroinitializer, align 16, !taffo.initweight !0, !taffo.info !4
 data_fixbits = solver.IntVar(0, 29, 'data_fixbits')
 data_fixp = solver.IntVar(0, 1, 'data_fixp')
 data_float = solver.IntVar(0, 1, 'data_float')
 data_double = solver.IntVar(0, 1, 'data_double')
 data_enob = solver.IntVar(-10000, 10000, 'data_enob')
 solver.Add( + (1)*data_enob + (-1)*data_fixbits + (10000)*data_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*data_enob + (10000)*data_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*data_enob + (10000)*data_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*data_enob + (10000)*data_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*data_enob + (10000)*data_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*data_double<=0)    #Disable double data type
 objectiveFunction +=  + (-100)*data_enob
 solver.Add( + (1)*data_fixp + (1)*data_float + (1)*data_double==1)    #Exactly one selected type
@@ -33,15 +34,15 @@ solver.Add( + (1)*data_fixbits + (-10000)*data_fixp<=0)    #If not fix, frac par
 
 
 
-#Stuff for @float_n = common dso_local global double 0.000000e+00, align 8, !taffo.initweight !0, !taffo.info !5
+#Stuff for @float_n = common dso_local global double 0.000000e+00, align 8, !taffo.initweight !0, !taffo.info !6
 float_n_fixbits = solver.IntVar(0, 20, 'float_n_fixbits')
 float_n_fixp = solver.IntVar(0, 1, 'float_n_fixp')
 float_n_float = solver.IntVar(0, 1, 'float_n_float')
 float_n_double = solver.IntVar(0, 1, 'float_n_double')
 float_n_enob = solver.IntVar(-10000, 10000, 'float_n_enob')
 solver.Add( + (1)*float_n_enob + (-1)*float_n_fixbits + (10000)*float_n_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*float_n_enob + (10000)*float_n_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*float_n_enob + (10000)*float_n_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*float_n_enob + (10000)*float_n_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*float_n_enob + (10000)*float_n_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*float_n_double<=0)    #Disable double data type
 objectiveFunction +=  + (-100)*float_n_enob
 solver.Add( + (1)*float_n_fixp + (1)*float_n_float + (1)*float_n_double==1)    #Exactly one selected type
@@ -64,7 +65,7 @@ solver.Add( + (1)*ConstantValue__fixbits + (-10000)*ConstantValue__fixp<=0)    #
 
 
 
-#Constraint for cast for   store double 0.000000e+00, double* %arrayidx, align 8, !taffo.initweight !15, !taffo.info !1, !taffo.constinfo !16
+#Constraint for cast for   store double 0.000000e+00, double* %arrayidx, align 8, !taffo.initweight !16, !taffo.info !1, !taffo.constinfo !17
 ConstantValue__CAST_store_fixbits = solver.IntVar(0, 32, 'ConstantValue__CAST_store_fixbits')
 ConstantValue__CAST_store_fixp = solver.IntVar(0, 1, 'ConstantValue__CAST_store_fixp')
 ConstantValue__CAST_store_float = solver.IntVar(0, 1, 'ConstantValue__CAST_store_float')
@@ -103,13 +104,13 @@ solver.Add( + (1)*mean_fixbits + (-1)*ConstantValue__CAST_store_fixbits==0)    #
 #Restriction for new enob
 mean_enob_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB')
 solver.Add( + (1)*mean_enob_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*mean_enob_storeENOB + (-1)*ConstantValue__enob<=0)    #Enob constraint ENOB propagation in load/store
 
 
 
-#Constraint for cast for   %add = fadd double %1, %0, !taffo.initweight !19, !taffo.info !1
+#Constraint for cast for   %add = fadd double %1, %0, !taffo.initweight !20, !taffo.info !1
 mean_CAST_add_fixbits = solver.IntVar(0, 16, 'mean_CAST_add_fixbits')
 mean_CAST_add_fixp = solver.IntVar(0, 1, 'mean_CAST_add_fixp')
 mean_CAST_add_float = solver.IntVar(0, 1, 'mean_CAST_add_float')
@@ -143,7 +144,7 @@ objectiveFunction +=  + (5.30435)*C8_mean_CAST_add
 
 
 
-#Constraint for cast for   %add = fadd double %1, %0, !taffo.initweight !19, !taffo.info !1
+#Constraint for cast for   %add = fadd double %1, %0, !taffo.initweight !20, !taffo.info !1
 data_CAST_add_fixbits = solver.IntVar(0, 29, 'data_CAST_add_fixbits')
 data_CAST_add_fixp = solver.IntVar(0, 1, 'data_CAST_add_fixp')
 data_CAST_add_float = solver.IntVar(0, 1, 'data_CAST_add_float')
@@ -177,15 +178,16 @@ objectiveFunction +=  + (5.30435)*C8_data_CAST_add
 
 
 
-#Stuff for   %add = fadd double %1, %0, !taffo.initweight !19, !taffo.info !1
+#Stuff for   %add = fadd double %1, %0, !taffo.initweight !20, !taffo.info !1
 main_add_fixbits = solver.IntVar(0, 16, 'main_add_fixbits')
 main_add_fixp = solver.IntVar(0, 1, 'main_add_fixp')
 main_add_float = solver.IntVar(0, 1, 'main_add_float')
 main_add_double = solver.IntVar(0, 1, 'main_add_double')
 main_add_enob = solver.IntVar(-10000, 10000, 'main_add_enob')
 solver.Add( + (1)*main_add_enob + (-1)*main_add_fixbits + (10000)*main_add_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*main_add_enob + (10000)*main_add_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*main_add_enob + (10000)*main_add_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*main_add_enob + (10000)*main_add_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*main_add_enob + (10000)*main_add_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*main_add_enob<=4)    #Enob constraint for error maximal
 solver.Add( + (1)*main_add_double<=0)    #Disable double data type
 objectiveFunction +=  + (-100)*main_add_enob
 solver.Add( + (1)*main_add_fixp + (1)*main_add_float + (1)*main_add_double==1)    #Exactly one selected type
@@ -206,7 +208,7 @@ solver.Add( + (1)*main_add_enob + (-1)*data_enob<=0)    #Enob propagation in sum
 
 
 
-#Constraint for cast for   store double %add, double* %arrayidx9, align 8, !taffo.initweight !15, !taffo.info !1
+#Constraint for cast for   store double %add, double* %arrayidx9, align 8, !taffo.initweight !16, !taffo.info !1
 main_add_CAST_store_fixbits = solver.IntVar(0, 16, 'main_add_CAST_store_fixbits')
 main_add_CAST_store_fixp = solver.IntVar(0, 1, 'main_add_CAST_store_fixp')
 main_add_CAST_store_float = solver.IntVar(0, 1, 'main_add_CAST_store_float')
@@ -245,13 +247,13 @@ solver.Add( + (1)*mean_fixbits + (-1)*main_add_CAST_store_fixbits==0)    #same f
 #Restriction for new enob
 mean_enob_storeENOB_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB_storeENOB')
 solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (-1)*main_add_enob<=0)    #Enob constraint ENOB propagation in load/store
 
 
 
-#Constraint for cast for   %div = fdiv double %3, %2, !taffo.initweight !15, !taffo.info !5
+#Constraint for cast for   %div = fdiv double %3, %2, !taffo.initweight !16, !taffo.info !6
 mean_CAST_div_fixbits = solver.IntVar(0, 16, 'mean_CAST_div_fixbits')
 mean_CAST_div_fixp = solver.IntVar(0, 1, 'mean_CAST_div_fixp')
 mean_CAST_div_float = solver.IntVar(0, 1, 'mean_CAST_div_float')
@@ -285,7 +287,7 @@ objectiveFunction +=  + (5.30435)*C8_mean_CAST_div
 
 
 
-#Constraint for cast for   %div = fdiv double %3, %2, !taffo.initweight !15, !taffo.info !5
+#Constraint for cast for   %div = fdiv double %3, %2, !taffo.initweight !16, !taffo.info !6
 float_n_CAST_div_fixbits = solver.IntVar(0, 20, 'float_n_CAST_div_fixbits')
 float_n_CAST_div_fixp = solver.IntVar(0, 1, 'float_n_CAST_div_fixp')
 float_n_CAST_div_float = solver.IntVar(0, 1, 'float_n_CAST_div_float')
@@ -319,15 +321,15 @@ objectiveFunction +=  + (5.30435)*C8_float_n_CAST_div
 
 
 
-#Stuff for   %div = fdiv double %3, %2, !taffo.initweight !15, !taffo.info !5
+#Stuff for   %div = fdiv double %3, %2, !taffo.initweight !16, !taffo.info !6
 main_div_fixbits = solver.IntVar(0, 20, 'main_div_fixbits')
 main_div_fixp = solver.IntVar(0, 1, 'main_div_fixp')
 main_div_float = solver.IntVar(0, 1, 'main_div_float')
 main_div_double = solver.IntVar(0, 1, 'main_div_double')
 main_div_enob = solver.IntVar(-10000, 10000, 'main_div_enob')
 solver.Add( + (1)*main_div_enob + (-1)*main_div_fixbits + (10000)*main_div_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*main_div_enob + (10000)*main_div_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*main_div_enob + (10000)*main_div_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*main_div_enob + (10000)*main_div_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*main_div_enob + (10000)*main_div_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_div_double<=0)    #Disable double data type
 objectiveFunction +=  + (-100)*main_div_enob
 solver.Add( + (1)*main_div_fixp + (1)*main_div_float + (1)*main_div_double==1)    #Exactly one selected type
@@ -344,12 +346,12 @@ objectiveFunction +=  + (7.68154)*main_div_double
 main_div_enob_1 = solver.IntVar(0, 1, 'main_div_enob_1')
 main_div_enob_2 = solver.IntVar(0, 1, 'main_div_enob_2')
 solver.Add( + (1)*main_div_enob_1 + (1)*main_div_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*main_div_enob + (-1)*float_n_enob + (-10000)*main_div_enob_1<=24)    #Enob: propagation in division 1
-solver.Add( + (1)*main_div_enob + (-1)*mean_enob_storeENOB_storeENOB + (-10000)*main_div_enob_2<=24)    #Enob: propagation in division 2
+solver.Add( + (1)*main_div_enob + (-1)*float_n_enob + (-10000)*main_div_enob_1<=1048)    #Enob: propagation in division 1
+solver.Add( + (1)*main_div_enob + (-1)*mean_enob_storeENOB_storeENOB + (-10000)*main_div_enob_2<=1048)    #Enob: propagation in division 2
 
 
 
-#Constraint for cast for   store double %div, double* %arrayidx11, align 8, !taffo.initweight !15, !taffo.info !1
+#Constraint for cast for   store double %div, double* %arrayidx11, align 8, !taffo.initweight !16, !taffo.info !1
 main_div_CAST_store_fixbits = solver.IntVar(0, 20, 'main_div_CAST_store_fixbits')
 main_div_CAST_store_fixp = solver.IntVar(0, 1, 'main_div_CAST_store_fixp')
 main_div_CAST_store_float = solver.IntVar(0, 1, 'main_div_CAST_store_float')
@@ -388,8 +390,8 @@ solver.Add( + (1)*mean_fixbits + (-1)*main_div_CAST_store_fixbits==0)    #same f
 #Restriction for new enob
 mean_enob_storeENOB_storeENOB_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB_storeENOB_storeENOB')
 solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (10000)*mean_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (10000)*mean_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (-1)*main_div_enob<=0)    #Enob constraint ENOB propagation in load/store
 solver.Minimize(objectiveFunction)
 
