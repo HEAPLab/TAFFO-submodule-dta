@@ -28,6 +28,13 @@ llvm::cl::opt<double> MixedTuningENOB("mixedtuningenob", llvm::cl::value_desc("E
 llvm::cl::opt<double> MixedTuningTime("mixedtuningtime", llvm::cl::value_desc("Time importance"),
                                       llvm::cl::desc("Set the importance to keep down the computation time in mixed precision mode"),
                                       llvm::cl::init(1));
+llvm::cl::opt<double> MixedTuningCastingTime("mixedtuningcastingtime", llvm::cl::value_desc("Casting time importance"),
+                                      llvm::cl::desc("Set the importance to keep down the computation  casting time in mixed precision mode"),
+                                      llvm::cl::init(1));
+
+llvm::cl::opt<bool> MixedDoubleEnabled("mixeddoubleenabled", llvm::cl::value_desc("Double enabled"),
+                                             llvm::cl::desc("Set if the double dataype can be used in the resulting mix"),
+                                             llvm::cl::init(true));
 
 STATISTIC(FixCast, "Number of fixed point format cast");
 #endif

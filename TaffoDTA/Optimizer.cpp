@@ -130,6 +130,12 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), BIG_NUMBER));
     model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
 
+    if(!MixedDoubleEnabled){
+        constraint.clear();
+        constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+        model.insertLinearConstraint(constraint, Model::LE, 0, "Disable double data type");
+    }
+
 
     /*//introducing precision cost: the more a variable is precise, the better it is
     model.insertObjectiveElement(make_pair(optimizerInfo->getFractBitsVariable(), (-1) * TUNING_ENOB));

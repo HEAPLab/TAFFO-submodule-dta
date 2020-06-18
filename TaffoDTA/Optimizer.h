@@ -29,7 +29,9 @@
 //This means how much the casting cost will be relevant for the computation
 extern llvm::cl::opt<double> MixedTuningTime;
 extern llvm::cl::opt<double> MixedTuningENOB;
-#define TUNING_CASTING (MixedTuningTime)
+extern llvm::cl::opt<double> MixedTuningCastingTime;
+extern llvm::cl::opt<bool> MixedDoubleEnabled;
+#define TUNING_CASTING (MixedTuningCastingTime)
 #define TUNING_MATH (MixedTuningTime)
 #define TUNING_ENOB (MixedTuningENOB)
 
