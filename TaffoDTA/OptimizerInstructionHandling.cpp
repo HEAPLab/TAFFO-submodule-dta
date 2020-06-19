@@ -301,10 +301,7 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     //We treat phi as normal assignment, without looking at the real "backend" implementation. This may be quite different
     //from the real execution, but the overall meaning is the same.
 
-    //FIXME: we here does not propagate the enob. It is not so easy as we have to get the maximum enob. With product is easy
-    //As we only have two. Here the most handy solution is to actually pre declare all the needed bynary 1-0 variable, put the
-    //Sum of them to 1 and therefore using the M trick to enable only one constraint. In this function the declaration, in
-    //closephiLoop() the actual insertion of the constraint
+
 
     auto *phi_n = dyn_cast<llvm::PHINode>(phi);
     if (!phi_n) {
@@ -335,11 +332,29 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
 
 
     for (unsigned index = 0; index < phi_n->getNumIncomingValues(); index++) {
+        Value *op = phi_n->getIncomingValue(index);
+        if (auto info = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op))) {
+            if(info->doesReferToConstant()){
+                //We skip the variable if it is a constant
+                dbgs() << "[INFO] Skipping ";
+                op->print(dbgs());
+                dbgs() << " as it is a constant!\n";
+                continue;
+            }
+        }
+
         string enob_selection = getEnobActivationVariable(instruction, index);
         model.createVariable(enob_selection, 0, 1);
         constraint.push_back(make_pair(enob_selection, 1.0));
     }
-    model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+
+    if(constraint.size()>0) {
+        model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+    }else{
+        dbgs() << "[INFO] All constants phi node, nothing to do!!!\n";
+        return;
+    }
+
 
     int missing = 0;
 
@@ -347,7 +362,19 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
         dbgs() << "[Phi] Handlign operator " << index << "...\n";
         Value *op = phi_n->getIncomingValue(index);
 
-        if (getInfoOfValue(op)) {
+        if (auto info = getInfoOfValue(op)) {
+            if (auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info)) {
+                if(info2->doesReferToConstant()){
+                    //We skip the variable if it is a constant
+                    dbgs() << "[INFO] Skipping ";
+                    op->print(dbgs());
+                    dbgs() << " as it is a constant!\n";
+                    continue;
+                }
+            }
+
+
+
             dbgs() << "[Phi] We have infos, treating as usual.\n";
             //because yes, integrity checks....
             openPhiLoop(phi_n, op);
