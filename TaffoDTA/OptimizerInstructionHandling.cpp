@@ -1,13 +1,15 @@
 #include <llvm/IR/Intrinsics.h>
+#include <llvm/Analysis/MemorySSA.h>
 #include "Optimizer.h"
 #include "llvm/Support/Debug.h"
+#include "MemSSAUtils.hpp"
 
 #include "llvm/IR/InstIterator.h"
 
-#define DEBUG_TYPE ""
 
 using namespace tuner;
 using namespace mdutils;
+using namespace llvm;
 
 
 void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
@@ -88,6 +90,19 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         //We are loading a floating point, which means we have it's value in a register.
         //As we cannot cast anything during a load, the register will use the very same variable
 
+        //Running MemorySSA to find Values from which the load can actually load
+        MemorySSA &memssa = tuner->getAnalysis<MemorySSAWrapperPass>(*load->getFunction()).getMSSA();
+        taffo::MemSSAUtils memssa_utils(memssa);
+        SmallVectorImpl<Value *> &def_vals = memssa_utils.getDefiningValues(load);
+        def_vals.push_back(load->getPointerOperand());
+
+        dbgs() << "TEST ON DEFINING VALS:\n";
+        for(auto i : def_vals){
+            dbgs() << "Value that defines it: ";
+            i->print(dbgs());
+            dbgs() << "\n";
+        }
+
 
         auto sinfos = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(pinfos->getOptInfo());
         if (!sinfos) {
@@ -166,45 +181,55 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
 
         insertTypeEqualityConstraint(info_pointer, variable, true);
 
-        model.insertComment("Restriction for new enob", 1);
+
 
         //FIXME: what if branches with memory accesses?
 
-        string newEnobVariable=info_pointer->getRealEnobVariable();
-        newEnobVariable.append("_storeENOB");
-        model.createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
-        info_pointer->overrideEnob(newEnobVariable);
+        if(!info_variable_oeig_t->doesReferToConstant()) {
+            //We do this only if storing a real result from a computation, if it comes from a constant we do not override the enob.
+            model.insertComment("Restriction for new enob", 1);
+            string newEnobVariable = info_pointer->getRealEnobVariable();
+            newEnobVariable.append("_storeENOB");
+            model.createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
+            info_pointer->overrideEnob(newEnobVariable);
 
-        //We force the enob back to the variable type, just in case!
-        auto constraint = vector<pair<string, double>>();
-        int ENOBfloat = getENOBFromRange(info_pointer->getRange(), FloatType::Float_float);
-        int ENOBdouble = getENOBFromRange(info_pointer->getRange(), FloatType::Float_double);
+            //We force the enob back to the variable type, just in case!
+            auto constraint = vector<pair<string, double>>();
+            int ENOBfloat = getENOBFromRange(info_pointer->getRange(), FloatType::Float_float);
+            int ENOBdouble = getENOBFromRange(info_pointer->getRange(), FloatType::Float_double);
+
+            constraint.clear();
+            constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+            constraint.push_back(make_pair(info_pointer->getFractBitsVariable(), -1.0));
+            constraint.push_back(make_pair(info_pointer->getFixedSelectedVariable(), BIG_NUMBER));
+            model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
+
+            //Enob constraints float
+            constraint.clear();
+            constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+            constraint.push_back(make_pair(info_pointer->getFloatSelectedVariable(), BIG_NUMBER));
+            model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBfloat, "Enob constraint for float");
+
+            //Enob constraints float
+            constraint.clear();
+            constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+            constraint.push_back(make_pair(info_pointer->getDoubleSelectedVariable(), BIG_NUMBER));
+            model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
+
+
+            constraint.clear();
+            constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
+            constraint.push_back(make_pair(info_variable_oeig_t->getRealEnobVariable(), -1.0));
+            model.insertLinearConstraint(constraint, Model::LE, 0, "Enob constraint ENOB propagation in load/store");
+        }else{
+            dbgs() << "[INFO] The value to store is a constant, not inserting it as may cause problems...\n";
+            model.insertComment("Storing constant, no new enob.", 1);
+        }
 
 
 
-        constraint.clear();
-        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
-        constraint.push_back(make_pair(info_pointer->getFractBitsVariable(), -1.0));
-        constraint.push_back(make_pair(info_pointer->getFixedSelectedVariable(), BIG_NUMBER));
-        model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
-
-        //Enob constraints float
-        constraint.clear();
-        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
-        constraint.push_back(make_pair(info_pointer->getFloatSelectedVariable(), BIG_NUMBER));
-        model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBfloat, "Enob constraint for float");
-
-        //Enob constraints float
-        constraint.clear();
-        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
-        constraint.push_back(make_pair(info_pointer->getDoubleSelectedVariable(), BIG_NUMBER));
-        model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
 
 
-        constraint.clear();
-        constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
-        constraint.push_back(make_pair(info_variable_oeig_t->getRealEnobVariable(), -1.0));
-        model.insertLinearConstraint(constraint, Model::LE, 0, "Enob constraint ENOB propagation in load/store");
 
     } else if (opRegister->getType()->isPointerTy()) {
         //Storing a pointer. In the value there should be a pointer already, and the value where to store is, in fact,

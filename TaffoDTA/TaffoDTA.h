@@ -48,6 +48,8 @@ namespace tuner {
         void buildModelAndOptimze(Module &m, const std::vector<llvm::Value *> &vals,
                             const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
 
+        void getAnalysisUsage(llvm::AnalysisUsage &) const override;
+
         bool mergeFixFormat(llvm::Value *v, llvm::Value *u);
 
         bool mergeFixFormatIterative(llvm::Value *v, llvm::Value *u);

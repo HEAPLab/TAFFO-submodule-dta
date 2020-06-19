@@ -52,13 +52,13 @@ namespace tuner {
         string overridedEnob;
         shared_ptr<mdutils::Range> range;
 
-        const string getBaseName() const {
-            return *baseName.get();
-        }
+        bool referToConstant;
+
+
 
         OptimizerScalarInfo(string _variableName, unsigned _minBits, unsigned _maxBits, unsigned _totalBits,
                             bool _isSigned, mdutils::Range _range, string _overriddenEnob)
-                : OptimizerInfo(K_Field) {
+                : OptimizerInfo(K_Field), referToConstant(false) {
             minBits = _minBits;
             maxBits = _maxBits;
             baseName = make_shared<string>(_variableName);
@@ -72,8 +72,20 @@ namespace tuner {
             return range;
         }
 
+        const string getBaseName() const {
+            return *baseName.get();
+        }
+
         string getOverridedEnob() {
             return overridedEnob;
+        }
+
+        bool doesReferToConstant() const {
+            return referToConstant;
+        }
+
+        void setReferToConstant(bool referToConstant) {
+            this->referToConstant = referToConstant;
         }
 
 

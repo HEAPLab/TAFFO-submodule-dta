@@ -12,7 +12,7 @@ solver.Add( + (1)*mean_enob + (10000)*mean_float<=10149)    #Enob constraint for
 solver.Add( + (1)*mean_enob + (10000)*mean_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*mean_enob<=4)    #Enob constraint for error maximal
 solver.Add( + (1)*mean_double<=0)    #Disable double data type
-objectiveFunction =  + (-100)*mean_enob
+objectiveFunction =  + (-1)*mean_enob
 solver.Add( + (1)*mean_fixp + (1)*mean_float + (1)*mean_double==1)    #Exactly one selected type
 solver.Add( + (1)*mean_fixbits + (-10000)*mean_fixp<=0)    #If not fix, frac part to zero
 
@@ -28,7 +28,7 @@ solver.Add( + (1)*data_enob + (-1)*data_fixbits + (10000)*data_fixp<=10000)    #
 solver.Add( + (1)*data_enob + (10000)*data_float<=10149)    #Enob constraint for float
 solver.Add( + (1)*data_enob + (10000)*data_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*data_double<=0)    #Disable double data type
-objectiveFunction +=  + (-100)*data_enob
+objectiveFunction +=  + (-1)*data_enob
 solver.Add( + (1)*data_fixp + (1)*data_float + (1)*data_double==1)    #Exactly one selected type
 solver.Add( + (1)*data_fixbits + (-10000)*data_fixp<=0)    #If not fix, frac part to zero
 
@@ -44,7 +44,7 @@ solver.Add( + (1)*float_n_enob + (-1)*float_n_fixbits + (10000)*float_n_fixp<=10
 solver.Add( + (1)*float_n_enob + (10000)*float_n_float<=10149)    #Enob constraint for float
 solver.Add( + (1)*float_n_enob + (10000)*float_n_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*float_n_double<=0)    #Disable double data type
-objectiveFunction +=  + (-100)*float_n_enob
+objectiveFunction +=  + (-1)*float_n_enob
 solver.Add( + (1)*float_n_fixp + (1)*float_n_float + (1)*float_n_double==1)    #Exactly one selected type
 solver.Add( + (1)*float_n_fixbits + (-10000)*float_n_fixp<=0)    #If not fix, frac part to zero
 
@@ -101,12 +101,7 @@ solver.Add( + (1)*mean_float + (-1)*ConstantValue__CAST_store_float==0)    #floa
 solver.Add( + (1)*mean_double + (-1)*ConstantValue__CAST_store_double==0)    #double equality
 solver.Add( + (1)*mean_fixbits + (-1)*ConstantValue__CAST_store_fixbits==0)    #same fractional bit
 
-#Restriction for new enob
-mean_enob_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB')
-solver.Add( + (1)*mean_enob_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*mean_enob_storeENOB + (-1)*ConstantValue__enob<=0)    #Enob constraint ENOB propagation in load/store
+#Storing constant, no new enob.
 
 
 
@@ -189,7 +184,7 @@ solver.Add( + (1)*main_add_enob + (10000)*main_add_float<=10149)    #Enob constr
 solver.Add( + (1)*main_add_enob + (10000)*main_add_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_add_enob<=4)    #Enob constraint for error maximal
 solver.Add( + (1)*main_add_double<=0)    #Disable double data type
-objectiveFunction +=  + (-100)*main_add_enob
+objectiveFunction +=  + (-1)*main_add_enob
 solver.Add( + (1)*main_add_fixp + (1)*main_add_float + (1)*main_add_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_add_fixbits + (-10000)*main_add_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*mean_CAST_add_fixp + (-1)*data_CAST_add_fixp==0)    #fix equality
@@ -200,10 +195,10 @@ solver.Add( + (1)*mean_CAST_add_fixp + (-1)*main_add_fixp==0)    #fix equality
 solver.Add( + (1)*mean_CAST_add_float + (-1)*main_add_float==0)    #float equality
 solver.Add( + (1)*mean_CAST_add_double + (-1)*main_add_double==0)    #double equality
 solver.Add( + (1)*mean_CAST_add_fixbits + (-1)*main_add_fixbits==0)    #same fractional bit
-objectiveFunction +=  + (1.27246)*main_add_fixp
-objectiveFunction +=  + (1.74493)*main_add_float
-objectiveFunction +=  + (6.64928)*main_add_double
-solver.Add( + (1)*main_add_enob + (-1)*mean_enob_storeENOB<=0)    #Enob propagation in sum first addend
+objectiveFunction +=  + (127.246)*main_add_fixp
+objectiveFunction +=  + (174.493)*main_add_float
+objectiveFunction +=  + (664.928)*main_add_double
+solver.Add( + (1)*main_add_enob + (-1)*mean_enob<=0)    #Enob propagation in sum first addend
 solver.Add( + (1)*main_add_enob + (-1)*data_enob<=0)    #Enob propagation in sum second addend
 
 
@@ -245,11 +240,11 @@ solver.Add( + (1)*mean_double + (-1)*main_add_CAST_store_double==0)    #double e
 solver.Add( + (1)*mean_fixbits + (-1)*main_add_CAST_store_fixbits==0)    #same fractional bit
 
 #Restriction for new enob
-mean_enob_storeENOB_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB_storeENOB')
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (-1)*main_add_enob<=0)    #Enob constraint ENOB propagation in load/store
+mean_enob_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB')
+solver.Add( + (1)*mean_enob_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*mean_enob_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*mean_enob_storeENOB + (-1)*main_add_enob<=0)    #Enob constraint ENOB propagation in load/store
 
 
 
@@ -331,7 +326,7 @@ solver.Add( + (1)*main_div_enob + (-1)*main_div_fixbits + (10000)*main_div_fixp<
 solver.Add( + (1)*main_div_enob + (10000)*main_div_float<=10149)    #Enob constraint for float
 solver.Add( + (1)*main_div_enob + (10000)*main_div_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_div_double<=0)    #Disable double data type
-objectiveFunction +=  + (-100)*main_div_enob
+objectiveFunction +=  + (-1)*main_div_enob
 solver.Add( + (1)*main_div_fixp + (1)*main_div_float + (1)*main_div_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_div_fixbits + (-10000)*main_div_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*mean_CAST_div_fixp + (-1)*float_n_CAST_div_fixp==0)    #fix equality
@@ -340,14 +335,14 @@ solver.Add( + (1)*mean_CAST_div_double + (-1)*float_n_CAST_div_double==0)    #do
 solver.Add( + (1)*mean_CAST_div_fixp + (-1)*main_div_fixp==0)    #fix equality
 solver.Add( + (1)*mean_CAST_div_float + (-1)*main_div_float==0)    #float equality
 solver.Add( + (1)*mean_CAST_div_double + (-1)*main_div_double==0)    #double equality
-objectiveFunction +=  + (1.61159)*main_div_fixp
-objectiveFunction +=  + (6.25227)*main_div_float
-objectiveFunction +=  + (7.68154)*main_div_double
+objectiveFunction +=  + (161.159)*main_div_fixp
+objectiveFunction +=  + (625.227)*main_div_float
+objectiveFunction +=  + (768.154)*main_div_double
 main_div_enob_1 = solver.IntVar(0, 1, 'main_div_enob_1')
 main_div_enob_2 = solver.IntVar(0, 1, 'main_div_enob_2')
 solver.Add( + (1)*main_div_enob_1 + (1)*main_div_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*main_div_enob + (-1)*float_n_enob + (-10000)*main_div_enob_1<=1048)    #Enob: propagation in division 1
-solver.Add( + (1)*main_div_enob + (-1)*mean_enob_storeENOB_storeENOB + (-10000)*main_div_enob_2<=1048)    #Enob: propagation in division 2
+solver.Add( + (1)*main_div_enob + (-1)*mean_enob_storeENOB + (-10000)*main_div_enob_2<=1048)    #Enob: propagation in division 2
 
 
 
@@ -388,11 +383,11 @@ solver.Add( + (1)*mean_double + (-1)*main_div_CAST_store_double==0)    #double e
 solver.Add( + (1)*mean_fixbits + (-1)*main_div_CAST_store_fixbits==0)    #same fractional bit
 
 #Restriction for new enob
-mean_enob_storeENOB_storeENOB_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB_storeENOB_storeENOB')
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*mean_enob_storeENOB_storeENOB_storeENOB + (-1)*main_div_enob<=0)    #Enob constraint ENOB propagation in load/store
+mean_enob_storeENOB_storeENOB = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB_storeENOB')
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (-1)*mean_fixbits + (10000)*mean_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (10000)*mean_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*mean_enob_storeENOB_storeENOB + (-1)*main_div_enob<=0)    #Enob constraint ENOB propagation in load/store
 solver.Minimize(objectiveFunction)
 
 # Model declaration end.

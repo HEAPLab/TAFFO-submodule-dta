@@ -1,3 +1,4 @@
+#include <llvm/Analysis/MemorySSA.h>
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
@@ -25,6 +26,12 @@ static RegisterPass<TaffoTuner> X(
         "TAFFO Framework Data Type Allocation",
         false /* does not affect the CFG */,
         true /* Optimization Pass */);
+
+void TaffoTuner::getAnalysisUsage(AnalysisUsage &AU) const {
+    AU.addRequiredTransitive<LoopInfoWrapperPass>();
+    AU.addRequiredTransitive<MemorySSAWrapperPass>();
+    AU.setPreservesAll();
+}
 
 
 bool TaffoTuner::runOnModule(Module &m) {
