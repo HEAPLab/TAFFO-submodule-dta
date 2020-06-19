@@ -87,6 +87,34 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
 
 
     if (load->getType()->isFloatingPointTy()) {
+        auto sinfos = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(pinfos->getOptInfo());
+        if (!sinfos) {
+            emitError("Loaded a variable with no information attached...");
+            return;
+        }
+        //We are copying the infos, still using variable types and all, the only problem is the enob
+
+        model.insertComment("Restriction for new enob", 1);
+        string newEnobVariable = sinfos->getRealEnobVariable();
+        newEnobVariable.append("_enob_");
+        newEnobVariable.append(load->getName());
+        dbgs() << "New enob for load: " << newEnobVariable << "\n";
+        model.createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
+
+        auto constraint = vector<pair<string, double>>();
+        constraint.clear();
+        constraint.push_back(make_pair(newEnobVariable, 1.0));
+        constraint.push_back(make_pair(sinfos->getBaseEnobVariable(), -1.0));
+        model.insertLinearConstraint(constraint, Model::LE, 0, "Enob constraint, new enob at most original variable enob");
+
+        auto a = make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
+                                                  sinfos->getMinBits(),
+                                                  sinfos->getMaxBits(), sinfos->getTotalBits(),
+                                                  sinfos->isSigned,
+                                                  *sinfos->getRange(), newEnobVariable);
+
+
+
         //We are loading a floating point, which means we have it's value in a register.
         //As we cannot cast anything during a load, the register will use the very same variable
 
@@ -96,28 +124,86 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         SmallVectorImpl<Value *> &def_vals = memssa_utils.getDefiningValues(load);
         def_vals.push_back(load->getPointerOperand());
 
-        dbgs() << "TEST ON DEFINING VALS:\n";
-        for(auto i : def_vals){
-            dbgs() << "Value that defines it: ";
-            i->print(dbgs());
-            dbgs() << "\n";
-        }
+        assert(def_vals.size() > 0 && "Loading a not defined value?");
 
-
-        auto sinfos = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(pinfos->getOptInfo());
-        if (!sinfos) {
-            emitError("Loaded a variable with no information attached...");
-            return;
-        }
-
-        //We are copying the infos.
-        auto a = make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
-                                                  sinfos->getMinBits(),
-                                                  sinfos->getMaxBits(), sinfos->getTotalBits(),
-                                                  sinfos->isSigned,
-                                                  *sinfos->getRange(), sinfos->getOverridedEnob());
+        /*This is the same as for phi nodes. In particular, when using the MemSSA usually the most important
+         * instructions that defines a values are store. In particular, when looking at a store, we can use the enob
+         * given to that store to understand the enob propagation. This enob will not change during the computation as
+         * usually every store is only touched once, differently from the */
 
         saveInfoForValue(instruction, a);
+
+        constraint.clear();
+
+        vector<bool> toSkip(def_vals.size());
+
+        for (unsigned index = 0; index < def_vals.size(); index++) {
+            toSkip[index] = true;
+            Value *op = def_vals[index];
+
+
+            auto store = dyn_cast_or_null<StoreInst>(op);
+            if(!store){
+                //We skip the variable if it is not a store
+                dbgs() << "[INFO] Skipping ";
+                op->print(dbgs());
+                dbgs() << " as it is NOT a store!\n";
+                continue;
+            }
+            if (auto info = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op))) {
+                if(info->doesReferToConstant()){
+                    //We skip the variable if it is a constant
+                    dbgs() << "[INFO] Skipping ";
+                    op->print(dbgs());
+                    dbgs() << " as it is a constant!\n";
+                    continue;
+                }
+            }
+
+            string enob_selection = getEnobActivationVariable(instruction, index);
+            dbgs() << "Declaring " << enob_selection << "for enob...\n";
+            model.createVariable(enob_selection, 0, 1);
+            constraint.push_back(make_pair(enob_selection, 1.0));
+            toSkip[index] = false;
+        }
+
+        if(constraint.size()>0) {
+            model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+        }else{
+            dbgs() << "[INFO] All constants memPhi node, nothing to do!!!\n";
+            //return;
+        }
+
+
+        int missing = 0;
+
+        for (unsigned index = 0; index  < def_vals.size(); index++) {
+            dbgs() << "[memPhi] Handlign operator " << index << "...\n";
+            Value *op = def_vals[index];
+
+            if(toSkip[index]){
+                dbgs() << "Need to skip this...\n";
+                continue;
+            }
+
+            if (auto info = getInfoOfValue(op)) {
+                dbgs() << "[memPhi] We have infos, treating as usual.\n";
+                //because yes, integrity checks....
+                openMemLoop(load, op);
+                closeMemLoop(load, op);
+            } else {
+                dbgs() << "[memPhi] No value available, inserting in delayed set.\n";
+                openMemLoop(load, op);
+                missing++;
+            }
+        }
+
+
+
+
+
+
+
 
 
         dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
@@ -185,7 +271,10 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
 
         //FIXME: what if branches with memory accesses?
 
+        bool isConstant;
+
         if(!info_variable_oeig_t->doesReferToConstant()) {
+            isConstant=false;
             //We do this only if storing a real result from a computation, if it comes from a constant we do not override the enob.
             model.insertComment("Restriction for new enob", 1);
             string newEnobVariable = info_pointer->getRealEnobVariable();
@@ -224,8 +313,20 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
         }else{
             dbgs() << "[INFO] The value to store is a constant, not inserting it as may cause problems...\n";
             model.insertComment("Storing constant, no new enob.", 1);
+            isConstant=true;
         }
 
+
+        //We save the infos so we should retrieve them more quickly when using MemSSA
+        //We save the ENOB of the stored variable that is the correct one to use
+        auto a = make_shared<OptimizerScalarInfo>(info_variable_oeig_t->getBaseName(),
+                                                  info_variable_oeig_t->getMinBits(),
+                                                  info_pointer->getMaxBits(), info_pointer->getTotalBits(),
+                                                  info_pointer->isSigned,
+                                                  *info_pointer->getRange(), info_pointer->getOverridedEnob());
+        a->setReferToConstant(isConstant);
+
+        saveInfoForValue(instruction, a);
 
 
 
@@ -600,8 +701,53 @@ void Optimizer::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
 
 }
 
+void Optimizer::closeMemLoop(LoadInst *load, Value *requestedValue) {
+    dbgs() << "Closing MemPhi reference!\n";
+    auto phiInfo = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(load));
+    auto destInfo = allocateNewVariableWithCastCost(requestedValue, load);
+
+    assert(phiInfo && "phiInfo not available!");
+    assert(destInfo && "destInfo not available!");
+
+    string enob_var;
+
+    MemorySSA &memssa = tuner->getAnalysis<MemorySSAWrapperPass>(*load->getFunction()).getMSSA();
+    taffo::MemSSAUtils memssa_utils(memssa);
+    SmallVectorImpl<Value *> &def_vals = memssa_utils.getDefiningValues(load);
+    def_vals.push_back(load->getPointerOperand());
+
+    for (int index = 0; index < def_vals.size(); index++) {
+        if (def_vals[index] == requestedValue) {
+            enob_var = getEnobActivationVariable(load, index);
+            break;
+        }
+    }
+
+    assert(!enob_var.empty() && "Enob var not found!");
+
+    insertTypeEqualityConstraint(phiInfo, destInfo, true);
+
+    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(requestedValue));
+
+
+    auto constraint = vector<pair<string, double>>();
+    constraint.clear();
+    constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
+    constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
+    constraint.push_back(make_pair(enob_var, -BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob: forcing phi enob");
+
+
+    memWatcher.closePhiLoop(load, requestedValue);
+
+}
+
 void Optimizer::openPhiLoop(PHINode *phiNode, Value *value) {
     phiWatcher.openPhiLoop(phiNode, value);
+}
+
+void Optimizer::openMemLoop(LoadInst *load, Value *value) {
+    memWatcher.openPhiLoop(load, value);
 }
 
 void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
@@ -1035,9 +1181,23 @@ void Optimizer::handleCallFromRoot(Function *f) {
 string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
     assert(value && "Value must not be null!");
     assert(cardinal >= 0 && "Cardinal should be a positive number!");
+    string valueName;
 
-    string valueName = value->getName();
+    if(auto instr = dyn_cast_or_null<Instruction>(value)){
+        valueName.append(instr->getFunction()->getName());
+        valueName.append("_");
+    }
+
+    if(!value->getName().empty()){
+        valueName.append(value->getName());
+    }else{
+        valueName.append(to_string(value->getValueID()));
+        valueName.append("_");
+    }
+
     std::replace( valueName.begin(), valueName.end(), '.', '_');
+    Instruction *i;
+
     assert(!valueName.empty() && "The value should have a name!!!");
 
     string fname;

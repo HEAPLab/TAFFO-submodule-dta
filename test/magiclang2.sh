@@ -243,6 +243,7 @@ while [[ $feedback_stop -eq 0 ]]; do
   ###  TAFFO Data Type Allocation
   ###     -forcefloat 0\
   ${OPT} \
+    -instnamer \
     -load "$TUNERLIB" \
     -taffodta -globaldce \
     ${dta_flags} \

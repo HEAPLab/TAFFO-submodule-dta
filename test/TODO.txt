@@ -2,9 +2,9 @@ TODOS:
 
 Implement inserting cost proportional to number of execution
 
-Enob propagation (WIP, external (math) calls not handled)
+Enob propagation (WIP, external (math) calls not handled) -> HANDLE CORRECTLY CONSTANTS
 
-SSA should be used in propagation of enob against load/store
+MemSSA should be used in propagation of enob against load/store
 
 Implement SELECT instruction
 

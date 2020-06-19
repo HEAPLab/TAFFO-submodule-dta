@@ -16,6 +16,7 @@ add_llvm_library(TaffoDTA MODULE
         CPUCosts.h
         MemSSAUtils.cpp
         MemSSAUtils.hpp
+        MemWatcher.cpp
 
         PLUGIN_TOOL
         opt

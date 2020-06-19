@@ -69,6 +69,22 @@ namespace tuner {
 
     };
 
+    class MemWatcher {
+    private:
+        DenseMap<llvm::Value *, vector<LoadInst *>> pairsToClose;
+
+
+    public:
+        void openPhiLoop(LoadInst *phiNode, Value *requestedValue);
+
+        LoadInst *getPhiNodeToClose(Value *value);
+
+        void closePhiLoop(LoadInst *phiNode, Value *requestedNode);
+
+        void dumpState();
+
+    };
+
     class Optimizer {
 
         ///Data related to function call
@@ -85,6 +101,7 @@ namespace tuner {
 
         CPUCosts cpuCosts;
         PhiWatcher phiWatcher;
+        MemWatcher memWatcher;
 
     public:
 
@@ -205,6 +222,9 @@ namespace tuner {
         int getMaxIntBitOfValue(Value *pValue);
 
         int getENOBFromError(double d);
+
+        void openMemLoop(LoadInst *load, Value *value);
+        void closeMemLoop(LoadInst *phiNode, Value *requestedValue);
     };
 
 

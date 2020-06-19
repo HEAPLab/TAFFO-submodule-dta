@@ -681,6 +681,11 @@ void Optimizer::saveInfoForValue(Value *value, shared_ptr<OptimizerInfo> optInfo
         closed++;
     }
 
+    while (auto *phiNode = memWatcher.getPhiNodeToClose(value)) {
+        closeMemLoop(phiNode, value);
+        closed++;
+    }
+
     if (closed) {
         dbgs() << "Closed " << closed << " PHI loops\n";
     }

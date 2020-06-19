@@ -130,6 +130,10 @@ namespace tuner {
             return *baseName + "_enob";
         }
 
+        const string getBaseEnobVariable() {
+            return *baseName + "_enob";
+        }
+
         unsigned int getTotalBits() const {
             return totalBits;
         }

@@ -736,6 +736,13 @@ bool TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdut
 
         auto old1 = dynamic_ptr_cast_or_null<InputInfo>(old);
         auto model1 = dynamic_ptr_cast_or_null<InputInfo>(model);
+
+
+
+
+        if(!old1->IType) return false;
+        dbgs() << "model1: " << model1->IType->toString() << "\n";
+        dbgs() << "old1: " << old1->IType->toString() << "\n\n";
         if (old1->IType->operator==(*model1->IType)) {
             return false;
         }
@@ -752,6 +759,8 @@ bool TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdut
         }
         return changed;
     }
+
+    llvm_unreachable("unknown data type");
 
 }
 
