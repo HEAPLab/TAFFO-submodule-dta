@@ -95,9 +95,12 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         //We are copying the infos, still using variable types and all, the only problem is the enob
 
         model.insertComment("Restriction for new enob", 1);
-        string newEnobVariable = sinfos->getRealEnobVariable();
-        newEnobVariable.append("_enob_");
+        string newEnobVariable = sinfos->getBaseEnobVariable();
+        newEnobVariable.append("_memphi_");
+        newEnobVariable.append(load->getFunction()->getName());
+        newEnobVariable.append("_");
         newEnobVariable.append(load->getName());
+        std::replace(newEnobVariable.begin(), newEnobVariable.end(), '.', '_');
         dbgs() << "New enob for load: " << newEnobVariable << "\n";
         model.createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
 

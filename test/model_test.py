@@ -104,12 +104,12 @@ solver.Add( + (1)*mean_fixbits + (-1)*ConstantValue__CAST_store_fixbits==0)    #
 #Storing constant, no new enob.
 
 #Restriction for new enob
-data_enob_enob_tmp = solver.IntVar(-10000, 10000, 'data_enob_enob_tmp')
-solver.Add( + (1)*data_enob_enob_tmp + (-1)*data_enob<=0)    #Enob constraint, new enob at most original variable enob
+data_enob_memphi_main_tmp = solver.IntVar(-10000, 10000, 'data_enob_memphi_main_tmp')
+solver.Add( + (1)*data_enob_memphi_main_tmp + (-1)*data_enob<=0)    #Enob constraint, new enob at most original variable enob
 
 #Restriction for new enob
-mean_enob_enob_tmp1 = solver.IntVar(-10000, 10000, 'mean_enob_enob_tmp1')
-solver.Add( + (1)*mean_enob_enob_tmp1 + (-1)*mean_enob<=0)    #Enob constraint, new enob at most original variable enob
+mean_enob_memphi_main_tmp1 = solver.IntVar(-10000, 10000, 'mean_enob_memphi_main_tmp1')
+solver.Add( + (1)*mean_enob_memphi_main_tmp1 + (-1)*mean_enob<=0)    #Enob constraint, new enob at most original variable enob
 main_main_tmp1_enob_1 = solver.IntVar(0, 1, 'main_main_tmp1_enob_1')
 solver.Add( + (1)*main_main_tmp1_enob_1==1)    #Enob: one selected constraint
 
@@ -208,8 +208,8 @@ solver.Add( + (1)*mean_CAST_add_fixbits + (-1)*main_add_fixbits==0)    #same fra
 objectiveFunction +=  + (127.246)*main_add_fixp
 objectiveFunction +=  + (174.493)*main_add_float
 objectiveFunction +=  + (664.928)*main_add_double
-solver.Add( + (1)*main_add_enob + (-1)*mean_enob_enob_tmp1<=0)    #Enob propagation in sum first addend
-solver.Add( + (1)*main_add_enob + (-1)*data_enob_enob_tmp<=0)    #Enob propagation in sum second addend
+solver.Add( + (1)*main_add_enob + (-1)*mean_enob_memphi_main_tmp1<=0)    #Enob propagation in sum first addend
+solver.Add( + (1)*main_add_enob + (-1)*data_enob_memphi_main_tmp<=0)    #Enob propagation in sum second addend
 
 
 
@@ -293,15 +293,15 @@ solver.Add( + (1)*mean_fixp + (-1)*main_add_CAST_tmp1_fixp==0)    #fix equality
 solver.Add( + (1)*mean_float + (-1)*main_add_CAST_tmp1_float==0)    #float equality
 solver.Add( + (1)*mean_double + (-1)*main_add_CAST_tmp1_double==0)    #double equality
 solver.Add( + (1)*mean_fixbits + (-1)*main_add_CAST_tmp1_fixbits==0)    #same fractional bit
-solver.Add( + (1)*mean_enob_enob_tmp1 + (-1)*mean_enob_storeENOB + (-10000)*main_main_tmp1_enob_1<=0)    #Enob: forcing phi enob
+solver.Add( + (1)*mean_enob_memphi_main_tmp1 + (-1)*mean_enob_storeENOB + (-10000)*main_main_tmp1_enob_1<=0)    #Enob: forcing phi enob
 
 #Restriction for new enob
-float_n_enob_enob_tmp2 = solver.IntVar(-10000, 10000, 'float_n_enob_enob_tmp2')
-solver.Add( + (1)*float_n_enob_enob_tmp2 + (-1)*float_n_enob<=0)    #Enob constraint, new enob at most original variable enob
+float_n_enob_memphi_main_tmp2 = solver.IntVar(-10000, 10000, 'float_n_enob_memphi_main_tmp2')
+solver.Add( + (1)*float_n_enob_memphi_main_tmp2 + (-1)*float_n_enob<=0)    #Enob constraint, new enob at most original variable enob
 
 #Restriction for new enob
-mean_enob_storeENOB_enob_tmp3 = solver.IntVar(-10000, 10000, 'mean_enob_storeENOB_enob_tmp3')
-solver.Add( + (1)*mean_enob_storeENOB_enob_tmp3 + (-1)*mean_enob<=0)    #Enob constraint, new enob at most original variable enob
+mean_enob_memphi_main_tmp3 = solver.IntVar(-10000, 10000, 'mean_enob_memphi_main_tmp3')
+solver.Add( + (1)*mean_enob_memphi_main_tmp3 + (-1)*mean_enob<=0)    #Enob constraint, new enob at most original variable enob
 main_main_tmp3_enob_1 = solver.IntVar(0, 1, 'main_main_tmp3_enob_1')
 solver.Add( + (1)*main_main_tmp3_enob_1==1)    #Enob: one selected constraint
 
@@ -342,7 +342,7 @@ solver.Add( + (1)*mean_fixp + (-1)*main_add_CAST_tmp3_fixp==0)    #fix equality
 solver.Add( + (1)*mean_float + (-1)*main_add_CAST_tmp3_float==0)    #float equality
 solver.Add( + (1)*mean_double + (-1)*main_add_CAST_tmp3_double==0)    #double equality
 solver.Add( + (1)*mean_fixbits + (-1)*main_add_CAST_tmp3_fixbits==0)    #same fractional bit
-solver.Add( + (1)*mean_enob_storeENOB_enob_tmp3 + (-1)*mean_enob_storeENOB + (-10000)*main_main_tmp3_enob_1<=0)    #Enob: forcing phi enob
+solver.Add( + (1)*mean_enob_memphi_main_tmp3 + (-1)*mean_enob_storeENOB + (-10000)*main_main_tmp3_enob_1<=0)    #Enob: forcing phi enob
 
 
 
@@ -439,8 +439,8 @@ objectiveFunction +=  + (768.154)*main_div_double
 main_main_div_enob_1 = solver.IntVar(0, 1, 'main_main_div_enob_1')
 main_main_div_enob_2 = solver.IntVar(0, 1, 'main_main_div_enob_2')
 solver.Add( + (1)*main_main_div_enob_1 + (1)*main_main_div_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*main_div_enob + (-1)*float_n_enob_enob_tmp2 + (-10000)*main_main_div_enob_1<=1048)    #Enob: propagation in division 1
-solver.Add( + (1)*main_div_enob + (-1)*mean_enob_storeENOB_enob_tmp3 + (-10000)*main_main_div_enob_2<=1048)    #Enob: propagation in division 2
+solver.Add( + (1)*main_div_enob + (-1)*float_n_enob_memphi_main_tmp2 + (-10000)*main_main_div_enob_1<=1048)    #Enob: propagation in division 1
+solver.Add( + (1)*main_div_enob + (-1)*mean_enob_memphi_main_tmp3 + (-10000)*main_main_div_enob_2<=1048)    #Enob: propagation in division 2
 
 
 

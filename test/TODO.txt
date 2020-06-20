@@ -2,15 +2,14 @@ TODOS:
 
 Implement inserting cost proportional to number of execution
 
-Enob propagation (WIP, external (math) calls not handled) -> HANDLE CORRECTLY CONSTANTS
-
-MemSSA should be used in propagation of enob against load/store
+Enob propagation (WIP, external and math calls not handled) [external->force original type, if we know the cost we can optimize for the cost]
 
 Implement SELECT instruction
 
 
-
 TESTING:
+Handling correctly storing costants/phi of costants in enob
+MemSSA should be used in propagation of enob against load/store
 Implement phi node (should be ok)
 Implement call (there are some problem because of the VRA)
 Implement the cost of function in terms o energy/time
