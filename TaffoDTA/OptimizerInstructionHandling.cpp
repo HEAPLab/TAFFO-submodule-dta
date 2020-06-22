@@ -94,7 +94,7 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         }
         //We are copying the infos, still using variable types and all, the only problem is the enob
 
-        model.insertComment("Restriction for new enob", 1);
+        model.insertComment("Restriction for new enob [LOAD]", 1);
         string newEnobVariable = sinfos->getBaseEnobVariable();
         newEnobVariable.append("_memphi_");
         newEnobVariable.append(load->getFunction()->getName());
@@ -272,14 +272,13 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
 
 
 
-        //FIXME: what if branches with memory accesses?
 
         bool isConstant;
 
         if(!info_variable_oeig_t->doesReferToConstant()) {
             isConstant=false;
             //We do this only if storing a real result from a computation, if it comes from a constant we do not override the enob.
-            model.insertComment("Restriction for new enob", 1);
+            model.insertComment("Restriction for new enob [STORE]", 2);
             string newEnobVariable = info_pointer->getRealEnobVariable();
             newEnobVariable.append("_storeENOB");
             model.createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
@@ -707,10 +706,10 @@ void Optimizer::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
 void Optimizer::closeMemLoop(LoadInst *load, Value *requestedValue) {
     dbgs() << "Closing MemPhi reference!\n";
     auto phiInfo = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(load));
-    auto destInfo = allocateNewVariableWithCastCost(requestedValue, load);
+    //auto destInfo = allocateNewVariableWithCastCost(requestedValue, load);
 
     assert(phiInfo && "phiInfo not available!");
-    assert(destInfo && "destInfo not available!");
+    //assert(destInfo && "destInfo not available!");
 
     string enob_var;
 
@@ -728,17 +727,18 @@ void Optimizer::closeMemLoop(LoadInst *load, Value *requestedValue) {
 
     assert(!enob_var.empty() && "Enob var not found!");
 
-    insertTypeEqualityConstraint(phiInfo, destInfo, true);
+    //as this is a load, it is implicit that the type is equal!
+    //insertTypeEqualityConstraint(phiInfo, destInfo, true);
 
-    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(requestedValue));
+    auto info1 = phiInfo;
 
-
+model.insertComment("Closing MEM phi loop...", 3);
     auto constraint = vector<pair<string, double>>();
     constraint.clear();
     constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_var, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob: forcing phi enob");
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob: forcing MEM phi enob");
 
 
     memWatcher.closePhiLoop(load, requestedValue);

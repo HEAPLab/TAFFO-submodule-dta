@@ -4,6 +4,8 @@ Implement inserting cost proportional to number of execution
 
 Enob propagation (WIP, external and math calls not handled) [external->force original type, if we know the cost we can optimize for the cost]
 
+Add forced cast to original type if in general the function to call is not known
+
 Implement SELECT instruction
 
 

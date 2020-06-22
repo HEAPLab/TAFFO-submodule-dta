@@ -677,20 +677,25 @@ void Optimizer::saveInfoForValue(Value *value, shared_ptr<OptimizerInfo> optInfo
 
     valueToVariableName.insert(make_pair(value, optInfo));
 
-    int closed = 0;
+    int closed_phi = 0;
     while (PHINode *phiNode = phiWatcher.getPhiNodeToClose(value)) {
         closePhiLoop(phiNode, value);
-        closed++;
+        closed_phi++;
+    }
+    if (closed_phi) {
+        dbgs() << "Closed " << closed_phi << " PHI loops\n";
     }
 
+
+    int closed_mem=0;
     while (auto *phiNode = memWatcher.getPhiNodeToClose(value)) {
         closeMemLoop(phiNode, value);
-        closed++;
+        closed_mem++;
+    }
+    if (closed_mem) {
+        dbgs() << "Closed " << closed_mem << " MEM loops\n";
     }
 
-    if (closed) {
-        dbgs() << "Closed " << closed << " PHI loops\n";
-    }
 }
 
 bool Optimizer::valueHasInfo(Value *value) {

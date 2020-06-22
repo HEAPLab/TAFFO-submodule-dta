@@ -214,7 +214,7 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)));
     //Precision cost
-    //Handloed in allocating variable
+    //Handled in allocating variable
 
 
 
