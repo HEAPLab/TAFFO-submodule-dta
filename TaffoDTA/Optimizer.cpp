@@ -547,6 +547,8 @@ bool Optimizer::finish() {
     dbgs() << "[Phi] Phi node state:\n";
     phiWatcher.dumpState();
 
+    dbgs() << "[Mem] MemPhi node state:\n";
+    memWatcher.dumpState();
 
     bool result = model.finalizeAndSolve();
 
