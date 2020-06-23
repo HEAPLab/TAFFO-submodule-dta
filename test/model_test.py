@@ -38,7 +38,7 @@ solver.Add( + (1)*ConstantValue__fixbits + (-10000)*ConstantValue__fixp<=0)    #
 
 
 
-#Constraint for cast for   %add = fadd double %tmp, 1.000000e+00, !taffo.initweight !14, !taffo.info !1, !taffo.constinfo !15
+#Constraint for cast for   %add = fadd double %tmp, 1.000000e+00, !taffo.initweight !16, !taffo.info !1, !taffo.constinfo !17
 array_CAST_add_fixbits = solver.IntVar(0, 21, 'array_CAST_add_fixbits')
 array_CAST_add_fixp = solver.IntVar(0, 1, 'array_CAST_add_fixp')
 array_CAST_add_float = solver.IntVar(0, 1, 'array_CAST_add_float')
@@ -72,7 +72,7 @@ objectiveFunction +=  + (265.217)*C8_array_CAST_add
 
 
 
-#Constraint for cast for   %add = fadd double %tmp, 1.000000e+00, !taffo.initweight !14, !taffo.info !1, !taffo.constinfo !15
+#Constraint for cast for   %add = fadd double %tmp, 1.000000e+00, !taffo.initweight !16, !taffo.info !1, !taffo.constinfo !17
 ConstantValue__CAST_add_fixbits = solver.IntVar(0, 31, 'ConstantValue__CAST_add_fixbits')
 ConstantValue__CAST_add_fixp = solver.IntVar(0, 1, 'ConstantValue__CAST_add_fixp')
 ConstantValue__CAST_add_float = solver.IntVar(0, 1, 'ConstantValue__CAST_add_float')
@@ -106,7 +106,7 @@ objectiveFunction +=  + (265.217)*C8_ConstantValue__CAST_add
 
 
 
-#Stuff for   %add = fadd double %tmp, 1.000000e+00, !taffo.initweight !14, !taffo.info !1, !taffo.constinfo !15
+#Stuff for   %add = fadd double %tmp, 1.000000e+00, !taffo.initweight !16, !taffo.info !1, !taffo.constinfo !17
 main_add_fixbits = solver.IntVar(0, 21, 'main_add_fixbits')
 main_add_fixp = solver.IntVar(0, 1, 'main_add_fixp')
 main_add_float = solver.IntVar(0, 1, 'main_add_float')
@@ -135,7 +135,7 @@ solver.Add( + (1)*main_add_enob + (-1)*ConstantValue__enob<=0)    #Enob propagat
 
 
 
-#Constraint for cast for   store double %add, double* %arrayidx2, align 8, !taffo.initweight !13, !taffo.info !1
+#Constraint for cast for   store double %add, double* %arrayidx2, align 8, !taffo.initweight !15, !taffo.info !1
 main_add_CAST_store_fixbits = solver.IntVar(0, 21, 'main_add_CAST_store_fixbits')
 main_add_CAST_store_fixp = solver.IntVar(0, 1, 'main_add_CAST_store_fixp')
 main_add_CAST_store_float = solver.IntVar(0, 1, 'main_add_CAST_store_float')
@@ -183,6 +183,52 @@ solver.Add( + (1)*array_enob_storeENOB + (-1)*main_add_enob<=0)    #Enob constra
 
 #Closing MEM phi loop...
 solver.Add( + (1)*array_enob_memphi_main_tmp + (-1)*array_enob_memphi_main_tmp + (-10000)*main_main_tmp_enob_1<=0)    #Enob: forcing MEM phi enob
+
+#Restriction for new enob [LOAD]
+array_enob_memphi_main_tmp1 = solver.IntVar(-10000, 10000, 'array_enob_memphi_main_tmp1')
+solver.Add( + (1)*array_enob_memphi_main_tmp1 + (-1)*array_enob<=0)    #Enob constraint, new enob at most original variable enob
+main_main_tmp1_enob_1 = solver.IntVar(0, 1, 'main_main_tmp1_enob_1')
+solver.Add( + (1)*main_main_tmp1_enob_1==1)    #Enob: one selected constraint
+
+
+
+#Closing MEM phi loop...
+solver.Add( + (1)*array_enob_memphi_main_tmp1 + (-1)*array_enob_memphi_main_tmp1 + (-10000)*main_main_tmp1_enob_1<=0)    #Enob: forcing MEM phi enob
+
+
+
+#Constraint for cast for   %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), double %tmp1), !taffo.initweight !16, !taffo.info !1, !taffo.constinfo !21
+array_CAST_call_fixbits = solver.IntVar(0, 21, 'array_CAST_call_fixbits')
+array_CAST_call_fixp = solver.IntVar(0, 1, 'array_CAST_call_fixp')
+array_CAST_call_float = solver.IntVar(0, 1, 'array_CAST_call_float')
+array_CAST_call_double = solver.IntVar(0, 1, 'array_CAST_call_double')
+solver.Add( + (1)*array_CAST_call_fixp + (1)*array_CAST_call_float + (1)*array_CAST_call_double==1)    #exactly 1 type
+solver.Add( + (1)*array_CAST_call_fixbits + (-10000)*array_CAST_call_fixp<=0)    #If no fix, fix frac part = 0
+C1_array_CAST_call = solver.IntVar(0, 1, 'C1_array_CAST_call')
+C2_array_CAST_call = solver.IntVar(0, 1, 'C2_array_CAST_call')
+solver.Add( + (1)*array_fixbits + (-1)*array_CAST_call_fixbits + (-10000)*C1_array_CAST_call<=0)    #Shift cost 1
+solver.Add( + (-1)*array_fixbits + (1)*array_CAST_call_fixbits + (-10000)*C2_array_CAST_call<=0)    #Shift cost 2
+objectiveFunction +=  + (50)*C1_array_CAST_call
+objectiveFunction +=  + (50)*C2_array_CAST_call
+C3_array_CAST_call = solver.IntVar(0, 1, 'C3_array_CAST_call')
+C4_array_CAST_call = solver.IntVar(0, 1, 'C4_array_CAST_call')
+C5_array_CAST_call = solver.IntVar(0, 1, 'C5_array_CAST_call')
+C6_array_CAST_call = solver.IntVar(0, 1, 'C6_array_CAST_call')
+C7_array_CAST_call = solver.IntVar(0, 1, 'C7_array_CAST_call')
+C8_array_CAST_call = solver.IntVar(0, 1, 'C8_array_CAST_call')
+solver.Add( + (1)*array_fixp + (1)*array_CAST_call_float + (-1)*C3_array_CAST_call<=1)    #Fix to float
+objectiveFunction +=  + (362.613)*C3_array_CAST_call
+solver.Add( + (1)*array_float + (1)*array_CAST_call_fixp + (-1)*C4_array_CAST_call<=1)    #Float to fix
+objectiveFunction +=  + (123.623)*C4_array_CAST_call
+solver.Add( + (1)*array_fixp + (1)*array_CAST_call_double + (-1)*C5_array_CAST_call<=1)    #Fix to double
+objectiveFunction +=  + (631.033)*C5_array_CAST_call
+solver.Add( + (1)*array_double + (1)*array_CAST_call_fixp + (-1)*C6_array_CAST_call<=1)    #Double to fix
+objectiveFunction +=  + (846.087)*C6_array_CAST_call
+solver.Add( + (1)*array_float + (1)*array_CAST_call_double + (-1)*C7_array_CAST_call<=1)    #Float to double
+objectiveFunction +=  + (224.348)*C7_array_CAST_call
+solver.Add( + (1)*array_double + (1)*array_CAST_call_float + (-1)*C8_array_CAST_call<=1)    #Double to float
+objectiveFunction +=  + (265.217)*C8_array_CAST_call
+solver.Add( + (1)*array_CAST_call_double==1)    #Type constraint for argument value
 
 
 

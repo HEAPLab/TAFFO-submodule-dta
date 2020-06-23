@@ -10,5 +10,5 @@ int main(){
     }
     //double x = array[1] + array[2];
 
-
+    printf("%f", array[0]);
 }

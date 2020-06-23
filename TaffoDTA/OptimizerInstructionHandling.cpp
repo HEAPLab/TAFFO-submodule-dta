@@ -143,7 +143,10 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         for (unsigned index = 0; index < def_vals.size(); index++) {
             toSkip[index] = true;
             Value *op = def_vals[index];
-
+            if(!op){
+                dbgs() << "Skipping null value!\n";
+                continue;
+            }
 
             auto store = dyn_cast_or_null<StoreInst>(op);
             if(!store){
@@ -1296,17 +1299,23 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
     shared_ptr<OptimizerScalarInfo> retInfo;
     //handling return value. We will force it to be in the original type.
     if (auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata)) {
-        auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
-        if (fptype) {
-            dbgs() << fptype->toString();
-            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange, inputInfo->IError,
-                                                                                 call_i->getFunction()->getName());
-            retInfo = result;
-        } else {
-            dbgs() << "There was an input info but no fix point associated.\n";
+        if(instruction->getType()->isFloatingPointTy()) {
+            auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
+            if (fptype) {
+                dbgs() << fptype->toString();
+                shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype,
+                                                                                     inputInfo->IRange,
+                                                                                     inputInfo->IError,
+                                                                                     call_i->getFunction()->getName());
+                retInfo = result;
+            } else {
+                dbgs() << "There was an input info but no fix point associated.\n";
+            }
+        }else{
+            dbgs() << "The call does not return a floating point value.\n";
         }
     } else if (auto pInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata)) {
-        emitError("The function considered returns a ");
+        emitError("The function considered returns a struct [?]\n");
         return;
     } else {
         dbgs() << "No info available on return value, maybe it is not a floating point returning function.\n";
@@ -1335,8 +1344,9 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
 
     //Return value handled, now it's time for parameters
     dbgs() << ("Arguments:\n");
-    for (auto arg_it = call_i->arg_begin(); arg_it != call_i->arg_end(); ++arg_it) {
-        dbgs() << "info for ";
+    int arg = 0;
+    for (auto arg_it = call_i->arg_begin(); arg_it != call_i->arg_end(); ++arg_it, arg++) {
+        dbgs() << "[" << arg << "] info for ";
         (*arg_it)->print(dbgs());
         dbgs() << " --> ";
 
@@ -1344,10 +1354,10 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
         auto info = getInfoOfValue(*arg_it);
         if (!info) {
             //This is needed to resolve eventual constants in function call (I'm looking at you, LLVM)
-            dbgs() << "No error for the argument!\n";
+            dbgs() << "No info for the argument!\n";
             continue;
         } else {
-            dbgs() << "Got this error: " << info->toString() << "\n";
+            dbgs() << "Got this info: " << info->toString() << "\n";
         }
 
         /*if (const generic_range_ptr_t arg_info = fetchInfo(*arg_it)) {*/
@@ -1383,7 +1393,7 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
     }
     dbgs() << ("Arguments end.\n");
 
-    dbgs() << "Function should be correctly hndled now.\n";
+    dbgs() << "Function should be correctly handled now.\n";
 
 
 }
