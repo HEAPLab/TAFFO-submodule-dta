@@ -61,7 +61,7 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 
 shared_ptr<OptimizerScalarInfo>
 Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo, shared_ptr<double> suggestedMinError,
-                                       string functionName, bool insertInList, string nameAppendix, bool insertENOBinMin) {
+                                       string functionName, bool insertInList, string nameAppendix, bool insertENOBinMin, bool respectFloatingPointConstraint) {
     assert(!valueHasInfo(value) && "The value considered already have an info!");
 
     assert(fpInfo && "fpInfo should not be nullptr here!");
@@ -144,7 +144,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
         model.insertLinearConstraint(constraint, Model::LE, errorEnob, "Enob constraint for error maximal");
     }
 
-    if(!MixedDoubleEnabled){
+    if(!MixedDoubleEnabled && respectFloatingPointConstraint){
         constraint.clear();
         constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
         model.insertLinearConstraint(constraint, Model::LE, 0, "Disable double data type");

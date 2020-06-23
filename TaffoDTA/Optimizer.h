@@ -132,7 +132,7 @@ namespace tuner {
                                                                     shared_ptr<mdutils::Range> rangeInfo,
                                                                     shared_ptr<double> suggestedMinError,
                                                                     string functionName, bool insertInList = true,
-                                                                    string nameAppendix = "", bool insertENOBinMin = true);
+                                                                    string nameAppendix = "", bool insertENOBinMin = true, bool respectFloatingPointConstraint = true);
 
 
         void emitError(const string stringhina);

@@ -780,6 +780,37 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
 
     auto function = known_functions.find(calledFunctionName);
     if (function == known_functions.end()) {
+        const auto intrinsicsID = callee->getIntrinsicID();
+        if (intrinsicsID != llvm::Intrinsic::not_intrinsic) {
+            switch (intrinsicsID) {
+                //TODO: implement the rest of the libc...
+                case llvm::Intrinsic::log2:
+                case llvm::Intrinsic::sqrt:
+                case llvm::Intrinsic::powi:
+                case llvm::Intrinsic::sin:
+                case llvm::Intrinsic::cos:
+                case llvm::Intrinsic::pow:
+                case llvm::Intrinsic::exp:
+                case llvm::Intrinsic::exp2:
+                case llvm::Intrinsic::log:
+                case llvm::Intrinsic::log10:
+                case llvm::Intrinsic::fma:
+                case llvm::Intrinsic::fabs:
+                case llvm::Intrinsic::floor:
+                case llvm::Intrinsic::ceil:
+                case llvm::Intrinsic::trunc:
+                case llvm::Intrinsic::rint:
+                case llvm::Intrinsic::nearbyint:
+                case llvm::Intrinsic::round:
+                    //FIXME: we, for now, emulate the support for these intrinsic; in the real case, these calls have
+                    // their counterpart in all the versions, so they can be treated in some other ways
+
+                    break;
+                default:
+                    emitError("skipping intrinsic " + calledFunctionName);
+                    return;
+            }
+        }
         dbgs() << "Handling external function call, we will convert all to original parameters.";
         handleUnknownFunction(instruction, valueInfo);
         return;
@@ -1306,7 +1337,11 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
                 shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype,
                                                                                      inputInfo->IRange,
                                                                                      inputInfo->IError,
-                                                                                     call_i->getFunction()->getName());
+                                                                                     call_i->getFunction()->getName(),
+                                                                                     true,
+                                                                                     "",
+                                                                                     true,
+                                                                                     false);
                 retInfo = result;
             } else {
                 dbgs() << "There was an input info but no fix point associated.\n";
