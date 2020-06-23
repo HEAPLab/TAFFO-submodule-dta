@@ -183,6 +183,12 @@ solver.Add( + (1)*array_enob_storeENOB + (-1)*main_add_enob<=0)    #Enob constra
 
 #Closing MEM phi loop...
 solver.Add( + (1)*array_enob_memphi_main_tmp + (-1)*array_enob_memphi_main_tmp + (-10000)*main_main_tmp_enob_1<=0)    #Enob: forcing MEM phi enob
+
+
+
+
+
+#All the model has been generated, lets solve it!
 solver.Minimize(objectiveFunction)
 
 # Model declaration end.

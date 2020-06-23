@@ -777,7 +777,8 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
 
     auto function = known_functions.find(calledFunctionName);
     if (function == known_functions.end()) {
-        dbgs() << "Calling an external function, UNSUPPORTED at the moment.\n";
+        dbgs() << "Handling external function call, we will convert all to original parameters.";
+        handleUnknownFunction(instruction, valueInfo);
         return;
     }
 
@@ -1285,6 +1286,105 @@ int Optimizer::getMaxIntBitOfValue(Value *pValue) {
     bits = round(exponentOfExponent);
 
     return bits;
+
+}
+
+void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
+    assert(instruction && "Instruction is nullptr");
+    const auto *call_i = dyn_cast<CallBase>(instruction);
+    assert(call_i && "Cannot cast instruction to call!");
+    shared_ptr<OptimizerScalarInfo> retInfo;
+    //handling return value. We will force it to be in the original type.
+    if (auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata)) {
+        auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
+        if (fptype) {
+            dbgs() << fptype->toString();
+            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange, inputInfo->IError,
+                                                                                 call_i->getFunction()->getName());
+            retInfo = result;
+        } else {
+            dbgs() << "There was an input info but no fix point associated.\n";
+        }
+    } else if (auto pInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata)) {
+        emitError("The function considered returns a ");
+        return;
+    } else {
+        dbgs() << "No info available on return value, maybe it is not a floating point returning function.\n";
+    }
+
+    //If we have info on return value, forcing the return value in the model to be of the returned type of function
+    if(retInfo){
+        if(instruction->getType()->isDoubleTy()){
+            auto constraint = vector<pair<string, double>>();
+            constraint.clear();
+            constraint.push_back(make_pair(retInfo->getDoubleSelectedVariable(), 1.0));
+            model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
+        }else if(instruction->getType()->isFloatTy()){
+            auto constraint = vector<pair<string, double>>();
+            constraint.clear();
+            constraint.push_back(make_pair(retInfo->getFloatSelectedVariable(), 1.0));
+            model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
+        }else if(instruction->getType()->isFloatingPointTy()){
+            dbgs() << "The function returns a floating point type not implemented in the model. Bailing out.\n";
+        }else{
+            dbgs() << "Probably the functions returns a pointer but i do not known what to do!\n";
+        }
+    }
+
+
+
+    //Return value handled, now it's time for parameters
+    dbgs() << ("Arguments:\n");
+    for (auto arg_it = call_i->arg_begin(); arg_it != call_i->arg_end(); ++arg_it) {
+        dbgs() << "info for ";
+        (*arg_it)->print(dbgs());
+        dbgs() << " --> ";
+
+        //if a variable was declared for type
+        auto info = getInfoOfValue(*arg_it);
+        if (!info) {
+            //This is needed to resolve eventual constants in function call (I'm looking at you, LLVM)
+            dbgs() << "No error for the argument!\n";
+            continue;
+        } else {
+            dbgs() << "Got this error: " << info->toString() << "\n";
+        }
+
+        /*if (const generic_range_ptr_t arg_info = fetchInfo(*arg_it)) {*/
+        //If the error is a scalar, collect it also as a scalar
+        auto arg_info_scalar = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
+        if (arg_info_scalar) {
+            //Ok, we have info and it is a scalar, let's hope that it's not a pointer
+            if((*arg_it)->getType()->isFloatTy()){
+                auto info2 = allocateNewVariableWithCastCost(arg_it->get(), instruction);
+                auto constraint = vector<pair<string, double>>();
+                constraint.clear();
+                constraint.push_back(make_pair(info2->getFloatSelectedVariable(), 1.0));
+                model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
+
+            }else if((*arg_it)->getType()->isDoubleTy()){
+                auto info2 = allocateNewVariableWithCastCost(arg_it->get(), instruction);
+                auto constraint = vector<pair<string, double>>();
+                constraint.clear();
+                constraint.push_back(make_pair(info2->getDoubleSelectedVariable(), 1.0));
+                model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
+
+            }else if((*arg_it)->getType()->isFloatingPointTy()){
+                dbgs() << "The function uses a floating point type not implemented in the model. Bailing out.\n";
+            }else{
+                dbgs() << "Probably the functions uses a pointer but I do not known what to do!\n";
+            }
+
+        }else{
+            dbgs() << "This is a struct passed to an external function but has been optimized by TAFFO. Is this even possible???\n";
+        }
+
+        dbgs() << "\n\n";
+    }
+    dbgs() << ("Arguments end.\n");
+
+    dbgs() << "Function should be correctly hndled now.\n";
+
 
 }
 

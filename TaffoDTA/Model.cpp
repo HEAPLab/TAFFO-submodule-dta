@@ -197,6 +197,9 @@ void Model::insertObjectiveElement(const pair<string, double> &p) {
 
 void Model::writeOutObjectiveFunction() {
     //solver.Minimize(x + 10 * y)
+
+    this->insertComment("All the model has been generated, lets solve it!", 5);
+
     switch (problemType) {
         case MIN:
             modelFile << "solver.Minimize";
