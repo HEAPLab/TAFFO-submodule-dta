@@ -690,7 +690,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
     }
 
-    assert(optimizer.finish() && "Optimizer did not find a solution!");
+    assert(optimizer.finish() && "Optimizer did not found a solution!");
 
 
     for (Value *v : vals) {

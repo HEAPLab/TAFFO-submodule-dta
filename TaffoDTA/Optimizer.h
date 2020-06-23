@@ -227,6 +227,8 @@ namespace tuner {
         void closeMemLoop(LoadInst *phiNode, Value *requestedValue);
 
         void handleUnknownFunction(Instruction *call_i, shared_ptr<ValueInfo> valueInfo);
+
+        void handleSelect(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
     };
 
 

@@ -40,7 +40,8 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
                 dbgs() << "No fixed point info associated. Bailing out.\n";
                 return;
             }
-            auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, fieldInfo->IError, alloca->getFunction()->getName(),
+            auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, fieldInfo->IError,
+                                                    alloca->getFunction()->getName(),
                                                     false);
             saveInfoForValue(alloca, make_shared<OptimizerPointerInfo>(info));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
@@ -108,7 +109,8 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         constraint.clear();
         constraint.push_back(make_pair(newEnobVariable, 1.0));
         constraint.push_back(make_pair(sinfos->getBaseEnobVariable(), -1.0));
-        model.insertLinearConstraint(constraint, Model::LE, 0, "Enob constraint, new enob at most original variable enob");
+        model.insertLinearConstraint(constraint, Model::LE, 0,
+                                     "Enob constraint, new enob at most original variable enob");
 
         auto a = make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                   sinfos->getMinBits(),
@@ -143,13 +145,13 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         for (unsigned index = 0; index < def_vals.size(); index++) {
             toSkip[index] = true;
             Value *op = def_vals[index];
-            if(!op){
+            if (!op) {
                 dbgs() << "Skipping null value!\n";
                 continue;
             }
 
             auto store = dyn_cast_or_null<StoreInst>(op);
-            if(!store){
+            if (!store) {
                 //We skip the variable if it is not a store
                 dbgs() << "[INFO] Skipping ";
                 op->print(dbgs());
@@ -157,7 +159,7 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
                 continue;
             }
             if (auto info = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op))) {
-                if(info->doesReferToConstant()){
+                if (info->doesReferToConstant()) {
                     //We skip the variable if it is a constant
                     dbgs() << "[INFO] Skipping ";
                     op->print(dbgs());
@@ -173,9 +175,9 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
             toSkip[index] = false;
         }
 
-        if(constraint.size()>0) {
+        if (constraint.size() > 0) {
             model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
-        }else{
+        } else {
             dbgs() << "[INFO] All constants memPhi node, nothing to do!!!\n";
             //return;
         }
@@ -183,11 +185,11 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
 
         int missing = 0;
 
-        for (unsigned index = 0; index  < def_vals.size(); index++) {
+        for (unsigned index = 0; index < def_vals.size(); index++) {
             dbgs() << "[memPhi] Handlign operator " << index << "...\n";
             Value *op = def_vals[index];
 
-            if(toSkip[index]){
+            if (toSkip[index]) {
                 dbgs() << "Need to skip this...\n";
                 continue;
             }
@@ -203,13 +205,6 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
                 missing++;
             }
         }
-
-
-
-
-
-
-
 
 
         dbgs() << "For this load, reusing variable [" << sinfos->getBaseName() << "]\n";
@@ -274,12 +269,10 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
         insertTypeEqualityConstraint(info_pointer, variable, true);
 
 
-
-
         bool isConstant;
 
-        if(!info_variable_oeig_t->doesReferToConstant()) {
-            isConstant=false;
+        if (!info_variable_oeig_t->doesReferToConstant()) {
+            isConstant = false;
             //We do this only if storing a real result from a computation, if it comes from a constant we do not override the enob.
             model.insertComment("Restriction for new enob [STORE]", 2);
             string newEnobVariable = info_pointer->getRealEnobVariable();
@@ -315,10 +308,10 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
             constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
             constraint.push_back(make_pair(info_variable_oeig_t->getRealEnobVariable(), -1.0));
             model.insertLinearConstraint(constraint, Model::LE, 0, "Enob constraint ENOB propagation in load/store");
-        }else{
+        } else {
             dbgs() << "[INFO] The value to store is a constant, not inserting it as may cause problems...\n";
             model.insertComment("Storing constant, no new enob.", 1);
-            isConstant=true;
+            isConstant = true;
         }
 
 
@@ -332,9 +325,6 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
         a->setReferToConstant(isConstant);
 
         saveInfoForValue(instruction, a);
-
-
-
 
 
     } else if (opRegister->getType()->isPointerTy()) {
@@ -382,7 +372,8 @@ void Optimizer::handleFPPrecisionShift(Instruction *instruction, shared_ptr<Valu
     saveInfoForValue(instruction, make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                                    sinfos->getMinBits(),
                                                                    sinfos->getMaxBits(), sinfos->getTotalBits(),
-                                                                   sinfos->isSigned, *sinfos->getRange(), sinfos->getOverridedEnob()));
+                                                                   sinfos->isSigned, *sinfos->getRange(),
+                                                                   sinfos->getOverridedEnob()));
 
     dbgs() << "For this fpext/fptrunc, reusing variable" << sinfos->getBaseName() << "\n";
 
@@ -431,7 +422,8 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     }
 
     //Allocating variable for result
-    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange, fieldInfo->IError,
+    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+                                                                           fieldInfo->IError,
                                                                            instruction->getFunction()->getName());
     auto constraint = vector<pair<string, double>>();
     constraint.clear();
@@ -440,7 +432,7 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     for (unsigned index = 0; index < phi_n->getNumIncomingValues(); index++) {
         Value *op = phi_n->getIncomingValue(index);
         if (auto info = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op))) {
-            if(info->doesReferToConstant()){
+            if (info->doesReferToConstant()) {
                 //We skip the variable if it is a constant
                 dbgs() << "[INFO] Skipping ";
                 op->print(dbgs());
@@ -454,9 +446,9 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
         constraint.push_back(make_pair(enob_selection, 1.0));
     }
 
-    if(constraint.size()>0) {
+    if (constraint.size() > 0) {
         model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
-    }else{
+    } else {
         dbgs() << "[INFO] All constants phi node, nothing to do!!!\n";
         return;
     }
@@ -470,7 +462,7 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
 
         if (auto info = getInfoOfValue(op)) {
             if (auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info)) {
-                if(info2->doesReferToConstant()){
+                if (info2->doesReferToConstant()) {
                     //We skip the variable if it is a constant
                     dbgs() << "[INFO] Skipping ";
                     op->print(dbgs());
@@ -478,7 +470,6 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
                     continue;
                 }
             }
-
 
 
             dbgs() << "[Phi] We have infos, treating as usual.\n";
@@ -537,7 +528,8 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
         }
 
 
-        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange, fieldInfo->IError,
+        shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+                                                                               fieldInfo->IError,
                                                                                instruction->getFunction()->getName());
         return;
     }
@@ -735,7 +727,7 @@ void Optimizer::closeMemLoop(LoadInst *load, Value *requestedValue) {
 
     auto info1 = phiInfo;
 
-model.insertComment("Closing MEM phi loop...", 3);
+    model.insertComment("Closing MEM phi loop...", 3);
     auto constraint = vector<pair<string, double>>();
     constraint.clear();
     constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
@@ -864,7 +856,8 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
         auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
         if (fptype) {
             dbgs() << fptype->toString();
-            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange, inputInfo->IError,
+            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange,
+                                                                                 inputInfo->IError,
                                                                                  instruction->getFunction()->getName());
             retInfo = result;
         } else {
@@ -942,7 +935,6 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
     return;
 
 }
-
 
 
 void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> argInfo,
@@ -1221,30 +1213,30 @@ string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
     assert(cardinal >= 0 && "Cardinal should be a positive number!");
     string valueName;
 
-    if(auto instr = dyn_cast_or_null<Instruction>(value)){
+    if (auto instr = dyn_cast_or_null<Instruction>(value)) {
         valueName.append(instr->getFunction()->getName());
         valueName.append("_");
     }
 
-    if(!value->getName().empty()){
+    if (!value->getName().empty()) {
         valueName.append(value->getName());
-    }else{
+    } else {
         valueName.append(to_string(value->getValueID()));
         valueName.append("_");
     }
 
-    std::replace( valueName.begin(), valueName.end(), '.', '_');
+    std::replace(valueName.begin(), valueName.end(), '.', '_');
     Instruction *i;
 
     assert(!valueName.empty() && "The value should have a name!!!");
 
     string fname;
-    if(auto instr = dyn_cast_or_null<Instruction>(value)){
+    if (auto instr = dyn_cast_or_null<Instruction>(value)) {
         fname = instr->getFunction()->getName();
-        std::replace( fname.begin(), fname.end(), '.', '_');
+        std::replace(fname.begin(), fname.end(), '.', '_');
     }
 
-    if(!fname.empty()){
+    if (!fname.empty()) {
         valueName = fname + "_" + valueName;
     }
 
@@ -1330,7 +1322,7 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
     shared_ptr<OptimizerScalarInfo> retInfo;
     //handling return value. We will force it to be in the original type.
     if (auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata)) {
-        if(instruction->getType()->isFloatingPointTy()) {
+        if (inputInfo->IRange && instruction->getType()->isFloatingPointTy()) {
             auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
             if (fptype) {
                 dbgs() << fptype->toString();
@@ -1346,7 +1338,7 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
             } else {
                 dbgs() << "There was an input info but no fix point associated.\n";
             }
-        }else{
+        } else {
             dbgs() << "The call does not return a floating point value.\n";
         }
     } else if (auto pInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata)) {
@@ -1357,20 +1349,20 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
     }
 
     //If we have info on return value, forcing the return value in the model to be of the returned type of function
-    if(retInfo){
-        if(instruction->getType()->isDoubleTy()){
+    if (retInfo) {
+        if (instruction->getType()->isDoubleTy()) {
             auto constraint = vector<pair<string, double>>();
             constraint.clear();
             constraint.push_back(make_pair(retInfo->getDoubleSelectedVariable(), 1.0));
             model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
-        }else if(instruction->getType()->isFloatTy()){
+        } else if (instruction->getType()->isFloatTy()) {
             auto constraint = vector<pair<string, double>>();
             constraint.clear();
             constraint.push_back(make_pair(retInfo->getFloatSelectedVariable(), 1.0));
             model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
-        }else if(instruction->getType()->isFloatingPointTy()){
+        } else if (instruction->getType()->isFloatingPointTy()) {
             dbgs() << "The function returns a floating point type not implemented in the model. Bailing out.\n";
-        }else{
+        } else {
             dbgs() << "Probably the functions returns a pointer but i do not known what to do!\n";
         }
     }
@@ -1400,28 +1392,29 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
         auto arg_info_scalar = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
         if (arg_info_scalar) {
             //Ok, we have info and it is a scalar, let's hope that it's not a pointer
-            if((*arg_it)->getType()->isFloatTy()){
+            if ((*arg_it)->getType()->isFloatTy()) {
                 auto info2 = allocateNewVariableWithCastCost(arg_it->get(), instruction);
                 auto constraint = vector<pair<string, double>>();
                 constraint.clear();
                 constraint.push_back(make_pair(info2->getFloatSelectedVariable(), 1.0));
                 model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
 
-            }else if((*arg_it)->getType()->isDoubleTy()){
+            } else if ((*arg_it)->getType()->isDoubleTy()) {
                 auto info2 = allocateNewVariableWithCastCost(arg_it->get(), instruction);
                 auto constraint = vector<pair<string, double>>();
                 constraint.clear();
                 constraint.push_back(make_pair(info2->getDoubleSelectedVariable(), 1.0));
                 model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
 
-            }else if((*arg_it)->getType()->isFloatingPointTy()){
+            } else if ((*arg_it)->getType()->isFloatingPointTy()) {
                 dbgs() << "The function uses a floating point type not implemented in the model. Bailing out.\n";
-            }else{
+            } else {
                 dbgs() << "Probably the functions uses a pointer but I do not known what to do!\n";
             }
 
-        }else{
-            dbgs() << "This is a struct passed to an external function but has been optimized by TAFFO. Is this even possible???\n";
+        } else {
+            dbgs()
+                    << "This is a struct passed to an external function but has been optimized by TAFFO. Is this even possible???\n";
         }
 
         dbgs() << "\n\n";
@@ -1434,7 +1427,125 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
 }
 
 
+void
+Optimizer::handleSelect(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
+    auto *select = dyn_cast<SelectInst>(instruction);
 
+    if (!select->getType()->isFloatingPointTy()) {
+        dbgs() << "select node with non float value, skipping...\n";
+        return;
+    }
+
+    //The select is different from phi because we have all the value in the current basic block, therefore we will have
+    // them while computing top down
+
+
+
+    if (!select) {
+        llvm_unreachable("Could not convert Select instruction to Selectinstruction");
+    }
+
+
+    auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
+    if (!fieldInfo) {
+        dbgs() << "Not enough information. Bailing out.\n\n";
+        return;
+    }
+
+    auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
+    if (!fptype) {
+        dbgs() << "No fixed point info associated. Bailing out.\n";
+        return;
+    }
+
+    //Allocating variable for result
+    shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+                                                                           fieldInfo->IError,
+                                                                           instruction->getFunction()->getName());
+    auto constraint = vector<pair<string, double>>();
+    constraint.clear();
+
+    vector<Value *> incomingValues;
+    incomingValues.push_back(select->getFalseValue());
+    incomingValues.push_back(select->getTrueValue());
+
+    //Yes yes there is not the need to do a loop, but it has the same structure of the phi instruction!
+    for (unsigned index = 0; index < incomingValues.size(); index++) {
+        Value *op = incomingValues[index];
+        if (auto info = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(op))) {
+            if (info->doesReferToConstant()) {
+                //We skip the variable if it is a constant
+                dbgs() << "[INFO] Skipping ";
+                op->print(dbgs());
+                dbgs() << " as it is a constant!\n";
+                continue;
+            }
+        }
+        if (!valueHasInfo(op)) {
+            dbgs() << "[INFO] Skipping ";
+            op->print(dbgs());
+            dbgs() << " as it is does not have an info!\n";
+            continue;
+        }
+
+
+        string enob_selection = getEnobActivationVariable(instruction, index);
+        model.createVariable(enob_selection, 0, 1);
+        constraint.push_back(make_pair(enob_selection, 1.0));
+    }
+
+    if (constraint.size() > 0) {
+        model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+    } else {
+        dbgs() << "[INFO] All constants or unknown nodes, nothing to do!!!\n";
+        return;
+    }
+
+
+    int missing = 0;
+
+    for (unsigned index = 0; index < incomingValues.size(); index++) {
+        dbgs() << "[Select] Handlign operator " << index << "...\n";
+        Value *op = incomingValues[index];
+
+        if (auto info = getInfoOfValue(op)) {
+            if (auto info2 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info)) {
+                if (info2->doesReferToConstant()) {
+                    //We skip the variable if it is a constant
+                    dbgs() << "[INFO] Skipping ";
+                    op->print(dbgs());
+                    dbgs() << " as it is a constant!\n";
+                    continue;
+                }
+            } else {
+                dbgs() << "Strange select value as it is not a number...\n";
+            }
+
+
+            dbgs() << "[Select] We have infos, treating as usual.\n";
+
+            auto destInfo = allocateNewVariableWithCastCost(op, select);
+
+            string enob_var = getEnobActivationVariable(select, index);
+
+
+            assert(!enob_var.empty() && "Enob var not found!");
+
+            insertTypeEqualityConstraint(variable, destInfo, true);
+
+
+            auto constraint = vector<pair<string, double>>();
+            constraint.clear();
+            constraint.push_back(make_pair(variable->getRealEnobVariable(), 1.0));
+            constraint.push_back(make_pair(destInfo->getRealEnobVariable(), -1.0));
+            constraint.push_back(make_pair(enob_var, -BIG_NUMBER));
+            model.insertLinearConstraint(constraint, Model::LE, 0, "Enob: forcing select enob");
+        }
+        //if no info is to skip
+    }
+
+
+}
 
 
 

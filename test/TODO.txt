@@ -2,14 +2,15 @@ TODOS:
 
 Implement inserting cost proportional to number of execution
 
-Enob propagation (WIP, external and math calls not handled) [external->force original type, if we know the cost we can optimize for the cost]
-
-Add forced cast to original type if in general the function to call is not known
+Enob propagation (WIP, math calls not handled)
 
 Implement SELECT instruction
 
+Avoid error in empty models
+
 
 TESTING:
+Add forced cast to original type if in general the function to call is not known
 Handling correctly storing costants/phi of costants in enob
 MemSSA should be used in propagation of enob against load/store
 Implement phi node (should be ok)

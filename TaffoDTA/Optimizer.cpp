@@ -267,7 +267,7 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
             }
                 break;
             case llvm::Instruction::Select:
-                llvm_unreachable("Not handled.");
+                handleSelect(instruction, valueInfo);;
                 break;
             case llvm::Instruction::UserOp1: // TODO implement
             case llvm::Instruction::UserOp2: // TODO implement
