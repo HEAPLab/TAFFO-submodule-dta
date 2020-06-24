@@ -89,8 +89,28 @@ void CPUCosts::dump(){
 }
 
 double CPUCosts::getCost(CPUCosts::CostsId id) {
+    //FIXME: the workaround is done due to the model not being able to distiguish between a delta in fixp due to change of datatype or change of bit number
+    // in this way should fix the 90% of the cases
+
+    bool fixDoubleCast = false;
+    switch (id) {
+        case CAST_FIX_DOUBLE:
+        case CAST_FIX_FLOAT:
+        case CAST_FLOAT_FIX:
+        case CAST_DOUBLE_FIX:
+            fixDoubleCast=true;
+            break;
+        default:
+            break;
+    }
+
+
+
     auto it = costsMap.find(id);
     if(it!=costsMap.end()){
+        if(fixDoubleCast){
+            return it->second - getCost(CAST_FIX_FIX);
+        }
         return it->second;
     }
 
