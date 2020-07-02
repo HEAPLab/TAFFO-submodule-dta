@@ -53,7 +53,8 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
 
             string fname = "ConstantValue";
             //ENOB should not be considered for constant.... It is a constant and will be converted as best as possible
-            auto info = allocateNewVariableForValue(constantFP, make_shared<FPType>(fpInfo), make_shared<Range>(rangeInfo), nullptr, fname, true, "", false);
+            //WE DO NOT SAVE CONSTANTS INFO!
+            auto info = allocateNewVariableForValue(constantFP, make_shared<FPType>(fpInfo), make_shared<Range>(rangeInfo), nullptr, fname, false, "", false);
             info->setReferToConstant(true);
             return info;
         }

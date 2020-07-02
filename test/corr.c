@@ -6,7 +6,7 @@
 
 #define N 28
 #define M 32
-#define DATA_TYPE float
+#define DATA_TYPE double
 int main(){
     DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(0.1))"))) mean[M];
     DATA_TYPE __attribute((annotate("scalar(range(-0.5, 0.5) error(0.1) final)"))) data[N][M];
@@ -20,7 +20,7 @@ int main(){
     int __attribute((annotate("scalar(range(0, 32) final disabled)"))) k;
 
 
-    __attribute((annotate("scalar(range(1, 3000))"))) float_n;
+    __attribute((annotate("scalar(range(1, 3000) error(0.1))"))) float_n;
     float_n = (DATA_TYPE)N;
 
     for (i = 0; i < N; i++)
