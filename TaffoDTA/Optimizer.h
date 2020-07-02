@@ -35,7 +35,8 @@ extern llvm::cl::opt<bool> MixedDoubleEnabled;
 #define TUNING_MATH (MixedTuningTime)
 #define TUNING_ENOB (MixedTuningENOB)
 
-#define P_COST 1
+#define FIX_DELTA_MAX 1
+
 #define BIG_NUMBER 10000
 
 

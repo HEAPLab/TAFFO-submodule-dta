@@ -725,15 +725,16 @@ void Optimizer::closeMemLoop(LoadInst *load, Value *requestedValue) {
     //as this is a load, it is implicit that the type is equal!
     //insertTypeEqualityConstraint(phiInfo, destInfo, true);
 
-    auto info1 = phiInfo;
+    auto info1 = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(getInfoOfValue(requestedValue));
+    assert(info1 && "No info for the just saved value!");
 
     model.insertComment("Closing MEM phi loop...", 3);
     auto constraint = vector<pair<string, double>>();
     constraint.clear();
     constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
-    constraint.push_back(make_pair(enob_var, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob: forcing MEM phi enob");
+    constraint.push_back(make_pair(enob_var, BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob: forcing MEM phi enob");
 
 
     memWatcher.closePhiLoop(load, requestedValue);

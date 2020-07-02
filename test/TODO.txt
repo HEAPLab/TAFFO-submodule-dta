@@ -2,14 +2,19 @@ TODOS:
 
 Implement inserting cost proportional to number of execution
 
-Enob propagation (WIP, math calls not handled)
-
-Implement SELECT instruction
+Enob propagation (WIP, known math functions calls not handled)
 
 Avoid error in empty models
 
+Obiettivo: sviluppare due (o più) policy per i seguenti use case:
+- ottimizza i data type, partendo da "tutto double" e inserendo 0 errore
+- ottimizza i data type, partendo da "tutto double" e utilizza solo bfloat16 e IEEE binary32
+- ottimizza i data type, partendo da "tutto double" e ammetti al massimo epsilon errore
+- run Forest, run! rendilo storpio ma veloce, vediamo se inciampa e crasha
+
 
 TESTING:
+Implement SELECT instruction
 Add forced cast to original type if in general the function to call is not known
 Handling correctly storing costants/phi of costants in enob
 MemSSA should be used in propagation of enob against load/store

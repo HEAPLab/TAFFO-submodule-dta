@@ -130,14 +130,23 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), BIG_NUMBER));
     model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
 
+
+    constraint.clear();
+    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
+    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
+    //DO NOT REMOVE THE CAST OR SOMEONE WILL DEBUG THIS FOR AN WHOLE DAY AGAIN
+    model.insertLinearConstraint(constraint, Model::GE, (-BIG_NUMBER-FIX_DELTA_MAX)+((int)fpInfo->getPointPos()), "Limit the lower number of frac bits"+to_string(fpInfo->getPointPos()));
+
     if(suggestedMinError){
         /*If we have a suggested min initial error, that is used for error propagation, we should cap the enob to that erro.
          * In facts, it is not really necessary to "unbound" the minimum error while the input variables are not error free
          * Think about a reading from a sensor (ADC) or something similar, the error there will be even if we use a double to
          * store its result. Therefore we limit the enob to a useful value even for floating points.*/
-        dbgs() << "We have a suggested min error, limiting the enob in the model.\n";
+
 
         double errorEnob = getENOBFromError(*suggestedMinError);
+
+        dbgs() << "We have a suggested min error, limiting the enob in the model to " << errorEnob << "\n";
 
         constraint.clear();
         constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
@@ -434,6 +443,9 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
     model.insertLinearConstraint(constraint, Model::LE, 0, "If no fix, fix frac part = 0");
+
+
+
 
 
     //Variables for costs:
