@@ -12,7 +12,7 @@ solver.Add( + (1)*main_mean_enob + (10000)*main_mean_float<=10149)    #Enob cons
 solver.Add( + (1)*main_mean_enob + (10000)*main_mean_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_mean_fixbits + (-10000)*main_mean_fixp>=-9986)    #Limit the lower number of frac bits15
 solver.Add( + (1)*main_mean_enob<=4)    #Enob constraint for error maximal
-objectiveFunction =  + (-20)*main_mean_enob
+objectiveFunction =  + (-1)*main_mean_enob
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_float + (1)*main_mean_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_mean_fixbits + (-10000)*main_mean_fixp<=0)    #If not fix, frac part to zero
 
@@ -29,7 +29,7 @@ solver.Add( + (1)*main_data_enob + (10000)*main_data_float<=10149)    #Enob cons
 solver.Add( + (1)*main_data_enob + (10000)*main_data_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_data_fixbits + (-10000)*main_data_fixp>=-9971)    #Limit the lower number of frac bits30
 solver.Add( + (1)*main_data_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_data_enob
+objectiveFunction +=  + (-1)*main_data_enob
 solver.Add( + (1)*main_data_fixp + (1)*main_data_float + (1)*main_data_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_data_fixbits + (-10000)*main_data_fixp<=0)    #If not fix, frac part to zero
 
@@ -46,7 +46,7 @@ solver.Add( + (1)*main_corr_enob + (10000)*main_corr_float<=10149)    #Enob cons
 solver.Add( + (1)*main_corr_enob + (10000)*main_corr_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_corr_fixbits + (-10000)*main_corr_fixp>=-9972)    #Limit the lower number of frac bits29
 solver.Add( + (1)*main_corr_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_corr_enob
+objectiveFunction +=  + (-1)*main_corr_enob
 solver.Add( + (1)*main_corr_fixp + (1)*main_corr_float + (1)*main_corr_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_corr_fixbits + (-10000)*main_corr_fixp<=0)    #If not fix, frac part to zero
 
@@ -63,7 +63,7 @@ solver.Add( + (1)*main_stddev_enob + (10000)*main_stddev_float<=10149)    #Enob 
 solver.Add( + (1)*main_stddev_enob + (10000)*main_stddev_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_stddev_fixbits + (-10000)*main_stddev_fixp>=-9983)    #Limit the lower number of frac bits18
 solver.Add( + (1)*main_stddev_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_stddev_enob
+objectiveFunction +=  + (-1)*main_stddev_enob
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_float + (1)*main_stddev_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_stddev_fixbits + (-10000)*main_stddev_fixp<=0)    #If not fix, frac part to zero
 
@@ -125,8 +125,8 @@ C1_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C1_ConstantValue__1_CAST_s
 C2_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C2_ConstantValue__1_CAST_store')
 solver.Add( + (1)*ConstantValue__1_fixbits + (-1)*ConstantValue__1_CAST_store_fixbits + (-10000)*C1_ConstantValue__1_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*ConstantValue__1_fixbits + (1)*ConstantValue__1_CAST_store_fixbits + (-10000)*C2_ConstantValue__1_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_ConstantValue__1_CAST_store
-objectiveFunction +=  + (500)*C2_ConstantValue__1_CAST_store
+objectiveFunction +=  + (50)*C1_ConstantValue__1_CAST_store
+objectiveFunction +=  + (50)*C2_ConstantValue__1_CAST_store
 C3_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C3_ConstantValue__1_CAST_store')
 C4_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C4_ConstantValue__1_CAST_store')
 C5_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C5_ConstantValue__1_CAST_store')
@@ -134,17 +134,17 @@ C6_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C6_ConstantValue__1_CAST_s
 C7_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C7_ConstantValue__1_CAST_store')
 C8_ConstantValue__1_CAST_store = solver.IntVar(0, 1, 'C8_ConstantValue__1_CAST_store')
 solver.Add( + (1)*ConstantValue__1_fixp + (1)*ConstantValue__1_CAST_store_float + (-1)*C3_ConstantValue__1_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_ConstantValue__1_CAST_store
+objectiveFunction +=  + (312.613)*C3_ConstantValue__1_CAST_store
 solver.Add( + (1)*ConstantValue__1_float + (1)*ConstantValue__1_CAST_store_fixp + (-1)*C4_ConstantValue__1_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_ConstantValue__1_CAST_store
+objectiveFunction +=  + (73.6232)*C4_ConstantValue__1_CAST_store
 solver.Add( + (1)*ConstantValue__1_fixp + (1)*ConstantValue__1_CAST_store_double + (-1)*C5_ConstantValue__1_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_ConstantValue__1_CAST_store
+objectiveFunction +=  + (581.033)*C5_ConstantValue__1_CAST_store
 solver.Add( + (1)*ConstantValue__1_double + (1)*ConstantValue__1_CAST_store_fixp + (-1)*C6_ConstantValue__1_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_ConstantValue__1_CAST_store
+objectiveFunction +=  + (796.087)*C6_ConstantValue__1_CAST_store
 solver.Add( + (1)*ConstantValue__1_float + (1)*ConstantValue__1_CAST_store_double + (-1)*C7_ConstantValue__1_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_ConstantValue__1_CAST_store
+objectiveFunction +=  + (224.348)*C7_ConstantValue__1_CAST_store
 solver.Add( + (1)*ConstantValue__1_double + (1)*ConstantValue__1_CAST_store_float + (-1)*C8_ConstantValue__1_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_ConstantValue__1_CAST_store
+objectiveFunction +=  + (265.217)*C8_ConstantValue__1_CAST_store
 solver.Add( + (1)*main_mean_fixp + (-1)*ConstantValue__1_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_mean_float + (-1)*ConstantValue__1_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_mean_double + (-1)*ConstantValue__1_CAST_store_double==0)    #double equality
@@ -177,8 +177,8 @@ C1_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C1_main_mean_CAST_add36')
 C2_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C2_main_mean_CAST_add36')
 solver.Add( + (1)*main_mean_fixbits + (-1)*main_mean_CAST_add36_fixbits + (-10000)*C1_main_mean_CAST_add36<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mean_fixbits + (1)*main_mean_CAST_add36_fixbits + (-10000)*C2_main_mean_CAST_add36<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mean_CAST_add36
-objectiveFunction +=  + (500)*C2_main_mean_CAST_add36
+objectiveFunction +=  + (50)*C1_main_mean_CAST_add36
+objectiveFunction +=  + (50)*C2_main_mean_CAST_add36
 C3_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C3_main_mean_CAST_add36')
 C4_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C4_main_mean_CAST_add36')
 C5_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C5_main_mean_CAST_add36')
@@ -186,17 +186,17 @@ C6_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C6_main_mean_CAST_add36')
 C7_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C7_main_mean_CAST_add36')
 C8_main_mean_CAST_add36 = solver.IntVar(0, 1, 'C8_main_mean_CAST_add36')
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_add36_float + (-1)*C3_main_mean_CAST_add36<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mean_CAST_add36
+objectiveFunction +=  + (312.613)*C3_main_mean_CAST_add36
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_add36_fixp + (-1)*C4_main_mean_CAST_add36<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mean_CAST_add36
+objectiveFunction +=  + (73.6232)*C4_main_mean_CAST_add36
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_add36_double + (-1)*C5_main_mean_CAST_add36<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mean_CAST_add36
+objectiveFunction +=  + (581.033)*C5_main_mean_CAST_add36
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_add36_fixp + (-1)*C6_main_mean_CAST_add36<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mean_CAST_add36
+objectiveFunction +=  + (796.087)*C6_main_mean_CAST_add36
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_add36_double + (-1)*C7_main_mean_CAST_add36<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mean_CAST_add36
+objectiveFunction +=  + (224.348)*C7_main_mean_CAST_add36
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_add36_float + (-1)*C8_main_mean_CAST_add36<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mean_CAST_add36
+objectiveFunction +=  + (265.217)*C8_main_mean_CAST_add36
 
 
 
@@ -211,8 +211,8 @@ C1_main_data_CAST_add36 = solver.IntVar(0, 1, 'C1_main_data_CAST_add36')
 C2_main_data_CAST_add36 = solver.IntVar(0, 1, 'C2_main_data_CAST_add36')
 solver.Add( + (1)*main_data_fixbits + (-1)*main_data_CAST_add36_fixbits + (-10000)*C1_main_data_CAST_add36<=0)    #Shift cost 1
 solver.Add( + (-1)*main_data_fixbits + (1)*main_data_CAST_add36_fixbits + (-10000)*C2_main_data_CAST_add36<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_data_CAST_add36
-objectiveFunction +=  + (500)*C2_main_data_CAST_add36
+objectiveFunction +=  + (50)*C1_main_data_CAST_add36
+objectiveFunction +=  + (50)*C2_main_data_CAST_add36
 C3_main_data_CAST_add36 = solver.IntVar(0, 1, 'C3_main_data_CAST_add36')
 C4_main_data_CAST_add36 = solver.IntVar(0, 1, 'C4_main_data_CAST_add36')
 C5_main_data_CAST_add36 = solver.IntVar(0, 1, 'C5_main_data_CAST_add36')
@@ -220,17 +220,17 @@ C6_main_data_CAST_add36 = solver.IntVar(0, 1, 'C6_main_data_CAST_add36')
 C7_main_data_CAST_add36 = solver.IntVar(0, 1, 'C7_main_data_CAST_add36')
 C8_main_data_CAST_add36 = solver.IntVar(0, 1, 'C8_main_data_CAST_add36')
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_add36_float + (-1)*C3_main_data_CAST_add36<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_data_CAST_add36
+objectiveFunction +=  + (312.613)*C3_main_data_CAST_add36
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_add36_fixp + (-1)*C4_main_data_CAST_add36<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_data_CAST_add36
+objectiveFunction +=  + (73.6232)*C4_main_data_CAST_add36
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_add36_double + (-1)*C5_main_data_CAST_add36<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_data_CAST_add36
+objectiveFunction +=  + (581.033)*C5_main_data_CAST_add36
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_add36_fixp + (-1)*C6_main_data_CAST_add36<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_data_CAST_add36
+objectiveFunction +=  + (796.087)*C6_main_data_CAST_add36
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_add36_double + (-1)*C7_main_data_CAST_add36<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_data_CAST_add36
+objectiveFunction +=  + (224.348)*C7_main_data_CAST_add36
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_add36_float + (-1)*C8_main_data_CAST_add36<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_data_CAST_add36
+objectiveFunction +=  + (265.217)*C8_main_data_CAST_add36
 
 
 
@@ -245,7 +245,7 @@ solver.Add( + (1)*main_add36_enob + (10000)*main_add36_float<=10149)    #Enob co
 solver.Add( + (1)*main_add36_enob + (10000)*main_add36_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_add36_fixbits + (-10000)*main_add36_fixp>=-9986)    #Limit the lower number of frac bits15
 solver.Add( + (1)*main_add36_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_add36_enob
+objectiveFunction +=  + (-1)*main_add36_enob
 solver.Add( + (1)*main_add36_fixp + (1)*main_add36_float + (1)*main_add36_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_add36_fixbits + (-10000)*main_add36_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_mean_CAST_add36_fixp + (-1)*main_data_CAST_add36_fixp==0)    #fix equality
@@ -256,9 +256,9 @@ solver.Add( + (1)*main_mean_CAST_add36_fixp + (-1)*main_add36_fixp==0)    #fix e
 solver.Add( + (1)*main_mean_CAST_add36_float + (-1)*main_add36_float==0)    #float equality
 solver.Add( + (1)*main_mean_CAST_add36_double + (-1)*main_add36_double==0)    #double equality
 solver.Add( + (1)*main_mean_CAST_add36_fixbits + (-1)*main_add36_fixbits==0)    #same fractional bit
-objectiveFunction +=  + (1272.46)*main_add36_fixp
-objectiveFunction +=  + (3000)*main_add36_float
-objectiveFunction +=  + (6649.28)*main_add36_double
+objectiveFunction +=  + (127.246)*main_add36_fixp
+objectiveFunction +=  + (300)*main_add36_float
+objectiveFunction +=  + (664.928)*main_add36_double
 solver.Add( + (1)*main_add36_enob + (-1)*main_mean_enob_memphi_main_tmp1<=0)    #Enob propagation in sum first addend
 solver.Add( + (1)*main_add36_enob + (-1)*main_data_enob_memphi_main_tmp<=0)    #Enob propagation in sum second addend
 
@@ -275,8 +275,8 @@ C1_main_add36_CAST_store = solver.IntVar(0, 1, 'C1_main_add36_CAST_store')
 C2_main_add36_CAST_store = solver.IntVar(0, 1, 'C2_main_add36_CAST_store')
 solver.Add( + (1)*main_add36_fixbits + (-1)*main_add36_CAST_store_fixbits + (-10000)*C1_main_add36_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_add36_fixbits + (1)*main_add36_CAST_store_fixbits + (-10000)*C2_main_add36_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_add36_CAST_store
-objectiveFunction +=  + (500)*C2_main_add36_CAST_store
+objectiveFunction +=  + (50)*C1_main_add36_CAST_store
+objectiveFunction +=  + (50)*C2_main_add36_CAST_store
 C3_main_add36_CAST_store = solver.IntVar(0, 1, 'C3_main_add36_CAST_store')
 C4_main_add36_CAST_store = solver.IntVar(0, 1, 'C4_main_add36_CAST_store')
 C5_main_add36_CAST_store = solver.IntVar(0, 1, 'C5_main_add36_CAST_store')
@@ -284,17 +284,17 @@ C6_main_add36_CAST_store = solver.IntVar(0, 1, 'C6_main_add36_CAST_store')
 C7_main_add36_CAST_store = solver.IntVar(0, 1, 'C7_main_add36_CAST_store')
 C8_main_add36_CAST_store = solver.IntVar(0, 1, 'C8_main_add36_CAST_store')
 solver.Add( + (1)*main_add36_fixp + (1)*main_add36_CAST_store_float + (-1)*C3_main_add36_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_add36_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_add36_CAST_store
 solver.Add( + (1)*main_add36_float + (1)*main_add36_CAST_store_fixp + (-1)*C4_main_add36_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_add36_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_add36_CAST_store
 solver.Add( + (1)*main_add36_fixp + (1)*main_add36_CAST_store_double + (-1)*C5_main_add36_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_add36_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_add36_CAST_store
 solver.Add( + (1)*main_add36_double + (1)*main_add36_CAST_store_fixp + (-1)*C6_main_add36_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_add36_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_add36_CAST_store
 solver.Add( + (1)*main_add36_float + (1)*main_add36_CAST_store_double + (-1)*C7_main_add36_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_add36_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_add36_CAST_store
 solver.Add( + (1)*main_add36_double + (1)*main_add36_CAST_store_float + (-1)*C8_main_add36_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_add36_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_add36_CAST_store
 solver.Add( + (1)*main_mean_fixp + (-1)*main_add36_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_mean_float + (-1)*main_add36_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_mean_double + (-1)*main_add36_CAST_store_double==0)    #double equality
@@ -325,7 +325,7 @@ solver.Add( + (1)*main_conv40_enob + (-1)*main_conv40_fixbits + (10000)*main_con
 solver.Add( + (1)*main_conv40_enob + (10000)*main_conv40_float<=10023)    #Enob constraint for float
 solver.Add( + (1)*main_conv40_enob + (10000)*main_conv40_double<=10052)    #Enob constraint for double
 solver.Add( + (1)*main_conv40_fixbits + (-10000)*main_conv40_fixp>=-9981)    #Limit the lower number of frac bits20
-objectiveFunction +=  + (-20)*main_conv40_enob
+objectiveFunction +=  + (-1)*main_conv40_enob
 solver.Add( + (1)*main_conv40_fixp + (1)*main_conv40_float + (1)*main_conv40_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_conv40_fixbits + (-10000)*main_conv40_fixp<=0)    #If not fix, frac part to zero
 
@@ -353,8 +353,8 @@ C1_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C1_main_mean_CAST_div43')
 C2_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C2_main_mean_CAST_div43')
 solver.Add( + (1)*main_mean_fixbits + (-1)*main_mean_CAST_div43_fixbits + (-10000)*C1_main_mean_CAST_div43<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mean_fixbits + (1)*main_mean_CAST_div43_fixbits + (-10000)*C2_main_mean_CAST_div43<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mean_CAST_div43
-objectiveFunction +=  + (500)*C2_main_mean_CAST_div43
+objectiveFunction +=  + (50)*C1_main_mean_CAST_div43
+objectiveFunction +=  + (50)*C2_main_mean_CAST_div43
 C3_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C3_main_mean_CAST_div43')
 C4_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C4_main_mean_CAST_div43')
 C5_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C5_main_mean_CAST_div43')
@@ -362,17 +362,17 @@ C6_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C6_main_mean_CAST_div43')
 C7_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C7_main_mean_CAST_div43')
 C8_main_mean_CAST_div43 = solver.IntVar(0, 1, 'C8_main_mean_CAST_div43')
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_div43_float + (-1)*C3_main_mean_CAST_div43<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mean_CAST_div43
+objectiveFunction +=  + (312.613)*C3_main_mean_CAST_div43
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_div43_fixp + (-1)*C4_main_mean_CAST_div43<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mean_CAST_div43
+objectiveFunction +=  + (73.6232)*C4_main_mean_CAST_div43
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_div43_double + (-1)*C5_main_mean_CAST_div43<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mean_CAST_div43
+objectiveFunction +=  + (581.033)*C5_main_mean_CAST_div43
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_div43_fixp + (-1)*C6_main_mean_CAST_div43<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mean_CAST_div43
+objectiveFunction +=  + (796.087)*C6_main_mean_CAST_div43
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_div43_double + (-1)*C7_main_mean_CAST_div43<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mean_CAST_div43
+objectiveFunction +=  + (224.348)*C7_main_mean_CAST_div43
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_div43_float + (-1)*C8_main_mean_CAST_div43<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mean_CAST_div43
+objectiveFunction +=  + (265.217)*C8_main_mean_CAST_div43
 
 
 
@@ -387,8 +387,8 @@ C1_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C1_main_conv40_CAST_div43')
 C2_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C2_main_conv40_CAST_div43')
 solver.Add( + (1)*main_conv40_fixbits + (-1)*main_conv40_CAST_div43_fixbits + (-10000)*C1_main_conv40_CAST_div43<=0)    #Shift cost 1
 solver.Add( + (-1)*main_conv40_fixbits + (1)*main_conv40_CAST_div43_fixbits + (-10000)*C2_main_conv40_CAST_div43<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_conv40_CAST_div43
-objectiveFunction +=  + (500)*C2_main_conv40_CAST_div43
+objectiveFunction +=  + (50)*C1_main_conv40_CAST_div43
+objectiveFunction +=  + (50)*C2_main_conv40_CAST_div43
 C3_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C3_main_conv40_CAST_div43')
 C4_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C4_main_conv40_CAST_div43')
 C5_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C5_main_conv40_CAST_div43')
@@ -396,17 +396,17 @@ C6_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C6_main_conv40_CAST_div43')
 C7_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C7_main_conv40_CAST_div43')
 C8_main_conv40_CAST_div43 = solver.IntVar(0, 1, 'C8_main_conv40_CAST_div43')
 solver.Add( + (1)*main_conv40_fixp + (1)*main_conv40_CAST_div43_float + (-1)*C3_main_conv40_CAST_div43<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_conv40_CAST_div43
+objectiveFunction +=  + (312.613)*C3_main_conv40_CAST_div43
 solver.Add( + (1)*main_conv40_float + (1)*main_conv40_CAST_div43_fixp + (-1)*C4_main_conv40_CAST_div43<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_conv40_CAST_div43
+objectiveFunction +=  + (73.6232)*C4_main_conv40_CAST_div43
 solver.Add( + (1)*main_conv40_fixp + (1)*main_conv40_CAST_div43_double + (-1)*C5_main_conv40_CAST_div43<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_conv40_CAST_div43
+objectiveFunction +=  + (581.033)*C5_main_conv40_CAST_div43
 solver.Add( + (1)*main_conv40_double + (1)*main_conv40_CAST_div43_fixp + (-1)*C6_main_conv40_CAST_div43<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_conv40_CAST_div43
+objectiveFunction +=  + (796.087)*C6_main_conv40_CAST_div43
 solver.Add( + (1)*main_conv40_float + (1)*main_conv40_CAST_div43_double + (-1)*C7_main_conv40_CAST_div43<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_conv40_CAST_div43
+objectiveFunction +=  + (224.348)*C7_main_conv40_CAST_div43
 solver.Add( + (1)*main_conv40_double + (1)*main_conv40_CAST_div43_float + (-1)*C8_main_conv40_CAST_div43<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_conv40_CAST_div43
+objectiveFunction +=  + (265.217)*C8_main_conv40_CAST_div43
 
 
 
@@ -421,7 +421,7 @@ solver.Add( + (1)*main_div43_enob + (10000)*main_div43_float<=10149)    #Enob co
 solver.Add( + (1)*main_div43_enob + (10000)*main_div43_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_div43_fixbits + (-10000)*main_div43_fixp>=-9986)    #Limit the lower number of frac bits15
 solver.Add( + (1)*main_div43_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_div43_enob
+objectiveFunction +=  + (-1)*main_div43_enob
 solver.Add( + (1)*main_div43_fixp + (1)*main_div43_float + (1)*main_div43_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_div43_fixbits + (-10000)*main_div43_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_mean_CAST_div43_fixp + (-1)*main_conv40_CAST_div43_fixp==0)    #fix equality
@@ -430,9 +430,9 @@ solver.Add( + (1)*main_mean_CAST_div43_double + (-1)*main_conv40_CAST_div43_doub
 solver.Add( + (1)*main_mean_CAST_div43_fixp + (-1)*main_div43_fixp==0)    #fix equality
 solver.Add( + (1)*main_mean_CAST_div43_float + (-1)*main_div43_float==0)    #float equality
 solver.Add( + (1)*main_mean_CAST_div43_double + (-1)*main_div43_double==0)    #double equality
-objectiveFunction +=  + (1611.59)*main_div43_fixp
-objectiveFunction +=  + (6000)*main_div43_float
-objectiveFunction +=  + (12000)*main_div43_double
+objectiveFunction +=  + (161.159)*main_div43_fixp
+objectiveFunction +=  + (600)*main_div43_float
+objectiveFunction +=  + (1200)*main_div43_double
 main_main_div43_enob_1 = solver.IntVar(0, 1, 'main_main_div43_enob_1')
 main_main_div43_enob_2 = solver.IntVar(0, 1, 'main_main_div43_enob_2')
 solver.Add( + (1)*main_main_div43_enob_1 + (1)*main_main_div43_enob_2==1)    #Enob: one selected constraint
@@ -452,8 +452,8 @@ C1_main_div43_CAST_store = solver.IntVar(0, 1, 'C1_main_div43_CAST_store')
 C2_main_div43_CAST_store = solver.IntVar(0, 1, 'C2_main_div43_CAST_store')
 solver.Add( + (1)*main_div43_fixbits + (-1)*main_div43_CAST_store_fixbits + (-10000)*C1_main_div43_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_div43_fixbits + (1)*main_div43_CAST_store_fixbits + (-10000)*C2_main_div43_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_div43_CAST_store
-objectiveFunction +=  + (500)*C2_main_div43_CAST_store
+objectiveFunction +=  + (50)*C1_main_div43_CAST_store
+objectiveFunction +=  + (50)*C2_main_div43_CAST_store
 C3_main_div43_CAST_store = solver.IntVar(0, 1, 'C3_main_div43_CAST_store')
 C4_main_div43_CAST_store = solver.IntVar(0, 1, 'C4_main_div43_CAST_store')
 C5_main_div43_CAST_store = solver.IntVar(0, 1, 'C5_main_div43_CAST_store')
@@ -461,17 +461,17 @@ C6_main_div43_CAST_store = solver.IntVar(0, 1, 'C6_main_div43_CAST_store')
 C7_main_div43_CAST_store = solver.IntVar(0, 1, 'C7_main_div43_CAST_store')
 C8_main_div43_CAST_store = solver.IntVar(0, 1, 'C8_main_div43_CAST_store')
 solver.Add( + (1)*main_div43_fixp + (1)*main_div43_CAST_store_float + (-1)*C3_main_div43_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_div43_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_div43_CAST_store
 solver.Add( + (1)*main_div43_float + (1)*main_div43_CAST_store_fixp + (-1)*C4_main_div43_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_div43_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_div43_CAST_store
 solver.Add( + (1)*main_div43_fixp + (1)*main_div43_CAST_store_double + (-1)*C5_main_div43_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_div43_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_div43_CAST_store
 solver.Add( + (1)*main_div43_double + (1)*main_div43_CAST_store_fixp + (-1)*C6_main_div43_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_div43_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_div43_CAST_store
 solver.Add( + (1)*main_div43_float + (1)*main_div43_CAST_store_double + (-1)*C7_main_div43_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_div43_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_div43_CAST_store
 solver.Add( + (1)*main_div43_double + (1)*main_div43_CAST_store_float + (-1)*C8_main_div43_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_div43_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_div43_CAST_store
 solver.Add( + (1)*main_mean_fixp + (-1)*main_div43_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_mean_float + (-1)*main_div43_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_mean_double + (-1)*main_div43_CAST_store_double==0)    #double equality
@@ -498,8 +498,8 @@ C1_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C1_ConstantValue__1_CAST
 C2_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C2_ConstantValue__1_CAST_store_0')
 solver.Add( + (1)*ConstantValue__1_fixbits + (-1)*ConstantValue__1_CAST_store_0_fixbits + (-10000)*C1_ConstantValue__1_CAST_store_0<=0)    #Shift cost 1
 solver.Add( + (-1)*ConstantValue__1_fixbits + (1)*ConstantValue__1_CAST_store_0_fixbits + (-10000)*C2_ConstantValue__1_CAST_store_0<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_ConstantValue__1_CAST_store_0
-objectiveFunction +=  + (500)*C2_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (50)*C1_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (50)*C2_ConstantValue__1_CAST_store_0
 C3_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C3_ConstantValue__1_CAST_store_0')
 C4_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C4_ConstantValue__1_CAST_store_0')
 C5_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C5_ConstantValue__1_CAST_store_0')
@@ -507,17 +507,17 @@ C6_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C6_ConstantValue__1_CAST
 C7_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C7_ConstantValue__1_CAST_store_0')
 C8_ConstantValue__1_CAST_store_0 = solver.IntVar(0, 1, 'C8_ConstantValue__1_CAST_store_0')
 solver.Add( + (1)*ConstantValue__1_fixp + (1)*ConstantValue__1_CAST_store_0_float + (-1)*C3_ConstantValue__1_CAST_store_0<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (312.613)*C3_ConstantValue__1_CAST_store_0
 solver.Add( + (1)*ConstantValue__1_float + (1)*ConstantValue__1_CAST_store_0_fixp + (-1)*C4_ConstantValue__1_CAST_store_0<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (73.6232)*C4_ConstantValue__1_CAST_store_0
 solver.Add( + (1)*ConstantValue__1_fixp + (1)*ConstantValue__1_CAST_store_0_double + (-1)*C5_ConstantValue__1_CAST_store_0<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (581.033)*C5_ConstantValue__1_CAST_store_0
 solver.Add( + (1)*ConstantValue__1_double + (1)*ConstantValue__1_CAST_store_0_fixp + (-1)*C6_ConstantValue__1_CAST_store_0<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (796.087)*C6_ConstantValue__1_CAST_store_0
 solver.Add( + (1)*ConstantValue__1_float + (1)*ConstantValue__1_CAST_store_0_double + (-1)*C7_ConstantValue__1_CAST_store_0<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (224.348)*C7_ConstantValue__1_CAST_store_0
 solver.Add( + (1)*ConstantValue__1_double + (1)*ConstantValue__1_CAST_store_0_float + (-1)*C8_ConstantValue__1_CAST_store_0<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_ConstantValue__1_CAST_store_0
+objectiveFunction +=  + (265.217)*C8_ConstantValue__1_CAST_store_0
 solver.Add( + (1)*main_stddev_fixp + (-1)*ConstantValue__1_CAST_store_0_fixp==0)    #fix equality
 solver.Add( + (1)*main_stddev_float + (-1)*ConstantValue__1_CAST_store_0_float==0)    #float equality
 solver.Add( + (1)*main_stddev_double + (-1)*ConstantValue__1_CAST_store_0_double==0)    #double equality
@@ -556,8 +556,8 @@ C1_main_data_CAST_sub = solver.IntVar(0, 1, 'C1_main_data_CAST_sub')
 C2_main_data_CAST_sub = solver.IntVar(0, 1, 'C2_main_data_CAST_sub')
 solver.Add( + (1)*main_data_fixbits + (-1)*main_data_CAST_sub_fixbits + (-10000)*C1_main_data_CAST_sub<=0)    #Shift cost 1
 solver.Add( + (-1)*main_data_fixbits + (1)*main_data_CAST_sub_fixbits + (-10000)*C2_main_data_CAST_sub<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_data_CAST_sub
-objectiveFunction +=  + (500)*C2_main_data_CAST_sub
+objectiveFunction +=  + (50)*C1_main_data_CAST_sub
+objectiveFunction +=  + (50)*C2_main_data_CAST_sub
 C3_main_data_CAST_sub = solver.IntVar(0, 1, 'C3_main_data_CAST_sub')
 C4_main_data_CAST_sub = solver.IntVar(0, 1, 'C4_main_data_CAST_sub')
 C5_main_data_CAST_sub = solver.IntVar(0, 1, 'C5_main_data_CAST_sub')
@@ -565,17 +565,17 @@ C6_main_data_CAST_sub = solver.IntVar(0, 1, 'C6_main_data_CAST_sub')
 C7_main_data_CAST_sub = solver.IntVar(0, 1, 'C7_main_data_CAST_sub')
 C8_main_data_CAST_sub = solver.IntVar(0, 1, 'C8_main_data_CAST_sub')
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_sub_float + (-1)*C3_main_data_CAST_sub<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_data_CAST_sub
+objectiveFunction +=  + (312.613)*C3_main_data_CAST_sub
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_sub_fixp + (-1)*C4_main_data_CAST_sub<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_data_CAST_sub
+objectiveFunction +=  + (73.6232)*C4_main_data_CAST_sub
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_sub_double + (-1)*C5_main_data_CAST_sub<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_data_CAST_sub
+objectiveFunction +=  + (581.033)*C5_main_data_CAST_sub
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_sub_fixp + (-1)*C6_main_data_CAST_sub<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_data_CAST_sub
+objectiveFunction +=  + (796.087)*C6_main_data_CAST_sub
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_sub_double + (-1)*C7_main_data_CAST_sub<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_data_CAST_sub
+objectiveFunction +=  + (224.348)*C7_main_data_CAST_sub
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_sub_float + (-1)*C8_main_data_CAST_sub<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_data_CAST_sub
+objectiveFunction +=  + (265.217)*C8_main_data_CAST_sub
 
 
 
@@ -590,8 +590,8 @@ C1_main_mean_CAST_sub = solver.IntVar(0, 1, 'C1_main_mean_CAST_sub')
 C2_main_mean_CAST_sub = solver.IntVar(0, 1, 'C2_main_mean_CAST_sub')
 solver.Add( + (1)*main_mean_fixbits + (-1)*main_mean_CAST_sub_fixbits + (-10000)*C1_main_mean_CAST_sub<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mean_fixbits + (1)*main_mean_CAST_sub_fixbits + (-10000)*C2_main_mean_CAST_sub<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mean_CAST_sub
-objectiveFunction +=  + (500)*C2_main_mean_CAST_sub
+objectiveFunction +=  + (50)*C1_main_mean_CAST_sub
+objectiveFunction +=  + (50)*C2_main_mean_CAST_sub
 C3_main_mean_CAST_sub = solver.IntVar(0, 1, 'C3_main_mean_CAST_sub')
 C4_main_mean_CAST_sub = solver.IntVar(0, 1, 'C4_main_mean_CAST_sub')
 C5_main_mean_CAST_sub = solver.IntVar(0, 1, 'C5_main_mean_CAST_sub')
@@ -599,17 +599,17 @@ C6_main_mean_CAST_sub = solver.IntVar(0, 1, 'C6_main_mean_CAST_sub')
 C7_main_mean_CAST_sub = solver.IntVar(0, 1, 'C7_main_mean_CAST_sub')
 C8_main_mean_CAST_sub = solver.IntVar(0, 1, 'C8_main_mean_CAST_sub')
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_sub_float + (-1)*C3_main_mean_CAST_sub<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mean_CAST_sub
+objectiveFunction +=  + (312.613)*C3_main_mean_CAST_sub
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_sub_fixp + (-1)*C4_main_mean_CAST_sub<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mean_CAST_sub
+objectiveFunction +=  + (73.6232)*C4_main_mean_CAST_sub
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_sub_double + (-1)*C5_main_mean_CAST_sub<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mean_CAST_sub
+objectiveFunction +=  + (581.033)*C5_main_mean_CAST_sub
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_sub_fixp + (-1)*C6_main_mean_CAST_sub<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mean_CAST_sub
+objectiveFunction +=  + (796.087)*C6_main_mean_CAST_sub
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_sub_double + (-1)*C7_main_mean_CAST_sub<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mean_CAST_sub
+objectiveFunction +=  + (224.348)*C7_main_mean_CAST_sub
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_sub_float + (-1)*C8_main_mean_CAST_sub<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mean_CAST_sub
+objectiveFunction +=  + (265.217)*C8_main_mean_CAST_sub
 
 
 
@@ -624,7 +624,7 @@ solver.Add( + (1)*main_sub_enob + (10000)*main_sub_float<=10149)    #Enob constr
 solver.Add( + (1)*main_sub_enob + (10000)*main_sub_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_sub_fixbits + (-10000)*main_sub_fixp>=-9986)    #Limit the lower number of frac bits15
 solver.Add( + (1)*main_sub_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_sub_enob
+objectiveFunction +=  + (-1)*main_sub_enob
 solver.Add( + (1)*main_sub_fixp + (1)*main_sub_float + (1)*main_sub_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_sub_fixbits + (-10000)*main_sub_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_data_CAST_sub_fixp + (-1)*main_mean_CAST_sub_fixp==0)    #fix equality
@@ -635,9 +635,9 @@ solver.Add( + (1)*main_data_CAST_sub_fixp + (-1)*main_sub_fixp==0)    #fix equal
 solver.Add( + (1)*main_data_CAST_sub_float + (-1)*main_sub_float==0)    #float equality
 solver.Add( + (1)*main_data_CAST_sub_double + (-1)*main_sub_double==0)    #double equality
 solver.Add( + (1)*main_data_CAST_sub_fixbits + (-1)*main_sub_fixbits==0)    #same fractional bit
-objectiveFunction +=  + (1272.46)*main_sub_fixp
-objectiveFunction +=  + (3000)*main_sub_float
-objectiveFunction +=  + (6649.28)*main_sub_double
+objectiveFunction +=  + (127.246)*main_sub_fixp
+objectiveFunction +=  + (300)*main_sub_float
+objectiveFunction +=  + (664.928)*main_sub_double
 solver.Add( + (1)*main_sub_enob + (-1)*main_data_enob_memphi_main_tmp3<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*main_sub_enob + (-1)*main_mean_enob_memphi_main_tmp4<=0)    #Enob propagation in sub second addend
 
@@ -672,8 +672,8 @@ C1_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C1_main_data_CAST_sub69')
 C2_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C2_main_data_CAST_sub69')
 solver.Add( + (1)*main_data_fixbits + (-1)*main_data_CAST_sub69_fixbits + (-10000)*C1_main_data_CAST_sub69<=0)    #Shift cost 1
 solver.Add( + (-1)*main_data_fixbits + (1)*main_data_CAST_sub69_fixbits + (-10000)*C2_main_data_CAST_sub69<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_data_CAST_sub69
-objectiveFunction +=  + (500)*C2_main_data_CAST_sub69
+objectiveFunction +=  + (50)*C1_main_data_CAST_sub69
+objectiveFunction +=  + (50)*C2_main_data_CAST_sub69
 C3_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C3_main_data_CAST_sub69')
 C4_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C4_main_data_CAST_sub69')
 C5_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C5_main_data_CAST_sub69')
@@ -681,17 +681,17 @@ C6_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C6_main_data_CAST_sub69')
 C7_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C7_main_data_CAST_sub69')
 C8_main_data_CAST_sub69 = solver.IntVar(0, 1, 'C8_main_data_CAST_sub69')
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_sub69_float + (-1)*C3_main_data_CAST_sub69<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_data_CAST_sub69
+objectiveFunction +=  + (312.613)*C3_main_data_CAST_sub69
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_sub69_fixp + (-1)*C4_main_data_CAST_sub69<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_data_CAST_sub69
+objectiveFunction +=  + (73.6232)*C4_main_data_CAST_sub69
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_sub69_double + (-1)*C5_main_data_CAST_sub69<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_data_CAST_sub69
+objectiveFunction +=  + (581.033)*C5_main_data_CAST_sub69
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_sub69_fixp + (-1)*C6_main_data_CAST_sub69<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_data_CAST_sub69
+objectiveFunction +=  + (796.087)*C6_main_data_CAST_sub69
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_sub69_double + (-1)*C7_main_data_CAST_sub69<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_data_CAST_sub69
+objectiveFunction +=  + (224.348)*C7_main_data_CAST_sub69
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_sub69_float + (-1)*C8_main_data_CAST_sub69<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_data_CAST_sub69
+objectiveFunction +=  + (265.217)*C8_main_data_CAST_sub69
 
 
 
@@ -706,8 +706,8 @@ C1_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C1_main_mean_CAST_sub69')
 C2_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C2_main_mean_CAST_sub69')
 solver.Add( + (1)*main_mean_fixbits + (-1)*main_mean_CAST_sub69_fixbits + (-10000)*C1_main_mean_CAST_sub69<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mean_fixbits + (1)*main_mean_CAST_sub69_fixbits + (-10000)*C2_main_mean_CAST_sub69<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mean_CAST_sub69
-objectiveFunction +=  + (500)*C2_main_mean_CAST_sub69
+objectiveFunction +=  + (50)*C1_main_mean_CAST_sub69
+objectiveFunction +=  + (50)*C2_main_mean_CAST_sub69
 C3_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C3_main_mean_CAST_sub69')
 C4_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C4_main_mean_CAST_sub69')
 C5_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C5_main_mean_CAST_sub69')
@@ -715,17 +715,17 @@ C6_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C6_main_mean_CAST_sub69')
 C7_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C7_main_mean_CAST_sub69')
 C8_main_mean_CAST_sub69 = solver.IntVar(0, 1, 'C8_main_mean_CAST_sub69')
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_sub69_float + (-1)*C3_main_mean_CAST_sub69<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mean_CAST_sub69
+objectiveFunction +=  + (312.613)*C3_main_mean_CAST_sub69
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_sub69_fixp + (-1)*C4_main_mean_CAST_sub69<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mean_CAST_sub69
+objectiveFunction +=  + (73.6232)*C4_main_mean_CAST_sub69
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_sub69_double + (-1)*C5_main_mean_CAST_sub69<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mean_CAST_sub69
+objectiveFunction +=  + (581.033)*C5_main_mean_CAST_sub69
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_sub69_fixp + (-1)*C6_main_mean_CAST_sub69<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mean_CAST_sub69
+objectiveFunction +=  + (796.087)*C6_main_mean_CAST_sub69
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_sub69_double + (-1)*C7_main_mean_CAST_sub69<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mean_CAST_sub69
+objectiveFunction +=  + (224.348)*C7_main_mean_CAST_sub69
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_sub69_float + (-1)*C8_main_mean_CAST_sub69<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mean_CAST_sub69
+objectiveFunction +=  + (265.217)*C8_main_mean_CAST_sub69
 
 
 
@@ -740,7 +740,7 @@ solver.Add( + (1)*main_sub69_enob + (10000)*main_sub69_float<=10149)    #Enob co
 solver.Add( + (1)*main_sub69_enob + (10000)*main_sub69_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_sub69_fixbits + (-10000)*main_sub69_fixp>=-9986)    #Limit the lower number of frac bits15
 solver.Add( + (1)*main_sub69_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_sub69_enob
+objectiveFunction +=  + (-1)*main_sub69_enob
 solver.Add( + (1)*main_sub69_fixp + (1)*main_sub69_float + (1)*main_sub69_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_sub69_fixbits + (-10000)*main_sub69_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_data_CAST_sub69_fixp + (-1)*main_mean_CAST_sub69_fixp==0)    #fix equality
@@ -751,9 +751,9 @@ solver.Add( + (1)*main_data_CAST_sub69_fixp + (-1)*main_sub69_fixp==0)    #fix e
 solver.Add( + (1)*main_data_CAST_sub69_float + (-1)*main_sub69_float==0)    #float equality
 solver.Add( + (1)*main_data_CAST_sub69_double + (-1)*main_sub69_double==0)    #double equality
 solver.Add( + (1)*main_data_CAST_sub69_fixbits + (-1)*main_sub69_fixbits==0)    #same fractional bit
-objectiveFunction +=  + (1272.46)*main_sub69_fixp
-objectiveFunction +=  + (3000)*main_sub69_float
-objectiveFunction +=  + (6649.28)*main_sub69_double
+objectiveFunction +=  + (127.246)*main_sub69_fixp
+objectiveFunction +=  + (300)*main_sub69_float
+objectiveFunction +=  + (664.928)*main_sub69_double
 solver.Add( + (1)*main_sub69_enob + (-1)*main_data_enob_memphi_main_tmp5<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*main_sub69_enob + (-1)*main_mean_enob_memphi_main_tmp6<=0)    #Enob propagation in sub second addend
 
@@ -770,8 +770,8 @@ C1_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C1_main_sub_CAST_mul70')
 C2_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C2_main_sub_CAST_mul70')
 solver.Add( + (1)*main_sub_fixbits + (-1)*main_sub_CAST_mul70_fixbits + (-10000)*C1_main_sub_CAST_mul70<=0)    #Shift cost 1
 solver.Add( + (-1)*main_sub_fixbits + (1)*main_sub_CAST_mul70_fixbits + (-10000)*C2_main_sub_CAST_mul70<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_sub_CAST_mul70
-objectiveFunction +=  + (500)*C2_main_sub_CAST_mul70
+objectiveFunction +=  + (50)*C1_main_sub_CAST_mul70
+objectiveFunction +=  + (50)*C2_main_sub_CAST_mul70
 C3_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C3_main_sub_CAST_mul70')
 C4_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C4_main_sub_CAST_mul70')
 C5_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C5_main_sub_CAST_mul70')
@@ -779,17 +779,17 @@ C6_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C6_main_sub_CAST_mul70')
 C7_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C7_main_sub_CAST_mul70')
 C8_main_sub_CAST_mul70 = solver.IntVar(0, 1, 'C8_main_sub_CAST_mul70')
 solver.Add( + (1)*main_sub_fixp + (1)*main_sub_CAST_mul70_float + (-1)*C3_main_sub_CAST_mul70<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_sub_CAST_mul70
+objectiveFunction +=  + (312.613)*C3_main_sub_CAST_mul70
 solver.Add( + (1)*main_sub_float + (1)*main_sub_CAST_mul70_fixp + (-1)*C4_main_sub_CAST_mul70<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_sub_CAST_mul70
+objectiveFunction +=  + (73.6232)*C4_main_sub_CAST_mul70
 solver.Add( + (1)*main_sub_fixp + (1)*main_sub_CAST_mul70_double + (-1)*C5_main_sub_CAST_mul70<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_sub_CAST_mul70
+objectiveFunction +=  + (581.033)*C5_main_sub_CAST_mul70
 solver.Add( + (1)*main_sub_double + (1)*main_sub_CAST_mul70_fixp + (-1)*C6_main_sub_CAST_mul70<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_sub_CAST_mul70
+objectiveFunction +=  + (796.087)*C6_main_sub_CAST_mul70
 solver.Add( + (1)*main_sub_float + (1)*main_sub_CAST_mul70_double + (-1)*C7_main_sub_CAST_mul70<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_sub_CAST_mul70
+objectiveFunction +=  + (224.348)*C7_main_sub_CAST_mul70
 solver.Add( + (1)*main_sub_double + (1)*main_sub_CAST_mul70_float + (-1)*C8_main_sub_CAST_mul70<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_sub_CAST_mul70
+objectiveFunction +=  + (265.217)*C8_main_sub_CAST_mul70
 
 
 
@@ -804,8 +804,8 @@ C1_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C1_main_sub69_CAST_mul70')
 C2_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C2_main_sub69_CAST_mul70')
 solver.Add( + (1)*main_sub69_fixbits + (-1)*main_sub69_CAST_mul70_fixbits + (-10000)*C1_main_sub69_CAST_mul70<=0)    #Shift cost 1
 solver.Add( + (-1)*main_sub69_fixbits + (1)*main_sub69_CAST_mul70_fixbits + (-10000)*C2_main_sub69_CAST_mul70<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_sub69_CAST_mul70
-objectiveFunction +=  + (500)*C2_main_sub69_CAST_mul70
+objectiveFunction +=  + (50)*C1_main_sub69_CAST_mul70
+objectiveFunction +=  + (50)*C2_main_sub69_CAST_mul70
 C3_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C3_main_sub69_CAST_mul70')
 C4_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C4_main_sub69_CAST_mul70')
 C5_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C5_main_sub69_CAST_mul70')
@@ -813,17 +813,17 @@ C6_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C6_main_sub69_CAST_mul70')
 C7_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C7_main_sub69_CAST_mul70')
 C8_main_sub69_CAST_mul70 = solver.IntVar(0, 1, 'C8_main_sub69_CAST_mul70')
 solver.Add( + (1)*main_sub69_fixp + (1)*main_sub69_CAST_mul70_float + (-1)*C3_main_sub69_CAST_mul70<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_sub69_CAST_mul70
+objectiveFunction +=  + (312.613)*C3_main_sub69_CAST_mul70
 solver.Add( + (1)*main_sub69_float + (1)*main_sub69_CAST_mul70_fixp + (-1)*C4_main_sub69_CAST_mul70<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_sub69_CAST_mul70
+objectiveFunction +=  + (73.6232)*C4_main_sub69_CAST_mul70
 solver.Add( + (1)*main_sub69_fixp + (1)*main_sub69_CAST_mul70_double + (-1)*C5_main_sub69_CAST_mul70<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_sub69_CAST_mul70
+objectiveFunction +=  + (581.033)*C5_main_sub69_CAST_mul70
 solver.Add( + (1)*main_sub69_double + (1)*main_sub69_CAST_mul70_fixp + (-1)*C6_main_sub69_CAST_mul70<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_sub69_CAST_mul70
+objectiveFunction +=  + (796.087)*C6_main_sub69_CAST_mul70
 solver.Add( + (1)*main_sub69_float + (1)*main_sub69_CAST_mul70_double + (-1)*C7_main_sub69_CAST_mul70<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_sub69_CAST_mul70
+objectiveFunction +=  + (224.348)*C7_main_sub69_CAST_mul70
 solver.Add( + (1)*main_sub69_double + (1)*main_sub69_CAST_mul70_float + (-1)*C8_main_sub69_CAST_mul70<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_sub69_CAST_mul70
+objectiveFunction +=  + (265.217)*C8_main_sub69_CAST_mul70
 
 
 
@@ -838,7 +838,7 @@ solver.Add( + (1)*main_mul70_enob + (10000)*main_mul70_float<=10149)    #Enob co
 solver.Add( + (1)*main_mul70_enob + (10000)*main_mul70_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_mul70_fixbits + (-10000)*main_mul70_fixp>=-9986)    #Limit the lower number of frac bits15
 solver.Add( + (1)*main_mul70_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_mul70_enob
+objectiveFunction +=  + (-1)*main_mul70_enob
 solver.Add( + (1)*main_mul70_fixp + (1)*main_mul70_float + (1)*main_mul70_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_mul70_fixbits + (-10000)*main_mul70_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_sub_CAST_mul70_fixp + (-1)*main_sub69_CAST_mul70_fixp==0)    #fix equality
@@ -847,9 +847,9 @@ solver.Add( + (1)*main_sub_CAST_mul70_double + (-1)*main_sub69_CAST_mul70_double
 solver.Add( + (1)*main_sub_CAST_mul70_fixp + (-1)*main_mul70_fixp==0)    #fix equality
 solver.Add( + (1)*main_sub_CAST_mul70_float + (-1)*main_mul70_float==0)    #float equality
 solver.Add( + (1)*main_sub_CAST_mul70_double + (-1)*main_mul70_double==0)    #double equality
-objectiveFunction +=  + (1652.17)*main_mul70_fixp
-objectiveFunction +=  + (6000)*main_mul70_float
-objectiveFunction +=  + (12255.1)*main_mul70_double
+objectiveFunction +=  + (165.217)*main_mul70_fixp
+objectiveFunction +=  + (600)*main_mul70_float
+objectiveFunction +=  + (1225.51)*main_mul70_double
 main_main_mul70_enob_1 = solver.IntVar(0, 1, 'main_main_mul70_enob_1')
 main_main_mul70_enob_2 = solver.IntVar(0, 1, 'main_main_mul70_enob_2')
 solver.Add( + (1)*main_main_mul70_enob_1 + (1)*main_main_mul70_enob_2==1)    #Enob: one selected constraint
@@ -875,8 +875,8 @@ C1_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C1_main_stddev_CAST_add73')
 C2_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C2_main_stddev_CAST_add73')
 solver.Add( + (1)*main_stddev_fixbits + (-1)*main_stddev_CAST_add73_fixbits + (-10000)*C1_main_stddev_CAST_add73<=0)    #Shift cost 1
 solver.Add( + (-1)*main_stddev_fixbits + (1)*main_stddev_CAST_add73_fixbits + (-10000)*C2_main_stddev_CAST_add73<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_stddev_CAST_add73
-objectiveFunction +=  + (500)*C2_main_stddev_CAST_add73
+objectiveFunction +=  + (50)*C1_main_stddev_CAST_add73
+objectiveFunction +=  + (50)*C2_main_stddev_CAST_add73
 C3_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C3_main_stddev_CAST_add73')
 C4_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C4_main_stddev_CAST_add73')
 C5_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C5_main_stddev_CAST_add73')
@@ -884,17 +884,17 @@ C6_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C6_main_stddev_CAST_add73')
 C7_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C7_main_stddev_CAST_add73')
 C8_main_stddev_CAST_add73 = solver.IntVar(0, 1, 'C8_main_stddev_CAST_add73')
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_add73_float + (-1)*C3_main_stddev_CAST_add73<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_stddev_CAST_add73
+objectiveFunction +=  + (312.613)*C3_main_stddev_CAST_add73
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_add73_fixp + (-1)*C4_main_stddev_CAST_add73<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_stddev_CAST_add73
+objectiveFunction +=  + (73.6232)*C4_main_stddev_CAST_add73
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_add73_double + (-1)*C5_main_stddev_CAST_add73<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_stddev_CAST_add73
+objectiveFunction +=  + (581.033)*C5_main_stddev_CAST_add73
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_add73_fixp + (-1)*C6_main_stddev_CAST_add73<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_stddev_CAST_add73
+objectiveFunction +=  + (796.087)*C6_main_stddev_CAST_add73
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_add73_double + (-1)*C7_main_stddev_CAST_add73<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_stddev_CAST_add73
+objectiveFunction +=  + (224.348)*C7_main_stddev_CAST_add73
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_add73_float + (-1)*C8_main_stddev_CAST_add73<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_stddev_CAST_add73
+objectiveFunction +=  + (265.217)*C8_main_stddev_CAST_add73
 
 
 
@@ -909,8 +909,8 @@ C1_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C1_main_mul70_CAST_add73')
 C2_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C2_main_mul70_CAST_add73')
 solver.Add( + (1)*main_mul70_fixbits + (-1)*main_mul70_CAST_add73_fixbits + (-10000)*C1_main_mul70_CAST_add73<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mul70_fixbits + (1)*main_mul70_CAST_add73_fixbits + (-10000)*C2_main_mul70_CAST_add73<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mul70_CAST_add73
-objectiveFunction +=  + (500)*C2_main_mul70_CAST_add73
+objectiveFunction +=  + (50)*C1_main_mul70_CAST_add73
+objectiveFunction +=  + (50)*C2_main_mul70_CAST_add73
 C3_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C3_main_mul70_CAST_add73')
 C4_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C4_main_mul70_CAST_add73')
 C5_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C5_main_mul70_CAST_add73')
@@ -918,17 +918,17 @@ C6_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C6_main_mul70_CAST_add73')
 C7_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C7_main_mul70_CAST_add73')
 C8_main_mul70_CAST_add73 = solver.IntVar(0, 1, 'C8_main_mul70_CAST_add73')
 solver.Add( + (1)*main_mul70_fixp + (1)*main_mul70_CAST_add73_float + (-1)*C3_main_mul70_CAST_add73<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mul70_CAST_add73
+objectiveFunction +=  + (312.613)*C3_main_mul70_CAST_add73
 solver.Add( + (1)*main_mul70_float + (1)*main_mul70_CAST_add73_fixp + (-1)*C4_main_mul70_CAST_add73<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mul70_CAST_add73
+objectiveFunction +=  + (73.6232)*C4_main_mul70_CAST_add73
 solver.Add( + (1)*main_mul70_fixp + (1)*main_mul70_CAST_add73_double + (-1)*C5_main_mul70_CAST_add73<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mul70_CAST_add73
+objectiveFunction +=  + (581.033)*C5_main_mul70_CAST_add73
 solver.Add( + (1)*main_mul70_double + (1)*main_mul70_CAST_add73_fixp + (-1)*C6_main_mul70_CAST_add73<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mul70_CAST_add73
+objectiveFunction +=  + (796.087)*C6_main_mul70_CAST_add73
 solver.Add( + (1)*main_mul70_float + (1)*main_mul70_CAST_add73_double + (-1)*C7_main_mul70_CAST_add73<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mul70_CAST_add73
+objectiveFunction +=  + (224.348)*C7_main_mul70_CAST_add73
 solver.Add( + (1)*main_mul70_double + (1)*main_mul70_CAST_add73_float + (-1)*C8_main_mul70_CAST_add73<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mul70_CAST_add73
+objectiveFunction +=  + (265.217)*C8_main_mul70_CAST_add73
 
 
 
@@ -943,7 +943,7 @@ solver.Add( + (1)*main_add73_enob + (10000)*main_add73_float<=10149)    #Enob co
 solver.Add( + (1)*main_add73_enob + (10000)*main_add73_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_add73_fixbits + (-10000)*main_add73_fixp>=-9983)    #Limit the lower number of frac bits18
 solver.Add( + (1)*main_add73_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_add73_enob
+objectiveFunction +=  + (-1)*main_add73_enob
 solver.Add( + (1)*main_add73_fixp + (1)*main_add73_float + (1)*main_add73_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_add73_fixbits + (-10000)*main_add73_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_stddev_CAST_add73_fixp + (-1)*main_mul70_CAST_add73_fixp==0)    #fix equality
@@ -954,9 +954,9 @@ solver.Add( + (1)*main_stddev_CAST_add73_fixp + (-1)*main_add73_fixp==0)    #fix
 solver.Add( + (1)*main_stddev_CAST_add73_float + (-1)*main_add73_float==0)    #float equality
 solver.Add( + (1)*main_stddev_CAST_add73_double + (-1)*main_add73_double==0)    #double equality
 solver.Add( + (1)*main_stddev_CAST_add73_fixbits + (-1)*main_add73_fixbits==0)    #same fractional bit
-objectiveFunction +=  + (1272.46)*main_add73_fixp
-objectiveFunction +=  + (3000)*main_add73_float
-objectiveFunction +=  + (6649.28)*main_add73_double
+objectiveFunction +=  + (127.246)*main_add73_fixp
+objectiveFunction +=  + (300)*main_add73_float
+objectiveFunction +=  + (664.928)*main_add73_double
 solver.Add( + (1)*main_add73_enob + (-1)*main_stddev_enob_memphi_main_tmp7<=0)    #Enob propagation in sum first addend
 solver.Add( + (1)*main_add73_enob + (-1)*main_mul70_enob<=0)    #Enob propagation in sum second addend
 
@@ -973,8 +973,8 @@ C1_main_add73_CAST_store = solver.IntVar(0, 1, 'C1_main_add73_CAST_store')
 C2_main_add73_CAST_store = solver.IntVar(0, 1, 'C2_main_add73_CAST_store')
 solver.Add( + (1)*main_add73_fixbits + (-1)*main_add73_CAST_store_fixbits + (-10000)*C1_main_add73_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_add73_fixbits + (1)*main_add73_CAST_store_fixbits + (-10000)*C2_main_add73_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_add73_CAST_store
-objectiveFunction +=  + (500)*C2_main_add73_CAST_store
+objectiveFunction +=  + (50)*C1_main_add73_CAST_store
+objectiveFunction +=  + (50)*C2_main_add73_CAST_store
 C3_main_add73_CAST_store = solver.IntVar(0, 1, 'C3_main_add73_CAST_store')
 C4_main_add73_CAST_store = solver.IntVar(0, 1, 'C4_main_add73_CAST_store')
 C5_main_add73_CAST_store = solver.IntVar(0, 1, 'C5_main_add73_CAST_store')
@@ -982,17 +982,17 @@ C6_main_add73_CAST_store = solver.IntVar(0, 1, 'C6_main_add73_CAST_store')
 C7_main_add73_CAST_store = solver.IntVar(0, 1, 'C7_main_add73_CAST_store')
 C8_main_add73_CAST_store = solver.IntVar(0, 1, 'C8_main_add73_CAST_store')
 solver.Add( + (1)*main_add73_fixp + (1)*main_add73_CAST_store_float + (-1)*C3_main_add73_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_add73_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_add73_CAST_store
 solver.Add( + (1)*main_add73_float + (1)*main_add73_CAST_store_fixp + (-1)*C4_main_add73_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_add73_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_add73_CAST_store
 solver.Add( + (1)*main_add73_fixp + (1)*main_add73_CAST_store_double + (-1)*C5_main_add73_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_add73_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_add73_CAST_store
 solver.Add( + (1)*main_add73_double + (1)*main_add73_CAST_store_fixp + (-1)*C6_main_add73_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_add73_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_add73_CAST_store
 solver.Add( + (1)*main_add73_float + (1)*main_add73_CAST_store_double + (-1)*C7_main_add73_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_add73_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_add73_CAST_store
 solver.Add( + (1)*main_add73_double + (1)*main_add73_CAST_store_float + (-1)*C8_main_add73_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_add73_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_add73_CAST_store
 solver.Add( + (1)*main_stddev_fixp + (-1)*main_add73_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_stddev_float + (-1)*main_add73_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_stddev_double + (-1)*main_add73_CAST_store_double==0)    #double equality
@@ -1023,7 +1023,7 @@ solver.Add( + (1)*main_conv77_enob + (-1)*main_conv77_fixbits + (10000)*main_con
 solver.Add( + (1)*main_conv77_enob + (10000)*main_conv77_float<=10023)    #Enob constraint for float
 solver.Add( + (1)*main_conv77_enob + (10000)*main_conv77_double<=10052)    #Enob constraint for double
 solver.Add( + (1)*main_conv77_fixbits + (-10000)*main_conv77_fixp>=-9981)    #Limit the lower number of frac bits20
-objectiveFunction +=  + (-20)*main_conv77_enob
+objectiveFunction +=  + (-1)*main_conv77_enob
 solver.Add( + (1)*main_conv77_fixp + (1)*main_conv77_float + (1)*main_conv77_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_conv77_fixbits + (-10000)*main_conv77_fixp<=0)    #If not fix, frac part to zero
 
@@ -1051,8 +1051,8 @@ C1_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C1_main_stddev_CAST_div80')
 C2_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C2_main_stddev_CAST_div80')
 solver.Add( + (1)*main_stddev_fixbits + (-1)*main_stddev_CAST_div80_fixbits + (-10000)*C1_main_stddev_CAST_div80<=0)    #Shift cost 1
 solver.Add( + (-1)*main_stddev_fixbits + (1)*main_stddev_CAST_div80_fixbits + (-10000)*C2_main_stddev_CAST_div80<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_stddev_CAST_div80
-objectiveFunction +=  + (500)*C2_main_stddev_CAST_div80
+objectiveFunction +=  + (50)*C1_main_stddev_CAST_div80
+objectiveFunction +=  + (50)*C2_main_stddev_CAST_div80
 C3_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C3_main_stddev_CAST_div80')
 C4_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C4_main_stddev_CAST_div80')
 C5_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C5_main_stddev_CAST_div80')
@@ -1060,17 +1060,17 @@ C6_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C6_main_stddev_CAST_div80')
 C7_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C7_main_stddev_CAST_div80')
 C8_main_stddev_CAST_div80 = solver.IntVar(0, 1, 'C8_main_stddev_CAST_div80')
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_div80_float + (-1)*C3_main_stddev_CAST_div80<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_stddev_CAST_div80
+objectiveFunction +=  + (312.613)*C3_main_stddev_CAST_div80
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_div80_fixp + (-1)*C4_main_stddev_CAST_div80<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_stddev_CAST_div80
+objectiveFunction +=  + (73.6232)*C4_main_stddev_CAST_div80
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_div80_double + (-1)*C5_main_stddev_CAST_div80<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_stddev_CAST_div80
+objectiveFunction +=  + (581.033)*C5_main_stddev_CAST_div80
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_div80_fixp + (-1)*C6_main_stddev_CAST_div80<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_stddev_CAST_div80
+objectiveFunction +=  + (796.087)*C6_main_stddev_CAST_div80
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_div80_double + (-1)*C7_main_stddev_CAST_div80<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_stddev_CAST_div80
+objectiveFunction +=  + (224.348)*C7_main_stddev_CAST_div80
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_div80_float + (-1)*C8_main_stddev_CAST_div80<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_stddev_CAST_div80
+objectiveFunction +=  + (265.217)*C8_main_stddev_CAST_div80
 
 
 
@@ -1085,8 +1085,8 @@ C1_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C1_main_conv77_CAST_div80')
 C2_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C2_main_conv77_CAST_div80')
 solver.Add( + (1)*main_conv77_fixbits + (-1)*main_conv77_CAST_div80_fixbits + (-10000)*C1_main_conv77_CAST_div80<=0)    #Shift cost 1
 solver.Add( + (-1)*main_conv77_fixbits + (1)*main_conv77_CAST_div80_fixbits + (-10000)*C2_main_conv77_CAST_div80<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_conv77_CAST_div80
-objectiveFunction +=  + (500)*C2_main_conv77_CAST_div80
+objectiveFunction +=  + (50)*C1_main_conv77_CAST_div80
+objectiveFunction +=  + (50)*C2_main_conv77_CAST_div80
 C3_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C3_main_conv77_CAST_div80')
 C4_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C4_main_conv77_CAST_div80')
 C5_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C5_main_conv77_CAST_div80')
@@ -1094,17 +1094,17 @@ C6_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C6_main_conv77_CAST_div80')
 C7_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C7_main_conv77_CAST_div80')
 C8_main_conv77_CAST_div80 = solver.IntVar(0, 1, 'C8_main_conv77_CAST_div80')
 solver.Add( + (1)*main_conv77_fixp + (1)*main_conv77_CAST_div80_float + (-1)*C3_main_conv77_CAST_div80<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_conv77_CAST_div80
+objectiveFunction +=  + (312.613)*C3_main_conv77_CAST_div80
 solver.Add( + (1)*main_conv77_float + (1)*main_conv77_CAST_div80_fixp + (-1)*C4_main_conv77_CAST_div80<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_conv77_CAST_div80
+objectiveFunction +=  + (73.6232)*C4_main_conv77_CAST_div80
 solver.Add( + (1)*main_conv77_fixp + (1)*main_conv77_CAST_div80_double + (-1)*C5_main_conv77_CAST_div80<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_conv77_CAST_div80
+objectiveFunction +=  + (581.033)*C5_main_conv77_CAST_div80
 solver.Add( + (1)*main_conv77_double + (1)*main_conv77_CAST_div80_fixp + (-1)*C6_main_conv77_CAST_div80<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_conv77_CAST_div80
+objectiveFunction +=  + (796.087)*C6_main_conv77_CAST_div80
 solver.Add( + (1)*main_conv77_float + (1)*main_conv77_CAST_div80_double + (-1)*C7_main_conv77_CAST_div80<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_conv77_CAST_div80
+objectiveFunction +=  + (224.348)*C7_main_conv77_CAST_div80
 solver.Add( + (1)*main_conv77_double + (1)*main_conv77_CAST_div80_float + (-1)*C8_main_conv77_CAST_div80<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_conv77_CAST_div80
+objectiveFunction +=  + (265.217)*C8_main_conv77_CAST_div80
 
 
 
@@ -1119,7 +1119,7 @@ solver.Add( + (1)*main_div80_enob + (10000)*main_div80_float<=10149)    #Enob co
 solver.Add( + (1)*main_div80_enob + (10000)*main_div80_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_div80_fixbits + (-10000)*main_div80_fixp>=-9983)    #Limit the lower number of frac bits18
 solver.Add( + (1)*main_div80_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_div80_enob
+objectiveFunction +=  + (-1)*main_div80_enob
 solver.Add( + (1)*main_div80_fixp + (1)*main_div80_float + (1)*main_div80_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_div80_fixbits + (-10000)*main_div80_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_stddev_CAST_div80_fixp + (-1)*main_conv77_CAST_div80_fixp==0)    #fix equality
@@ -1128,9 +1128,9 @@ solver.Add( + (1)*main_stddev_CAST_div80_double + (-1)*main_conv77_CAST_div80_do
 solver.Add( + (1)*main_stddev_CAST_div80_fixp + (-1)*main_div80_fixp==0)    #fix equality
 solver.Add( + (1)*main_stddev_CAST_div80_float + (-1)*main_div80_float==0)    #float equality
 solver.Add( + (1)*main_stddev_CAST_div80_double + (-1)*main_div80_double==0)    #double equality
-objectiveFunction +=  + (1611.59)*main_div80_fixp
-objectiveFunction +=  + (6000)*main_div80_float
-objectiveFunction +=  + (12000)*main_div80_double
+objectiveFunction +=  + (161.159)*main_div80_fixp
+objectiveFunction +=  + (600)*main_div80_float
+objectiveFunction +=  + (1200)*main_div80_double
 main_main_div80_enob_1 = solver.IntVar(0, 1, 'main_main_div80_enob_1')
 main_main_div80_enob_2 = solver.IntVar(0, 1, 'main_main_div80_enob_2')
 solver.Add( + (1)*main_main_div80_enob_1 + (1)*main_main_div80_enob_2==1)    #Enob: one selected constraint
@@ -1150,8 +1150,8 @@ C1_main_div80_CAST_store = solver.IntVar(0, 1, 'C1_main_div80_CAST_store')
 C2_main_div80_CAST_store = solver.IntVar(0, 1, 'C2_main_div80_CAST_store')
 solver.Add( + (1)*main_div80_fixbits + (-1)*main_div80_CAST_store_fixbits + (-10000)*C1_main_div80_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_div80_fixbits + (1)*main_div80_CAST_store_fixbits + (-10000)*C2_main_div80_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_div80_CAST_store
-objectiveFunction +=  + (500)*C2_main_div80_CAST_store
+objectiveFunction +=  + (50)*C1_main_div80_CAST_store
+objectiveFunction +=  + (50)*C2_main_div80_CAST_store
 C3_main_div80_CAST_store = solver.IntVar(0, 1, 'C3_main_div80_CAST_store')
 C4_main_div80_CAST_store = solver.IntVar(0, 1, 'C4_main_div80_CAST_store')
 C5_main_div80_CAST_store = solver.IntVar(0, 1, 'C5_main_div80_CAST_store')
@@ -1159,17 +1159,17 @@ C6_main_div80_CAST_store = solver.IntVar(0, 1, 'C6_main_div80_CAST_store')
 C7_main_div80_CAST_store = solver.IntVar(0, 1, 'C7_main_div80_CAST_store')
 C8_main_div80_CAST_store = solver.IntVar(0, 1, 'C8_main_div80_CAST_store')
 solver.Add( + (1)*main_div80_fixp + (1)*main_div80_CAST_store_float + (-1)*C3_main_div80_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_div80_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_div80_CAST_store
 solver.Add( + (1)*main_div80_float + (1)*main_div80_CAST_store_fixp + (-1)*C4_main_div80_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_div80_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_div80_CAST_store
 solver.Add( + (1)*main_div80_fixp + (1)*main_div80_CAST_store_double + (-1)*C5_main_div80_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_div80_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_div80_CAST_store
 solver.Add( + (1)*main_div80_double + (1)*main_div80_CAST_store_fixp + (-1)*C6_main_div80_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_div80_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_div80_CAST_store
 solver.Add( + (1)*main_div80_float + (1)*main_div80_CAST_store_double + (-1)*C7_main_div80_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_div80_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_div80_CAST_store
 solver.Add( + (1)*main_div80_double + (1)*main_div80_CAST_store_float + (-1)*C8_main_div80_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_div80_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_div80_CAST_store
 solver.Add( + (1)*main_stddev_fixp + (-1)*main_div80_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_stddev_float + (-1)*main_div80_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_stddev_double + (-1)*main_div80_CAST_store_double==0)    #double equality
@@ -1207,7 +1207,7 @@ solver.Add( + (1)*main_call_enob + (10000)*main_call_float<=10149)    #Enob cons
 solver.Add( + (1)*main_call_enob + (10000)*main_call_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_call_fixbits + (-10000)*main_call_fixp>=-9983)    #Limit the lower number of frac bits18
 solver.Add( + (1)*main_call_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_call_enob
+objectiveFunction +=  + (-1)*main_call_enob
 solver.Add( + (1)*main_call_fixp + (1)*main_call_float + (1)*main_call_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_call_fixbits + (-10000)*main_call_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_call_double==1)    #Type constraint for return value
@@ -1225,8 +1225,8 @@ C1_main_stddev_CAST_call = solver.IntVar(0, 1, 'C1_main_stddev_CAST_call')
 C2_main_stddev_CAST_call = solver.IntVar(0, 1, 'C2_main_stddev_CAST_call')
 solver.Add( + (1)*main_stddev_fixbits + (-1)*main_stddev_CAST_call_fixbits + (-10000)*C1_main_stddev_CAST_call<=0)    #Shift cost 1
 solver.Add( + (-1)*main_stddev_fixbits + (1)*main_stddev_CAST_call_fixbits + (-10000)*C2_main_stddev_CAST_call<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_stddev_CAST_call
-objectiveFunction +=  + (500)*C2_main_stddev_CAST_call
+objectiveFunction +=  + (50)*C1_main_stddev_CAST_call
+objectiveFunction +=  + (50)*C2_main_stddev_CAST_call
 C3_main_stddev_CAST_call = solver.IntVar(0, 1, 'C3_main_stddev_CAST_call')
 C4_main_stddev_CAST_call = solver.IntVar(0, 1, 'C4_main_stddev_CAST_call')
 C5_main_stddev_CAST_call = solver.IntVar(0, 1, 'C5_main_stddev_CAST_call')
@@ -1234,17 +1234,17 @@ C6_main_stddev_CAST_call = solver.IntVar(0, 1, 'C6_main_stddev_CAST_call')
 C7_main_stddev_CAST_call = solver.IntVar(0, 1, 'C7_main_stddev_CAST_call')
 C8_main_stddev_CAST_call = solver.IntVar(0, 1, 'C8_main_stddev_CAST_call')
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_call_float + (-1)*C3_main_stddev_CAST_call<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_stddev_CAST_call
+objectiveFunction +=  + (312.613)*C3_main_stddev_CAST_call
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_call_fixp + (-1)*C4_main_stddev_CAST_call<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_stddev_CAST_call
+objectiveFunction +=  + (73.6232)*C4_main_stddev_CAST_call
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_call_double + (-1)*C5_main_stddev_CAST_call<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_stddev_CAST_call
+objectiveFunction +=  + (581.033)*C5_main_stddev_CAST_call
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_call_fixp + (-1)*C6_main_stddev_CAST_call<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_stddev_CAST_call
+objectiveFunction +=  + (796.087)*C6_main_stddev_CAST_call
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_call_double + (-1)*C7_main_stddev_CAST_call<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_stddev_CAST_call
+objectiveFunction +=  + (224.348)*C7_main_stddev_CAST_call
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_call_float + (-1)*C8_main_stddev_CAST_call<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_stddev_CAST_call
+objectiveFunction +=  + (265.217)*C8_main_stddev_CAST_call
 solver.Add( + (1)*main_stddev_CAST_call_double==1)    #Type constraint for argument value
 
 
@@ -1260,8 +1260,8 @@ C1_main_call_CAST_store = solver.IntVar(0, 1, 'C1_main_call_CAST_store')
 C2_main_call_CAST_store = solver.IntVar(0, 1, 'C2_main_call_CAST_store')
 solver.Add( + (1)*main_call_fixbits + (-1)*main_call_CAST_store_fixbits + (-10000)*C1_main_call_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_call_fixbits + (1)*main_call_CAST_store_fixbits + (-10000)*C2_main_call_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_call_CAST_store
-objectiveFunction +=  + (500)*C2_main_call_CAST_store
+objectiveFunction +=  + (50)*C1_main_call_CAST_store
+objectiveFunction +=  + (50)*C2_main_call_CAST_store
 C3_main_call_CAST_store = solver.IntVar(0, 1, 'C3_main_call_CAST_store')
 C4_main_call_CAST_store = solver.IntVar(0, 1, 'C4_main_call_CAST_store')
 C5_main_call_CAST_store = solver.IntVar(0, 1, 'C5_main_call_CAST_store')
@@ -1269,17 +1269,17 @@ C6_main_call_CAST_store = solver.IntVar(0, 1, 'C6_main_call_CAST_store')
 C7_main_call_CAST_store = solver.IntVar(0, 1, 'C7_main_call_CAST_store')
 C8_main_call_CAST_store = solver.IntVar(0, 1, 'C8_main_call_CAST_store')
 solver.Add( + (1)*main_call_fixp + (1)*main_call_CAST_store_float + (-1)*C3_main_call_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_call_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_call_CAST_store
 solver.Add( + (1)*main_call_float + (1)*main_call_CAST_store_fixp + (-1)*C4_main_call_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_call_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_call_CAST_store
 solver.Add( + (1)*main_call_fixp + (1)*main_call_CAST_store_double + (-1)*C5_main_call_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_call_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_call_CAST_store
 solver.Add( + (1)*main_call_double + (1)*main_call_CAST_store_fixp + (-1)*C6_main_call_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_call_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_call_CAST_store
 solver.Add( + (1)*main_call_float + (1)*main_call_CAST_store_double + (-1)*C7_main_call_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_call_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_call_CAST_store
 solver.Add( + (1)*main_call_double + (1)*main_call_CAST_store_float + (-1)*C8_main_call_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_call_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_call_CAST_store
 solver.Add( + (1)*main_stddev_fixp + (-1)*main_call_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_stddev_float + (-1)*main_call_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_stddev_double + (-1)*main_call_CAST_store_double==0)    #double equality
@@ -1332,8 +1332,8 @@ C1_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C1_main_stddev_CAST_cmp89')
 C2_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C2_main_stddev_CAST_cmp89')
 solver.Add( + (1)*main_stddev_fixbits + (-1)*main_stddev_CAST_cmp89_fixbits + (-10000)*C1_main_stddev_CAST_cmp89<=0)    #Shift cost 1
 solver.Add( + (-1)*main_stddev_fixbits + (1)*main_stddev_CAST_cmp89_fixbits + (-10000)*C2_main_stddev_CAST_cmp89<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_stddev_CAST_cmp89
-objectiveFunction +=  + (500)*C2_main_stddev_CAST_cmp89
+objectiveFunction +=  + (50)*C1_main_stddev_CAST_cmp89
+objectiveFunction +=  + (50)*C2_main_stddev_CAST_cmp89
 C3_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C3_main_stddev_CAST_cmp89')
 C4_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C4_main_stddev_CAST_cmp89')
 C5_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C5_main_stddev_CAST_cmp89')
@@ -1341,17 +1341,17 @@ C6_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C6_main_stddev_CAST_cmp89')
 C7_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C7_main_stddev_CAST_cmp89')
 C8_main_stddev_CAST_cmp89 = solver.IntVar(0, 1, 'C8_main_stddev_CAST_cmp89')
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_cmp89_float + (-1)*C3_main_stddev_CAST_cmp89<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_stddev_CAST_cmp89
+objectiveFunction +=  + (312.613)*C3_main_stddev_CAST_cmp89
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_cmp89_fixp + (-1)*C4_main_stddev_CAST_cmp89<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_stddev_CAST_cmp89
+objectiveFunction +=  + (73.6232)*C4_main_stddev_CAST_cmp89
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_cmp89_double + (-1)*C5_main_stddev_CAST_cmp89<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_stddev_CAST_cmp89
+objectiveFunction +=  + (581.033)*C5_main_stddev_CAST_cmp89
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_cmp89_fixp + (-1)*C6_main_stddev_CAST_cmp89<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_stddev_CAST_cmp89
+objectiveFunction +=  + (796.087)*C6_main_stddev_CAST_cmp89
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_cmp89_double + (-1)*C7_main_stddev_CAST_cmp89<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_stddev_CAST_cmp89
+objectiveFunction +=  + (224.348)*C7_main_stddev_CAST_cmp89
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_cmp89_float + (-1)*C8_main_stddev_CAST_cmp89<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_stddev_CAST_cmp89
+objectiveFunction +=  + (265.217)*C8_main_stddev_CAST_cmp89
 
 
 
@@ -1366,8 +1366,8 @@ C1_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C1_ConstantValue__2_CAST_c
 C2_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C2_ConstantValue__2_CAST_cmp89')
 solver.Add( + (1)*ConstantValue__2_fixbits + (-1)*ConstantValue__2_CAST_cmp89_fixbits + (-10000)*C1_ConstantValue__2_CAST_cmp89<=0)    #Shift cost 1
 solver.Add( + (-1)*ConstantValue__2_fixbits + (1)*ConstantValue__2_CAST_cmp89_fixbits + (-10000)*C2_ConstantValue__2_CAST_cmp89<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_ConstantValue__2_CAST_cmp89
-objectiveFunction +=  + (500)*C2_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (50)*C1_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (50)*C2_ConstantValue__2_CAST_cmp89
 C3_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C3_ConstantValue__2_CAST_cmp89')
 C4_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C4_ConstantValue__2_CAST_cmp89')
 C5_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C5_ConstantValue__2_CAST_cmp89')
@@ -1375,17 +1375,17 @@ C6_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C6_ConstantValue__2_CAST_c
 C7_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C7_ConstantValue__2_CAST_cmp89')
 C8_ConstantValue__2_CAST_cmp89 = solver.IntVar(0, 1, 'C8_ConstantValue__2_CAST_cmp89')
 solver.Add( + (1)*ConstantValue__2_fixp + (1)*ConstantValue__2_CAST_cmp89_float + (-1)*C3_ConstantValue__2_CAST_cmp89<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (312.613)*C3_ConstantValue__2_CAST_cmp89
 solver.Add( + (1)*ConstantValue__2_float + (1)*ConstantValue__2_CAST_cmp89_fixp + (-1)*C4_ConstantValue__2_CAST_cmp89<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (73.6232)*C4_ConstantValue__2_CAST_cmp89
 solver.Add( + (1)*ConstantValue__2_fixp + (1)*ConstantValue__2_CAST_cmp89_double + (-1)*C5_ConstantValue__2_CAST_cmp89<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (581.033)*C5_ConstantValue__2_CAST_cmp89
 solver.Add( + (1)*ConstantValue__2_double + (1)*ConstantValue__2_CAST_cmp89_fixp + (-1)*C6_ConstantValue__2_CAST_cmp89<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (796.087)*C6_ConstantValue__2_CAST_cmp89
 solver.Add( + (1)*ConstantValue__2_float + (1)*ConstantValue__2_CAST_cmp89_double + (-1)*C7_ConstantValue__2_CAST_cmp89<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (224.348)*C7_ConstantValue__2_CAST_cmp89
 solver.Add( + (1)*ConstantValue__2_double + (1)*ConstantValue__2_CAST_cmp89_float + (-1)*C8_ConstantValue__2_CAST_cmp89<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_ConstantValue__2_CAST_cmp89
+objectiveFunction +=  + (265.217)*C8_ConstantValue__2_CAST_cmp89
 solver.Add( + (1)*main_stddev_CAST_cmp89_fixp + (-1)*ConstantValue__2_CAST_cmp89_fixp==0)    #fix equality
 solver.Add( + (1)*main_stddev_CAST_cmp89_float + (-1)*ConstantValue__2_CAST_cmp89_float==0)    #float equality
 solver.Add( + (1)*main_stddev_CAST_cmp89_double + (-1)*ConstantValue__2_CAST_cmp89_double==0)    #double equality
@@ -1415,7 +1415,7 @@ solver.Add( + (1)*main_cond_enob + (10000)*main_cond_float<=10149)    #Enob cons
 solver.Add( + (1)*main_cond_enob + (10000)*main_cond_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_cond_fixbits + (-10000)*main_cond_fixp>=-9983)    #Limit the lower number of frac bits18
 solver.Add( + (1)*main_cond_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_cond_enob
+objectiveFunction +=  + (-1)*main_cond_enob
 solver.Add( + (1)*main_cond_fixp + (1)*main_cond_float + (1)*main_cond_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_cond_fixbits + (-10000)*main_cond_fixp<=0)    #If not fix, frac part to zero
 
@@ -1449,8 +1449,8 @@ C1_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C1_main_stddev_CAST_cond')
 C2_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C2_main_stddev_CAST_cond')
 solver.Add( + (1)*main_stddev_fixbits + (-1)*main_stddev_CAST_cond_fixbits + (-10000)*C1_main_stddev_CAST_cond<=0)    #Shift cost 1
 solver.Add( + (-1)*main_stddev_fixbits + (1)*main_stddev_CAST_cond_fixbits + (-10000)*C2_main_stddev_CAST_cond<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_stddev_CAST_cond
-objectiveFunction +=  + (500)*C2_main_stddev_CAST_cond
+objectiveFunction +=  + (50)*C1_main_stddev_CAST_cond
+objectiveFunction +=  + (50)*C2_main_stddev_CAST_cond
 C3_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C3_main_stddev_CAST_cond')
 C4_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C4_main_stddev_CAST_cond')
 C5_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C5_main_stddev_CAST_cond')
@@ -1458,22 +1458,22 @@ C6_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C6_main_stddev_CAST_cond')
 C7_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C7_main_stddev_CAST_cond')
 C8_main_stddev_CAST_cond = solver.IntVar(0, 1, 'C8_main_stddev_CAST_cond')
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_cond_float + (-1)*C3_main_stddev_CAST_cond<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_stddev_CAST_cond
+objectiveFunction +=  + (312.613)*C3_main_stddev_CAST_cond
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_cond_fixp + (-1)*C4_main_stddev_CAST_cond<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_stddev_CAST_cond
+objectiveFunction +=  + (73.6232)*C4_main_stddev_CAST_cond
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_cond_double + (-1)*C5_main_stddev_CAST_cond<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_stddev_CAST_cond
+objectiveFunction +=  + (581.033)*C5_main_stddev_CAST_cond
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_cond_fixp + (-1)*C6_main_stddev_CAST_cond<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_stddev_CAST_cond
+objectiveFunction +=  + (796.087)*C6_main_stddev_CAST_cond
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_cond_double + (-1)*C7_main_stddev_CAST_cond<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_stddev_CAST_cond
+objectiveFunction +=  + (224.348)*C7_main_stddev_CAST_cond
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_cond_float + (-1)*C8_main_stddev_CAST_cond<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_stddev_CAST_cond
+objectiveFunction +=  + (265.217)*C8_main_stddev_CAST_cond
 solver.Add( + (1)*main_cond_fixp + (-1)*main_stddev_CAST_cond_fixp==0)    #fix equality
 solver.Add( + (1)*main_cond_float + (-1)*main_stddev_CAST_cond_float==0)    #float equality
 solver.Add( + (1)*main_cond_double + (-1)*main_stddev_CAST_cond_double==0)    #double equality
 solver.Add( + (1)*main_cond_fixbits + (-1)*main_stddev_CAST_cond_fixbits==0)    #same fractional bit
-solver.Add( + (1)*main_cond_enob + (-1)*main_stddev_enob_memphi_main_tmp11 + (-10000)*main_main_cond_enob_1<=0)    #Enob: forcing phi enob
+solver.Add( + (1)*main_cond_enob + (-1)*main_stddev_enob_memphi_main_tmp11 + (10000)*main_main_cond_enob_1<=10000)    #Enob: forcing phi enob
 
 
 
@@ -1488,8 +1488,8 @@ C1_main_cond_CAST_store = solver.IntVar(0, 1, 'C1_main_cond_CAST_store')
 C2_main_cond_CAST_store = solver.IntVar(0, 1, 'C2_main_cond_CAST_store')
 solver.Add( + (1)*main_cond_fixbits + (-1)*main_cond_CAST_store_fixbits + (-10000)*C1_main_cond_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_cond_fixbits + (1)*main_cond_CAST_store_fixbits + (-10000)*C2_main_cond_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_cond_CAST_store
-objectiveFunction +=  + (500)*C2_main_cond_CAST_store
+objectiveFunction +=  + (50)*C1_main_cond_CAST_store
+objectiveFunction +=  + (50)*C2_main_cond_CAST_store
 C3_main_cond_CAST_store = solver.IntVar(0, 1, 'C3_main_cond_CAST_store')
 C4_main_cond_CAST_store = solver.IntVar(0, 1, 'C4_main_cond_CAST_store')
 C5_main_cond_CAST_store = solver.IntVar(0, 1, 'C5_main_cond_CAST_store')
@@ -1497,17 +1497,17 @@ C6_main_cond_CAST_store = solver.IntVar(0, 1, 'C6_main_cond_CAST_store')
 C7_main_cond_CAST_store = solver.IntVar(0, 1, 'C7_main_cond_CAST_store')
 C8_main_cond_CAST_store = solver.IntVar(0, 1, 'C8_main_cond_CAST_store')
 solver.Add( + (1)*main_cond_fixp + (1)*main_cond_CAST_store_float + (-1)*C3_main_cond_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_cond_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_cond_CAST_store
 solver.Add( + (1)*main_cond_float + (1)*main_cond_CAST_store_fixp + (-1)*C4_main_cond_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_cond_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_cond_CAST_store
 solver.Add( + (1)*main_cond_fixp + (1)*main_cond_CAST_store_double + (-1)*C5_main_cond_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_cond_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_cond_CAST_store
 solver.Add( + (1)*main_cond_double + (1)*main_cond_CAST_store_fixp + (-1)*C6_main_cond_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_cond_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_cond_CAST_store
 solver.Add( + (1)*main_cond_float + (1)*main_cond_CAST_store_double + (-1)*C7_main_cond_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_cond_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_cond_CAST_store
 solver.Add( + (1)*main_cond_double + (1)*main_cond_CAST_store_float + (-1)*C8_main_cond_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_cond_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_cond_CAST_store
 solver.Add( + (1)*main_stddev_fixp + (-1)*main_cond_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_stddev_float + (-1)*main_cond_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_stddev_double + (-1)*main_cond_CAST_store_double==0)    #double equality
@@ -1565,8 +1565,8 @@ C1_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C1_main_data_CAST_sub114')
 C2_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C2_main_data_CAST_sub114')
 solver.Add( + (1)*main_data_fixbits + (-1)*main_data_CAST_sub114_fixbits + (-10000)*C1_main_data_CAST_sub114<=0)    #Shift cost 1
 solver.Add( + (-1)*main_data_fixbits + (1)*main_data_CAST_sub114_fixbits + (-10000)*C2_main_data_CAST_sub114<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_data_CAST_sub114
-objectiveFunction +=  + (500)*C2_main_data_CAST_sub114
+objectiveFunction +=  + (50)*C1_main_data_CAST_sub114
+objectiveFunction +=  + (50)*C2_main_data_CAST_sub114
 C3_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C3_main_data_CAST_sub114')
 C4_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C4_main_data_CAST_sub114')
 C5_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C5_main_data_CAST_sub114')
@@ -1574,17 +1574,17 @@ C6_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C6_main_data_CAST_sub114')
 C7_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C7_main_data_CAST_sub114')
 C8_main_data_CAST_sub114 = solver.IntVar(0, 1, 'C8_main_data_CAST_sub114')
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_sub114_float + (-1)*C3_main_data_CAST_sub114<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_data_CAST_sub114
+objectiveFunction +=  + (312.613)*C3_main_data_CAST_sub114
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_sub114_fixp + (-1)*C4_main_data_CAST_sub114<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_data_CAST_sub114
+objectiveFunction +=  + (73.6232)*C4_main_data_CAST_sub114
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_sub114_double + (-1)*C5_main_data_CAST_sub114<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_data_CAST_sub114
+objectiveFunction +=  + (581.033)*C5_main_data_CAST_sub114
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_sub114_fixp + (-1)*C6_main_data_CAST_sub114<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_data_CAST_sub114
+objectiveFunction +=  + (796.087)*C6_main_data_CAST_sub114
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_sub114_double + (-1)*C7_main_data_CAST_sub114<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_data_CAST_sub114
+objectiveFunction +=  + (224.348)*C7_main_data_CAST_sub114
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_sub114_float + (-1)*C8_main_data_CAST_sub114<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_data_CAST_sub114
+objectiveFunction +=  + (265.217)*C8_main_data_CAST_sub114
 
 
 
@@ -1599,8 +1599,8 @@ C1_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C1_main_mean_CAST_sub114')
 C2_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C2_main_mean_CAST_sub114')
 solver.Add( + (1)*main_mean_fixbits + (-1)*main_mean_CAST_sub114_fixbits + (-10000)*C1_main_mean_CAST_sub114<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mean_fixbits + (1)*main_mean_CAST_sub114_fixbits + (-10000)*C2_main_mean_CAST_sub114<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mean_CAST_sub114
-objectiveFunction +=  + (500)*C2_main_mean_CAST_sub114
+objectiveFunction +=  + (50)*C1_main_mean_CAST_sub114
+objectiveFunction +=  + (50)*C2_main_mean_CAST_sub114
 C3_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C3_main_mean_CAST_sub114')
 C4_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C4_main_mean_CAST_sub114')
 C5_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C5_main_mean_CAST_sub114')
@@ -1608,17 +1608,17 @@ C6_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C6_main_mean_CAST_sub114')
 C7_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C7_main_mean_CAST_sub114')
 C8_main_mean_CAST_sub114 = solver.IntVar(0, 1, 'C8_main_mean_CAST_sub114')
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_sub114_float + (-1)*C3_main_mean_CAST_sub114<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mean_CAST_sub114
+objectiveFunction +=  + (312.613)*C3_main_mean_CAST_sub114
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_sub114_fixp + (-1)*C4_main_mean_CAST_sub114<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mean_CAST_sub114
+objectiveFunction +=  + (73.6232)*C4_main_mean_CAST_sub114
 solver.Add( + (1)*main_mean_fixp + (1)*main_mean_CAST_sub114_double + (-1)*C5_main_mean_CAST_sub114<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mean_CAST_sub114
+objectiveFunction +=  + (581.033)*C5_main_mean_CAST_sub114
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_sub114_fixp + (-1)*C6_main_mean_CAST_sub114<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mean_CAST_sub114
+objectiveFunction +=  + (796.087)*C6_main_mean_CAST_sub114
 solver.Add( + (1)*main_mean_float + (1)*main_mean_CAST_sub114_double + (-1)*C7_main_mean_CAST_sub114<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mean_CAST_sub114
+objectiveFunction +=  + (224.348)*C7_main_mean_CAST_sub114
 solver.Add( + (1)*main_mean_double + (1)*main_mean_CAST_sub114_float + (-1)*C8_main_mean_CAST_sub114<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mean_CAST_sub114
+objectiveFunction +=  + (265.217)*C8_main_mean_CAST_sub114
 
 
 
@@ -1633,7 +1633,7 @@ solver.Add( + (1)*main_sub114_enob + (10000)*main_sub114_float<=10149)    #Enob 
 solver.Add( + (1)*main_sub114_enob + (10000)*main_sub114_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_sub114_fixbits + (-10000)*main_sub114_fixp>=-9986)    #Limit the lower number of frac bits15
 solver.Add( + (1)*main_sub114_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_sub114_enob
+objectiveFunction +=  + (-1)*main_sub114_enob
 solver.Add( + (1)*main_sub114_fixp + (1)*main_sub114_float + (1)*main_sub114_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_sub114_fixbits + (-10000)*main_sub114_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_data_CAST_sub114_fixp + (-1)*main_mean_CAST_sub114_fixp==0)    #fix equality
@@ -1644,9 +1644,9 @@ solver.Add( + (1)*main_data_CAST_sub114_fixp + (-1)*main_sub114_fixp==0)    #fix
 solver.Add( + (1)*main_data_CAST_sub114_float + (-1)*main_sub114_float==0)    #float equality
 solver.Add( + (1)*main_data_CAST_sub114_double + (-1)*main_sub114_double==0)    #double equality
 solver.Add( + (1)*main_data_CAST_sub114_fixbits + (-1)*main_sub114_fixbits==0)    #same fractional bit
-objectiveFunction +=  + (1272.46)*main_sub114_fixp
-objectiveFunction +=  + (3000)*main_sub114_float
-objectiveFunction +=  + (6649.28)*main_sub114_double
+objectiveFunction +=  + (127.246)*main_sub114_fixp
+objectiveFunction +=  + (300)*main_sub114_float
+objectiveFunction +=  + (664.928)*main_sub114_double
 solver.Add( + (1)*main_sub114_enob + (-1)*main_data_enob_memphi_main_tmp13<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*main_sub114_enob + (-1)*main_mean_enob_memphi_main_tmp12<=0)    #Enob propagation in sub second addend
 
@@ -1663,8 +1663,8 @@ C1_main_sub114_CAST_store = solver.IntVar(0, 1, 'C1_main_sub114_CAST_store')
 C2_main_sub114_CAST_store = solver.IntVar(0, 1, 'C2_main_sub114_CAST_store')
 solver.Add( + (1)*main_sub114_fixbits + (-1)*main_sub114_CAST_store_fixbits + (-10000)*C1_main_sub114_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_sub114_fixbits + (1)*main_sub114_CAST_store_fixbits + (-10000)*C2_main_sub114_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_sub114_CAST_store
-objectiveFunction +=  + (500)*C2_main_sub114_CAST_store
+objectiveFunction +=  + (50)*C1_main_sub114_CAST_store
+objectiveFunction +=  + (50)*C2_main_sub114_CAST_store
 C3_main_sub114_CAST_store = solver.IntVar(0, 1, 'C3_main_sub114_CAST_store')
 C4_main_sub114_CAST_store = solver.IntVar(0, 1, 'C4_main_sub114_CAST_store')
 C5_main_sub114_CAST_store = solver.IntVar(0, 1, 'C5_main_sub114_CAST_store')
@@ -1672,17 +1672,17 @@ C6_main_sub114_CAST_store = solver.IntVar(0, 1, 'C6_main_sub114_CAST_store')
 C7_main_sub114_CAST_store = solver.IntVar(0, 1, 'C7_main_sub114_CAST_store')
 C8_main_sub114_CAST_store = solver.IntVar(0, 1, 'C8_main_sub114_CAST_store')
 solver.Add( + (1)*main_sub114_fixp + (1)*main_sub114_CAST_store_float + (-1)*C3_main_sub114_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_sub114_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_sub114_CAST_store
 solver.Add( + (1)*main_sub114_float + (1)*main_sub114_CAST_store_fixp + (-1)*C4_main_sub114_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_sub114_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_sub114_CAST_store
 solver.Add( + (1)*main_sub114_fixp + (1)*main_sub114_CAST_store_double + (-1)*C5_main_sub114_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_sub114_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_sub114_CAST_store
 solver.Add( + (1)*main_sub114_double + (1)*main_sub114_CAST_store_fixp + (-1)*C6_main_sub114_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_sub114_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_sub114_CAST_store
 solver.Add( + (1)*main_sub114_float + (1)*main_sub114_CAST_store_double + (-1)*C7_main_sub114_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_sub114_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_sub114_CAST_store
 solver.Add( + (1)*main_sub114_double + (1)*main_sub114_CAST_store_float + (-1)*C8_main_sub114_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_sub114_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_sub114_CAST_store
 solver.Add( + (1)*main_data_fixp + (-1)*main_sub114_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_data_float + (-1)*main_sub114_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_data_double + (-1)*main_sub114_CAST_store_double==0)    #double equality
@@ -1708,7 +1708,7 @@ solver.Add( + (1)*main_conv115_enob + (-1)*main_conv115_fixbits + (10000)*main_c
 solver.Add( + (1)*main_conv115_enob + (10000)*main_conv115_float<=10023)    #Enob constraint for float
 solver.Add( + (1)*main_conv115_enob + (10000)*main_conv115_double<=10052)    #Enob constraint for double
 solver.Add( + (1)*main_conv115_fixbits + (-10000)*main_conv115_fixp>=-9981)    #Limit the lower number of frac bits20
-objectiveFunction +=  + (-20)*main_conv115_enob
+objectiveFunction +=  + (-1)*main_conv115_enob
 solver.Add( + (1)*main_conv115_fixp + (1)*main_conv115_float + (1)*main_conv115_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_conv115_fixbits + (-10000)*main_conv115_fixp<=0)    #If not fix, frac part to zero
 
@@ -1724,7 +1724,7 @@ solver.Add( + (1)*main_call116_enob + (-1)*main_call116_fixbits + (10000)*main_c
 solver.Add( + (1)*main_call116_enob + (10000)*main_call116_float<=10023)    #Enob constraint for float
 solver.Add( + (1)*main_call116_enob + (10000)*main_call116_double<=10052)    #Enob constraint for double
 solver.Add( + (1)*main_call116_fixbits + (-10000)*main_call116_fixp>=-9981)    #Limit the lower number of frac bits20
-objectiveFunction +=  + (-20)*main_call116_enob
+objectiveFunction +=  + (-1)*main_call116_enob
 solver.Add( + (1)*main_call116_fixp + (1)*main_call116_float + (1)*main_call116_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_call116_fixbits + (-10000)*main_call116_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_call116_double==1)    #Type constraint for return value
@@ -1742,8 +1742,8 @@ C1_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C1_main_conv115_CAST_call116
 C2_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C2_main_conv115_CAST_call116')
 solver.Add( + (1)*main_conv115_fixbits + (-1)*main_conv115_CAST_call116_fixbits + (-10000)*C1_main_conv115_CAST_call116<=0)    #Shift cost 1
 solver.Add( + (-1)*main_conv115_fixbits + (1)*main_conv115_CAST_call116_fixbits + (-10000)*C2_main_conv115_CAST_call116<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_conv115_CAST_call116
-objectiveFunction +=  + (500)*C2_main_conv115_CAST_call116
+objectiveFunction +=  + (50)*C1_main_conv115_CAST_call116
+objectiveFunction +=  + (50)*C2_main_conv115_CAST_call116
 C3_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C3_main_conv115_CAST_call116')
 C4_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C4_main_conv115_CAST_call116')
 C5_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C5_main_conv115_CAST_call116')
@@ -1751,17 +1751,17 @@ C6_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C6_main_conv115_CAST_call116
 C7_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C7_main_conv115_CAST_call116')
 C8_main_conv115_CAST_call116 = solver.IntVar(0, 1, 'C8_main_conv115_CAST_call116')
 solver.Add( + (1)*main_conv115_fixp + (1)*main_conv115_CAST_call116_float + (-1)*C3_main_conv115_CAST_call116<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_conv115_CAST_call116
+objectiveFunction +=  + (312.613)*C3_main_conv115_CAST_call116
 solver.Add( + (1)*main_conv115_float + (1)*main_conv115_CAST_call116_fixp + (-1)*C4_main_conv115_CAST_call116<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_conv115_CAST_call116
+objectiveFunction +=  + (73.6232)*C4_main_conv115_CAST_call116
 solver.Add( + (1)*main_conv115_fixp + (1)*main_conv115_CAST_call116_double + (-1)*C5_main_conv115_CAST_call116<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_conv115_CAST_call116
+objectiveFunction +=  + (581.033)*C5_main_conv115_CAST_call116
 solver.Add( + (1)*main_conv115_double + (1)*main_conv115_CAST_call116_fixp + (-1)*C6_main_conv115_CAST_call116<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_conv115_CAST_call116
+objectiveFunction +=  + (796.087)*C6_main_conv115_CAST_call116
 solver.Add( + (1)*main_conv115_float + (1)*main_conv115_CAST_call116_double + (-1)*C7_main_conv115_CAST_call116<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_conv115_CAST_call116
+objectiveFunction +=  + (224.348)*C7_main_conv115_CAST_call116
 solver.Add( + (1)*main_conv115_double + (1)*main_conv115_CAST_call116_float + (-1)*C8_main_conv115_CAST_call116<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_conv115_CAST_call116
+objectiveFunction +=  + (265.217)*C8_main_conv115_CAST_call116
 solver.Add( + (1)*main_conv115_CAST_call116_double==1)    #Type constraint for argument value
 
 #Restriction for new enob [LOAD]
@@ -1795,8 +1795,8 @@ C1_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C1_main_call116_CAST_mul120')
 C2_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C2_main_call116_CAST_mul120')
 solver.Add( + (1)*main_call116_fixbits + (-1)*main_call116_CAST_mul120_fixbits + (-10000)*C1_main_call116_CAST_mul120<=0)    #Shift cost 1
 solver.Add( + (-1)*main_call116_fixbits + (1)*main_call116_CAST_mul120_fixbits + (-10000)*C2_main_call116_CAST_mul120<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_call116_CAST_mul120
-objectiveFunction +=  + (500)*C2_main_call116_CAST_mul120
+objectiveFunction +=  + (50)*C1_main_call116_CAST_mul120
+objectiveFunction +=  + (50)*C2_main_call116_CAST_mul120
 C3_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C3_main_call116_CAST_mul120')
 C4_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C4_main_call116_CAST_mul120')
 C5_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C5_main_call116_CAST_mul120')
@@ -1804,17 +1804,17 @@ C6_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C6_main_call116_CAST_mul120')
 C7_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C7_main_call116_CAST_mul120')
 C8_main_call116_CAST_mul120 = solver.IntVar(0, 1, 'C8_main_call116_CAST_mul120')
 solver.Add( + (1)*main_call116_fixp + (1)*main_call116_CAST_mul120_float + (-1)*C3_main_call116_CAST_mul120<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_call116_CAST_mul120
+objectiveFunction +=  + (312.613)*C3_main_call116_CAST_mul120
 solver.Add( + (1)*main_call116_float + (1)*main_call116_CAST_mul120_fixp + (-1)*C4_main_call116_CAST_mul120<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_call116_CAST_mul120
+objectiveFunction +=  + (73.6232)*C4_main_call116_CAST_mul120
 solver.Add( + (1)*main_call116_fixp + (1)*main_call116_CAST_mul120_double + (-1)*C5_main_call116_CAST_mul120<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_call116_CAST_mul120
+objectiveFunction +=  + (581.033)*C5_main_call116_CAST_mul120
 solver.Add( + (1)*main_call116_double + (1)*main_call116_CAST_mul120_fixp + (-1)*C6_main_call116_CAST_mul120<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_call116_CAST_mul120
+objectiveFunction +=  + (796.087)*C6_main_call116_CAST_mul120
 solver.Add( + (1)*main_call116_float + (1)*main_call116_CAST_mul120_double + (-1)*C7_main_call116_CAST_mul120<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_call116_CAST_mul120
+objectiveFunction +=  + (224.348)*C7_main_call116_CAST_mul120
 solver.Add( + (1)*main_call116_double + (1)*main_call116_CAST_mul120_float + (-1)*C8_main_call116_CAST_mul120<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_call116_CAST_mul120
+objectiveFunction +=  + (265.217)*C8_main_call116_CAST_mul120
 
 
 
@@ -1829,8 +1829,8 @@ C1_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C1_main_stddev_CAST_mul120')
 C2_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C2_main_stddev_CAST_mul120')
 solver.Add( + (1)*main_stddev_fixbits + (-1)*main_stddev_CAST_mul120_fixbits + (-10000)*C1_main_stddev_CAST_mul120<=0)    #Shift cost 1
 solver.Add( + (-1)*main_stddev_fixbits + (1)*main_stddev_CAST_mul120_fixbits + (-10000)*C2_main_stddev_CAST_mul120<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_stddev_CAST_mul120
-objectiveFunction +=  + (500)*C2_main_stddev_CAST_mul120
+objectiveFunction +=  + (50)*C1_main_stddev_CAST_mul120
+objectiveFunction +=  + (50)*C2_main_stddev_CAST_mul120
 C3_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C3_main_stddev_CAST_mul120')
 C4_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C4_main_stddev_CAST_mul120')
 C5_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C5_main_stddev_CAST_mul120')
@@ -1838,17 +1838,17 @@ C6_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C6_main_stddev_CAST_mul120')
 C7_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C7_main_stddev_CAST_mul120')
 C8_main_stddev_CAST_mul120 = solver.IntVar(0, 1, 'C8_main_stddev_CAST_mul120')
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_mul120_float + (-1)*C3_main_stddev_CAST_mul120<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_stddev_CAST_mul120
+objectiveFunction +=  + (312.613)*C3_main_stddev_CAST_mul120
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_mul120_fixp + (-1)*C4_main_stddev_CAST_mul120<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_stddev_CAST_mul120
+objectiveFunction +=  + (73.6232)*C4_main_stddev_CAST_mul120
 solver.Add( + (1)*main_stddev_fixp + (1)*main_stddev_CAST_mul120_double + (-1)*C5_main_stddev_CAST_mul120<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_stddev_CAST_mul120
+objectiveFunction +=  + (581.033)*C5_main_stddev_CAST_mul120
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_mul120_fixp + (-1)*C6_main_stddev_CAST_mul120<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_stddev_CAST_mul120
+objectiveFunction +=  + (796.087)*C6_main_stddev_CAST_mul120
 solver.Add( + (1)*main_stddev_float + (1)*main_stddev_CAST_mul120_double + (-1)*C7_main_stddev_CAST_mul120<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_stddev_CAST_mul120
+objectiveFunction +=  + (224.348)*C7_main_stddev_CAST_mul120
 solver.Add( + (1)*main_stddev_double + (1)*main_stddev_CAST_mul120_float + (-1)*C8_main_stddev_CAST_mul120<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_stddev_CAST_mul120
+objectiveFunction +=  + (265.217)*C8_main_stddev_CAST_mul120
 
 
 
@@ -1863,7 +1863,7 @@ solver.Add( + (1)*main_mul120_enob + (10000)*main_mul120_float<=10149)    #Enob 
 solver.Add( + (1)*main_mul120_enob + (10000)*main_mul120_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_mul120_fixbits + (-10000)*main_mul120_fixp>=-9983)    #Limit the lower number of frac bits18
 solver.Add( + (1)*main_mul120_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_mul120_enob
+objectiveFunction +=  + (-1)*main_mul120_enob
 solver.Add( + (1)*main_mul120_fixp + (1)*main_mul120_float + (1)*main_mul120_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_mul120_fixbits + (-10000)*main_mul120_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_call116_CAST_mul120_fixp + (-1)*main_stddev_CAST_mul120_fixp==0)    #fix equality
@@ -1872,9 +1872,9 @@ solver.Add( + (1)*main_call116_CAST_mul120_double + (-1)*main_stddev_CAST_mul120
 solver.Add( + (1)*main_call116_CAST_mul120_fixp + (-1)*main_mul120_fixp==0)    #fix equality
 solver.Add( + (1)*main_call116_CAST_mul120_float + (-1)*main_mul120_float==0)    #float equality
 solver.Add( + (1)*main_call116_CAST_mul120_double + (-1)*main_mul120_double==0)    #double equality
-objectiveFunction +=  + (1652.17)*main_mul120_fixp
-objectiveFunction +=  + (6000)*main_mul120_float
-objectiveFunction +=  + (12255.1)*main_mul120_double
+objectiveFunction +=  + (165.217)*main_mul120_fixp
+objectiveFunction +=  + (600)*main_mul120_float
+objectiveFunction +=  + (1225.51)*main_mul120_double
 main_main_mul120_enob_1 = solver.IntVar(0, 1, 'main_main_mul120_enob_1')
 main_main_mul120_enob_2 = solver.IntVar(0, 1, 'main_main_mul120_enob_2')
 solver.Add( + (1)*main_main_mul120_enob_1 + (1)*main_main_mul120_enob_2==1)    #Enob: one selected constraint
@@ -1905,8 +1905,8 @@ C1_main_data_CAST_div126 = solver.IntVar(0, 1, 'C1_main_data_CAST_div126')
 C2_main_data_CAST_div126 = solver.IntVar(0, 1, 'C2_main_data_CAST_div126')
 solver.Add( + (1)*main_data_fixbits + (-1)*main_data_CAST_div126_fixbits + (-10000)*C1_main_data_CAST_div126<=0)    #Shift cost 1
 solver.Add( + (-1)*main_data_fixbits + (1)*main_data_CAST_div126_fixbits + (-10000)*C2_main_data_CAST_div126<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_data_CAST_div126
-objectiveFunction +=  + (500)*C2_main_data_CAST_div126
+objectiveFunction +=  + (50)*C1_main_data_CAST_div126
+objectiveFunction +=  + (50)*C2_main_data_CAST_div126
 C3_main_data_CAST_div126 = solver.IntVar(0, 1, 'C3_main_data_CAST_div126')
 C4_main_data_CAST_div126 = solver.IntVar(0, 1, 'C4_main_data_CAST_div126')
 C5_main_data_CAST_div126 = solver.IntVar(0, 1, 'C5_main_data_CAST_div126')
@@ -1914,17 +1914,17 @@ C6_main_data_CAST_div126 = solver.IntVar(0, 1, 'C6_main_data_CAST_div126')
 C7_main_data_CAST_div126 = solver.IntVar(0, 1, 'C7_main_data_CAST_div126')
 C8_main_data_CAST_div126 = solver.IntVar(0, 1, 'C8_main_data_CAST_div126')
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_div126_float + (-1)*C3_main_data_CAST_div126<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_data_CAST_div126
+objectiveFunction +=  + (312.613)*C3_main_data_CAST_div126
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_div126_fixp + (-1)*C4_main_data_CAST_div126<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_data_CAST_div126
+objectiveFunction +=  + (73.6232)*C4_main_data_CAST_div126
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_div126_double + (-1)*C5_main_data_CAST_div126<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_data_CAST_div126
+objectiveFunction +=  + (581.033)*C5_main_data_CAST_div126
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_div126_fixp + (-1)*C6_main_data_CAST_div126<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_data_CAST_div126
+objectiveFunction +=  + (796.087)*C6_main_data_CAST_div126
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_div126_double + (-1)*C7_main_data_CAST_div126<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_data_CAST_div126
+objectiveFunction +=  + (224.348)*C7_main_data_CAST_div126
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_div126_float + (-1)*C8_main_data_CAST_div126<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_data_CAST_div126
+objectiveFunction +=  + (265.217)*C8_main_data_CAST_div126
 
 
 
@@ -1939,8 +1939,8 @@ C1_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C1_main_mul120_CAST_div126')
 C2_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C2_main_mul120_CAST_div126')
 solver.Add( + (1)*main_mul120_fixbits + (-1)*main_mul120_CAST_div126_fixbits + (-10000)*C1_main_mul120_CAST_div126<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mul120_fixbits + (1)*main_mul120_CAST_div126_fixbits + (-10000)*C2_main_mul120_CAST_div126<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mul120_CAST_div126
-objectiveFunction +=  + (500)*C2_main_mul120_CAST_div126
+objectiveFunction +=  + (50)*C1_main_mul120_CAST_div126
+objectiveFunction +=  + (50)*C2_main_mul120_CAST_div126
 C3_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C3_main_mul120_CAST_div126')
 C4_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C4_main_mul120_CAST_div126')
 C5_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C5_main_mul120_CAST_div126')
@@ -1948,17 +1948,17 @@ C6_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C6_main_mul120_CAST_div126')
 C7_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C7_main_mul120_CAST_div126')
 C8_main_mul120_CAST_div126 = solver.IntVar(0, 1, 'C8_main_mul120_CAST_div126')
 solver.Add( + (1)*main_mul120_fixp + (1)*main_mul120_CAST_div126_float + (-1)*C3_main_mul120_CAST_div126<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mul120_CAST_div126
+objectiveFunction +=  + (312.613)*C3_main_mul120_CAST_div126
 solver.Add( + (1)*main_mul120_float + (1)*main_mul120_CAST_div126_fixp + (-1)*C4_main_mul120_CAST_div126<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mul120_CAST_div126
+objectiveFunction +=  + (73.6232)*C4_main_mul120_CAST_div126
 solver.Add( + (1)*main_mul120_fixp + (1)*main_mul120_CAST_div126_double + (-1)*C5_main_mul120_CAST_div126<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mul120_CAST_div126
+objectiveFunction +=  + (581.033)*C5_main_mul120_CAST_div126
 solver.Add( + (1)*main_mul120_double + (1)*main_mul120_CAST_div126_fixp + (-1)*C6_main_mul120_CAST_div126<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mul120_CAST_div126
+objectiveFunction +=  + (796.087)*C6_main_mul120_CAST_div126
 solver.Add( + (1)*main_mul120_float + (1)*main_mul120_CAST_div126_double + (-1)*C7_main_mul120_CAST_div126<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mul120_CAST_div126
+objectiveFunction +=  + (224.348)*C7_main_mul120_CAST_div126
 solver.Add( + (1)*main_mul120_double + (1)*main_mul120_CAST_div126_float + (-1)*C8_main_mul120_CAST_div126<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mul120_CAST_div126
+objectiveFunction +=  + (265.217)*C8_main_mul120_CAST_div126
 
 
 
@@ -1973,7 +1973,7 @@ solver.Add( + (1)*main_div126_enob + (10000)*main_div126_float<=10149)    #Enob 
 solver.Add( + (1)*main_div126_enob + (10000)*main_div126_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_div126_fixbits + (-10000)*main_div126_fixp>=-9971)    #Limit the lower number of frac bits30
 solver.Add( + (1)*main_div126_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_div126_enob
+objectiveFunction +=  + (-1)*main_div126_enob
 solver.Add( + (1)*main_div126_fixp + (1)*main_div126_float + (1)*main_div126_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_div126_fixbits + (-10000)*main_div126_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_data_CAST_div126_fixp + (-1)*main_mul120_CAST_div126_fixp==0)    #fix equality
@@ -1982,9 +1982,9 @@ solver.Add( + (1)*main_data_CAST_div126_double + (-1)*main_mul120_CAST_div126_do
 solver.Add( + (1)*main_data_CAST_div126_fixp + (-1)*main_div126_fixp==0)    #fix equality
 solver.Add( + (1)*main_data_CAST_div126_float + (-1)*main_div126_float==0)    #float equality
 solver.Add( + (1)*main_data_CAST_div126_double + (-1)*main_div126_double==0)    #double equality
-objectiveFunction +=  + (1611.59)*main_div126_fixp
-objectiveFunction +=  + (6000)*main_div126_float
-objectiveFunction +=  + (12000)*main_div126_double
+objectiveFunction +=  + (161.159)*main_div126_fixp
+objectiveFunction +=  + (600)*main_div126_float
+objectiveFunction +=  + (1200)*main_div126_double
 main_main_div126_enob_1 = solver.IntVar(0, 1, 'main_main_div126_enob_1')
 main_main_div126_enob_2 = solver.IntVar(0, 1, 'main_main_div126_enob_2')
 solver.Add( + (1)*main_main_div126_enob_1 + (1)*main_main_div126_enob_2==1)    #Enob: one selected constraint
@@ -2004,8 +2004,8 @@ C1_main_div126_CAST_store = solver.IntVar(0, 1, 'C1_main_div126_CAST_store')
 C2_main_div126_CAST_store = solver.IntVar(0, 1, 'C2_main_div126_CAST_store')
 solver.Add( + (1)*main_div126_fixbits + (-1)*main_div126_CAST_store_fixbits + (-10000)*C1_main_div126_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_div126_fixbits + (1)*main_div126_CAST_store_fixbits + (-10000)*C2_main_div126_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_div126_CAST_store
-objectiveFunction +=  + (500)*C2_main_div126_CAST_store
+objectiveFunction +=  + (50)*C1_main_div126_CAST_store
+objectiveFunction +=  + (50)*C2_main_div126_CAST_store
 C3_main_div126_CAST_store = solver.IntVar(0, 1, 'C3_main_div126_CAST_store')
 C4_main_div126_CAST_store = solver.IntVar(0, 1, 'C4_main_div126_CAST_store')
 C5_main_div126_CAST_store = solver.IntVar(0, 1, 'C5_main_div126_CAST_store')
@@ -2013,17 +2013,17 @@ C6_main_div126_CAST_store = solver.IntVar(0, 1, 'C6_main_div126_CAST_store')
 C7_main_div126_CAST_store = solver.IntVar(0, 1, 'C7_main_div126_CAST_store')
 C8_main_div126_CAST_store = solver.IntVar(0, 1, 'C8_main_div126_CAST_store')
 solver.Add( + (1)*main_div126_fixp + (1)*main_div126_CAST_store_float + (-1)*C3_main_div126_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_div126_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_div126_CAST_store
 solver.Add( + (1)*main_div126_float + (1)*main_div126_CAST_store_fixp + (-1)*C4_main_div126_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_div126_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_div126_CAST_store
 solver.Add( + (1)*main_div126_fixp + (1)*main_div126_CAST_store_double + (-1)*C5_main_div126_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_div126_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_div126_CAST_store
 solver.Add( + (1)*main_div126_double + (1)*main_div126_CAST_store_fixp + (-1)*C6_main_div126_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_div126_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_div126_CAST_store
 solver.Add( + (1)*main_div126_float + (1)*main_div126_CAST_store_double + (-1)*C7_main_div126_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_div126_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_div126_CAST_store
 solver.Add( + (1)*main_div126_double + (1)*main_div126_CAST_store_float + (-1)*C8_main_div126_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_div126_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_div126_CAST_store
 solver.Add( + (1)*main_data_fixp + (-1)*main_div126_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_data_float + (-1)*main_div126_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_data_double + (-1)*main_div126_CAST_store_double==0)    #double equality
@@ -2070,8 +2070,8 @@ C1_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C1_ConstantValue__4_CAST_s
 C2_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C2_ConstantValue__4_CAST_store')
 solver.Add( + (1)*ConstantValue__4_fixbits + (-1)*ConstantValue__4_CAST_store_fixbits + (-10000)*C1_ConstantValue__4_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*ConstantValue__4_fixbits + (1)*ConstantValue__4_CAST_store_fixbits + (-10000)*C2_ConstantValue__4_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_ConstantValue__4_CAST_store
-objectiveFunction +=  + (500)*C2_ConstantValue__4_CAST_store
+objectiveFunction +=  + (50)*C1_ConstantValue__4_CAST_store
+objectiveFunction +=  + (50)*C2_ConstantValue__4_CAST_store
 C3_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C3_ConstantValue__4_CAST_store')
 C4_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C4_ConstantValue__4_CAST_store')
 C5_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C5_ConstantValue__4_CAST_store')
@@ -2079,17 +2079,17 @@ C6_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C6_ConstantValue__4_CAST_s
 C7_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C7_ConstantValue__4_CAST_store')
 C8_ConstantValue__4_CAST_store = solver.IntVar(0, 1, 'C8_ConstantValue__4_CAST_store')
 solver.Add( + (1)*ConstantValue__4_fixp + (1)*ConstantValue__4_CAST_store_float + (-1)*C3_ConstantValue__4_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_ConstantValue__4_CAST_store
+objectiveFunction +=  + (312.613)*C3_ConstantValue__4_CAST_store
 solver.Add( + (1)*ConstantValue__4_float + (1)*ConstantValue__4_CAST_store_fixp + (-1)*C4_ConstantValue__4_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_ConstantValue__4_CAST_store
+objectiveFunction +=  + (73.6232)*C4_ConstantValue__4_CAST_store
 solver.Add( + (1)*ConstantValue__4_fixp + (1)*ConstantValue__4_CAST_store_double + (-1)*C5_ConstantValue__4_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_ConstantValue__4_CAST_store
+objectiveFunction +=  + (581.033)*C5_ConstantValue__4_CAST_store
 solver.Add( + (1)*ConstantValue__4_double + (1)*ConstantValue__4_CAST_store_fixp + (-1)*C6_ConstantValue__4_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_ConstantValue__4_CAST_store
+objectiveFunction +=  + (796.087)*C6_ConstantValue__4_CAST_store
 solver.Add( + (1)*ConstantValue__4_float + (1)*ConstantValue__4_CAST_store_double + (-1)*C7_ConstantValue__4_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_ConstantValue__4_CAST_store
+objectiveFunction +=  + (224.348)*C7_ConstantValue__4_CAST_store
 solver.Add( + (1)*ConstantValue__4_double + (1)*ConstantValue__4_CAST_store_float + (-1)*C8_ConstantValue__4_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_ConstantValue__4_CAST_store
+objectiveFunction +=  + (265.217)*C8_ConstantValue__4_CAST_store
 solver.Add( + (1)*main_corr_fixp + (-1)*ConstantValue__4_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_corr_float + (-1)*ConstantValue__4_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_corr_double + (-1)*ConstantValue__4_CAST_store_double==0)    #double equality
@@ -2110,8 +2110,8 @@ C1_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C1_ConstantValue__1_CAST
 C2_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C2_ConstantValue__1_CAST_store_1')
 solver.Add( + (1)*ConstantValue__1_fixbits + (-1)*ConstantValue__1_CAST_store_1_fixbits + (-10000)*C1_ConstantValue__1_CAST_store_1<=0)    #Shift cost 1
 solver.Add( + (-1)*ConstantValue__1_fixbits + (1)*ConstantValue__1_CAST_store_1_fixbits + (-10000)*C2_ConstantValue__1_CAST_store_1<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_ConstantValue__1_CAST_store_1
-objectiveFunction +=  + (500)*C2_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (50)*C1_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (50)*C2_ConstantValue__1_CAST_store_1
 C3_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C3_ConstantValue__1_CAST_store_1')
 C4_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C4_ConstantValue__1_CAST_store_1')
 C5_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C5_ConstantValue__1_CAST_store_1')
@@ -2119,17 +2119,17 @@ C6_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C6_ConstantValue__1_CAST
 C7_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C7_ConstantValue__1_CAST_store_1')
 C8_ConstantValue__1_CAST_store_1 = solver.IntVar(0, 1, 'C8_ConstantValue__1_CAST_store_1')
 solver.Add( + (1)*ConstantValue__1_fixp + (1)*ConstantValue__1_CAST_store_1_float + (-1)*C3_ConstantValue__1_CAST_store_1<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (312.613)*C3_ConstantValue__1_CAST_store_1
 solver.Add( + (1)*ConstantValue__1_float + (1)*ConstantValue__1_CAST_store_1_fixp + (-1)*C4_ConstantValue__1_CAST_store_1<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (73.6232)*C4_ConstantValue__1_CAST_store_1
 solver.Add( + (1)*ConstantValue__1_fixp + (1)*ConstantValue__1_CAST_store_1_double + (-1)*C5_ConstantValue__1_CAST_store_1<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (581.033)*C5_ConstantValue__1_CAST_store_1
 solver.Add( + (1)*ConstantValue__1_double + (1)*ConstantValue__1_CAST_store_1_fixp + (-1)*C6_ConstantValue__1_CAST_store_1<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (796.087)*C6_ConstantValue__1_CAST_store_1
 solver.Add( + (1)*ConstantValue__1_float + (1)*ConstantValue__1_CAST_store_1_double + (-1)*C7_ConstantValue__1_CAST_store_1<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (224.348)*C7_ConstantValue__1_CAST_store_1
 solver.Add( + (1)*ConstantValue__1_double + (1)*ConstantValue__1_CAST_store_1_float + (-1)*C8_ConstantValue__1_CAST_store_1<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_ConstantValue__1_CAST_store_1
+objectiveFunction +=  + (265.217)*C8_ConstantValue__1_CAST_store_1
 solver.Add( + (1)*main_corr_fixp + (-1)*ConstantValue__1_CAST_store_1_fixp==0)    #fix equality
 solver.Add( + (1)*main_corr_float + (-1)*ConstantValue__1_CAST_store_1_float==0)    #float equality
 solver.Add( + (1)*main_corr_double + (-1)*ConstantValue__1_CAST_store_1_double==0)    #double equality
@@ -2198,8 +2198,8 @@ C1_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C1_main_data_CAST_mul163')
 C2_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C2_main_data_CAST_mul163')
 solver.Add( + (1)*main_data_fixbits + (-1)*main_data_CAST_mul163_fixbits + (-10000)*C1_main_data_CAST_mul163<=0)    #Shift cost 1
 solver.Add( + (-1)*main_data_fixbits + (1)*main_data_CAST_mul163_fixbits + (-10000)*C2_main_data_CAST_mul163<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_data_CAST_mul163
-objectiveFunction +=  + (500)*C2_main_data_CAST_mul163
+objectiveFunction +=  + (50)*C1_main_data_CAST_mul163
+objectiveFunction +=  + (50)*C2_main_data_CAST_mul163
 C3_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C3_main_data_CAST_mul163')
 C4_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C4_main_data_CAST_mul163')
 C5_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C5_main_data_CAST_mul163')
@@ -2207,17 +2207,17 @@ C6_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C6_main_data_CAST_mul163')
 C7_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C7_main_data_CAST_mul163')
 C8_main_data_CAST_mul163 = solver.IntVar(0, 1, 'C8_main_data_CAST_mul163')
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_mul163_float + (-1)*C3_main_data_CAST_mul163<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_data_CAST_mul163
+objectiveFunction +=  + (312.613)*C3_main_data_CAST_mul163
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_mul163_fixp + (-1)*C4_main_data_CAST_mul163<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_data_CAST_mul163
+objectiveFunction +=  + (73.6232)*C4_main_data_CAST_mul163
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_mul163_double + (-1)*C5_main_data_CAST_mul163<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_data_CAST_mul163
+objectiveFunction +=  + (581.033)*C5_main_data_CAST_mul163
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_mul163_fixp + (-1)*C6_main_data_CAST_mul163<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_data_CAST_mul163
+objectiveFunction +=  + (796.087)*C6_main_data_CAST_mul163
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_mul163_double + (-1)*C7_main_data_CAST_mul163<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_data_CAST_mul163
+objectiveFunction +=  + (224.348)*C7_main_data_CAST_mul163
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_mul163_float + (-1)*C8_main_data_CAST_mul163<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_data_CAST_mul163
+objectiveFunction +=  + (265.217)*C8_main_data_CAST_mul163
 
 
 
@@ -2232,8 +2232,8 @@ C1_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C1_main_data_CAST_mul163_0')
 C2_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C2_main_data_CAST_mul163_0')
 solver.Add( + (1)*main_data_fixbits + (-1)*main_data_CAST_mul163_0_fixbits + (-10000)*C1_main_data_CAST_mul163_0<=0)    #Shift cost 1
 solver.Add( + (-1)*main_data_fixbits + (1)*main_data_CAST_mul163_0_fixbits + (-10000)*C2_main_data_CAST_mul163_0<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_data_CAST_mul163_0
-objectiveFunction +=  + (500)*C2_main_data_CAST_mul163_0
+objectiveFunction +=  + (50)*C1_main_data_CAST_mul163_0
+objectiveFunction +=  + (50)*C2_main_data_CAST_mul163_0
 C3_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C3_main_data_CAST_mul163_0')
 C4_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C4_main_data_CAST_mul163_0')
 C5_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C5_main_data_CAST_mul163_0')
@@ -2241,17 +2241,17 @@ C6_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C6_main_data_CAST_mul163_0')
 C7_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C7_main_data_CAST_mul163_0')
 C8_main_data_CAST_mul163_0 = solver.IntVar(0, 1, 'C8_main_data_CAST_mul163_0')
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_mul163_0_float + (-1)*C3_main_data_CAST_mul163_0<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_data_CAST_mul163_0
+objectiveFunction +=  + (312.613)*C3_main_data_CAST_mul163_0
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_mul163_0_fixp + (-1)*C4_main_data_CAST_mul163_0<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_data_CAST_mul163_0
+objectiveFunction +=  + (73.6232)*C4_main_data_CAST_mul163_0
 solver.Add( + (1)*main_data_fixp + (1)*main_data_CAST_mul163_0_double + (-1)*C5_main_data_CAST_mul163_0<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_data_CAST_mul163_0
+objectiveFunction +=  + (581.033)*C5_main_data_CAST_mul163_0
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_mul163_0_fixp + (-1)*C6_main_data_CAST_mul163_0<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_data_CAST_mul163_0
+objectiveFunction +=  + (796.087)*C6_main_data_CAST_mul163_0
 solver.Add( + (1)*main_data_float + (1)*main_data_CAST_mul163_0_double + (-1)*C7_main_data_CAST_mul163_0<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_data_CAST_mul163_0
+objectiveFunction +=  + (224.348)*C7_main_data_CAST_mul163_0
 solver.Add( + (1)*main_data_double + (1)*main_data_CAST_mul163_0_float + (-1)*C8_main_data_CAST_mul163_0<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_data_CAST_mul163_0
+objectiveFunction +=  + (265.217)*C8_main_data_CAST_mul163_0
 
 
 
@@ -2266,7 +2266,7 @@ solver.Add( + (1)*main_mul163_enob + (10000)*main_mul163_float<=10149)    #Enob 
 solver.Add( + (1)*main_mul163_enob + (10000)*main_mul163_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_mul163_fixbits + (-10000)*main_mul163_fixp>=-9971)    #Limit the lower number of frac bits30
 solver.Add( + (1)*main_mul163_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_mul163_enob
+objectiveFunction +=  + (-1)*main_mul163_enob
 solver.Add( + (1)*main_mul163_fixp + (1)*main_mul163_float + (1)*main_mul163_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_mul163_fixbits + (-10000)*main_mul163_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_data_CAST_mul163_fixp + (-1)*main_data_CAST_mul163_0_fixp==0)    #fix equality
@@ -2275,9 +2275,9 @@ solver.Add( + (1)*main_data_CAST_mul163_double + (-1)*main_data_CAST_mul163_0_do
 solver.Add( + (1)*main_data_CAST_mul163_fixp + (-1)*main_mul163_fixp==0)    #fix equality
 solver.Add( + (1)*main_data_CAST_mul163_float + (-1)*main_mul163_float==0)    #float equality
 solver.Add( + (1)*main_data_CAST_mul163_double + (-1)*main_mul163_double==0)    #double equality
-objectiveFunction +=  + (1652.17)*main_mul163_fixp
-objectiveFunction +=  + (6000)*main_mul163_float
-objectiveFunction +=  + (12255.1)*main_mul163_double
+objectiveFunction +=  + (165.217)*main_mul163_fixp
+objectiveFunction +=  + (600)*main_mul163_float
+objectiveFunction +=  + (1225.51)*main_mul163_double
 main_main_mul163_enob_1 = solver.IntVar(0, 1, 'main_main_mul163_enob_1')
 main_main_mul163_enob_2 = solver.IntVar(0, 1, 'main_main_mul163_enob_2')
 solver.Add( + (1)*main_main_mul163_enob_1 + (1)*main_main_mul163_enob_2==1)    #Enob: one selected constraint
@@ -2303,8 +2303,8 @@ C1_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C1_main_corr_CAST_add168')
 C2_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C2_main_corr_CAST_add168')
 solver.Add( + (1)*main_corr_fixbits + (-1)*main_corr_CAST_add168_fixbits + (-10000)*C1_main_corr_CAST_add168<=0)    #Shift cost 1
 solver.Add( + (-1)*main_corr_fixbits + (1)*main_corr_CAST_add168_fixbits + (-10000)*C2_main_corr_CAST_add168<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_corr_CAST_add168
-objectiveFunction +=  + (500)*C2_main_corr_CAST_add168
+objectiveFunction +=  + (50)*C1_main_corr_CAST_add168
+objectiveFunction +=  + (50)*C2_main_corr_CAST_add168
 C3_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C3_main_corr_CAST_add168')
 C4_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C4_main_corr_CAST_add168')
 C5_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C5_main_corr_CAST_add168')
@@ -2312,17 +2312,17 @@ C6_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C6_main_corr_CAST_add168')
 C7_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C7_main_corr_CAST_add168')
 C8_main_corr_CAST_add168 = solver.IntVar(0, 1, 'C8_main_corr_CAST_add168')
 solver.Add( + (1)*main_corr_fixp + (1)*main_corr_CAST_add168_float + (-1)*C3_main_corr_CAST_add168<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_corr_CAST_add168
+objectiveFunction +=  + (312.613)*C3_main_corr_CAST_add168
 solver.Add( + (1)*main_corr_float + (1)*main_corr_CAST_add168_fixp + (-1)*C4_main_corr_CAST_add168<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_corr_CAST_add168
+objectiveFunction +=  + (73.6232)*C4_main_corr_CAST_add168
 solver.Add( + (1)*main_corr_fixp + (1)*main_corr_CAST_add168_double + (-1)*C5_main_corr_CAST_add168<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_corr_CAST_add168
+objectiveFunction +=  + (581.033)*C5_main_corr_CAST_add168
 solver.Add( + (1)*main_corr_double + (1)*main_corr_CAST_add168_fixp + (-1)*C6_main_corr_CAST_add168<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_corr_CAST_add168
+objectiveFunction +=  + (796.087)*C6_main_corr_CAST_add168
 solver.Add( + (1)*main_corr_float + (1)*main_corr_CAST_add168_double + (-1)*C7_main_corr_CAST_add168<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_corr_CAST_add168
+objectiveFunction +=  + (224.348)*C7_main_corr_CAST_add168
 solver.Add( + (1)*main_corr_double + (1)*main_corr_CAST_add168_float + (-1)*C8_main_corr_CAST_add168<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_corr_CAST_add168
+objectiveFunction +=  + (265.217)*C8_main_corr_CAST_add168
 
 
 
@@ -2337,8 +2337,8 @@ C1_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C1_main_mul163_CAST_add168')
 C2_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C2_main_mul163_CAST_add168')
 solver.Add( + (1)*main_mul163_fixbits + (-1)*main_mul163_CAST_add168_fixbits + (-10000)*C1_main_mul163_CAST_add168<=0)    #Shift cost 1
 solver.Add( + (-1)*main_mul163_fixbits + (1)*main_mul163_CAST_add168_fixbits + (-10000)*C2_main_mul163_CAST_add168<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_mul163_CAST_add168
-objectiveFunction +=  + (500)*C2_main_mul163_CAST_add168
+objectiveFunction +=  + (50)*C1_main_mul163_CAST_add168
+objectiveFunction +=  + (50)*C2_main_mul163_CAST_add168
 C3_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C3_main_mul163_CAST_add168')
 C4_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C4_main_mul163_CAST_add168')
 C5_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C5_main_mul163_CAST_add168')
@@ -2346,17 +2346,17 @@ C6_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C6_main_mul163_CAST_add168')
 C7_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C7_main_mul163_CAST_add168')
 C8_main_mul163_CAST_add168 = solver.IntVar(0, 1, 'C8_main_mul163_CAST_add168')
 solver.Add( + (1)*main_mul163_fixp + (1)*main_mul163_CAST_add168_float + (-1)*C3_main_mul163_CAST_add168<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_mul163_CAST_add168
+objectiveFunction +=  + (312.613)*C3_main_mul163_CAST_add168
 solver.Add( + (1)*main_mul163_float + (1)*main_mul163_CAST_add168_fixp + (-1)*C4_main_mul163_CAST_add168<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_mul163_CAST_add168
+objectiveFunction +=  + (73.6232)*C4_main_mul163_CAST_add168
 solver.Add( + (1)*main_mul163_fixp + (1)*main_mul163_CAST_add168_double + (-1)*C5_main_mul163_CAST_add168<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_mul163_CAST_add168
+objectiveFunction +=  + (581.033)*C5_main_mul163_CAST_add168
 solver.Add( + (1)*main_mul163_double + (1)*main_mul163_CAST_add168_fixp + (-1)*C6_main_mul163_CAST_add168<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_mul163_CAST_add168
+objectiveFunction +=  + (796.087)*C6_main_mul163_CAST_add168
 solver.Add( + (1)*main_mul163_float + (1)*main_mul163_CAST_add168_double + (-1)*C7_main_mul163_CAST_add168<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_mul163_CAST_add168
+objectiveFunction +=  + (224.348)*C7_main_mul163_CAST_add168
 solver.Add( + (1)*main_mul163_double + (1)*main_mul163_CAST_add168_float + (-1)*C8_main_mul163_CAST_add168<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_mul163_CAST_add168
+objectiveFunction +=  + (265.217)*C8_main_mul163_CAST_add168
 
 
 
@@ -2371,7 +2371,7 @@ solver.Add( + (1)*main_add168_enob + (10000)*main_add168_float<=10149)    #Enob 
 solver.Add( + (1)*main_add168_enob + (10000)*main_add168_double<=11074)    #Enob constraint for double
 solver.Add( + (1)*main_add168_fixbits + (-10000)*main_add168_fixp>=-9972)    #Limit the lower number of frac bits29
 solver.Add( + (1)*main_add168_enob<=4)    #Enob constraint for error maximal
-objectiveFunction +=  + (-20)*main_add168_enob
+objectiveFunction +=  + (-1)*main_add168_enob
 solver.Add( + (1)*main_add168_fixp + (1)*main_add168_float + (1)*main_add168_double==1)    #Exactly one selected type
 solver.Add( + (1)*main_add168_fixbits + (-10000)*main_add168_fixp<=0)    #If not fix, frac part to zero
 solver.Add( + (1)*main_corr_CAST_add168_fixp + (-1)*main_mul163_CAST_add168_fixp==0)    #fix equality
@@ -2382,9 +2382,9 @@ solver.Add( + (1)*main_corr_CAST_add168_fixp + (-1)*main_add168_fixp==0)    #fix
 solver.Add( + (1)*main_corr_CAST_add168_float + (-1)*main_add168_float==0)    #float equality
 solver.Add( + (1)*main_corr_CAST_add168_double + (-1)*main_add168_double==0)    #double equality
 solver.Add( + (1)*main_corr_CAST_add168_fixbits + (-1)*main_add168_fixbits==0)    #same fractional bit
-objectiveFunction +=  + (1272.46)*main_add168_fixp
-objectiveFunction +=  + (3000)*main_add168_float
-objectiveFunction +=  + (6649.28)*main_add168_double
+objectiveFunction +=  + (127.246)*main_add168_fixp
+objectiveFunction +=  + (300)*main_add168_float
+objectiveFunction +=  + (664.928)*main_add168_double
 solver.Add( + (1)*main_add168_enob + (-1)*main_corr_enob_memphi_main_tmp18<=0)    #Enob propagation in sum first addend
 solver.Add( + (1)*main_add168_enob + (-1)*main_mul163_enob<=0)    #Enob propagation in sum second addend
 
@@ -2401,8 +2401,8 @@ C1_main_add168_CAST_store = solver.IntVar(0, 1, 'C1_main_add168_CAST_store')
 C2_main_add168_CAST_store = solver.IntVar(0, 1, 'C2_main_add168_CAST_store')
 solver.Add( + (1)*main_add168_fixbits + (-1)*main_add168_CAST_store_fixbits + (-10000)*C1_main_add168_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_add168_fixbits + (1)*main_add168_CAST_store_fixbits + (-10000)*C2_main_add168_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_add168_CAST_store
-objectiveFunction +=  + (500)*C2_main_add168_CAST_store
+objectiveFunction +=  + (50)*C1_main_add168_CAST_store
+objectiveFunction +=  + (50)*C2_main_add168_CAST_store
 C3_main_add168_CAST_store = solver.IntVar(0, 1, 'C3_main_add168_CAST_store')
 C4_main_add168_CAST_store = solver.IntVar(0, 1, 'C4_main_add168_CAST_store')
 C5_main_add168_CAST_store = solver.IntVar(0, 1, 'C5_main_add168_CAST_store')
@@ -2410,17 +2410,17 @@ C6_main_add168_CAST_store = solver.IntVar(0, 1, 'C6_main_add168_CAST_store')
 C7_main_add168_CAST_store = solver.IntVar(0, 1, 'C7_main_add168_CAST_store')
 C8_main_add168_CAST_store = solver.IntVar(0, 1, 'C8_main_add168_CAST_store')
 solver.Add( + (1)*main_add168_fixp + (1)*main_add168_CAST_store_float + (-1)*C3_main_add168_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_add168_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_add168_CAST_store
 solver.Add( + (1)*main_add168_float + (1)*main_add168_CAST_store_fixp + (-1)*C4_main_add168_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_add168_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_add168_CAST_store
 solver.Add( + (1)*main_add168_fixp + (1)*main_add168_CAST_store_double + (-1)*C5_main_add168_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_add168_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_add168_CAST_store
 solver.Add( + (1)*main_add168_double + (1)*main_add168_CAST_store_fixp + (-1)*C6_main_add168_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_add168_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_add168_CAST_store
 solver.Add( + (1)*main_add168_float + (1)*main_add168_CAST_store_double + (-1)*C7_main_add168_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_add168_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_add168_CAST_store
 solver.Add( + (1)*main_add168_double + (1)*main_add168_CAST_store_float + (-1)*C8_main_add168_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_add168_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_add168_CAST_store
 solver.Add( + (1)*main_corr_fixp + (-1)*main_add168_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_corr_float + (-1)*main_add168_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_corr_double + (-1)*main_add168_CAST_store_double==0)    #double equality
@@ -2463,8 +2463,8 @@ C1_main_corr_CAST_store = solver.IntVar(0, 1, 'C1_main_corr_CAST_store')
 C2_main_corr_CAST_store = solver.IntVar(0, 1, 'C2_main_corr_CAST_store')
 solver.Add( + (1)*main_corr_fixbits + (-1)*main_corr_CAST_store_fixbits + (-10000)*C1_main_corr_CAST_store<=0)    #Shift cost 1
 solver.Add( + (-1)*main_corr_fixbits + (1)*main_corr_CAST_store_fixbits + (-10000)*C2_main_corr_CAST_store<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_corr_CAST_store
-objectiveFunction +=  + (500)*C2_main_corr_CAST_store
+objectiveFunction +=  + (50)*C1_main_corr_CAST_store
+objectiveFunction +=  + (50)*C2_main_corr_CAST_store
 C3_main_corr_CAST_store = solver.IntVar(0, 1, 'C3_main_corr_CAST_store')
 C4_main_corr_CAST_store = solver.IntVar(0, 1, 'C4_main_corr_CAST_store')
 C5_main_corr_CAST_store = solver.IntVar(0, 1, 'C5_main_corr_CAST_store')
@@ -2472,17 +2472,17 @@ C6_main_corr_CAST_store = solver.IntVar(0, 1, 'C6_main_corr_CAST_store')
 C7_main_corr_CAST_store = solver.IntVar(0, 1, 'C7_main_corr_CAST_store')
 C8_main_corr_CAST_store = solver.IntVar(0, 1, 'C8_main_corr_CAST_store')
 solver.Add( + (1)*main_corr_fixp + (1)*main_corr_CAST_store_float + (-1)*C3_main_corr_CAST_store<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_corr_CAST_store
+objectiveFunction +=  + (312.613)*C3_main_corr_CAST_store
 solver.Add( + (1)*main_corr_float + (1)*main_corr_CAST_store_fixp + (-1)*C4_main_corr_CAST_store<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_corr_CAST_store
+objectiveFunction +=  + (73.6232)*C4_main_corr_CAST_store
 solver.Add( + (1)*main_corr_fixp + (1)*main_corr_CAST_store_double + (-1)*C5_main_corr_CAST_store<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_corr_CAST_store
+objectiveFunction +=  + (581.033)*C5_main_corr_CAST_store
 solver.Add( + (1)*main_corr_double + (1)*main_corr_CAST_store_fixp + (-1)*C6_main_corr_CAST_store<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_corr_CAST_store
+objectiveFunction +=  + (796.087)*C6_main_corr_CAST_store
 solver.Add( + (1)*main_corr_float + (1)*main_corr_CAST_store_double + (-1)*C7_main_corr_CAST_store<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_corr_CAST_store
+objectiveFunction +=  + (224.348)*C7_main_corr_CAST_store
 solver.Add( + (1)*main_corr_double + (1)*main_corr_CAST_store_float + (-1)*C8_main_corr_CAST_store<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_corr_CAST_store
+objectiveFunction +=  + (265.217)*C8_main_corr_CAST_store
 solver.Add( + (1)*main_corr_fixp + (-1)*main_corr_CAST_store_fixp==0)    #fix equality
 solver.Add( + (1)*main_corr_float + (-1)*main_corr_CAST_store_float==0)    #float equality
 solver.Add( + (1)*main_corr_double + (-1)*main_corr_CAST_store_double==0)    #double equality
@@ -2509,8 +2509,8 @@ C1_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C1_ConstantValue__4_CAST
 C2_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C2_ConstantValue__4_CAST_store_0')
 solver.Add( + (1)*ConstantValue__4_fixbits + (-1)*ConstantValue__4_CAST_store_0_fixbits + (-10000)*C1_ConstantValue__4_CAST_store_0<=0)    #Shift cost 1
 solver.Add( + (-1)*ConstantValue__4_fixbits + (1)*ConstantValue__4_CAST_store_0_fixbits + (-10000)*C2_ConstantValue__4_CAST_store_0<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_ConstantValue__4_CAST_store_0
-objectiveFunction +=  + (500)*C2_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (50)*C1_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (50)*C2_ConstantValue__4_CAST_store_0
 C3_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C3_ConstantValue__4_CAST_store_0')
 C4_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C4_ConstantValue__4_CAST_store_0')
 C5_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C5_ConstantValue__4_CAST_store_0')
@@ -2518,17 +2518,17 @@ C6_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C6_ConstantValue__4_CAST
 C7_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C7_ConstantValue__4_CAST_store_0')
 C8_ConstantValue__4_CAST_store_0 = solver.IntVar(0, 1, 'C8_ConstantValue__4_CAST_store_0')
 solver.Add( + (1)*ConstantValue__4_fixp + (1)*ConstantValue__4_CAST_store_0_float + (-1)*C3_ConstantValue__4_CAST_store_0<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (312.613)*C3_ConstantValue__4_CAST_store_0
 solver.Add( + (1)*ConstantValue__4_float + (1)*ConstantValue__4_CAST_store_0_fixp + (-1)*C4_ConstantValue__4_CAST_store_0<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (73.6232)*C4_ConstantValue__4_CAST_store_0
 solver.Add( + (1)*ConstantValue__4_fixp + (1)*ConstantValue__4_CAST_store_0_double + (-1)*C5_ConstantValue__4_CAST_store_0<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (581.033)*C5_ConstantValue__4_CAST_store_0
 solver.Add( + (1)*ConstantValue__4_double + (1)*ConstantValue__4_CAST_store_0_fixp + (-1)*C6_ConstantValue__4_CAST_store_0<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (796.087)*C6_ConstantValue__4_CAST_store_0
 solver.Add( + (1)*ConstantValue__4_float + (1)*ConstantValue__4_CAST_store_0_double + (-1)*C7_ConstantValue__4_CAST_store_0<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (224.348)*C7_ConstantValue__4_CAST_store_0
 solver.Add( + (1)*ConstantValue__4_double + (1)*ConstantValue__4_CAST_store_0_float + (-1)*C8_ConstantValue__4_CAST_store_0<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_ConstantValue__4_CAST_store_0
+objectiveFunction +=  + (265.217)*C8_ConstantValue__4_CAST_store_0
 solver.Add( + (1)*main_corr_fixp + (-1)*ConstantValue__4_CAST_store_0_fixp==0)    #fix equality
 solver.Add( + (1)*main_corr_float + (-1)*ConstantValue__4_CAST_store_0_float==0)    #float equality
 solver.Add( + (1)*main_corr_double + (-1)*ConstantValue__4_CAST_store_0_double==0)    #double equality
@@ -2553,8 +2553,8 @@ C1_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C1_main_corr_CAST_call202')
 C2_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C2_main_corr_CAST_call202')
 solver.Add( + (1)*main_corr_fixbits + (-1)*main_corr_CAST_call202_fixbits + (-10000)*C1_main_corr_CAST_call202<=0)    #Shift cost 1
 solver.Add( + (-1)*main_corr_fixbits + (1)*main_corr_CAST_call202_fixbits + (-10000)*C2_main_corr_CAST_call202<=0)    #Shift cost 2
-objectiveFunction +=  + (500)*C1_main_corr_CAST_call202
-objectiveFunction +=  + (500)*C2_main_corr_CAST_call202
+objectiveFunction +=  + (50)*C1_main_corr_CAST_call202
+objectiveFunction +=  + (50)*C2_main_corr_CAST_call202
 C3_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C3_main_corr_CAST_call202')
 C4_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C4_main_corr_CAST_call202')
 C5_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C5_main_corr_CAST_call202')
@@ -2562,17 +2562,17 @@ C6_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C6_main_corr_CAST_call202')
 C7_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C7_main_corr_CAST_call202')
 C8_main_corr_CAST_call202 = solver.IntVar(0, 1, 'C8_main_corr_CAST_call202')
 solver.Add( + (1)*main_corr_fixp + (1)*main_corr_CAST_call202_float + (-1)*C3_main_corr_CAST_call202<=1)    #Fix to float
-objectiveFunction +=  + (3126.13)*C3_main_corr_CAST_call202
+objectiveFunction +=  + (312.613)*C3_main_corr_CAST_call202
 solver.Add( + (1)*main_corr_float + (1)*main_corr_CAST_call202_fixp + (-1)*C4_main_corr_CAST_call202<=1)    #Float to fix
-objectiveFunction +=  + (736.232)*C4_main_corr_CAST_call202
+objectiveFunction +=  + (73.6232)*C4_main_corr_CAST_call202
 solver.Add( + (1)*main_corr_fixp + (1)*main_corr_CAST_call202_double + (-1)*C5_main_corr_CAST_call202<=1)    #Fix to double
-objectiveFunction +=  + (5810.33)*C5_main_corr_CAST_call202
+objectiveFunction +=  + (581.033)*C5_main_corr_CAST_call202
 solver.Add( + (1)*main_corr_double + (1)*main_corr_CAST_call202_fixp + (-1)*C6_main_corr_CAST_call202<=1)    #Double to fix
-objectiveFunction +=  + (7960.87)*C6_main_corr_CAST_call202
+objectiveFunction +=  + (796.087)*C6_main_corr_CAST_call202
 solver.Add( + (1)*main_corr_float + (1)*main_corr_CAST_call202_double + (-1)*C7_main_corr_CAST_call202<=1)    #Float to double
-objectiveFunction +=  + (2243.48)*C7_main_corr_CAST_call202
+objectiveFunction +=  + (224.348)*C7_main_corr_CAST_call202
 solver.Add( + (1)*main_corr_double + (1)*main_corr_CAST_call202_float + (-1)*C8_main_corr_CAST_call202<=1)    #Double to float
-objectiveFunction +=  + (2652.17)*C8_main_corr_CAST_call202
+objectiveFunction +=  + (265.217)*C8_main_corr_CAST_call202
 solver.Add( + (1)*main_corr_CAST_call202_double==1)    #Type constraint for argument value
 
 

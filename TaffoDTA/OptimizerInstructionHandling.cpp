@@ -690,8 +690,8 @@ void Optimizer::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
     constraint.clear();
     constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
-    constraint.push_back(make_pair(enob_var, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob: forcing phi enob");
+    constraint.push_back(make_pair(enob_var, BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob: forcing phi enob");
 
 
     phiWatcher.closePhiLoop(phiNode, requestedValue);
