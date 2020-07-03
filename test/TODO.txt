@@ -4,6 +4,8 @@ Implement inserting cost proportional to number of execution
 
 Enob propagation (WIP, known math functions calls not handled)
 
+Group costs per category (WIP)
+
 Avoid error in empty models
 
 Obiettivo: sviluppare due (o più) policy per i seguenti use case:

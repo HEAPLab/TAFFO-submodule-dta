@@ -170,18 +170,17 @@ bool Model::isVariableDeclared(const string& variable) {
     return variablesPool.count(variable)!=0;
 }
 
-bool created = false;
 
-void Model::insertObjectiveElement(const pair<string, double> &p) {
+void Model::insertObjectiveElement(const pair<string, double> &p, string costName) {
     assert(isVariableDeclared(p.first) && "Variable not declared!");
 
     string operand = " += ";
-    if(!created){
+    if(objDeclarationOccoured.find(costName) == objDeclarationOccoured.end() || !objDeclarationOccoured[costName]){
         operand = " = ";
-        created = true;
+        objDeclarationOccoured.insert(make_pair(costName, true));
     }
 
-    modelFile << "objectiveFunction" << operand;
+    modelFile <<  costName << operand;
 
     if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
         modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
@@ -200,6 +199,8 @@ void Model::writeOutObjectiveFunction() {
 
     this->insertComment("All the model has been generated, lets solve it!", 5);
 
+
+
     switch (problemType) {
         case MIN:
             modelFile << "solver.Minimize";
@@ -211,19 +212,37 @@ void Model::writeOutObjectiveFunction() {
 
     modelFile<<"(";
 
-    /*for (auto p : objectiveFunction) {
-        if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
-            modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
-            continue;
+    int i =0;
+    for(auto a : objDeclarationOccoured){
+        if(i>0){
+            modelFile<< "+ ";
         }
-        modelFile << " + (" << p.second << ")*" << p.first;
-    }*/
 
-    modelFile << "objectiveFunction";
+        modelFile << getMultiplier(a.first) << " * " << a.first << " ";
+        i++;
+    }
+
+    //modelFile << "objectiveFunction";
 
 
     modelFile<<")\n\n";
 
+}
+
+double Model::getMultiplier(string var){
+    if(var == MODEL_OBJ_CASTCOST){
+        return MixedTuningCastingTime;
+    }
+
+    if(var == MODEL_OBJ_ENOB){
+        return MixedTuningENOB;
+    }
+
+    if(var == MODEL_OBJ_MATHCOST){
+        return MixedTuningTime;
+    }
+
+    llvm_unreachable("Cost variable not declared.");
 }
 
 bool Model::VARIABLE_NOT_DECLARED(string var){

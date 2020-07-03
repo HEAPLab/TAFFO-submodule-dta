@@ -171,7 +171,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
             make_pair(optimizerInfo->getDoubleSelectedVariable(), (-1) * TUNING_ENOB * ENOBdouble));*/
     if(insertENOBinMin) {
         model.insertObjectiveElement(
-                make_pair(optimizerInfo->getRealEnobVariable(), (-1) * TUNING_ENOB));
+                make_pair(optimizerInfo->getRealEnobVariable(), (-1)), MODEL_OBJ_ENOB);
     }
 
     //Constraint for mixed precision: only one constraint active at one time:
@@ -471,8 +471,8 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     model.insertLinearConstraint(constraint, Model::LE, 0, "Shift cost 2");
 
     //Casting costs
-    model.insertObjectiveElement(make_pair(C1, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)));
-    model.insertObjectiveElement(make_pair(C2, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)));
+    model.insertObjectiveElement(make_pair(C1, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)), MODEL_OBJ_CASTCOST);
+    model.insertObjectiveElement(make_pair(C2, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)), MODEL_OBJ_CASTCOST);
 
 
 
@@ -501,7 +501,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C3, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1, "Fix to float");
-    model.insertObjectiveElement(make_pair(C3, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FLOAT)));
+    model.insertObjectiveElement(make_pair(C3, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FLOAT)), MODEL_OBJ_CASTCOST);
 
 
     //FLOAT to FIX
@@ -510,7 +510,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C4, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1, "Float to fix");
-    model.insertObjectiveElement(make_pair(C4, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_FIX)));
+    model.insertObjectiveElement(make_pair(C4, I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_FIX)), MODEL_OBJ_CASTCOST);
 
     //FIX to DOUBLE
     constraint.clear();
@@ -518,7 +518,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C5, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1, "Fix to double");
-    model.insertObjectiveElement(make_pair(C5, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_DOUBLE)));
+    model.insertObjectiveElement(make_pair(C5, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_DOUBLE)), MODEL_OBJ_CASTCOST);
 
 
     //DOUBLE to FIX
@@ -527,7 +527,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
     constraint.push_back(make_pair(C6, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1, "Double to fix");
-    model.insertObjectiveElement(make_pair(C6, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FIX)));
+    model.insertObjectiveElement(make_pair(C6, I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FIX)), MODEL_OBJ_CASTCOST);
 
 
 
@@ -538,7 +538,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(C7, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1, "Float to double");
     model.insertObjectiveElement(
-            make_pair(C7, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_DOUBLE)));
+            make_pair(C7, I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_DOUBLE)), MODEL_OBJ_CASTCOST);
 
 
     //DOUBLE to FLOAT
@@ -548,7 +548,7 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(C8, -1));
     model.insertLinearConstraint(constraint, Model::LE, 1, "Double to float");
     model.insertObjectiveElement(
-            make_pair(C8, TUNING_CASTING * I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FLOAT)));
+            make_pair(C8, I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FLOAT)), MODEL_OBJ_CASTCOST);
 
 
     return optimizerInfo;

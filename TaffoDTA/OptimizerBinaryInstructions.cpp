@@ -66,11 +66,14 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     if (!res) return;
 
     model.insertObjectiveElement(
-            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)));
+            make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)));
+            make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)));
+            make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)),
+            MODEL_OBJ_MATHCOST);
 
     //enob constraint
     auto constraint = vector<pair<string, double>>();
@@ -105,11 +108,14 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     if (!res) return;
 
     model.insertObjectiveElement(
-            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FIX)));
+            make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_FIX)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_FLOAT)));
+            make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_FLOAT)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)));
+            make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)),
+            MODEL_OBJ_MATHCOST);
 
     //Precision cost
     //Handloed in allocating variable
@@ -143,11 +149,14 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     if (!res) return;
 
     model.insertObjectiveElement(
-            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FIX)));
+            make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_FIX)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_FLOAT)));
+            make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_FLOAT)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)));
+            make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)),
+            MODEL_OBJ_MATHCOST);
 
     //Precision cost
     //Handloed in allocating variable
@@ -208,11 +217,14 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     if (!res) return;
 
     model.insertObjectiveElement(
-            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FIX)));
+            make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_FIX)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_FLOAT)));
+            make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_FLOAT)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)));
+            make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)),
+            MODEL_OBJ_MATHCOST);
     //Precision cost
     //Handled in allocating variable
 
@@ -246,14 +258,14 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_selection_1, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, -intbit_1+2*maxbits2, "Enob: propagation in division 1");
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_1 + 2 * maxbits2, "Enob: propagation in division 1");
 
 
     constraint.clear();
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_selection_2, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, -intbit_2+2*maxbits2, "Enob: propagation in division 2");
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_2 + 2 * maxbits2, "Enob: propagation in division 2");
 
 }
 
@@ -269,11 +281,14 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
     if (!res) return;
 
     model.insertObjectiveElement(
-            make_pair(res->getFixedSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FIX)));
+            make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_FIX)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getFloatSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_FLOAT)));
+            make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_FLOAT)),
+            MODEL_OBJ_MATHCOST);
     model.insertObjectiveElement(
-            make_pair(res->getDoubleSelectedVariable(), TUNING_MATH * I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)));
+            make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)),
+            MODEL_OBJ_MATHCOST);
     //Precision cost
     //Handloed in allocating variable
 
@@ -312,7 +327,8 @@ Optimizer::handleBinOpCommon(Instruction *instr, Value *op1, Value *op2, bool fo
 
 
     //Obviously the type should be sufficient to contain the result
-    shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instr, fptype, inputInfo->IRange, inputInfo->IError,
+    shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instr, fptype, inputInfo->IRange,
+                                                                         inputInfo->IError,
                                                                          instr->getFunction()->getName());
 
     insertTypeEqualityConstraint(varCast1, varCast2, forceFixEquality);
