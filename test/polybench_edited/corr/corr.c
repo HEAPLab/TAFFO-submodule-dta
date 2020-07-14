@@ -8,10 +8,10 @@
 #define M 32
 #define DATA_TYPE double
 int main(){
-    DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(0.1))"))) mean[M];
-    DATA_TYPE __attribute((annotate("scalar(range(-0.5, 0.5) error(0.1) final)"))) data[N][M];
-    DATA_TYPE __attribute((annotate("scalar(range(0, 5) error(0.1) final)"))) corr[M][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) error(0.1) final)"))) stddev[M];
+    DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(1e-100))"))) mean[M];
+    DATA_TYPE __attribute((annotate("scalar(range(-0.5, 0.5) error(1e-100) final)"))) data[N][M];
+    DATA_TYPE __attribute((annotate("scalar(range(0, 5) error(1e-100) final)"))) corr[M][M];
+    DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) error(1e-100) final)"))) stddev[M];
 
 
 
@@ -20,7 +20,7 @@ int main(){
     int __attribute((annotate("scalar(range(0, 32) final disabled)"))) k;
 
 
-    __attribute((annotate("scalar(range(1, 3000) error(0.1))"))) float_n;
+    DATA_TYPE __attribute((annotate("scalar(range(1, 3000) error(1e-100))"))) float_n;
     float_n = (DATA_TYPE)N;
 
     for (i = 0; i < N; i++)
@@ -111,10 +111,10 @@ int main(){
 
 
     //Print
-    printf("\n\nCORR:\n");
+    //printf("\n\nCORR:\n");
     for (i = 0; i < M; i++) {
         for (j = 0; j < M; j++) {
-            printf("%f ", corr[i][j]);
+            printf("%.10f ", corr[i][j]);
         }
         printf("\n");
     }

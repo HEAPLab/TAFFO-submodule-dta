@@ -4,9 +4,7 @@ Implement inserting cost proportional to number of execution
 
 Enob propagation (WIP, known math functions calls not handled)
 
-Group costs per category (WIP)
-
-Avoid error in empty models
+Avoid error in empty models (this should not even happen...)
 
 Obiettivo: sviluppare due (o più) policy per i seguenti use case:
 - ottimizza i data type, partendo da "tutto double" e inserendo 0 errore
@@ -16,6 +14,7 @@ Obiettivo: sviluppare due (o più) policy per i seguenti use case:
 
 
 TESTING:
+Group costs per category
 Implement SELECT instruction
 Add forced cast to original type if in general the function to call is not known
 Handling correctly storing costants/phi of costants in enob

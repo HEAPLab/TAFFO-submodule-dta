@@ -30,12 +30,18 @@ if status == pywraplp.Solver.OPTIMAL:
     print('Solution:')
     print('Objective value =', solver.Objective().Value())
 
+
+
+    print("CASTCOST =", castCostObj.solution_value())
+    print("ENOBCOST =", enobCostObj.solution_value())
+    print("MATHCOST =", mathCostObj.solution_value())
+
     with open('model_results.txt', 'w') as model_result:
         print("__ERROR__, 0", file=model_result)
         for v in solver.variables():
             print(v, ", ", v.solution_value(), file=model_result, sep='')
 else:
-    print('The problem does not have an optimal solution.')
+    print('The problem does NOT have an optimal solution.')
     with open('model_results.txt', 'w') as model_result:
         print("__ERROR__, 1", file=model_result)
 
