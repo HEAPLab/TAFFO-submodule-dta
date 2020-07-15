@@ -12,6 +12,7 @@ if not os.path.isfile('./magiclang2.sh'):
 
 
 def compileAndCheck(TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
+    global dataset
     # Compilation
     compilationParams = []
     compilationParams.append("./magiclang2.sh")
@@ -26,9 +27,9 @@ def compileAndCheck(TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
     compilationParams.append("-mixedtuningcastingtime=" + str(TUNING_CAST_TIME))
     compilationParams.append("-Xdta")
     compilationParams.append("-mixeddoubleenabled=" + DOUBLE_ENABLED)
-    compilationParams.append("polybench_edited/corr/corr.c")
+    compilationParams.append("polybench_edited/covariance/covariance.c")
     compilationParams.append("-o")
-    compilationParams.append("polybench_edited/corr/corr.fixp")
+    compilationParams.append("polybench_edited/covariance/covariance.fixp")
 
     process = Popen(compilationParams, stderr=PIPE, stdout=PIPE)
     (output, err) = process.communicate()
@@ -38,7 +39,7 @@ def compileAndCheck(TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
         print("Error compiling the program!")
         exit(-1)
 
-    process = Popen(["polybench_edited/corr/corr.fixp"], stdout=PIPE)
+    process = Popen(["polybench_edited/covariance/covariance.fixp"], stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
 
@@ -55,12 +56,37 @@ def compileAndCheck(TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
 
     accumulator = Decimal(0.0)
     for i in range(0, len(output)):
-        accumulator += abs(output[i] - 1)
+        accumulator += abs(output[i] - dataset[i])
 
 
     return accumulator
 
+def loadReferenceRun():
+    process = Popen(["polybench_edited/covariance/covariance.flt"], stdout=PIPE)
+    (output, err) = process.communicate()
+    exit_code = process.wait()
+
+    if (exit_code != 0):
+        print("Error executing reference the program!")
+        exit(-1)
+
+    output = output.decode('ascii').strip()
+    output = output.replace('\n', '')
+    output = output.split(' ')
+
+    for i in range(0, len(output)):
+        output[i] = Decimal(output[i])
+
+    return output
+
 #Parameters:
+
+#Loading reference dataset
+dataset = loadReferenceRun()
+
+
+
+
 TUNING_ENOB = 100000
 TUNING_TIME = 1000
 TUNING_CAST_TIME = 500

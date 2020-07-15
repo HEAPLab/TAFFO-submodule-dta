@@ -11,9 +11,9 @@ define dso_local i32 @main() #0 !taffo.initweight !6 !taffo.funinfo !6 {
 entry:
   %mean = alloca [32 x double], align 16, !taffo.info !7, !taffo.initweight !11
   %data = alloca [28 x [32 x double]], align 16, !taffo.info !12, !taffo.initweight !11
-  %corr = alloca [32 x [32 x double]], align 16, !taffo.info !14, !taffo.initweight !11
-  %stddev = alloca [32 x double], align 16, !taffo.info !16, !taffo.initweight !11
-  %mean1 = bitcast [32 x double]* %mean to i8*, !taffo.info !18, !taffo.initweight !20
+  %corr = alloca [32 x [32 x double]], align 16, !taffo.info !15, !taffo.initweight !11
+  %stddev = alloca [32 x double], align 16, !taffo.info !17, !taffo.initweight !11
+  %mean1 = bitcast [32 x double]* %mean to i8*, !taffo.info !19, !taffo.initweight !20
   %data2 = bitcast [28 x [32 x double]]* %data to i8*, !taffo.info !21, !taffo.initweight !20
   %corr3 = bitcast [32 x [32 x double]]* %corr to i8*, !taffo.info !23, !taffo.initweight !20
   %stddev4 = bitcast [32 x double]* %stddev to i8*, !taffo.info !25, !taffo.initweight !20
@@ -115,8 +115,8 @@ for.cond46:                                       ; preds = %for.inc91, %for.end
 
 for.body49:                                       ; preds = %for.cond46
   %idxprom50 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx51 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom50, !taffo.info !16, !taffo.initweight !20
-  store double 0.000000e+00, double* %arrayidx51, align 8, !taffo.info !48, !taffo.initweight !29, !taffo.constinfo !43
+  %arrayidx51 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom50, !taffo.info !17, !taffo.initweight !20
+  store double 0.000000e+00, double* %arrayidx51, align 8, !taffo.info !49, !taffo.initweight !29, !taffo.constinfo !43
   br label %for.cond52
 
 for.cond52:                                       ; preds = %for.inc73, %for.body49
@@ -145,10 +145,10 @@ for.body55:                                       ; preds = %for.cond52
   %sub68 = fsub double %tmp5, %tmp6, !taffo.info !7, !taffo.initweight !30
   %mul69 = fmul double %sub, %sub68, !taffo.info !7, !taffo.initweight !33
   %idxprom70 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx71 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom70, !taffo.info !16, !taffo.initweight !20
-  %tmp7 = load double, double* %arrayidx71, align 8, !taffo.info !16, !taffo.initweight !29
-  %add72 = fadd double %tmp7, %mul69, !taffo.info !16, !taffo.initweight !30
-  store double %add72, double* %arrayidx71, align 8, !taffo.info !48, !taffo.initweight !29
+  %arrayidx71 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom70, !taffo.info !17, !taffo.initweight !20
+  %tmp7 = load double, double* %arrayidx71, align 8, !taffo.info !17, !taffo.initweight !29
+  %add72 = fadd double %tmp7, %mul69, !taffo.info !17, !taffo.initweight !30
+  store double %add72, double* %arrayidx71, align 8, !taffo.info !49, !taffo.initweight !29
   br label %for.inc73
 
 for.inc73:                                        ; preds = %for.body55
@@ -157,37 +157,37 @@ for.inc73:                                        ; preds = %for.body55
 
 for.end75:                                        ; preds = %for.cond52
   %idxprom76 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx77 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom76, !taffo.info !16, !taffo.initweight !20
-  %tmp8 = load double, double* %arrayidx77, align 8, !taffo.info !16, !taffo.initweight !29
+  %arrayidx77 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom76, !taffo.info !17, !taffo.initweight !20
+  %tmp8 = load double, double* %arrayidx77, align 8, !taffo.info !17, !taffo.initweight !29
   %div78 = fdiv double %tmp8, 2.800000e+01, !taffo.info !46, !taffo.initweight !29, !taffo.constinfo !37
-  store double %div78, double* %arrayidx77, align 8, !taffo.info !48, !taffo.initweight !29
+  store double %div78, double* %arrayidx77, align 8, !taffo.info !49, !taffo.initweight !29
   %idxprom79 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx80 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom79, !taffo.info !16, !taffo.initweight !20
-  %tmp9 = load double, double* %arrayidx80, align 8, !taffo.info !16, !taffo.initweight !29
-  %call = call double @sqrt(double %tmp9) #3, !taffo.info !16, !taffo.initweight !30, !taffo.constinfo !41
+  %arrayidx80 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom79, !taffo.info !17, !taffo.initweight !20
+  %tmp9 = load double, double* %arrayidx80, align 8, !taffo.info !17, !taffo.initweight !29
+  %call = call double @sqrt(double %tmp9) #3, !taffo.info !50, !taffo.initweight !30, !taffo.constinfo !41
   %idxprom81 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx82 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom81, !taffo.info !16, !taffo.initweight !20
-  store double %call, double* %arrayidx82, align 8, !taffo.info !48, !taffo.initweight !29
+  %arrayidx82 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom81, !taffo.info !17, !taffo.initweight !20
+  store double %call, double* %arrayidx82, align 8, !taffo.info !49, !taffo.initweight !29
   %idxprom83 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx84 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom83, !taffo.info !16, !taffo.initweight !20
-  %tmp10 = load double, double* %arrayidx84, align 8, !taffo.info !16, !taffo.initweight !29
+  %arrayidx84 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom83, !taffo.info !17, !taffo.initweight !20
+  %tmp10 = load double, double* %arrayidx84, align 8, !taffo.info !17, !taffo.initweight !29
   %cmp85 = fcmp ole double %tmp10, 1.000000e-01, !taffo.info !25, !taffo.initweight !29
-  br i1 %cmp85, label %cond.true, label %cond.false, !taffo.info !49, !taffo.initweight !30
+  br i1 %cmp85, label %cond.true, label %cond.false, !taffo.info !52, !taffo.initweight !30
 
 cond.true:                                        ; preds = %for.end75
   br label %cond.end
 
 cond.false:                                       ; preds = %for.end75
   %idxprom87 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx88 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom87, !taffo.info !16, !taffo.initweight !20
-  %tmp11 = load double, double* %arrayidx88, align 8, !taffo.info !16, !taffo.initweight !29
+  %arrayidx88 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom87, !taffo.info !17, !taffo.initweight !20
+  %tmp11 = load double, double* %arrayidx88, align 8, !taffo.info !17, !taffo.initweight !29
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi double [ 1.000000e+00, %cond.true ], [ %tmp11, %cond.false ], !taffo.info !16, !taffo.initweight !30
+  %cond = phi double [ 1.000000e+00, %cond.true ], [ %tmp11, %cond.false ], !taffo.info !17, !taffo.initweight !30
   %idxprom89 = sext i32 %j.2 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx90 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom89, !taffo.info !16, !taffo.initweight !20
-  store double %cond, double* %arrayidx90, align 8, !taffo.info !48, !taffo.initweight !29
+  %arrayidx90 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom89, !taffo.info !17, !taffo.initweight !20
+  store double %cond, double* %arrayidx90, align 8, !taffo.info !49, !taffo.initweight !29
   br label %for.inc91
 
 for.inc91:                                        ; preds = %cond.end
@@ -221,17 +221,17 @@ for.body101:                                      ; preds = %for.cond98
   %tmp13 = load double, double* %arrayidx107, align 8, !taffo.info !12, !taffo.initweight !30
   %sub108 = fsub double %tmp13, %tmp12, !taffo.info !7, !taffo.initweight !30
   store double %sub108, double* %arrayidx107, align 8, !taffo.info !40, !taffo.initweight !30
-  %call109 = call double @sqrt(double 2.800000e+01) #3, !taffo.info !46, !taffo.initweight !29, !taffo.constinfo !50
+  %call109 = call double @sqrt(double 2.800000e+01) #3, !taffo.info !53, !taffo.initweight !29, !taffo.constinfo !54
   %idxprom110 = sext i32 %j.3 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx111 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom110, !taffo.info !16, !taffo.initweight !20
-  %tmp14 = load double, double* %arrayidx111, align 8, !taffo.info !16, !taffo.initweight !29
-  %mul112 = fmul double %call109, %tmp14, !taffo.info !16, !taffo.initweight !30
+  %arrayidx111 = getelementptr inbounds [32 x double], [32 x double]* %stddev, i64 0, i64 %idxprom110, !taffo.info !17, !taffo.initweight !20
+  %tmp14 = load double, double* %arrayidx111, align 8, !taffo.info !17, !taffo.initweight !29
+  %mul112 = fmul double %call109, %tmp14, !taffo.info !55, !taffo.initweight !30
   %idxprom113 = sext i32 %i.3 to i64, !taffo.info !27, !taffo.initweight !29
   %arrayidx114 = getelementptr inbounds [28 x [32 x double]], [28 x [32 x double]]* %data, i64 0, i64 %idxprom113, !taffo.info !12, !taffo.initweight !20
   %idxprom115 = sext i32 %j.3 to i64, !taffo.info !31, !taffo.initweight !29
   %arrayidx116 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx114, i64 0, i64 %idxprom115, !taffo.info !12, !taffo.initweight !29
   %tmp15 = load double, double* %arrayidx116, align 8, !taffo.info !12, !taffo.initweight !30
-  %div117 = fdiv double %tmp15, %mul112, !taffo.info !12, !taffo.initweight !33
+  %div117 = fdiv double %tmp15, %mul112, !taffo.info !56, !taffo.initweight !33
   store double %div117, double* %arrayidx116, align 8, !taffo.info !40, !taffo.initweight !30
   br label %for.inc118
 
@@ -256,10 +256,10 @@ for.cond124:                                      ; preds = %for.inc173, %for.en
 
 for.body127:                                      ; preds = %for.cond124
   %idxprom128 = sext i32 %i.4 to i64, !taffo.info !27, !taffo.initweight !29
-  %arrayidx129 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom128, !taffo.info !14, !taffo.initweight !20
+  %arrayidx129 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom128, !taffo.info !15, !taffo.initweight !20
   %idxprom130 = sext i32 %i.4 to i64, !taffo.info !27, !taffo.initweight !29
-  %arrayidx131 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx129, i64 0, i64 %idxprom130, !taffo.info !14, !taffo.initweight !29
-  store double 1.000000e+00, double* %arrayidx131, align 8, !taffo.info !51, !taffo.initweight !30, !taffo.constinfo !52
+  %arrayidx131 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx129, i64 0, i64 %idxprom130, !taffo.info !15, !taffo.initweight !29
+  store double 1.000000e+00, double* %arrayidx131, align 8, !taffo.info !57, !taffo.initweight !30, !taffo.constinfo !58
   %add132 = add nsw i32 %i.4, 1, !taffo.info !27, !taffo.initweight !29, !taffo.constinfo !41
   br label %for.cond133
 
@@ -270,10 +270,10 @@ for.cond133:                                      ; preds = %for.inc170, %for.bo
 
 for.body136:                                      ; preds = %for.cond133
   %idxprom137 = sext i32 %i.4 to i64, !taffo.info !27, !taffo.initweight !29
-  %arrayidx138 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom137, !taffo.info !14, !taffo.initweight !20
+  %arrayidx138 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom137, !taffo.info !15, !taffo.initweight !20
   %idxprom139 = sext i32 %j.4 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx140 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx138, i64 0, i64 %idxprom139, !taffo.info !14, !taffo.initweight !29
-  store double 0.000000e+00, double* %arrayidx140, align 8, !taffo.info !51, !taffo.initweight !30, !taffo.constinfo !43
+  %arrayidx140 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx138, i64 0, i64 %idxprom139, !taffo.info !15, !taffo.initweight !29
+  store double 0.000000e+00, double* %arrayidx140, align 8, !taffo.info !57, !taffo.initweight !30, !taffo.constinfo !43
   br label %for.cond141
 
 for.cond141:                                      ; preds = %for.inc159, %for.body136
@@ -292,14 +292,14 @@ for.body144:                                      ; preds = %for.cond141
   %idxprom151 = sext i32 %j.4 to i64, !taffo.info !31, !taffo.initweight !29
   %arrayidx152 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx150, i64 0, i64 %idxprom151, !taffo.info !12, !taffo.initweight !29
   %tmp17 = load double, double* %arrayidx152, align 8, !taffo.info !12, !taffo.initweight !30
-  %mul153 = fmul double %tmp16, %tmp17, !taffo.info !12, !taffo.initweight !33
+  %mul153 = fmul double %tmp16, %tmp17, !taffo.info !61, !taffo.initweight !33
   %idxprom154 = sext i32 %i.4 to i64, !taffo.info !27, !taffo.initweight !29
-  %arrayidx155 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom154, !taffo.info !14, !taffo.initweight !20
+  %arrayidx155 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom154, !taffo.info !15, !taffo.initweight !20
   %idxprom156 = sext i32 %j.4 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx157 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx155, i64 0, i64 %idxprom156, !taffo.info !14, !taffo.initweight !29
-  %tmp18 = load double, double* %arrayidx157, align 8, !taffo.info !14, !taffo.initweight !30
-  %add158 = fadd double %tmp18, %mul153, !taffo.info !14, !taffo.initweight !33
-  store double %add158, double* %arrayidx157, align 8, !taffo.info !51, !taffo.initweight !30
+  %arrayidx157 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx155, i64 0, i64 %idxprom156, !taffo.info !15, !taffo.initweight !29
+  %tmp18 = load double, double* %arrayidx157, align 8, !taffo.info !15, !taffo.initweight !30
+  %add158 = fadd double %tmp18, %mul153, !taffo.info !63, !taffo.initweight !33
+  store double %add158, double* %arrayidx157, align 8, !taffo.info !57, !taffo.initweight !30
   br label %for.inc159
 
 for.inc159:                                       ; preds = %for.body144
@@ -308,15 +308,15 @@ for.inc159:                                       ; preds = %for.body144
 
 for.end161:                                       ; preds = %for.cond141
   %idxprom162 = sext i32 %i.4 to i64, !taffo.info !27, !taffo.initweight !29
-  %arrayidx163 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom162, !taffo.info !14, !taffo.initweight !20
+  %arrayidx163 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom162, !taffo.info !15, !taffo.initweight !20
   %idxprom164 = sext i32 %j.4 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx165 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx163, i64 0, i64 %idxprom164, !taffo.info !14, !taffo.initweight !29
-  %tmp19 = load double, double* %arrayidx165, align 8, !taffo.info !14, !taffo.initweight !30
+  %arrayidx165 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx163, i64 0, i64 %idxprom164, !taffo.info !15, !taffo.initweight !29
+  %tmp19 = load double, double* %arrayidx165, align 8, !taffo.info !15, !taffo.initweight !30
   %idxprom166 = sext i32 %j.4 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx167 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom166, !taffo.info !14, !taffo.initweight !20
+  %arrayidx167 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom166, !taffo.info !15, !taffo.initweight !20
   %idxprom168 = sext i32 %i.4 to i64, !taffo.info !27, !taffo.initweight !29
-  %arrayidx169 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx167, i64 0, i64 %idxprom168, !taffo.info !14, !taffo.initweight !29
-  store double %tmp19, double* %arrayidx169, align 8, !taffo.info !51, !taffo.initweight !30
+  %arrayidx169 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx167, i64 0, i64 %idxprom168, !taffo.info !15, !taffo.initweight !29
+  store double %tmp19, double* %arrayidx169, align 8, !taffo.info !57, !taffo.initweight !30
   br label %for.inc170
 
 for.inc170:                                       ; preds = %for.end161
@@ -331,9 +331,9 @@ for.inc173:                                       ; preds = %for.end172
   br label %for.cond124
 
 for.end175:                                       ; preds = %for.cond124
-  %arrayidx176 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 31, !taffo.info !14, !taffo.initweight !20
-  %arrayidx177 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx176, i64 0, i64 31, !taffo.info !14, !taffo.initweight !29
-  store double 1.000000e+00, double* %arrayidx177, align 8, !taffo.info !51, !taffo.initweight !30, !taffo.constinfo !52
+  %arrayidx176 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 31, !taffo.info !15, !taffo.initweight !20
+  %arrayidx177 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx176, i64 0, i64 31, !taffo.info !15, !taffo.initweight !29
+  store double 1.000000e+00, double* %arrayidx177, align 8, !taffo.info !57, !taffo.initweight !30, !taffo.constinfo !58
   br label %for.cond178
 
 for.cond178:                                      ; preds = %for.inc195, %for.end175
@@ -351,11 +351,11 @@ for.cond182:                                      ; preds = %for.inc191, %for.bo
 
 for.body185:                                      ; preds = %for.cond182
   %idxprom186 = sext i32 %i.5 to i64, !taffo.info !27, !taffo.initweight !29
-  %arrayidx187 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom186, !taffo.info !14, !taffo.initweight !20
+  %arrayidx187 = getelementptr inbounds [32 x [32 x double]], [32 x [32 x double]]* %corr, i64 0, i64 %idxprom186, !taffo.info !15, !taffo.initweight !20
   %idxprom188 = sext i32 %j.5 to i64, !taffo.info !31, !taffo.initweight !29
-  %arrayidx189 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx187, i64 0, i64 %idxprom188, !taffo.info !14, !taffo.initweight !29
-  %tmp20 = load double, double* %arrayidx189, align 8, !taffo.info !14, !taffo.initweight !30
-  %call190 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), double %tmp20), !taffo.info !23, !taffo.initweight !33, !taffo.constinfo !55
+  %arrayidx189 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx187, i64 0, i64 %idxprom188, !taffo.info !15, !taffo.initweight !29
+  %tmp20 = load double, double* %arrayidx189, align 8, !taffo.info !15, !taffo.initweight !30
+  %call190 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), double %tmp20), !taffo.info !23, !taffo.initweight !33, !taffo.constinfo !64
   br label %for.inc191
 
 for.inc191:                                       ; preds = %for.body185
@@ -375,9 +375,9 @@ for.end197:                                       ; preds = %for.cond178
 }
 
 ; Function Attrs: nounwind
-declare !taffo.initweight !56 !taffo.funinfo !57 dso_local double @sqrt(double) #1
+declare !taffo.initweight !65 !taffo.funinfo !66 dso_local double @sqrt(double) #1
 
-declare !taffo.initweight !56 !taffo.funinfo !57 dso_local i32 @printf(i8*, ...) #2
+declare !taffo.initweight !65 !taffo.funinfo !66 dso_local i32 @printf(i8*, ...) #2
 
 attributes #0 = { noinline nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { nounwind "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
@@ -395,18 +395,18 @@ attributes #3 = { nounwind }
 !5 = !{!"clang version 8.0.1 (tags/RELEASE_801/final)"}
 !6 = !{}
 !7 = !{!8, !9, !10, i2 -1}
-!8 = !{!"float", i32 2, double 0.000000e+00}
+!8 = !{!"fixp", i32 -32, i32 15}
 !9 = !{double -5.000000e+04, double 5.000000e+04}
 !10 = !{double 1.000000e-100}
 !11 = !{i32 0}
-!12 = !{!8, !13, !10, i2 -1}
-!13 = !{double -5.000000e-01, double 5.000000e-01}
-!14 = !{!8, !15, !10, i2 -1}
-!15 = !{double 0.000000e+00, double 5.000000e+00}
-!16 = !{!8, !17, !10, i2 -1}
-!17 = !{double -4.096000e+03, double 4.096000e+03}
-!18 = !{!19, i1 false, !10, i2 -1}
-!19 = !{!"fixp", i32 -32, i32 15}
+!12 = !{!13, !14, !10, i2 -1}
+!13 = !{!"float", i32 1, double 0.000000e+00}
+!14 = !{double -5.000000e-01, double 5.000000e-01}
+!15 = !{!13, !16, !10, i2 -1}
+!16 = !{double 0.000000e+00, double 5.000000e+00}
+!17 = !{!13, !18, !10, i2 -1}
+!18 = !{double -4.096000e+03, double 4.096000e+03}
+!19 = !{!8, i1 false, !10, i2 -1}
 !20 = !{i32 1}
 !21 = !{!22, i1 false, !10, i2 -1}
 !22 = !{!"fixp", i32 -32, i32 30}
@@ -427,21 +427,30 @@ attributes #3 = { nounwind }
 !37 = !{i1 false, !38}
 !38 = !{i1 false, !39, i1 false, i2 0}
 !39 = !{double 2.800000e+01, double 2.800000e+01}
-!40 = !{i1 false, !13, !10, i2 -1}
+!40 = !{i1 false, !14, !10, i2 -1}
 !41 = !{i1 false, i1 false}
 !42 = !{i1 false, !9, !10, i2 -1}
 !43 = !{!44, i1 false}
 !44 = !{i1 false, !45, i1 false, i2 0}
 !45 = !{double 0.000000e+00, double 0.000000e+00}
-!46 = !{!8, !47, !10, i2 1}
-!47 = !{double 1.000000e+00, double 3.000000e+03}
-!48 = !{i1 false, !17, !10, i2 -1}
-!49 = !{i1 false, i1 false, i1 false, i2 1}
-!50 = !{!38, i1 false}
-!51 = !{i1 false, !15, !10, i2 -1}
-!52 = !{!53, i1 false}
-!53 = !{i1 false, !54, i1 false, i2 0}
-!54 = !{double 1.000000e+00, double 1.000000e+00}
-!55 = !{i1 false, i1 false, i1 false}
-!56 = !{i32 -1}
-!57 = !{i32 0, i1 false}
+!46 = !{!47, !48, !10, i2 1}
+!47 = !{!"fixp", i32 32, i32 20}
+!48 = !{double 1.000000e+00, double 3.000000e+03}
+!49 = !{i1 false, !18, !10, i2 -1}
+!50 = !{!51, !18, !10, i2 -1}
+!51 = !{!"float", i32 2, double 0.000000e+00}
+!52 = !{i1 false, i1 false, i1 false, i2 1}
+!53 = !{!51, !48, !10, i2 1}
+!54 = !{!38, i1 false}
+!55 = !{!26, !18, !10, i2 -1}
+!56 = !{!22, !14, !10, i2 -1}
+!57 = !{i1 false, !16, !10, i2 -1}
+!58 = !{!59, i1 false}
+!59 = !{i1 false, !60, i1 false, i2 0}
+!60 = !{double 1.000000e+00, double 1.000000e+00}
+!61 = !{!62, !14, !10, i2 -1}
+!62 = !{!"fixp", i32 -32, i32 29}
+!63 = !{!24, !16, !10, i2 -1}
+!64 = !{i1 false, i1 false, i1 false}
+!65 = !{i32 -1}
+!66 = !{i32 0, i1 false}
