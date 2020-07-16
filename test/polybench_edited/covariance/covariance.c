@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final)"))) float_n;
     DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final)"))) data[N][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-10000, 100000) final)"))) cov[N][M];
+    DATA_TYPE __attribute((annotate("scalar(range(-10000, 100000))"))) cov[N][M];
     DATA_TYPE __attribute((annotate("scalar(range(-5000, 5000) final)"))) mean[M];
 
 
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
     for (i = 0; i < m; i++)
         for (j = 0; j < m; j++) {
             if ((i * m + j) % 20 == 0) fprintf (stdout, "\n");
-            fprintf (stdout, "%f ", cov[i][j]);
+            fprintf (stdout, "%.16lf ", cov[i][j]);
         }
 
 

@@ -3,7 +3,7 @@ source_filename = "polybench_edited/corr/corr.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
 
-@.str.9 = private unnamed_addr constant [7 x i8] c"%.10f \00", align 1, !taffo.info !0
+@.str.9 = private unnamed_addr constant [8 x i8] c"%.16lf \00", align 1, !taffo.info !0
 @.str.10 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1, !taffo.info !2
 
 ; Function Attrs: noinline nounwind uwtable
@@ -378,7 +378,7 @@ for.body185:                                      ; preds = %for.cond182
   %arrayidx189.1flp = getelementptr inbounds [32 x float], [32 x float]* %arrayidx187.1flp, i64 0, i64 %idxprom188, !taffo.info !13
   %tmp20.1flp = load float, float* %arrayidx189.1flp, align 8, !taffo.info !13
   %27 = fpext float %tmp20.1flp to double, !taffo.info !13
-  %call190.flt = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), double %27), !taffo.info !60, !taffo.initweight !23, !taffo.constinfo !62
+  %call190.flt = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.9, i32 0, i32 0), double %27), !taffo.info !60, !taffo.initweight !23, !taffo.constinfo !62
   br label %for.inc191
 
 for.inc191:                                       ; preds = %for.body185
@@ -411,7 +411,7 @@ attributes #3 = { nounwind }
 !llvm.ident = !{!5}
 
 !0 = !{i1 false, !1, i1 false, i2 0}
-!1 = !{double 0.000000e+00, double 1.020000e+02}
+!1 = !{double 0.000000e+00, double 1.080000e+02}
 !2 = !{i1 false, !3, i1 false, i2 0}
 !3 = !{double 0.000000e+00, double 1.000000e+01}
 !4 = !{i32 1, !"wchar_size", i32 4}
@@ -419,12 +419,12 @@ attributes #3 = { nounwind }
 !6 = !{}
 !7 = !{!8, !9, !10, i2 -1}
 !8 = !{!"float", i32 1, double 0.000000e+00}
-!9 = !{double -5.000000e+04, double 5.000000e+04}
+!9 = !{double -1.000000e+06, double 1.000000e+06}
 !10 = !{double 1.000000e-100}
 !11 = !{!8, !12, !10, i2 -1}
-!12 = !{double -5.000000e-01, double 5.000000e-01}
+!12 = !{double -1.000000e+00, double 1.000000e+00}
 !13 = !{!8, !14, !10, i2 -1}
-!14 = !{double 0.000000e+00, double 5.000000e+00}
+!14 = !{double -5.000000e+00, double 5.000000e+00}
 !15 = !{!8, !16, !10, i2 -1}
 !16 = !{double -4.096000e+03, double 4.096000e+03}
 !17 = !{i1 false, !18, i1 false, i2 -2}
@@ -471,7 +471,7 @@ attributes #3 = { nounwind }
 !58 = !{i1 false, !59, i1 false, i2 0}
 !59 = !{double 1.000000e+00, double 1.000000e+00}
 !60 = !{!61, i1 false, !10, i2 -1}
-!61 = !{!"fixp", i32 32, i32 29}
+!61 = !{!"fixp", i32 -32, i32 28}
 !62 = !{i1 false, i1 false, i1 false}
 !63 = !{i32 -1}
 !64 = !{i32 0, i1 false}

@@ -171,7 +171,7 @@ bool Model::isVariableDeclared(const string& variable) {
 }
 
 
-void Model::insertObjectiveElement(const pair<string, double> &p, string costName) {
+void Model::insertObjectiveElement(const pair<string, double> &p, string costName, double maxVal) {
     assert(isVariableDeclared(p.first) && "Variable not declared!");
 
     string operand = " += ";
@@ -179,6 +179,9 @@ void Model::insertObjectiveElement(const pair<string, double> &p, string costNam
         operand = " = ";
         objDeclarationOccoured.insert(make_pair(costName, true));
     }
+
+    //We use this to normalize the objective value against program complexity changes
+    objMaxCosts[costName] = objMaxCosts[costName] + maxVal;
 
     modelFile <<  costName << operand;
 
@@ -218,7 +221,7 @@ void Model::writeOutObjectiveFunction() {
             modelFile<< "+ ";
         }
 
-        modelFile << getMultiplier(a.first) << " * " << a.first << " ";
+        modelFile << getMultiplier(a.first) << " * " << a.first << " / " << objMaxCosts[a.first];
         i++;
     }
 

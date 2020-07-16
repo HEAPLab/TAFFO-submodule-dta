@@ -415,6 +415,11 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
         return;
     }
 
+    if (!fieldInfo->IRange) {
+        dbgs() << "Not Range information. Bailing out.\n\n";
+        return;
+    }
+
     auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
     if (!fptype) {
         dbgs() << "No fixed point info associated. Bailing out.\n";

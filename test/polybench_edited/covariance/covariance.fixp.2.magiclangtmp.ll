@@ -10,12 +10,12 @@ target triple = "x86_64-unknown-linux-gnu"
 
 @.str = private unnamed_addr constant [35 x i8] c"scalar(range(-10000, 10000) final)\00", section "llvm.metadata"
 @.str.1 = private unnamed_addr constant [41 x i8] c"polybench_edited/covariance/covariance.c\00", section "llvm.metadata"
-@.str.2 = private unnamed_addr constant [36 x i8] c"scalar(range(-10000, 100000) final)\00", section "llvm.metadata"
+@.str.2 = private unnamed_addr constant [30 x i8] c"scalar(range(-10000, 100000))\00", section "llvm.metadata"
 @.str.3 = private unnamed_addr constant [33 x i8] c"scalar(range(-5000, 5000) final)\00", section "llvm.metadata"
 @.str.4 = private unnamed_addr constant [31 x i8] c"scalar(range(1, 100) disabled)\00", section "llvm.metadata"
 @stdout = external dso_local global %struct._IO_FILE*, align 8
 @.str.5 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
-@.str.6 = private unnamed_addr constant [4 x i8] c"%f \00", align 1
+@.str.6 = private unnamed_addr constant [8 x i8] c"%.16lf \00", align 1
 
 ; Function Attrs: noinline nounwind uwtable
 define dso_local i32 @main(i32 %argc, i8** %argv) #0 !taffo.initweight !2 !taffo.funinfo !3 {
@@ -357,7 +357,7 @@ if.end:                                           ; preds = %if.then, %for.body1
   %idxprom131 = sext i32 %67 to i64, !taffo.initweight !14, !taffo.info !11
   %arrayidx132 = getelementptr inbounds [80 x double], [80 x double]* %arrayidx130, i64 0, i64 %idxprom131, !taffo.initweight !14, !taffo.info !7
   %68 = load double, double* %arrayidx132, align 8, !taffo.initweight !15, !taffo.info !7
-  %call133 = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %65, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.6, i32 0, i32 0), double %68), !taffo.initweight !16, !taffo.info !7
+  %call133 = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %65, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.6, i32 0, i32 0), double %68), !taffo.initweight !16, !taffo.info !7
   br label %for.inc134
 
 for.inc134:                                       ; preds = %if.end
@@ -398,7 +398,7 @@ attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !4 = !{i32 0}
 !5 = !{i1 false, !6, i1 false, i2 -1}
 !6 = !{double -1.000000e+04, double 1.000000e+04}
-!7 = !{i1 false, !8, i1 false, i2 -1}
+!7 = !{i1 false, !8, i1 false, i2 1}
 !8 = !{double -1.000000e+04, double 1.000000e+05}
 !9 = !{i1 false, !10, i1 false, i2 -1}
 !10 = !{double -5.000000e+03, double 5.000000e+03}

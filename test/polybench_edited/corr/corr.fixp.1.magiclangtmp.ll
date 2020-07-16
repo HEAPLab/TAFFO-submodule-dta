@@ -5,14 +5,14 @@ target triple = "x86_64-unknown-linux-gnu"
 
 @.str = private unnamed_addr constant [49 x i8] c"scalar(range(-50000, 50000) final error(1e-100))\00", section "llvm.metadata"
 @.str.1 = private unnamed_addr constant [29 x i8] c"polybench_edited/corr/corr.c\00", section "llvm.metadata"
-@.str.2 = private unnamed_addr constant [45 x i8] c"scalar(range(-0.5, 0.5) error(1e-100) final)\00", section "llvm.metadata"
+@.str.2 = private unnamed_addr constant [43 x i8] c"scalar(range(-10, 10) error(1e-100) final)\00", section "llvm.metadata"
 @.str.3 = private unnamed_addr constant [40 x i8] c"scalar(range(0, 5) error(1e-100) final)\00", section "llvm.metadata"
 @.str.4 = private unnamed_addr constant [46 x i8] c"scalar(range(-4096,4096) error(1e-100) final)\00", section "llvm.metadata"
 @.str.5 = private unnamed_addr constant [36 x i8] c"scalar(range(0, 28) final disabled)\00", section "llvm.metadata"
 @.str.6 = private unnamed_addr constant [36 x i8] c"scalar(range(0, 32) final disabled)\00", section "llvm.metadata"
 @.str.7 = private unnamed_addr constant [37 x i8] c"scalar(range(1, 3000) error(1e-100))\00", section "llvm.metadata"
 @.str.8 = private unnamed_addr constant [9 x i8] c"scalar()\00", section "llvm.metadata"
-@.str.9 = private unnamed_addr constant [7 x i8] c"%.10f \00", align 1
+@.str.9 = private unnamed_addr constant [8 x i8] c"%.16lf \00", align 1
 @.str.10 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
@@ -32,7 +32,7 @@ entry:
   %mean1 = bitcast [32 x double]* %mean to i8*
   call void @llvm.var.annotation(i8* %mean1, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.1, i32 0, i32 0), i32 11)
   %data2 = bitcast [28 x [32 x double]]* %data to i8*
-  call void @llvm.var.annotation(i8* %data2, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.1, i32 0, i32 0), i32 12)
+  call void @llvm.var.annotation(i8* %data2, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.1, i32 0, i32 0), i32 12)
   %corr3 = bitcast [32 x [32 x double]]* %corr to i8*
   call void @llvm.var.annotation(i8* %corr3, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.3, i32 0, i32 0), i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.1, i32 0, i32 0), i32 13)
   %stddev4 = bitcast [32 x double]* %stddev to i8*
@@ -473,7 +473,7 @@ for.body185:                                      ; preds = %for.cond182
   %idxprom188 = sext i32 %94 to i64
   %arrayidx189 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx187, i64 0, i64 %idxprom188
   %95 = load double, double* %arrayidx189, align 8
-  %call190 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), double %95)
+  %call190 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.9, i32 0, i32 0), double %95)
   br label %for.inc191
 
 for.inc191:                                       ; preds = %for.body185

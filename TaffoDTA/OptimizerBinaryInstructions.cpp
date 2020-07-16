@@ -65,15 +65,17 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
     if (!res) return;
 
+    double maxCost = max({cpuCosts.getCost(CPUCosts::ADD_FIX), cpuCosts.getCost(CPUCosts::ADD_FLOAT), cpuCosts.getCost(CPUCosts::ADD_DOUBLE)});
+
     model.insertObjectiveElement(
             make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_FIX)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, maxCost);
     model.insertObjectiveElement(
             make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_FLOAT)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
 
     //enob constraint
     auto constraint = vector<pair<string, double>>();
@@ -107,15 +109,17 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, true, valueInfos);
     if (!res) return;
 
+    double maxCost = max({cpuCosts.getCost(CPUCosts::SUB_FIX), cpuCosts.getCost(CPUCosts::SUB_FLOAT), cpuCosts.getCost(CPUCosts::SUB_DOUBLE)});
+
     model.insertObjectiveElement(
             make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_FIX)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, maxCost);
     model.insertObjectiveElement(
             make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_FLOAT)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
 
     //Precision cost
     //Handloed in allocating variable
@@ -148,15 +152,17 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
     if (!res) return;
 
+    double maxCost = max({cpuCosts.getCost(CPUCosts::MUL_FIX), cpuCosts.getCost(CPUCosts::MUL_FLOAT), cpuCosts.getCost(CPUCosts::MUL_DOUBLE)});
+
     model.insertObjectiveElement(
             make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_FIX)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, maxCost);
     model.insertObjectiveElement(
             make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_FLOAT)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
 
     //Precision cost
     //Handloed in allocating variable
@@ -216,15 +222,17 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     auto res = handleBinOpCommon(instr, op1, op2, false, valueInfos);
     if (!res) return;
 
+    double maxCost = max({cpuCosts.getCost(CPUCosts::DIV_FIX), cpuCosts.getCost(CPUCosts::DIV_FLOAT), cpuCosts.getCost(CPUCosts::DIV_DOUBLE)});
+
     model.insertObjectiveElement(
             make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_FIX)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, maxCost);
     model.insertObjectiveElement(
             make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_FLOAT)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
     //Precision cost
     //Handled in allocating variable
 
@@ -280,15 +288,17 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
 
     if (!res) return;
 
+    double maxCost = max({cpuCosts.getCost(CPUCosts::REM_FIX), cpuCosts.getCost(CPUCosts::REM_FLOAT), cpuCosts.getCost(CPUCosts::REM_DOUBLE)});
+
     model.insertObjectiveElement(
             make_pair(res->getFixedSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_FIX)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST,maxCost);
     model.insertObjectiveElement(
             make_pair(res->getFloatSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_FLOAT)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)),
-            MODEL_OBJ_MATHCOST);
+            MODEL_OBJ_MATHCOST, 0);
     //Precision cost
     //Handloed in allocating variable
 

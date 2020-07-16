@@ -113,8 +113,11 @@ main:                                   # @main
 	movslq	%esi, %rcx
 	movl	(%rdx,%rcx,4), %edi
 	movslq	%esi, %rcx
-	addl	-64320(%rbp,%rcx,4), %edi
-	movl	%edi, -64320(%rbp,%rcx,4)
+	movl	-64320(%rbp,%rcx,4), %r8d
+	sarl	$1, %r8d
+	addl	%edi, %r8d
+	shll	$1, %r8d
+	movl	%r8d, -64320(%rbp,%rcx,4)
 # %bb.13:                               # %for.inc36
                                         #   in Loop: Header=BB0_11 Depth=2
 	movl	-64368(%rbp), %eax      # 4-byte Reload
@@ -130,7 +133,9 @@ main:                                   # @main
 	cqto
 	movl	$100, %esi
 	idivq	%rsi
+	sarq	$1, %rax
 	movl	%eax, %edi
+	shll	$1, %edi
 	movl	%edi, -64320(%rbp,%rcx,4)
 # %bb.15:                               # %for.inc42
                                         #   in Loop: Header=BB0_9 Depth=1
@@ -173,6 +178,7 @@ main:                                   # @main
 	addq	%rcx, %rdi
 	movslq	%eax, %rcx
 	movl	(%rdi,%rcx,4), %r8d
+	sarl	$1, %edx
 	subl	%edx, %r8d
 	movl	%r8d, (%rdi,%rcx,4)
 # %bb.21:                               # %for.inc59
@@ -413,8 +419,8 @@ main:                                   # @main
 
 	.type	.L.str.6,@object        # @.str.6
 .L.str.6:
-	.asciz	"%f "
-	.size	.L.str.6, 4
+	.asciz	"%.16lf "
+	.size	.L.str.6, 8
 
 
 	.ident	"clang version 8.0.1 (tags/RELEASE_801/final)"

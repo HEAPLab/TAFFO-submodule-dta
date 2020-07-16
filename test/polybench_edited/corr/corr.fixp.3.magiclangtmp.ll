@@ -5,14 +5,14 @@ target triple = "x86_64-unknown-linux-gnu"
 
 @.str = private unnamed_addr constant [49 x i8] c"scalar(range(-50000, 50000) final error(1e-100))\00", section "llvm.metadata", !taffo.info !0
 @.str.1 = private unnamed_addr constant [29 x i8] c"polybench_edited/corr/corr.c\00", section "llvm.metadata", !taffo.info !2
-@.str.2 = private unnamed_addr constant [45 x i8] c"scalar(range(-0.5, 0.5) error(1e-100) final)\00", section "llvm.metadata", !taffo.info !0
+@.str.2 = private unnamed_addr constant [43 x i8] c"scalar(range(-10, 10) error(1e-100) final)\00", section "llvm.metadata", !taffo.info !0
 @.str.3 = private unnamed_addr constant [40 x i8] c"scalar(range(0, 5) error(1e-100) final)\00", section "llvm.metadata", !taffo.info !0
 @.str.4 = private unnamed_addr constant [46 x i8] c"scalar(range(-4096,4096) error(1e-100) final)\00", section "llvm.metadata", !taffo.info !0
 @.str.5 = private unnamed_addr constant [36 x i8] c"scalar(range(0, 28) final disabled)\00", section "llvm.metadata", !taffo.info !0
 @.str.6 = private unnamed_addr constant [36 x i8] c"scalar(range(0, 32) final disabled)\00", section "llvm.metadata", !taffo.info !0
 @.str.7 = private unnamed_addr constant [37 x i8] c"scalar(range(1, 3000) error(1e-100))\00", section "llvm.metadata", !taffo.info !0
 @.str.8 = private unnamed_addr constant [9 x i8] c"scalar()\00", section "llvm.metadata", !taffo.info !0
-@.str.9 = private unnamed_addr constant [7 x i8] c"%.10f \00", align 1, !taffo.info !4
+@.str.9 = private unnamed_addr constant [8 x i8] c"%.16lf \00", align 1, !taffo.info !4
 @.str.10 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1, !taffo.info !6
 
 ; Function Attrs: noinline nounwind uwtable
@@ -364,7 +364,7 @@ for.body185:                                      ; preds = %for.cond182
   %idxprom188 = sext i32 %j.5 to i64, !taffo.initweight !22, !taffo.info !26
   %arrayidx189 = getelementptr inbounds [32 x double], [32 x double]* %arrayidx187, i64 0, i64 %idxprom188, !taffo.initweight !22, !taffo.info !17
   %20 = load double, double* %arrayidx189, align 8, !taffo.initweight !25, !taffo.info !17
-  %call190 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), double %20), !taffo.initweight !28, !taffo.info !17, !taffo.constinfo !46
+  %call190 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.9, i32 0, i32 0), double %20), !taffo.initweight !28, !taffo.info !17, !taffo.constinfo !46
   br label %for.inc191
 
 for.inc191:                                       ; preds = %for.body185
@@ -404,7 +404,7 @@ attributes #3 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !2 = !{i1 false, !3, i1 false, i2 0}
 !3 = !{double 0.000000e+00, double 1.210000e+02}
 !4 = !{i1 false, !5, i1 false, i2 0}
-!5 = !{double 0.000000e+00, double 1.020000e+02}
+!5 = !{double 0.000000e+00, double 1.080000e+02}
 !6 = !{i1 false, !7, i1 false, i2 0}
 !7 = !{double 0.000000e+00, double 1.000000e+01}
 !8 = !{i32 1, !"wchar_size", i32 4}
@@ -415,7 +415,7 @@ attributes #3 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !13 = !{double -5.000000e+04, double 5.000000e+04}
 !14 = !{double 1.000000e-100}
 !15 = !{i1 false, !16, !14, i2 -1}
-!16 = !{double -5.000000e-01, double 5.000000e-01}
+!16 = !{double -1.000000e+01, double 1.000000e+01}
 !17 = !{i1 false, !18, !14, i2 -1}
 !18 = !{double 0.000000e+00, double 5.000000e+00}
 !19 = !{i1 false, !20, !14, i2 -1}

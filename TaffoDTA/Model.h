@@ -34,6 +34,8 @@ namespace tuner {
 
         map<string, bool> objDeclarationOccoured;
 
+        map<string, double> objMaxCosts;
+
         ofstream modelFile;
 
         vector<pair<string, double>> objectiveFunction;
@@ -63,7 +65,7 @@ namespace tuner {
         void createVariable(const string &varName, double min, double max);
 
 
-        void insertObjectiveElement(const pair<string, double> &variables, string costName);
+        void insertObjectiveElement(const pair<string, double> &variables, string costName, double maxValue);
 
         void writeOutObjectiveFunction();
 

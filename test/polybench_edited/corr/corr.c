@@ -9,7 +9,7 @@
 #define DATA_TYPE double
 int main(){
     DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(1e-100))"))) mean[M];
-    DATA_TYPE __attribute((annotate("scalar(range(-0.5, 0.5) error(1e-100) final)"))) data[N][M];
+    DATA_TYPE __attribute((annotate("scalar(range(-10, 10) error(1e-100) final)"))) data[N][M];
     DATA_TYPE __attribute((annotate("scalar(range(0, 5) error(1e-100) final)"))) corr[M][M];
     DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) error(1e-100) final)"))) stddev[M];
 
@@ -114,7 +114,7 @@ int main(){
     //printf("\n\nCORR:\n");
     for (i = 0; i < M; i++) {
         for (j = 0; j < M; j++) {
-            printf("%.10f ", corr[i][j]);
+            printf("%.16lf ", corr[i][j]);
         }
         printf("\n");
     }

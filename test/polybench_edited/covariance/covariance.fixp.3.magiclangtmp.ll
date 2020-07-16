@@ -10,12 +10,12 @@ target triple = "x86_64-unknown-linux-gnu"
 
 @.str = private unnamed_addr constant [35 x i8] c"scalar(range(-10000, 10000) final)\00", section "llvm.metadata", !taffo.info !0
 @.str.1 = private unnamed_addr constant [41 x i8] c"polybench_edited/covariance/covariance.c\00", section "llvm.metadata", !taffo.info !2
-@.str.2 = private unnamed_addr constant [36 x i8] c"scalar(range(-10000, 100000) final)\00", section "llvm.metadata", !taffo.info !0
+@.str.2 = private unnamed_addr constant [30 x i8] c"scalar(range(-10000, 100000))\00", section "llvm.metadata", !taffo.info !0
 @.str.3 = private unnamed_addr constant [33 x i8] c"scalar(range(-5000, 5000) final)\00", section "llvm.metadata", !taffo.info !0
 @.str.4 = private unnamed_addr constant [31 x i8] c"scalar(range(1, 100) disabled)\00", section "llvm.metadata", !taffo.info !0
 @stdout = external dso_local global %struct._IO_FILE*, align 8
 @.str.5 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1, !taffo.info !4
-@.str.6 = private unnamed_addr constant [4 x i8] c"%f \00", align 1, !taffo.info !6
+@.str.6 = private unnamed_addr constant [8 x i8] c"%.16lf \00", align 1, !taffo.info !6
 
 ; Function Attrs: noinline nounwind uwtable
 define dso_local i32 @main(i32 %argc, i8** %argv) #0 !taffo.initweight !10 !taffo.funinfo !11 {
@@ -273,7 +273,7 @@ if.end:                                           ; preds = %if.then, %for.body1
   %idxprom131 = sext i32 %j.4 to i64, !taffo.initweight !20, !taffo.info !21
   %arrayidx132 = getelementptr inbounds [80 x double], [80 x double]* %arrayidx130, i64 0, i64 %idxprom131, !taffo.initweight !20, !taffo.info !15
   %12 = load double, double* %arrayidx132, align 8, !taffo.initweight !23, !taffo.info !15
-  %call133 = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %11, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.6, i32 0, i32 0), double %12), !taffo.initweight !24, !taffo.info !15, !taffo.constinfo !37
+  %call133 = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %11, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.6, i32 0, i32 0), double %12), !taffo.initweight !24, !taffo.info !15, !taffo.constinfo !37
   br label %for.inc134
 
 for.inc134:                                       ; preds = %if.end
@@ -310,7 +310,7 @@ attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !4 = !{i1 false, !5, i1 false, i2 0}
 !5 = !{double 0.000000e+00, double 1.000000e+01}
 !6 = !{i1 false, !7, i1 false, i2 0}
-!7 = !{double 0.000000e+00, double 1.020000e+02}
+!7 = !{double 0.000000e+00, double 1.080000e+02}
 !8 = !{i32 1, !"wchar_size", i32 4}
 !9 = !{!"clang version 8.0.1 (tags/RELEASE_801/final)"}
 !10 = !{i32 -1, i32 -1}
@@ -318,7 +318,7 @@ attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !12 = !{i32 0}
 !13 = !{i1 false, !14, i1 false, i2 -1}
 !14 = !{double -1.000000e+04, double 1.000000e+04}
-!15 = !{i1 false, !16, i1 false, i2 -1}
+!15 = !{i1 false, !16, i1 false, i2 1}
 !16 = !{double -1.000000e+04, double 1.000000e+05}
 !17 = !{i1 false, !18, i1 false, i2 -1}
 !18 = !{double -5.000000e+03, double 5.000000e+03}

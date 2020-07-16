@@ -11,14 +11,19 @@ if not os.path.isfile('./magiclang2.sh'):
 
 
 
-def compileAndCheck(TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
+def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
     global dataset
     # Compilation
     compilationParams = []
     compilationParams.append("./magiclang2.sh")
+    compilationParams.append("-debug-taffo")
     compilationParams.append("-lm")
+    #compilationParams.append("-Xvra")
+    #compilationParams.append("-propagate-all")
+    #compilationParams.append("-Xvra")
+    #compilationParams.append("-unroll=1")
     compilationParams.append("-Xdta")
-    compilationParams.append("-mixedmode=true")
+    compilationParams.append("-mixedmode="+MIX_MODE)
     compilationParams.append("-Xdta")
     compilationParams.append("-mixedtuningenob=" + str(TUNING_ENOB))
     compilationParams.append("-Xdta")
@@ -27,19 +32,20 @@ def compileAndCheck(TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
     compilationParams.append("-mixedtuningcastingtime=" + str(TUNING_CAST_TIME))
     compilationParams.append("-Xdta")
     compilationParams.append("-mixeddoubleenabled=" + DOUBLE_ENABLED)
-    compilationParams.append("polybench_edited/covariance/covariance.c")
+    compilationParams.append("polybench_edited/deriche/deriche.c")
     compilationParams.append("-o")
-    compilationParams.append("polybench_edited/covariance/covariance.fixp")
+    compilationParams.append("polybench_edited/deriche/deriche.fixp")
 
     process = Popen(compilationParams, stderr=PIPE, stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
 
     if (exit_code != 0):
+        print(err.decode('ascii'))
         print("Error compiling the program!")
         exit(-1)
 
-    process = Popen(["polybench_edited/covariance/covariance.fixp"], stdout=PIPE)
+    process = Popen(["polybench_edited/deriche/deriche.fixp"], stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
 
@@ -55,14 +61,18 @@ def compileAndCheck(TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
         output[i] = Decimal(output[i])
 
     accumulator = Decimal(0.0)
+    skipped = 0
     for i in range(0, len(output)):
-        accumulator += abs(output[i] - dataset[i])
+        if dataset[i] != 0:
+            accumulator += abs((output[i] - dataset[i])/dataset[i])
+        else:
+            skipped += 1
 
-
-    return accumulator
+    print("Skipped", skipped)
+    return accumulator/len(output)
 
 def loadReferenceRun():
-    process = Popen(["polybench_edited/covariance/covariance.flt"], stdout=PIPE)
+    process = Popen(["polybench_edited/deriche/deriche.flt"], stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
 
@@ -92,10 +102,12 @@ TUNING_TIME = 1000
 TUNING_CAST_TIME = 500
 DOUBLE_ENABLED = "false"
 
-print("Very precise", compileAndCheck(100, 1, 0.5, "true"))
+print("Very precise", compileAndCheck("true", 1000, 1, 1, "true"))
 
-print("No double but precise", compileAndCheck(100, 1, 0.5, "false"))
+print("No double but precise", compileAndCheck("true", 1000, 1, 1, "false"))
 
-print("Medium precision", compileAndCheck(50, 50, 25, "true"))
+print("Medium precision", compileAndCheck("true", 50, 50, 50, "false"))
 
-print("Quick mode", compileAndCheck(1, 100, 50, "true"))
+print("Quick mode", compileAndCheck("true", 1, 10000, 10000, "false"))
+
+print("Fix only", compileAndCheck("false", 0, 0, 0, "true"))
