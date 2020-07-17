@@ -24,14 +24,14 @@ int main(){
     int h = H;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-10, 10))"))) alpha;
-    DATA_TYPE   __attribute__((annotate("scalar(range(-10, 10))"))) imgIn[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(range(-10, 10))"))) imgOut[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(range(-10, 10))"))) y1[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(range(-10, 10))"))) y2[W][H];
+    DATA_TYPE __attribute__((annotate("scalar(range(-100, 100))"))) alpha;
+    DATA_TYPE   __attribute__((annotate("scalar(range(-100, 100))"))) imgIn[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar(range(-100, 100))"))) imgOut[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar(range(-100, 100))"))) y1[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar(range(-100, 100))"))) y2[W][H];
 
-    int __attribute__((annotate("scalar(range(0, 192))"))) i ;
-    int __attribute__((annotate("scalar(range(0, 128))"))) j;
+    int __attribute__((annotate("scalar(range(-400, 400))"))) i ;
+    int __attribute__((annotate("scalar(range(-400, 400))"))) j;
 
 
     alpha=0.25; //parameter of the filter
@@ -41,14 +41,14 @@ int main(){
         for (j = 0; j < h; j++)
             imgIn[i][j] = (DATA_TYPE) ((313*i+991*j)%65536) / 65535.0f;
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) )"))) xm1, tm1, ym1, ym2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) )"))) xp1, xp2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) )"))) tp1, tp2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) )"))) yp1, yp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) xm1, tm1, ym1, ym2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) xp1, xp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) tp1, tp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) yp1, yp2;
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) )"))) k;
-    DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) )"))) a1, a2, a3, a4, a5, a6, a7, a8;
-    DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) )"))) b1, b2, c1, c2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-20, 20) )"))) k;
+    DATA_TYPE __attribute__((annotate("scalar(range(-20, 20) )"))) a1, a2, a3, a4, a5, a6, a7, a8;
+    DATA_TYPE __attribute__((annotate("scalar(range(-20, 20) )"))) b1, b2, c1, c2;
 
     k = (SCALAR_VAL(1.0)-EXP_FUN(-ALPHA))*(SCALAR_VAL(1.0)-EXP_FUN(-ALPHA))/(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*ALPHA*EXP_FUN(-ALPHA)-EXP_FUN(SCALAR_VAL(2.0)*ALPHA));
     a1 = a5 = k;

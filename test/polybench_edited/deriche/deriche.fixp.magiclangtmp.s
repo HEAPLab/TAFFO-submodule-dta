@@ -9,13 +9,15 @@
 .LCPI0_2:
 	.quad	-4625196817309499392    # double -0.25
 .LCPI0_3:
-	.quad	4728779608739020800     # double 134217728
+	.quad	4724276009111650304     # double 67108864
 .LCPI0_4:
 	.quad	4602678819172646912     # double 0.5
 .LCPI0_5:
 	.quad	4607182418800017408     # double 1
 .LCPI0_6:
-	.quad	4742290407621132288     # double 1073741824
+	.quad	4715268809856909312     # double 16777216
+.LCPI0_7:
+	.quad	4737786807993761792     # double 536870912
 	.text
 	.globl	main
 	.p2align	4, 0x90
@@ -69,14 +71,12 @@ main:                                   # @main
 	cltd
 	movl	$65536, %ecx            # imm = 0x10000
 	idivl	%ecx
-	shll	$24, %edx
-	movl	%edx, %ecx
-	movl	%ecx, %edi
+	shll	$22, %edx
+	movslq	%edx, %rdi
 	movq	%rdi, %rax
-	xorl	%ecx, %ecx
-	movl	%ecx, %edx
+	cqto
 	movl	$65535, %edi            # imm = 0xFFFF
-	divq	%rdi
+	idivq	%rdi
 	movl	%eax, %ecx
 	movl	-393256(%rbp), %esi     # 4-byte Reload
 	movslq	%esi, %rax
@@ -85,7 +85,7 @@ main:                                   # @main
 	addq	%rax, %rdi
 	movl	-393264(%rbp), %r8d     # 4-byte Reload
 	movslq	%r8d, %rax
-	shll	$3, %ecx
+	shll	$2, %ecx
 	movl	%ecx, (%rdi,%rax,4)
 # %bb.5:                                # %for.inc
                                         #   in Loop: Header=BB0_3 Depth=2
@@ -150,7 +150,7 @@ main:                                   # @main
 	movslq	%eax, %rdx
 	movslq	%ecx, %rsi
 	imulq	%rsi, %rdx
-	sarq	$27, %rdx
+	sarq	$26, %rdx
 	movl	%edx, %eax
 	movslq	%eax, %rdx
 	imulq	$-3, %rdx, %rdx
@@ -173,7 +173,7 @@ main:                                   # @main
 	movslq	%ecx, %rdx
 	movslq	%edi, %rsi
 	imulq	%rsi, %rdx
-	sarq	$27, %rdx
+	sarq	$26, %rdx
 	movl	%edx, %ecx
 	movslq	%ecx, %rdx
 	imulq	$5, %rdx, %rdx
@@ -195,7 +195,7 @@ main:                                   # @main
 	movslq	%ecx, %rdx
 	movslq	%eax, %rsi
 	imulq	%rsi, %rdx
-	sarq	$27, %rdx
+	sarq	$26, %rdx
 	movl	%edx, %eax
 	movaps	%xmm1, %xmm0
 	movaps	%xmm2, %xmm1
@@ -245,8 +245,8 @@ main:                                   # @main
 	jge	.LBB0_14
 # %bb.12:                               # %for.body68
                                         #   in Loop: Header=BB0_11 Depth=2
-	movsd	.LCPI0_6(%rip), %xmm0   # xmm0 = mem[0],zero
-	movsd	.LCPI0_3(%rip), %xmm1   # xmm1 = mem[0],zero
+	movsd	.LCPI0_7(%rip), %xmm0   # xmm0 = mem[0],zero
+	movsd	.LCPI0_6(%rip), %xmm1   # xmm1 = mem[0],zero
 	movl	-393336(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
 	shlq	$9, %rcx
@@ -263,15 +263,16 @@ main:                                   # @main
 	movslq	%r9d, %rcx
 	movslq	%r8d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %r8d
 	movl	-393300(%rbp), %r9d     # 4-byte Reload
 	movslq	%r9d, %rcx
 	movl	-393360(%rbp), %r10d    # 4-byte Reload
 	movslq	%r10d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$24, %rcx
+	sarq	$21, %rcx
 	movl	%ecx, %r11d
+	shll	$2, %r8d
 	sarl	$3, %r11d
 	addl	%r11d, %r8d
 	movaps	%xmm0, %xmm1
@@ -283,7 +284,7 @@ main:                                   # @main
 	movl	-393364(%rbp), %r11d    # 4-byte Reload
 	movslq	%r11d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %ebx
 	shll	$3, %r8d
 	addl	%ebx, %r8d
@@ -295,7 +296,7 @@ main:                                   # @main
 	movl	-393368(%rbp), %ebx     # 4-byte Reload
 	movslq	%ebx, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %r14d
 	addl	%r14d, %r8d
 	movslq	%eax, %rcx
@@ -304,7 +305,7 @@ main:                                   # @main
 	movq	%rsi, %r15
 	addq	%rcx, %r15
 	movslq	%edi, %rcx
-	sarl	$3, %r8d
+	sarl	$5, %r8d
 	movl	%r8d, (%r15,%rcx,4)
 	movslq	%eax, %rcx
 	shlq	$9, %rcx
@@ -380,20 +381,20 @@ main:                                   # @main
 	jl	.LBB0_22
 # %bb.20:                               # %for.body105
                                         #   in Loop: Header=BB0_19 Depth=2
-	movsd	.LCPI0_6(%rip), %xmm0   # xmm0 = mem[0],zero
+	movsd	.LCPI0_7(%rip), %xmm0   # xmm0 = mem[0],zero
 	movl	-393304(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
 	movl	-393420(%rbp), %edx     # 4-byte Reload
 	movslq	%edx, %rsi
 	imulq	%rsi, %rcx
-	sarq	$24, %rcx
+	sarq	$21, %rcx
 	movl	%ecx, %edi
 	movl	-393312(%rbp), %r8d     # 4-byte Reload
 	movslq	%r8d, %rcx
 	movl	-393424(%rbp), %r9d     # 4-byte Reload
 	movslq	%r9d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$24, %rcx
+	sarq	$21, %rcx
 	movl	%ecx, %r10d
 	addl	%r10d, %edi
 	movaps	%xmm0, %xmm1
@@ -405,7 +406,7 @@ main:                                   # @main
 	movl	-393412(%rbp), %r10d    # 4-byte Reload
 	movslq	%r10d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %r11d
 	addl	%r11d, %edi
 	movsd	-393328(%rbp), %xmm1    # 8-byte Reload
@@ -416,7 +417,7 @@ main:                                   # @main
 	movl	-393408(%rbp), %r11d    # 4-byte Reload
 	movslq	%r11d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %ebx
 	addl	%ebx, %edi
 	movl	-393384(%rbp), %ebx     # 4-byte Reload
@@ -427,7 +428,7 @@ main:                                   # @main
 	addq	%rcx, %r14
 	movl	-393416(%rbp), %r15d    # 4-byte Reload
 	movslq	%r15d, %rcx
-	sarl	$3, %edi
+	sarl	$5, %edi
 	movl	%edi, (%r14,%rcx,4)
 	movslq	%ebx, %rcx
 	shlq	$9, %rcx
@@ -565,8 +566,8 @@ main:                                   # @main
 	jge	.LBB0_38
 # %bb.36:                               # %for.body165
                                         #   in Loop: Header=BB0_35 Depth=2
-	movsd	.LCPI0_6(%rip), %xmm0   # xmm0 = mem[0],zero
-	movsd	.LCPI0_3(%rip), %xmm1   # xmm1 = mem[0],zero
+	movsd	.LCPI0_7(%rip), %xmm0   # xmm0 = mem[0],zero
+	movsd	.LCPI0_6(%rip), %xmm1   # xmm1 = mem[0],zero
 	movl	-393476(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
 	shlq	$9, %rcx
@@ -583,15 +584,16 @@ main:                                   # @main
 	movslq	%r9d, %rcx
 	movslq	%r8d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %r8d
 	movl	-393300(%rbp), %r9d     # 4-byte Reload
 	movslq	%r9d, %rcx
 	movl	-393480(%rbp), %r10d    # 4-byte Reload
 	movslq	%r10d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$24, %rcx
+	sarq	$21, %rcx
 	movl	%ecx, %r11d
+	shll	$2, %r8d
 	sarl	$3, %r11d
 	addl	%r11d, %r8d
 	movaps	%xmm0, %xmm1
@@ -603,7 +605,7 @@ main:                                   # @main
 	movl	-393484(%rbp), %r11d    # 4-byte Reload
 	movslq	%r11d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %ebx
 	shll	$3, %r8d
 	addl	%ebx, %r8d
@@ -615,7 +617,7 @@ main:                                   # @main
 	movl	-393488(%rbp), %ebx     # 4-byte Reload
 	movslq	%ebx, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %r14d
 	addl	%r14d, %r8d
 	movslq	%eax, %rcx
@@ -624,7 +626,7 @@ main:                                   # @main
 	movq	%rsi, %r15
 	addq	%rcx, %r15
 	movslq	%edi, %rcx
-	sarl	$3, %r8d
+	sarl	$5, %r8d
 	movl	%r8d, (%r15,%rcx,4)
 	movslq	%eax, %rcx
 	shlq	$9, %rcx
@@ -700,20 +702,20 @@ main:                                   # @main
 	jl	.LBB0_46
 # %bb.44:                               # %for.body202
                                         #   in Loop: Header=BB0_43 Depth=2
-	movsd	.LCPI0_6(%rip), %xmm0   # xmm0 = mem[0],zero
+	movsd	.LCPI0_7(%rip), %xmm0   # xmm0 = mem[0],zero
 	movl	-393304(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
 	movl	-393540(%rbp), %edx     # 4-byte Reload
 	movslq	%edx, %rsi
 	imulq	%rsi, %rcx
-	sarq	$24, %rcx
+	sarq	$21, %rcx
 	movl	%ecx, %edi
 	movl	-393312(%rbp), %r8d     # 4-byte Reload
 	movslq	%r8d, %rcx
 	movl	-393536(%rbp), %r9d     # 4-byte Reload
 	movslq	%r9d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$24, %rcx
+	sarq	$21, %rcx
 	movl	%ecx, %r10d
 	addl	%r10d, %edi
 	movaps	%xmm0, %xmm1
@@ -725,7 +727,7 @@ main:                                   # @main
 	movl	-393532(%rbp), %r10d    # 4-byte Reload
 	movslq	%r10d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %r11d
 	addl	%r11d, %edi
 	movsd	-393328(%rbp), %xmm1    # 8-byte Reload
@@ -736,7 +738,7 @@ main:                                   # @main
 	movl	-393528(%rbp), %r11d    # 4-byte Reload
 	movslq	%r11d, %rsi
 	imulq	%rsi, %rcx
-	sarq	$27, %rcx
+	sarq	$24, %rcx
 	movl	%ecx, %ebx
 	addl	%ebx, %edi
 	movl	-393544(%rbp), %ebx     # 4-byte Reload
@@ -747,7 +749,7 @@ main:                                   # @main
 	addq	%rcx, %r14
 	movl	-393504(%rbp), %r15d    # 4-byte Reload
 	movslq	%r15d, %rcx
-	sarl	$3, %edi
+	sarl	$5, %edi
 	movl	%edi, (%r14,%rcx,4)
 	movslq	%ebx, %rcx
 	shlq	$9, %rcx
@@ -885,13 +887,13 @@ main:                                   # @main
 # %bb.61:                               # %if.then
                                         #   in Loop: Header=BB0_59 Depth=2
 	movq	stdout, %rdi
-	movabsq	$.L.str.6, %rsi
+	movabsq	$.L.str.5, %rsi
 	movb	$0, %al
 	callq	fprintf
 	movl	%eax, -393588(%rbp)     # 4-byte Spill
 .LBB0_62:                               # %if.end
                                         #   in Loop: Header=BB0_59 Depth=2
-	movsd	.LCPI0_3(%rip), %xmm0   # xmm0 = mem[0],zero
+	movsd	.LCPI0_6(%rip), %xmm0   # xmm0 = mem[0],zero
 	movq	stdout, %rdi
 	movl	-393576(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
@@ -903,7 +905,7 @@ main:                                   # @main
 	movl	(%rdx,%rcx,4), %r8d
 	cvtsi2sdl	%r8d, %xmm1
 	divsd	%xmm0, %xmm1
-	movabsq	$.L.str.7, %rcx
+	movabsq	$.L.str.6, %rcx
 	movq	%rcx, %rsi
 	movaps	%xmm1, %xmm0
 	movb	$1, %al
@@ -938,16 +940,16 @@ main:                                   # @main
 	.size	main, .Lfunc_end0-main
 	.cfi_endproc
                                         # -- End function
-	.type	.L.str.6,@object        # @.str.6
+	.type	.L.str.5,@object        # @.str.5
 	.section	.rodata.str1.1,"aMS",@progbits,1
-.L.str.6:
+.L.str.5:
 	.asciz	"\n"
-	.size	.L.str.6, 2
+	.size	.L.str.5, 2
 
-	.type	.L.str.7,@object        # @.str.7
-.L.str.7:
+	.type	.L.str.6,@object        # @.str.6
+.L.str.6:
 	.asciz	"%.16lf "
-	.size	.L.str.7, 8
+	.size	.L.str.6, 8
 
 
 	.ident	"clang version 8.0.1 (tags/RELEASE_801/final)"

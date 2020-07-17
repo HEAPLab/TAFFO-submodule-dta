@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DATA_TYPE double
+#   define TSTEPS 100
+#   define N 40
+#define _PB_N N
+
+#  define DATA_TYPE double
+#  define DATA_PRINTF_MODIFIER "%0.16lf "
+#  define SCALAR_VAL(x) x
+#  define SQRT_FUN(x) sqrt(x)
+#  define EXP_FUN(x) exp(x)
+#  define POW_FUN(x,y) pow(x,y)
+
+#define POLYBENCH_DUMP_TARGET stdout
+
+int main(){
+    int n = N;
+    int tsteps = TSTEPS;
+
+    /* Variable declaration/allocation. */
+    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50))"))) A[N][N][N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50))"))) B[N][N][N];
+
+    int t __attribute__((annotate("scalar(range(0, 80) final)")));
+    int i __attribute__((annotate("scalar(range(0, 80) final)")));
+    int j __attribute__((annotate("scalar(range(0, 80) final)")));
+    int k __attribute__((annotate("scalar(range(0, 80) final)")));
+
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            for (k = 0; k < n; k++)
+                A[i][j][k] = B[i][j][k] = (DATA_TYPE) (i + j + (n-k))* 10 / (n);
+
+
+    for (t = 1; t <= TSTEPS; t++) {
+        for (i = 1; i < _PB_N-1; i++) {
+            for (j = 1; j < _PB_N-1; j++) {
+                for (k = 1; k < _PB_N-1; k++) {
+                    B[i][j][k] =   SCALAR_VAL(0.125) * (A[i+1][j][k] - SCALAR_VAL(2.0) * A[i][j][k] + A[i-1][j][k])
+                                   + SCALAR_VAL(0.125) * (A[i][j+1][k] - SCALAR_VAL(2.0) * A[i][j][k] + A[i][j-1][k])
+                                   + SCALAR_VAL(0.125) * (A[i][j][k+1] - SCALAR_VAL(2.0) * A[i][j][k] + A[i][j][k-1])
+                                   + A[i][j][k];
+                }
+            }
+        }
+        for (i = 1; i < _PB_N-1; i++) {
+            for (j = 1; j < _PB_N-1; j++) {
+                for (k = 1; k < _PB_N-1; k++) {
+                    A[i][j][k] =   SCALAR_VAL(0.125) * (B[i+1][j][k] - SCALAR_VAL(2.0) * B[i][j][k] + B[i-1][j][k])
+                                   + SCALAR_VAL(0.125) * (B[i][j+1][k] - SCALAR_VAL(2.0) * B[i][j][k] + B[i][j-1][k])
+                                   + SCALAR_VAL(0.125) * (B[i][j][k+1] - SCALAR_VAL(2.0) * B[i][j][k] + B[i][j][k-1])
+                                   + B[i][j][k];
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            for (k = 0; k < n; k++) {
+                if ((i * n * n + j * n + k) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
+                fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j][k]);
+            }
+    return 0;
+}
