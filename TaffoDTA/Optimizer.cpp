@@ -20,6 +20,10 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
     dbgs() << "handleGlobal called.\n";
 
     if (!glob->getValueType()->isPointerTy()) {
+        if(!valueInfo->metadata->getEnableConversion()){
+            dbgs() << "Skipping as conversion is disabled!";
+            return;
+        }
         if (valueInfo->metadata->getKind() == MDInfo::K_Field) {
             dbgs() << " ^ This is a real field\n";
             auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
@@ -53,6 +57,10 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 
 
     } else {
+        if(!valueInfo->metadata->getEnableConversion()){
+            dbgs() << "Skipping as conversion is disabled!";
+            return;
+        }
         dbgs() << " ^ this is a pointer, skipping as it is unsupported at the moment.\n";
         return;
     }
@@ -576,6 +584,8 @@ bool Optimizer::finish() {
 
     bool result = model.finalizeAndSolve();
 
+    dbgs() << "Skipped conversions due to disabled flag: " << DisabledSkipped << "\n";
+
     return result;
 }
 
@@ -778,16 +788,18 @@ shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalar
            "OMG! Catastrophic failure! Exactly one variable should be selected here!!!");
 
     if (selectedFixed == 1) {
+        StatSelectedFixed++;
         return make_shared<mdutils::FPType>(scalarInfo->getTotalBits(), (int) fracbits, scalarInfo->isSigned);
     }
 
-    //FIXME: should greatest number be given a value here?
 
     if (selectedFloat == 1) {
+        StatSelectedFloat++;
         return make_shared<mdutils::FloatType>(FloatType::Float_float, 0);
     }
 
     if (selectedDouble == 1) {
+        StatSelectedDouble++;
         return make_shared<mdutils::FloatType>(FloatType::Float_double, 0);
     }
 
@@ -806,7 +818,12 @@ int Optimizer::getENOBFromError(double error) {
     return max(-enob, 0);
 }
 
+void Optimizer::printStatInfos() {
+    dbgs() << "Converted to fix: " << StatSelectedFixed << "\n";
+    dbgs() << "Converted to float: " << StatSelectedFloat << "\n";
+    dbgs() << "Converted to double: " << StatSelectedDouble << "\n";
 
+}
 
 
 

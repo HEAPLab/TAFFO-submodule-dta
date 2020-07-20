@@ -725,6 +725,8 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
     }
 
+    optimizer.printStatInfos();
+
 
 }
 

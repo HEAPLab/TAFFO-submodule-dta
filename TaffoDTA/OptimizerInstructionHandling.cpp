@@ -975,7 +975,15 @@ void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> arg
             dbgs() << "No info available.\n";
         } else {
             dbgs() << tuner->valueInfo(&(*iIt))->metadata->toString() << "\n";
+
+            if(!tuner->valueInfo(&(*iIt))->metadata->getEnableConversion()){
+                dbgs() << "Skipping as conversion is disabled!\n";
+                DisabledSkipped++;
+                continue;
+            }
         }
+
+
 
         handleInstruction(&(*iIt), tuner->valueInfo(&(*iIt)));
         dbgs() << "\n\n";
@@ -1552,6 +1560,8 @@ Optimizer::handleSelect(Instruction *instruction, shared_ptr<ValueInfo> valueInf
 
 
 }
+
+
 
 
 

@@ -62,3 +62,6 @@ test/*.out
 test/a
 
 *.ll
+*.s
+*.flt
+*.fixp

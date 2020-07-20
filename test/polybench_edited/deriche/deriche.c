@@ -24,14 +24,14 @@ int main(){
     int h = H;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-100, 100))"))) alpha;
-    DATA_TYPE   __attribute__((annotate("scalar(range(-100, 100))"))) imgIn[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(range(-100, 100))"))) imgOut[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(range(-100, 100))"))) y1[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(range(-100, 100))"))) y2[W][H];
+    DATA_TYPE __attribute__((annotate("scalar()"))) alpha;
+    DATA_TYPE   __attribute__((annotate("scalar()"))) imgIn[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar()"))) imgOut[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar()"))) y1[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar()"))) y2[W][H];
 
-    int __attribute__((annotate("scalar(range(-400, 400))"))) i ;
-    int __attribute__((annotate("scalar(range(-400, 400))"))) j;
+    int __attribute__((annotate("scalar(range(0, 192) final disabled)"))) i ;
+    int __attribute__((annotate("scalar(range(0, 128) final disabled)"))) j;
 
 
     alpha=0.25; //parameter of the filter
@@ -41,14 +41,16 @@ int main(){
         for (j = 0; j < h; j++)
             imgIn[i][j] = (DATA_TYPE) ((313*i+991*j)%65536) / 65535.0f;
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) xm1, tm1, ym1, ym2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) xp1, xp2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) tp1, tp2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) )"))) yp1, yp2;
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-20, 20) )"))) k;
-    DATA_TYPE __attribute__((annotate("scalar(range(-20, 20) )"))) a1, a2, a3, a4, a5, a6, a7, a8;
-    DATA_TYPE __attribute__((annotate("scalar(range(-20, 20) )"))) b1, b2, c1, c2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) xm1, tm1, ym1;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) ym2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) xp1, xp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) tp1, tp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) yp1, yp2;
+
+    DATA_TYPE __attribute__((annotate("scalar()"))) k;
+    DATA_TYPE __attribute__((annotate("scalar()"))) a1, a2, a3, a4, a5, a6, a7, a8;
+    DATA_TYPE __attribute__((annotate("scalar()"))) b1, b2, c1, c2;
 
     k = (SCALAR_VAL(1.0)-EXP_FUN(-ALPHA))*(SCALAR_VAL(1.0)-EXP_FUN(-ALPHA))/(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*ALPHA*EXP_FUN(-ALPHA)-EXP_FUN(SCALAR_VAL(2.0)*ALPHA));
     a1 = a5 = k;
@@ -59,6 +61,9 @@ int main(){
     b2 = -EXP_FUN(SCALAR_VAL(-2.0)*ALPHA);
     c1 = c2 = 1;
 
+    /*printf("%.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f %.16f ",
+           xm1, tm1, ym1, ym2, xp1, xp2, tp1, tp2, yp1, yp2, k, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, c1, c2);*/
+
     for (i=0; i<_PB_W; i++) {
         ym1 = SCALAR_VAL(0.0);
         ym2 = SCALAR_VAL(0.0);
@@ -68,8 +73,12 @@ int main(){
             xm1 = imgIn[i][j];
             ym2 = ym1;
             ym1 = y1[i][j];
+            printf("%.16f ", y1[i][j]);
         }
+
     }
+
+
 
     for (i=0; i<_PB_W; i++) {
         yp1 = SCALAR_VAL(0.0);
@@ -121,12 +130,12 @@ int main(){
         for (j=0; j<_PB_H; j++)
             imgOut[i][j] = c2*(y1[i][j] + y2[i][j]);
 
-    for (i = 0; i < w; i++)
+    /*for (i = 0; i < w; i++)
         for (j = 0; j < h; j++) {
             if ((i * h + j) % 20 == 0) fprintf(stdout, "\n");
             fprintf(stdout, "%.16lf ", imgOut[i][j]);
         }
-
+*/
 
 
     return 0;

@@ -6,6 +6,15 @@ Enob propagation (WIP, known math functions calls not handled)
 
 Avoid error in empty models (this should not even happen...)
 
+Disable execution on disabled instructions
+
+Handle global pointers!!!
+Handle pointers (WIP) (OUCH, should work but it is still to be tested very much, moreover, what happens when more than a variable is inserted? General pointers are still not handled)
+
+What if a conversion disabled is used in a computation that is not disabled? As for now it is skipped.
+
+When computing a function call from root, parse arguments info!
+
 Obiettivo: sviluppare due (o più) policy per i seguenti use case:
 - ottimizza i data type, partendo da "tutto double" e inserendo 0 errore
 - ottimizza i data type, partendo da "tutto double" e utilizza solo bfloat16 e IEEE binary32
@@ -24,7 +33,6 @@ Implement call (there are some problem because of the VRA)
 Implement the cost of function in terms o energy/time
 Fix execution of function from root (does not use correct function now)
 Actually use the model result and propagate to conversion (Should work but still to even run corner test cases...)
-Handle pointers (WIP) (OUCH, should work but it is still to be tested very much, moreover, what happens when more than a variable is inserted? General pointers are still not handled)
 
 
 DONE:

@@ -18,10 +18,10 @@ def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE
     compilationParams.append("./magiclang2.sh")
     compilationParams.append("-debug-taffo")
     compilationParams.append("-lm")
-    #compilationParams.append("-Xvra")
-    #compilationParams.append("-propagate-all")
-    #compilationParams.append("-Xvra")
-    #compilationParams.append("-unroll=1")
+    compilationParams.append("-Xvra")
+    compilationParams.append("-propagate-all")
+    compilationParams.append("-Xvra")
+    compilationParams.append("-unroll=0")
     compilationParams.append("-Xdta")
     compilationParams.append("-mixedmode="+MIX_MODE)
     compilationParams.append("-Xdta")
@@ -32,6 +32,7 @@ def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE
     compilationParams.append("-mixedtuningcastingtime=" + str(TUNING_CAST_TIME))
     compilationParams.append("-Xdta")
     compilationParams.append("-mixeddoubleenabled=" + DOUBLE_ENABLED)
+    compilationParams.append("-debug-taffo")
     compilationParams.append("polybench_edited/deriche/deriche.c")
     compilationParams.append("-o")
     compilationParams.append("polybench_edited/deriche/deriche.fixp")
@@ -40,14 +41,20 @@ def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE
     (output, err) = process.communicate()
     exit_code = process.wait()
 
+    text_file = open("result.txt", "w")
+    text_file.write(err.decode('ascii'))
+    text_file.close()
+
     if (exit_code != 0):
         print(err.decode('ascii'))
         print("Error compiling the program!")
         exit(-1)
 
-    process = Popen(["polybench_edited/deriche/deriche.fixp"], stdout=PIPE)
+    process = Popen(["polybench_edited/deriche/deriche.fixp"], stdout=PIPE, stderr=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
+
+
 
     if (exit_code != 0):
         print("Error executing the program!")

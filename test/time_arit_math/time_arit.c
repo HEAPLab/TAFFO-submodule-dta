@@ -175,9 +175,9 @@ int main(void) {
     ITIME(c[i] = a[i] << 3);
     times[CAST_FIX_FIX] = t3;
     ITIME(c[i] = a[i] * b[i]);
-    times[MUL_FIX] = t3;
+    times[MUL_FIX] = t4;
     ITIME(c[i] = a[i] / b[i]);
-    times[DIV_FIX] = t3;
+    times[DIV_FIX] = t4;
     ITIME(c[i] = a[i] % b[i]);
     times[REM_FIX] = t3;
 
