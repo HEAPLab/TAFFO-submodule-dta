@@ -144,6 +144,21 @@ bool Model::loadResultsFromFile(string modelFile) {
             continue;
         }
 
+        if(varName == "__COST_ENOB__"){
+            costEnob = value;
+            continue;
+        }
+
+        if(varName == "__COST_TIME__"){
+            costTime = value;
+            continue;
+        }
+
+        if(varName == "__COST_CONV__"){
+            costCast=value;
+            continue;
+        }
+
         if(!isVariableDeclared(varName)){
             dbgs() << "Trying to load results for an unknown variable!\nThis may be signal of a more problematic error!\n\n";
             VARIABLE_NOT_DECLARED(varName);

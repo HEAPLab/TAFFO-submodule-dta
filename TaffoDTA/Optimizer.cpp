@@ -823,6 +823,27 @@ void Optimizer::printStatInfos() {
     dbgs() << "Converted to float: " << StatSelectedFloat << "\n";
     dbgs() << "Converted to double: " << StatSelectedDouble << "\n";
 
+    int total = StatSelectedFixed + StatSelectedFloat + StatSelectedDouble;
+
+    dbgs() << "Conversion entropy as equally distributed variables: " << -(
+            ((double)StatSelectedDouble / total) * log2(((double)StatSelectedDouble) / total) +
+                    ((double)StatSelectedFloat / total) * log2(((double)StatSelectedFloat) / total) +
+                    ((double)StatSelectedDouble / total) * log2(((double)StatSelectedDouble) / total)
+            ) << "\n";
+
+
+    ofstream statFile;
+    statFile.open("./stats.txt", ios::out|ios::trunc);
+    assert(statFile.is_open() && "File open failed!");
+    statFile << "TOFIX, " << StatSelectedFixed << "\n";
+    statFile << "TOFLOAT, " << StatSelectedFloat << "\n";
+    statFile << "TODOUBLE, " << StatSelectedDouble << "\n";
+    statFile << "COSTENOB, " << model.costEnob << "\n";
+    statFile << "COSTCAST, " << model.costCast << "\n";
+    statFile << "COSTTIME, " << model.costTime << "\n";
+    statFile.flush();
+    statFile.close();
+
 }
 
 

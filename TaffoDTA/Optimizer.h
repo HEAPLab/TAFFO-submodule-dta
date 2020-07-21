@@ -121,6 +121,7 @@ namespace tuner {
             cpuCosts.dump();
             dbgs() << "ENOB tuning knob: " << to_string(TUNING_ENOB) << "\n";
             dbgs() << "Time tuning knob: " << to_string(TUNING_MATH) << "\n";
+            dbgs() << "Time tuning CAST knob: " << to_string(TUNING_CASTING) << "\n";
         }
 
         Optimizer();

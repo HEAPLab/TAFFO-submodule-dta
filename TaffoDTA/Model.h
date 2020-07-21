@@ -28,6 +28,8 @@ namespace tuner {
             MIN, MAX
         };
 
+        double costEnob, costTime, costCast;
+
     private:
         set<string> variablesPool;
         map<string, double> variableValues;

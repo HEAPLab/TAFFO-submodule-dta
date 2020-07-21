@@ -38,6 +38,9 @@ if status == pywraplp.Solver.OPTIMAL:
 
     with open('model_results.txt', 'w') as model_result:
         print("__ERROR__, 0", file=model_result)
+        print("__COST_ENOB__,", enobCostObj.solution_value(), file=model_result)
+        print("__COST_TIME__,", mathCostObj.solution_value(), file=model_result)
+        print("__COST_CONV__,", castCostObj.solution_value(), file=model_result)
         for v in solver.variables():
             print(v, ", ", v.solution_value(), file=model_result, sep='')
 else:
