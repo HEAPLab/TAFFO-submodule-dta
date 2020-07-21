@@ -1,9 +1,19 @@
 	.text
 	.file	"heat-3d.c"
-	.section	.rodata.cst8,"aM",@progbits,8
-	.p2align	3               # -- Begin function main
+	.section	.rodata.cst4,"aM",@progbits,4
+	.p2align	2               # -- Begin function main
 .LCPI0_0:
-	.quad	4706261610602168320     # double 4194304
+	.long	1040187392              # float 0.125
+.LCPI0_1:
+	.long	1073741824              # float 2
+.LCPI0_2:
+	.long	1283457024              # float 67108864
+.LCPI0_3:
+	.long	1065353216              # float 1
+.LCPI0_4:
+	.long	1092616192              # float 10
+.LCPI0_5:
+	.long	1241513984              # float 2097152
 	.text
 	.globl	main
 	.p2align	4, 0x90
@@ -55,6 +65,7 @@ main:                                   # @main
 	jge	.LBB0_8
 # %bb.6:                                # %for.body12
                                         #   in Loop: Header=BB0_5 Depth=3
+	movss	.LCPI0_2(%rip), %xmm0   # xmm0 = mem[0],zero,zero,zero
 	movl	-512008(%rbp), %eax     # 4-byte Reload
 	movl	-512016(%rbp), %ecx     # 4-byte Reload
 	addl	%ecx, %eax
@@ -62,42 +73,46 @@ main:                                   # @main
 	movl	-512024(%rbp), %esi     # 4-byte Reload
 	subl	%esi, %edx
 	addl	%edx, %eax
-	shll	$24, %eax
-	movl	%eax, %eax
-	movl	%eax, %edi
-	imulq	$10, %rdi, %rdi
-	shrq	$3, %rdi
+	cvtsi2ssl	%eax, %xmm1
+	movss	.LCPI0_3(%rip), %xmm2   # xmm2 = mem[0],zero,zero,zero
+	divss	%xmm2, %xmm1
+	movss	.LCPI0_4(%rip), %xmm2   # xmm2 = mem[0],zero,zero,zero
+	mulss	%xmm2, %xmm1
+	movss	.LCPI0_5(%rip), %xmm2   # xmm2 = mem[0],zero,zero,zero
+	mulss	%xmm2, %xmm1
+	cvttss2si	%xmm1, %rdi
 	movl	%edi, %eax
 	movl	%eax, %eax
                                         # kill: def $rax killed $eax
-	xorl	%edx, %edx
-                                        # kill: def $rdx killed $edx
-	movl	$40, %edi
-	divq	%rdi
-	shlq	$5, %rax
-	movl	%eax, %r8d
-	movl	-512008(%rbp), %r9d     # 4-byte Reload
-	movslq	%r9d, %rax
+	movabsq	$-3689348814741910323, %rdi # imm = 0xCCCCCCCCCCCCCCCD
+	mulq	%rdi
+	movl	%edx, %r8d
+	andl	$-32, %r8d
+	movl	%r8d, %eax
+	cvtsi2ssq	%rax, %xmm1
+	movss	.LCPI0_2(%rip), %xmm2   # xmm2 = mem[0],zero,zero,zero
+	movaps	%xmm1, %xmm3
+	divss	%xmm2, %xmm3
+	divss	%xmm0, %xmm1
+	movl	-512008(%rbp), %r8d     # 4-byte Reload
+	movslq	%r8d, %rax
 	imulq	$6400, %rax, %rax       # imm = 0x1900
-	leaq	-512000(%rbp), %rdi
-	addq	%rax, %rdi
+	leaq	-512000(%rbp), %rdx
+	addq	%rax, %rdx
 	movslq	%ecx, %rax
 	imulq	$160, %rax, %rax
-	addq	%rax, %rdi
+	addq	%rax, %rdx
 	movslq	%esi, %rax
-	movl	%r8d, %r10d
-	shrl	$2, %r10d
-	movl	%r10d, (%rdi,%rax,4)
-	movslq	%r9d, %rax
+	movss	%xmm3, (%rdx,%rax,4)
+	movslq	%r8d, %rax
 	imulq	$6400, %rax, %rax       # imm = 0x1900
-	leaq	-256000(%rbp), %rdi
-	addq	%rax, %rdi
+	leaq	-256000(%rbp), %rdx
+	addq	%rax, %rdx
 	movslq	%ecx, %rax
 	imulq	$160, %rax, %rax
-	addq	%rax, %rdi
+	addq	%rax, %rdx
 	movslq	%esi, %rax
-	shrl	$4, %r8d
-	movl	%r8d, (%rdi,%rax,4)
+	movss	%xmm1, (%rdx,%rax,4)
 # %bb.7:                                # %for.inc
                                         #   in Loop: Header=BB0_5 Depth=3
 	movl	-512024(%rbp), %eax     # 4-byte Reload
@@ -182,6 +197,8 @@ main:                                   # @main
 	jge	.LBB0_22
 # %bb.20:                               # %for.body46
                                         #   in Loop: Header=BB0_19 Depth=4
+	movss	.LCPI0_0(%rip), %xmm0   # xmm0 = mem[0],zero,zero,zero
+	movss	.LCPI0_1(%rip), %xmm1   # xmm1 = mem[0],zero,zero,zero
 	movl	-512040(%rbp), %eax     # 4-byte Reload
 	addl	$1, %eax
 	movslq	%eax, %rcx
@@ -195,40 +212,33 @@ main:                                   # @main
 	addq	%rcx, %rsi
 	movl	-512056(%rbp), %edi     # 4-byte Reload
 	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %r8d
-	movl	-512040(%rbp), %r9d     # 4-byte Reload
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	movslq	%eax, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movslq	(%rsi,%rcx,4), %rcx
-	shlq	$1, %rcx
-	shlq	$1, %rcx
-	movl	%ecx, %r10d
-	shll	$1, %r8d
-	subl	%r10d, %r8d
-	subl	$1, %r9d
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	movslq	%eax, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %r9d
-	shll	$1, %r9d
-	addl	%r9d, %r8d
+	movss	(%rsi,%rcx,4), %xmm2    # xmm2 = mem[0],zero,zero,zero
+	movl	-512040(%rbp), %r8d     # 4-byte Reload
 	movslq	%r8d, %rcx
-	shlq	$0, %rcx
-	sarq	$1, %rcx
-	movl	%ecx, %r8d
-	movl	-512040(%rbp), %r9d     # 4-byte Reload
-	movslq	%r9d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	movaps	%xmm1, %xmm3
+	mulss	(%rsi,%rcx,4), %xmm3
+	subss	%xmm3, %xmm2
+	subl	$1, %r8d
+	movslq	%r8d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	addss	(%rsi,%rcx,4), %xmm2
+	movaps	%xmm0, %xmm3
+	mulss	%xmm2, %xmm3
+	movl	-512040(%rbp), %r8d     # 4-byte Reload
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
@@ -237,42 +247,33 @@ main:                                   # @main
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rsi
 	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %eax
-	movslq	%r9d, %rcx
+	movss	(%rsi,%rcx,4), %xmm2    # xmm2 = mem[0],zero,zero,zero
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
-	movl	-512048(%rbp), %r10d    # 4-byte Reload
-	movslq	%r10d, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movslq	(%rsi,%rcx,4), %rcx
-	shlq	$1, %rcx
-	shlq	$1, %rcx
-	movl	%ecx, %r11d
-	shll	$1, %eax
-	subl	%r11d, %eax
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	subl	$1, %r10d
-	movslq	%r10d, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %r10d
-	shll	$1, %r10d
-	addl	%r10d, %eax
+	movl	-512048(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
-	shlq	$0, %rcx
-	sarq	$1, %rcx
-	movl	%ecx, %eax
-	sarl	$1, %r8d
-	sarl	$1, %eax
-	addl	%eax, %r8d
-	movslq	%r9d, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	movaps	%xmm1, %xmm4
+	mulss	(%rsi,%rcx,4), %xmm4
+	subss	%xmm4, %xmm2
+	movslq	%r8d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	subl	$1, %eax
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	addss	(%rsi,%rcx,4), %xmm2
+	movaps	%xmm0, %xmm4
+	mulss	%xmm2, %xmm4
+	addss	%xmm4, %xmm3
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
@@ -282,40 +283,31 @@ main:                                   # @main
 	addq	%rcx, %rsi
 	addl	$1, %edi
 	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %edi
-	movslq	%r9d, %rcx
+	movss	(%rsi,%rcx,4), %xmm2    # xmm2 = mem[0],zero,zero,zero
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
 	movslq	%eax, %rcx
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rsi
-	movl	-512056(%rbp), %r10d    # 4-byte Reload
-	movslq	%r10d, %rcx
-	movslq	(%rsi,%rcx,4), %rcx
-	shlq	$1, %rcx
-	shlq	$1, %rcx
-	movl	%ecx, %r11d
-	shll	$1, %edi
-	subl	%r11d, %edi
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	movslq	%eax, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	subl	$1, %r10d
-	movslq	%r10d, %rcx
-	movl	(%rsi,%rcx,4), %r10d
-	shll	$1, %r10d
-	addl	%r10d, %edi
+	movl	-512056(%rbp), %edi     # 4-byte Reload
 	movslq	%edi, %rcx
-	shlq	$0, %rcx
-	sarq	$2, %rcx
-	movl	%ecx, %edi
-	addl	%edi, %r8d
-	movslq	%r9d, %rcx
+	mulss	(%rsi,%rcx,4), %xmm1
+	subss	%xmm1, %xmm2
+	movslq	%r8d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	subl	$1, %edi
+	movslq	%edi, %rcx
+	addss	(%rsi,%rcx,4), %xmm2
+	mulss	%xmm2, %xmm0
+	addss	%xmm0, %xmm3
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	addq	%rcx, %rdx
 	movslq	%eax, %rcx
@@ -323,10 +315,8 @@ main:                                   # @main
 	addq	%rcx, %rdx
 	movl	-512056(%rbp), %edi     # 4-byte Reload
 	movslq	%edi, %rcx
-	movl	(%rdx,%rcx,4), %r10d
-	shll	$2, %r10d
-	addl	%r10d, %r8d
-	movslq	%r9d, %rcx
+	addss	(%rdx,%rcx,4), %xmm3
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	leaq	-512000(%rbp), %rdx
 	addq	%rcx, %rdx
@@ -334,7 +324,7 @@ main:                                   # @main
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rdx
 	movslq	%edi, %rcx
-	movl	%r8d, (%rdx,%rcx,4)
+	movss	%xmm3, (%rdx,%rcx,4)
 # %bb.21:                               # %for.inc134
                                         #   in Loop: Header=BB0_19 Depth=4
 	movl	-512056(%rbp), %eax     # 4-byte Reload
@@ -403,6 +393,8 @@ main:                                   # @main
 	jge	.LBB0_34
 # %bb.32:                               # %for.body154
                                         #   in Loop: Header=BB0_31 Depth=4
+	movss	.LCPI0_0(%rip), %xmm0   # xmm0 = mem[0],zero,zero,zero
+	movss	.LCPI0_1(%rip), %xmm1   # xmm1 = mem[0],zero,zero,zero
 	movl	-512064(%rbp), %eax     # 4-byte Reload
 	addl	$1, %eax
 	movslq	%eax, %rcx
@@ -416,40 +408,33 @@ main:                                   # @main
 	addq	%rcx, %rsi
 	movl	-512080(%rbp), %edi     # 4-byte Reload
 	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %r8d
-	movl	-512064(%rbp), %r9d     # 4-byte Reload
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	movslq	%eax, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movslq	(%rsi,%rcx,4), %rcx
-	shlq	$1, %rcx
-	sarq	$2, %rcx
-	movl	%ecx, %r10d
-	sarl	$2, %r8d
-	subl	%r10d, %r8d
-	subl	$1, %r9d
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	movslq	%eax, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %r9d
-	sarl	$2, %r9d
-	addl	%r9d, %r8d
+	movss	(%rsi,%rcx,4), %xmm2    # xmm2 = mem[0],zero,zero,zero
+	movl	-512064(%rbp), %r8d     # 4-byte Reload
 	movslq	%r8d, %rcx
-	shlq	$0, %rcx
-	sarq	$1, %rcx
-	movl	%ecx, %r8d
-	movl	-512064(%rbp), %r9d     # 4-byte Reload
-	movslq	%r9d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	movaps	%xmm1, %xmm3
+	mulss	(%rsi,%rcx,4), %xmm3
+	subss	%xmm3, %xmm2
+	subl	$1, %r8d
+	movslq	%r8d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	addss	(%rsi,%rcx,4), %xmm2
+	movaps	%xmm0, %xmm3
+	mulss	%xmm2, %xmm3
+	movl	-512064(%rbp), %r8d     # 4-byte Reload
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
@@ -458,42 +443,33 @@ main:                                   # @main
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rsi
 	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %eax
-	movslq	%r9d, %rcx
+	movss	(%rsi,%rcx,4), %xmm2    # xmm2 = mem[0],zero,zero,zero
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
-	movl	-512072(%rbp), %r10d    # 4-byte Reload
-	movslq	%r10d, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movslq	(%rsi,%rcx,4), %rcx
-	shlq	$1, %rcx
-	sarq	$2, %rcx
-	movl	%ecx, %r11d
-	sarl	$2, %eax
-	subl	%r11d, %eax
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	subl	$1, %r10d
-	movslq	%r10d, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %r10d
-	sarl	$2, %r10d
-	addl	%r10d, %eax
+	movl	-512072(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
-	shlq	$0, %rcx
-	sarq	$1, %rcx
-	movl	%ecx, %eax
-	sarl	$1, %r8d
-	sarl	$1, %eax
-	addl	%eax, %r8d
-	movslq	%r9d, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	movaps	%xmm1, %xmm4
+	mulss	(%rsi,%rcx,4), %xmm4
+	subss	%xmm4, %xmm2
+	movslq	%r8d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	subl	$1, %eax
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	movslq	%edi, %rcx
+	addss	(%rsi,%rcx,4), %xmm2
+	movaps	%xmm0, %xmm4
+	mulss	%xmm2, %xmm4
+	addss	%xmm4, %xmm3
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
@@ -503,42 +479,31 @@ main:                                   # @main
 	addq	%rcx, %rsi
 	addl	$1, %edi
 	movslq	%edi, %rcx
-	movl	(%rsi,%rcx,4), %edi
-	movslq	%r9d, %rcx
+	movss	(%rsi,%rcx,4), %xmm2    # xmm2 = mem[0],zero,zero,zero
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
 	movslq	%eax, %rcx
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rsi
-	movl	-512080(%rbp), %r10d    # 4-byte Reload
-	movslq	%r10d, %rcx
-	movslq	(%rsi,%rcx,4), %rcx
-	shlq	$1, %rcx
-	sarq	$2, %rcx
-	movl	%ecx, %r11d
-	sarl	$2, %edi
-	subl	%r11d, %edi
-	movslq	%r9d, %rcx
-	imulq	$6400, %rcx, %rcx       # imm = 0x1900
-	movq	%rdx, %rsi
-	addq	%rcx, %rsi
-	movslq	%eax, %rcx
-	imulq	$160, %rcx, %rcx
-	addq	%rcx, %rsi
-	subl	$1, %r10d
-	movslq	%r10d, %rcx
-	movl	(%rsi,%rcx,4), %r10d
-	sarl	$2, %r10d
-	addl	%r10d, %edi
+	movl	-512080(%rbp), %edi     # 4-byte Reload
 	movslq	%edi, %rcx
-	shlq	$0, %rcx
-	sarq	$2, %rcx
-	movl	%ecx, %edi
-	sarl	$1, %r8d
-	sarl	$1, %edi
-	addl	%edi, %r8d
-	movslq	%r9d, %rcx
+	mulss	(%rsi,%rcx,4), %xmm1
+	subss	%xmm1, %xmm2
+	movslq	%r8d, %rcx
+	imulq	$6400, %rcx, %rcx       # imm = 0x1900
+	movq	%rdx, %rsi
+	addq	%rcx, %rsi
+	movslq	%eax, %rcx
+	imulq	$160, %rcx, %rcx
+	addq	%rcx, %rsi
+	subl	$1, %edi
+	movslq	%edi, %rcx
+	addss	(%rsi,%rcx,4), %xmm2
+	mulss	%xmm2, %xmm0
+	addss	%xmm0, %xmm3
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	addq	%rcx, %rdx
 	movslq	%eax, %rcx
@@ -546,10 +511,8 @@ main:                                   # @main
 	addq	%rcx, %rdx
 	movl	-512080(%rbp), %edi     # 4-byte Reload
 	movslq	%edi, %rcx
-	movl	(%rdx,%rcx,4), %r10d
-	sarl	$2, %r10d
-	addl	%r10d, %r8d
-	movslq	%r9d, %rcx
+	addss	(%rdx,%rcx,4), %xmm3
+	movslq	%r8d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
 	leaq	-256000(%rbp), %rdx
 	addq	%rcx, %rdx
@@ -557,7 +520,7 @@ main:                                   # @main
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rdx
 	movslq	%edi, %rcx
-	movl	%r8d, (%rdx,%rcx,4)
+	movss	%xmm3, (%rdx,%rcx,4)
 # %bb.33:                               # %for.inc242
                                         #   in Loop: Header=BB0_31 Depth=4
 	movl	-512080(%rbp), %eax     # 4-byte Reload
@@ -654,7 +617,6 @@ main:                                   # @main
 	movl	%eax, -512108(%rbp)     # 4-byte Spill
 .LBB0_48:                               # %if.end
                                         #   in Loop: Header=BB0_45 Depth=3
-	movsd	.LCPI0_0(%rip), %xmm0   # xmm0 = mem[0],zero
 	movq	stdout, %rdi
 	movl	-512088(%rbp), %eax     # 4-byte Reload
 	movslq	%eax, %rcx
@@ -667,12 +629,10 @@ main:                                   # @main
 	addq	%rcx, %rdx
 	movl	-512104(%rbp), %r8d     # 4-byte Reload
 	movslq	%r8d, %rcx
-	movl	(%rdx,%rcx,4), %r9d
-	cvtsi2sdl	%r9d, %xmm1
-	divsd	%xmm0, %xmm1
+	movss	(%rdx,%rcx,4), %xmm0    # xmm0 = mem[0],zero,zero,zero
+	cvtss2sd	%xmm0, %xmm0
 	movabsq	$.L.str.4, %rcx
 	movq	%rcx, %rsi
-	movaps	%xmm1, %xmm0
 	movb	$1, %al
 	callq	fprintf
 	movl	%eax, -512112(%rbp)     # 4-byte Spill

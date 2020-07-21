@@ -8,10 +8,10 @@ target triple = "x86_64-unknown-linux-gnu"
 %struct._IO_codecvt = type opaque
 %struct._IO_wide_data = type opaque
 
-@.str = private unnamed_addr constant [35 x i8] c"scalar(range(-10000, 10000) final)\00", section "llvm.metadata"
+@.str = private unnamed_addr constant [49 x i8] c"scalar(range(-10000, 10000) final error(1e-100))\00", section "llvm.metadata"
 @.str.1 = private unnamed_addr constant [41 x i8] c"polybench_edited/covariance/covariance.c\00", section "llvm.metadata"
-@.str.2 = private unnamed_addr constant [30 x i8] c"scalar(range(-10000, 100000))\00", section "llvm.metadata"
-@.str.3 = private unnamed_addr constant [33 x i8] c"scalar(range(-5000, 5000) final)\00", section "llvm.metadata"
+@.str.2 = private unnamed_addr constant [44 x i8] c"scalar(range(-10000, 100000) error(1e-100))\00", section "llvm.metadata"
+@.str.3 = private unnamed_addr constant [47 x i8] c"scalar(range(-5000, 5000) final error(1e-100))\00", section "llvm.metadata"
 @.str.4 = private unnamed_addr constant [31 x i8] c"scalar(range(1, 100) disabled)\00", section "llvm.metadata"
 @stdout = external dso_local global %struct._IO_FILE*, align 8
 @.str.5 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
@@ -38,13 +38,13 @@ entry:
   store i32 100, i32* %n, align 4
   store i32 80, i32* %m, align 4
   %float_n1 = bitcast double* %float_n to i8*
-  call void @llvm.var.annotation(i8* %float_n1, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 19)
+  call void @llvm.var.annotation(i8* %float_n1, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 19)
   %data2 = bitcast [100 x [80 x double]]* %data to i8*
-  call void @llvm.var.annotation(i8* %data2, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 20)
+  call void @llvm.var.annotation(i8* %data2, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 20)
   %cov3 = bitcast [100 x [80 x double]]* %cov to i8*
-  call void @llvm.var.annotation(i8* %cov3, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 21)
+  call void @llvm.var.annotation(i8* %cov3, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 21)
   %mean4 = bitcast [80 x double]* %mean to i8*
-  call void @llvm.var.annotation(i8* %mean4, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.3, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 22)
+  call void @llvm.var.annotation(i8* %mean4, i8* getelementptr inbounds ([47 x i8], [47 x i8]* @.str.3, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 22)
   %i5 = bitcast i32* %i to i8*
   call void @llvm.var.annotation(i8* %i5, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 25)
   %j6 = bitcast i32* %j to i8*

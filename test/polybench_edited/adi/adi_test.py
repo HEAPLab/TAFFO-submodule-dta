@@ -16,7 +16,6 @@ def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE
     # Compilation
     compilationParams = []
     compilationParams.append("./magiclang2.sh")
-    compilationParams.append("-debug-taffo")
     compilationParams.append("-lm")
     compilationParams.append("-Xvra")
     compilationParams.append("-propagate-all")
@@ -32,7 +31,7 @@ def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE
     compilationParams.append("-mixedtuningcastingtime=" + str(TUNING_CAST_TIME))
     compilationParams.append("-Xdta")
     compilationParams.append("-mixeddoubleenabled=" + DOUBLE_ENABLED)
-    compilationParams.append("-debug-taffo")
+    #compilationParams.append("-debug-taffo")
     compilationParams.append("polybench_edited/adi/adi.c")
     compilationParams.append("-o")
     compilationParams.append("polybench_edited/adi/adi.fixp")

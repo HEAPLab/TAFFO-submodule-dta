@@ -114,8 +114,8 @@ DOUBLE_ENABLED = "false"
 
 #print("No double but precise", compileAndCheck("true", 1000, 1, 1, "false"))
 
-#print("Medium precision", compileAndCheck("true", 50, 50, 50, "false"))
+print("Medium precision", compileAndCheck("true", 50, 50, 50, "false"))
 
 #print("Quick mode", compileAndCheck("true", 1, 10000, 10000, "false"))
 
-print("Fix only", compileAndCheck("false", 0, 0, 0, "true"))
+#print("Fix only", compileAndCheck("false", 0, 0, 0, "true"))

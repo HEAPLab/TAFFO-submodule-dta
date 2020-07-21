@@ -3,7 +3,7 @@
 	.section	.rodata.cst8,"aM",@progbits,8
 	.p2align	3               # -- Begin function main
 .LCPI0_0:
-	.quad	4670232813583204352     # double 16384
+	.quad	4625196817309499392     # double 16
 .LCPI0_1:
 	.quad	4683743612465315840     # double 131072
 .LCPI0_2:
@@ -113,11 +113,8 @@ main:                                   # @main
 	movslq	%esi, %rcx
 	movl	(%rdx,%rcx,4), %edi
 	movslq	%esi, %rcx
-	movl	-64320(%rbp,%rcx,4), %r8d
-	sarl	$1, %r8d
-	addl	%edi, %r8d
-	shll	$1, %r8d
-	movl	%r8d, -64320(%rbp,%rcx,4)
+	addl	-64320(%rbp,%rcx,4), %edi
+	movl	%edi, -64320(%rbp,%rcx,4)
 # %bb.13:                               # %for.inc36
                                         #   in Loop: Header=BB0_11 Depth=2
 	movl	-64368(%rbp), %eax      # 4-byte Reload
@@ -133,9 +130,9 @@ main:                                   # @main
 	cqto
 	movl	$100, %esi
 	idivq	%rsi
-	sarq	$1, %rax
+	shlq	$8, %rax
 	movl	%eax, %edi
-	shll	$1, %edi
+	sarl	$8, %edi
 	movl	%edi, -64320(%rbp,%rcx,4)
 # %bb.15:                               # %for.inc42
                                         #   in Loop: Header=BB0_9 Depth=1
@@ -178,7 +175,6 @@ main:                                   # @main
 	addq	%rcx, %rdi
 	movslq	%eax, %rcx
 	movl	(%rdi,%rcx,4), %r8d
-	sarl	$1, %edx
 	subl	%edx, %r8d
 	movl	%r8d, (%rdi,%rcx,4)
 # %bb.21:                               # %for.inc59
@@ -261,17 +257,15 @@ main:                                   # @main
 	movslq	%r8d, %rcx
 	movslq	%r10d, %rdx
 	imulq	%rdx, %rcx
-	sarq	$17, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %r8d
 	movslq	%edi, %rcx
 	imulq	$320, %rcx, %rcx        # imm = 0x140
 	leaq	-64000(%rbp), %rdx
 	addq	%rcx, %rdx
 	movslq	%r9d, %rcx
-	movl	(%rdx,%rcx,4), %r10d
-	sarl	$3, %r8d
-	addl	%r8d, %r10d
-	movl	%r10d, (%rdx,%rcx,4)
+	addl	(%rdx,%rcx,4), %r8d
+	movl	%r8d, (%rdx,%rcx,4)
 # %bb.31:                               # %for.inc95
                                         #   in Loop: Header=BB0_29 Depth=3
 	movl	-64408(%rbp), %eax      # 4-byte Reload
@@ -294,7 +288,9 @@ main:                                   # @main
 	cqto
 	movl	$99, %r8d
 	idivq	%r8
+	shlq	$7, %rax
 	movl	%eax, %r9d
+	sarl	$7, %r9d
 	movl	%r9d, (%rsi,%rcx,4)
 	movl	-64392(%rbp), %r9d      # 4-byte Reload
 	movslq	%r9d, %rax

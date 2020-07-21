@@ -108,12 +108,12 @@ TUNING_TIME = 1000
 TUNING_CAST_TIME = 500
 DOUBLE_ENABLED = "false"
 
-print("Very precise", compileAndCheck("true", 100000, 1, 1, "true"))
+#print("Very precise", compileAndCheck("true", 100000, 1, 1, "true"))
 
 print("No double but precise", compileAndCheck("true", 1000, 1, 1, "false"))
 
-print("Medium precision", compileAndCheck("true", 50, 50, 50, "false"))
+#print("Medium precision", compileAndCheck("true", 50, 50, 50, "false"))
 
-print("Quick mode", compileAndCheck("true", 1, 10000, 10000, "false"))
+#print("Quick mode", compileAndCheck("true", 1, 10000, 10000, "false"))
 
-print("Fix only", compileAndCheck("false", 0, 0, 0, "true"))
+#print("Fix only", compileAndCheck("false", 0, 0, 0, "true"))

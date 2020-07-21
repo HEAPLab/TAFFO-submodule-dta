@@ -17,6 +17,10 @@ def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE
     compilationParams = []
     compilationParams.append("./magiclang2.sh")
     compilationParams.append("-lm")
+    compilationParams.append("-Xvra")
+    compilationParams.append("-propagate-all")
+    compilationParams.append("-Xvra")
+    compilationParams.append("-unroll=0")
     compilationParams.append("-Xdta")
     compilationParams.append("-mixedmode="+MIX_MODE)
     compilationParams.append("-Xdta")
@@ -34,6 +38,10 @@ def compileAndCheck(MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE
     process = Popen(compilationParams, stderr=PIPE, stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
+
+    text_file = open("result.txt", "w")
+    text_file.write(err.decode('ascii'))
+    text_file.close()
 
     if (exit_code != 0):
         print("Error compiling the program!")

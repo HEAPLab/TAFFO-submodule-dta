@@ -30,8 +30,8 @@ int main(){
     DATA_TYPE  __attribute__((annotate("scalar()"))) y1[W][H];
     DATA_TYPE  __attribute__((annotate("scalar()"))) y2[W][H];
 
-    int __attribute__((annotate("scalar(range(0, 192) final disabled)"))) i ;
-    int __attribute__((annotate("scalar(range(0, 128) final disabled)"))) j;
+    int __attribute__((annotate("scalar(range(-192, 192) final disabled)"))) i;
+    int __attribute__((annotate("scalar(range(-128, 128) final disabled)"))) j;
 
 
     alpha=0.25; //parameter of the filter

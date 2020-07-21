@@ -16,10 +16,10 @@ int main(int argc, char** argv)
     int m = M;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final)"))) float_n;
-    DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final)"))) data[N][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-10000, 100000))"))) cov[N][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-5000, 5000) final)"))) mean[M];
+    DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final error(1e-100))"))) float_n;
+    DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final error(1e-100))"))) data[N][M];
+    DATA_TYPE __attribute((annotate("scalar(range(-10000, 100000) error(1e-100))"))) cov[N][M];
+    DATA_TYPE __attribute((annotate("scalar(range(-5000, 5000) final error(1e-100))"))) mean[M];
 
 
     int __attribute((annotate("scalar(range(1, 100) disabled)"))) i;
