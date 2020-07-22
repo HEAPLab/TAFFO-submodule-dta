@@ -14,7 +14,7 @@ print("Running test for", PROGRAM_NAME, file=sys.stderr)
 
 
 def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, DOUBLE_ENABLED):
-    print("Running compilation", NAME)
+    print("Running compilation", NAME, file=sys.stderr)
 
     global dataset
     # Compilation
@@ -49,8 +49,8 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     text_file.close()
 
     if (exit_code != 0):
-        print(err.decode('ascii'))
-        print("Error compiling the program!")
+        print(err.decode('ascii'), file=sys.stderr)
+        print("Error compiling the program!", file=sys.stderr)
         return {"ERROR": "COMPILATION"}
 
     process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp"], stdout=PIPE)
@@ -58,7 +58,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     exit_code = process.wait()
 
     if (exit_code != 0):
-        print("Error executing the program!")
+        print("Error executing the program!", file=sys.stderr)
         return {"ERROR": "EXECUTION"}
 
     output = output.decode('ascii').strip()
@@ -105,7 +105,7 @@ def loadReferenceRun():
     exit_code = process.wait()
 
     if (exit_code != 0):
-        print("Error executing reference the program!")
+        print("Error executing reference the program!", file=sys.stderr)
         exit(-1)
 
     output = output.decode('ascii').strip()
