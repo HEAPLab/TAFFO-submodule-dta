@@ -24,7 +24,9 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     compilationParams.append("-Xvra")
     compilationParams.append("-propagate-all")
     compilationParams.append("-Xvra")
-    compilationParams.append("-unroll=0")
+    compilationParams.append("-unroll=1")
+    compilationParams.append("-Xvra")
+    compilationParams.append("-max-unroll=5")
     compilationParams.append("-Xdta")
     compilationParams.append("-mixedmode=" + MIX_MODE)
     compilationParams.append("-Xdta")
@@ -35,7 +37,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     compilationParams.append("-mixedtuningcastingtime=" + str(TUNING_CAST_TIME))
     compilationParams.append("-Xdta")
     compilationParams.append("-mixeddoubleenabled=" + DOUBLE_ENABLED)
-    # compilationParams.append("-debug-taffo")
+    compilationParams.append("-debug-taffo")
     compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".c")
     compilationParams.append("-o")
     compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp")
@@ -66,19 +68,25 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     output = output.split(' ')
 
     for i in range(0, len(output)):
-        output[i] = Decimal(output[i])
+        output[i] = float(output[i])
 
-    accumulator = Decimal(0.0)
+    accumulator = (0.0)
     skipped = 0
+
+    if len(output) != len(dataset):
+        print("FUUUUUUUUUUUU")
+        exit(-1)
+
+
     for i in range(0, len(output)):
         if dataset[i] != 0:
             accumulator += abs((output[i] - dataset[i]) / dataset[i])
-            # print(output[i], dataset[i])
+            #print(output[i], dataset[i], file=sys.stderr)
         else:
             skipped += 1
 
 
-    err = accumulator / len(output)
+    err = accumulator / (len(output)-skipped)
 
     var = {}
     var["SKIPPED_TEST"] = skipped
@@ -113,7 +121,7 @@ def loadReferenceRun():
     output = output.split(' ')
 
     for i in range(0, len(output)):
-        output[i] = Decimal(output[i])
+        output[i] = float(output[i])
 
     return output
 
@@ -123,10 +131,6 @@ def loadReferenceRun():
 # Loading reference dataset
 dataset = loadReferenceRun()
 
-TUNING_ENOB = 100000
-TUNING_TIME = 1000
-TUNING_CAST_TIME = 500
-DOUBLE_ENABLED = "false"
 
 testSet = {}
 

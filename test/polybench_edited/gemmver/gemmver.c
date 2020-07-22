@@ -21,19 +21,19 @@ int main(){
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute((annotate("scalar()"))) alpha;
     DATA_TYPE __attribute((annotate("scalar()"))) beta;
-    DATA_TYPE __attribute((annotate("scalar(range(-4, 4) final)"))) A[N][N];
+    DATA_TYPE __attribute((annotate("scalar(range(-2, 2) final)"))) A[N][N];
     DATA_TYPE __attribute((annotate("scalar()"))) u1[N];
     DATA_TYPE __attribute((annotate("scalar()"))) v1[N];
     DATA_TYPE __attribute((annotate("scalar()"))) u2[N];
     DATA_TYPE __attribute((annotate("scalar()"))) v2[N];
     DATA_TYPE __attribute((annotate("scalar(range(-8000, 8000) final)"))) w[N];
-    DATA_TYPE __attribute((annotate("scalar(range(-400, 400))"))) x[N];
+    DATA_TYPE __attribute((annotate("scalar(range(-30, 30) final)"))) x[N];
     DATA_TYPE __attribute((annotate("scalar()"))) y[N];
-    DATA_TYPE __attribute((annotate("scalar(range(-2, 2))"))) z[N];
+    DATA_TYPE __attribute((annotate("scalar()"))) z[N];
 
 
     int i __attribute((annotate("scalar(range(0, 400) final disabled)")));
-    int j __attribute((annotate("scalar(range(0,400) final disabled)")));
+    int j __attribute((annotate("scalar(range(0, 400) final disabled)")));
 
     alpha = 1.5;
     beta = 1.2;

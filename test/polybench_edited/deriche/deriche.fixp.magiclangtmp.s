@@ -170,7 +170,7 @@ main:                                   # @main
 	movslq	%esi, %rcx
 	leaq	(%rcx,%rcx,2), %rcx
 	negq	%rcx
-	shrq	%rcx
+	shrq	$2, %rcx
 	movl	%ecx, %esi
 	movsd	-393288(%rbp), %xmm0    # 8-byte Reload
                                         # xmm0 = mem[0],zero
@@ -212,7 +212,7 @@ main:                                   # @main
 	movl	%eax, %eax
 	movl	%eax, %edx
 	imulq	%rdx, %rcx
-	shrq	$31, %rcx
+	sarq	$32, %rcx
 	movl	%ecx, %eax
 	movsd	-393272(%rbp), %xmm0    # 8-byte Reload
                                         # xmm0 = mem[0],zero
@@ -287,14 +287,12 @@ main:                                   # @main
 	sarq	$30, %rcx
 	movl	%ecx, %r8d
 	movl	-393356(%rbp), %r9d     # 4-byte Reload
-	movl	%r9d, %r10d
-	movl	%r10d, %ecx
+	movslq	%r9d, %rcx
 	movl	-393416(%rbp), %r10d    # 4-byte Reload
 	movslq	%r10d, %rsi
 	imulq	%rsi, %rcx
-	shrq	$29, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %r11d
-	shrl	$2, %r11d
 	addl	%r11d, %r8d
 	movsd	-393376(%rbp), %xmm3    # 8-byte Reload
                                         # xmm3 = mem[0],zero
@@ -315,12 +313,10 @@ main:                                   # @main
 	cvttsd2si	%xmm1, %ebx
 	movslq	%ebx, %rcx
 	movl	-393424(%rbp), %ebx     # 4-byte Reload
-	movl	%ebx, %r14d
-	movl	%r14d, %esi
+	movslq	%ebx, %rsi
 	imulq	%rsi, %rcx
-	shrq	$30, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %r14d
-	shrl	$4, %r14d
 	addl	%r14d, %r8d
 	movslq	%eax, %rcx
 	shlq	$9, %rcx
@@ -360,7 +356,6 @@ main:                                   # @main
 	movl	-393412(%rbp), %eax     # 4-byte Reload
 	addl	$1, %eax
 	movl	-393420(%rbp), %ecx     # 4-byte Reload
-	shll	$4, %ecx
 	movl	-393432(%rbp), %edx     # 4-byte Reload
 	movl	-393428(%rbp), %esi     # 4-byte Reload
 	movl	%ecx, -393396(%rbp)     # 4-byte Spill
@@ -425,19 +420,15 @@ main:                                   # @main
 	movl	-393480(%rbp), %edx     # 4-byte Reload
 	movslq	%edx, %rsi
 	imulq	%rsi, %rcx
-	shrq	$27, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %edi
 	movl	-393368(%rbp), %r8d     # 4-byte Reload
-	movl	%r8d, %r9d
-	movl	%r9d, %ecx
+	movslq	%r8d, %rcx
 	movl	-393484(%rbp), %r9d     # 4-byte Reload
-	movl	%r9d, %r10d
-	movl	%r10d, %esi
+	movslq	%r9d, %rsi
 	imulq	%rsi, %rcx
-	shrq	$32, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %r10d
-	shrl	$3, %edi
-	shrl	$2, %r10d
 	addl	%r10d, %edi
 	movsd	-393376(%rbp), %xmm2    # 8-byte Reload
                                         # xmm2 = mem[0],zero
@@ -460,9 +451,8 @@ main:                                   # @main
 	movl	-393468(%rbp), %r11d    # 4-byte Reload
 	movslq	%r11d, %rsi
 	imulq	%rsi, %rcx
-	shrq	$26, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %ebx
-	shrl	$4, %ebx
 	addl	%ebx, %edi
 	movl	-393444(%rbp), %ebx     # 4-byte Reload
 	movslq	%ebx, %rcx
@@ -491,7 +481,6 @@ main:                                   # @main
 	movl	-393476(%rbp), %eax     # 4-byte Reload
 	addl	$-1, %eax
 	movl	-393480(%rbp), %ecx     # 4-byte Reload
-	shll	$3, %ecx
 	movl	-393488(%rbp), %edx     # 4-byte Reload
 	movl	-393492(%rbp), %esi     # 4-byte Reload
 	movl	-393472(%rbp), %edi     # 4-byte Reload
@@ -635,15 +624,14 @@ main:                                   # @main
 	sarq	$30, %rcx
 	movl	%ecx, %r8d
 	movl	-393356(%rbp), %r9d     # 4-byte Reload
-	movl	%r9d, %r10d
-	movl	%r10d, %ecx
+	movslq	%r9d, %rcx
 	movl	-393540(%rbp), %r10d    # 4-byte Reload
 	movslq	%r10d, %rsi
 	imulq	%rsi, %rcx
-	shrq	$27, %rcx
+	sarq	$28, %rcx
 	movl	%ecx, %r11d
 	shll	$1, %r8d
-	shrl	$3, %r11d
+	sarl	$1, %r11d
 	addl	%r11d, %r8d
 	movsd	-393376(%rbp), %xmm2    # 8-byte Reload
                                         # xmm2 = mem[0],zero
@@ -662,12 +650,10 @@ main:                                   # @main
 	cvttsd2si	%xmm0, %ebx
 	movslq	%ebx, %rcx
 	movl	-393548(%rbp), %ebx     # 4-byte Reload
-	movl	%ebx, %r14d
-	movl	%r14d, %esi
+	movslq	%ebx, %rsi
 	imulq	%rsi, %rcx
-	shrq	$30, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %r14d
-	shrl	$4, %r14d
 	addl	%r14d, %r8d
 	movslq	%eax, %rcx
 	shlq	$9, %rcx
@@ -693,7 +679,6 @@ main:                                   # @main
 	movl	-393536(%rbp), %eax     # 4-byte Reload
 	addl	$1, %eax
 	movl	-393544(%rbp), %ecx     # 4-byte Reload
-	shll	$4, %ecx
 	movl	-393556(%rbp), %edx     # 4-byte Reload
 	movl	-393552(%rbp), %esi     # 4-byte Reload
 	movl	%ecx, -393520(%rbp)     # 4-byte Spill
@@ -758,18 +743,15 @@ main:                                   # @main
 	movl	-393600(%rbp), %edx     # 4-byte Reload
 	movslq	%edx, %rsi
 	imulq	%rsi, %rcx
-	shrq	$25, %rcx
+	sarq	$28, %rcx
 	movl	%ecx, %edi
 	movl	-393368(%rbp), %r8d     # 4-byte Reload
-	movl	%r8d, %r9d
-	movl	%r9d, %ecx
+	movslq	%r8d, %rcx
 	movl	-393596(%rbp), %r9d     # 4-byte Reload
 	movslq	%r9d, %rsi
 	imulq	%rsi, %rcx
-	shrq	$27, %rcx
+	sarq	$28, %rcx
 	movl	%ecx, %r10d
-	shrl	$3, %edi
-	shrl	$2, %r10d
 	addl	%r10d, %edi
 	movsd	-393376(%rbp), %xmm2    # 8-byte Reload
                                         # xmm2 = mem[0],zero
@@ -792,9 +774,8 @@ main:                                   # @main
 	movl	-393588(%rbp), %r11d    # 4-byte Reload
 	movslq	%r11d, %rsi
 	imulq	%rsi, %rcx
-	shrq	$26, %rcx
+	sarq	$30, %rcx
 	movl	%ecx, %ebx
-	shrl	$4, %ebx
 	addl	%ebx, %edi
 	movl	-393604(%rbp), %ebx     # 4-byte Reload
 	movslq	%ebx, %rcx

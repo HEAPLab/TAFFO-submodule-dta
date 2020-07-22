@@ -520,9 +520,16 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
 
     if (isa<UIToFPInst>(instruction) ||
         isa<SIToFPInst>(instruction)) {
+
         auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
         if (!fieldInfo) {
             dbgs() << "Not enough information. Bailing out.\n\n";
+
+            if(valueInfo->metadata){
+                dbgs() << "WTF metadata has a value but it is not an input info...\n\n";
+            }else{
+                dbgs() << "Metadata is really null.\n";
+            }
             return;
         }
 

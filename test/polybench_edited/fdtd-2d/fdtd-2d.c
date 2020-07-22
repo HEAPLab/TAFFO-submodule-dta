@@ -28,13 +28,13 @@ int main(){
     int ny = NY;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-50000, 50000))"))) ex[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar(range(-50000, 50000))"))) ey[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar(range(-50000, 50000))"))) hz[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar(range(-50000, 50000))"))) _fict_[TMAX];
+    DATA_TYPE __attribute__((annotate("scalar()"))) ex[NX][NY];
+    DATA_TYPE __attribute__((annotate("scalar()"))) ey[NX][NY];
+    DATA_TYPE __attribute__((annotate("scalar()"))) hz[NX][NY];
+    DATA_TYPE __attribute__((annotate("scalar()"))) _fict_[TMAX];
 
-    int i __attribute__((annotate("scalar(range(-4000, 4000))")));
-    int j __attribute__((annotate("scalar(range(-4400, 4400))")));
+    int i __attribute__((annotate("scalar(range(0, 20))")));
+    int j __attribute__((annotate("scalar(range(0, 30))")));
     int t;
 
     for (i = 0; i < tmax; i++)

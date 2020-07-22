@@ -3,14 +3,14 @@
 #include <math.h>
 
 #define POLYBENCH_DUMP_TARGET stdout
-#   define M 200
-#   define N 240
+#   define M 60
+#   define N 80
 
 #   define _PB_M M
 #   define _PB_N N
 
-#  define DATA_TYPE double
-#  define DATA_PRINTF_MODIFIER "%0.16lf "
+#  define DATA_TYPE float
+#  define DATA_PRINTF_MODIFIER "%0.16f "
 #  define SCALAR_VAL(x) x
 #  define SQRT_FUN(x) sqrt(x)
 #  define EXP_FUN(x) exp(x)
@@ -40,6 +40,8 @@ int main(){
             R[i][j] = 0.0;
 
 
+
+
     DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) nrm;
     for (k = 0; k < _PB_N; k++)
     {
@@ -63,11 +65,11 @@ int main(){
     }
 
 
-    for (i = 0; i < n; i++)
+    /*for (i = 0; i < n; i++)
         for (j = 0; j < n; j++) {
             if ((i*n+j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, R[i][j]);
-        }
+        }*/
 
 
     for (i = 0; i < m; i++)
