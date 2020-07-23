@@ -27,8 +27,8 @@ int main(){
     DATA_TYPE __attribute__((annotate("scalar(range(-4096, 4096) final error(1e-100))"))) y[N];
     DATA_TYPE __attribute__((annotate("scalar(range(-4096, 4096) final error(1e-100))"))) tmp[M];
 
-    int i __attribute__((annotate("scalar(range(0, 410) final disabled)")));
-    int j __attribute__((annotate("scalar(range(0, 410) final disabled)")));
+    int i __attribute__((annotate("scalar(range(0, 410) final)")));
+    int j __attribute__((annotate("scalar(range(0, 410) final)")));
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) fn;
     fn = (DATA_TYPE)n;
 

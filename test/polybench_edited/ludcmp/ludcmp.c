@@ -19,14 +19,14 @@ int main(){
     int n = N;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))) A[N][N];
-    DATA_TYPE __attribute__((annotate("scalar()"))) b[N];
-    DATA_TYPE __attribute__((annotate("scalar()"))) x[N];
-    DATA_TYPE __attribute__((annotate("scalar()"))) y[N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-8, 8) final error(1e-100))"))) A[N][N];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) b[N];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) x[N];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) y[N];
 
 
-    int i __attribute__((annotate("scalar(range(-400, 400) final disabled)")));
-    int j __attribute__((annotate("scalar(range(-400, 400) final disabled)")));
+    int i __attribute__((annotate("scalar(range(-400, 400) final)")));
+    int j __attribute__((annotate("scalar(range(-400, 400) final)")));
     int k;
     DATA_TYPE __attribute__((annotate("scalar()"))) fn = (DATA_TYPE)n;
 
@@ -34,13 +34,13 @@ int main(){
     {
         x[i] = 0;
         y[i] = 0;
-        b[i] = (i+1)/fn/2.0 + 4;
+        b[i] = (i+1)/(400.0)/2.0 + 4; //FIXED
     }
 
     for (i = 0; i < n; i++)
     {
         for (j = 0; j <= i; j++)
-            A[i][j] = (DATA_TYPE)(-j % n) / n + 1;
+            A[i][j] = (DATA_TYPE)(-j % n) / 400.0 + 1; //FIXED
         for (j = i+1; j < n; j++) {
             A[i][j] = 0;
         }
@@ -62,7 +62,7 @@ int main(){
         for (s = 0; s < n; ++s)
             A[r][s] = ((B))[r][s];
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))) w;
+    DATA_TYPE __attribute__((annotate("scalar(range(-200, 200) final error(1e-100))"))) w;
 
     for (i = 0; i < _PB_N; i++) {
         for (j = 0; j <i; j++) {
@@ -70,7 +70,7 @@ int main(){
             for (k = 0; k < j; k++) {
                 w -= A[i][k] * A[k][j];
             }
-            A[i][j] = w / A[j][j];
+            A[i][j] = w / (A[j][j]);
         }
         for (j = i; j < _PB_N; j++) {
             w = A[i][j];
@@ -92,7 +92,7 @@ int main(){
         w = y[i];
         for (j = i+1; j < _PB_N; j++)
             w -= A[i][j] * x[j];
-        x[i] = w / A[i][i];
+        x[i] = w / (A[i][i]);
     }
 
     for (i = 0; i < n; i++) {

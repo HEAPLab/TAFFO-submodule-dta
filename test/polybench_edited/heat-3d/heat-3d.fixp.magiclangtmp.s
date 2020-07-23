@@ -3,7 +3,7 @@
 	.section	.rodata.cst8,"aM",@progbits,8
 	.p2align	3               # -- Begin function main
 .LCPI0_0:
-	.quad	4697254411347427328     # double 1048576
+	.quad	4683743612465315840     # double 131072
 	.text
 	.globl	main
 	.p2align	4, 0x90
@@ -86,7 +86,7 @@ main:                                   # @main
 	addq	%rax, %rdi
 	movslq	%esi, %rax
 	movl	%r8d, %r10d
-	shrl	$5, %r10d
+	shrl	$8, %r10d
 	movl	%r10d, (%rdi,%rax,4)
 	movslq	%r9d, %rax
 	imulq	$6400, %rax, %rax       # imm = 0x1900
@@ -96,7 +96,7 @@ main:                                   # @main
 	imulq	$160, %rax, %rax
 	addq	%rax, %rdi
 	movslq	%esi, %rax
-	shrl	$6, %r8d
+	shrl	$9, %r8d
 	movl	%r8d, (%rdi,%rax,4)
 # %bb.7:                                # %for.inc
                                         #   in Loop: Header=BB0_5 Depth=3
@@ -209,7 +209,7 @@ main:                                   # @main
 	shlq	$1, %rcx
 	shlq	$1, %rcx
 	movl	%ecx, %r10d
-	sarl	$1, %r10d
+	shll	$1, %r8d
 	subl	%r10d, %r8d
 	subl	$1, %r9d
 	movslq	%r9d, %rcx
@@ -220,7 +220,9 @@ main:                                   # @main
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rsi
 	movslq	%edi, %rcx
-	addl	(%rsi,%rcx,4), %r8d
+	movl	(%rsi,%rcx,4), %r9d
+	shll	$1, %r9d
+	addl	%r9d, %r8d
 	movslq	%r8d, %rcx
 	shlq	$0, %rcx
 	sarq	$1, %rcx
@@ -249,7 +251,7 @@ main:                                   # @main
 	shlq	$1, %rcx
 	shlq	$1, %rcx
 	movl	%ecx, %r11d
-	sarl	$1, %r11d
+	shll	$1, %eax
 	subl	%r11d, %eax
 	movslq	%r9d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
@@ -260,11 +262,15 @@ main:                                   # @main
 	imulq	$160, %rcx, %rcx
 	addq	%rcx, %rsi
 	movslq	%edi, %rcx
-	addl	(%rsi,%rcx,4), %eax
+	movl	(%rsi,%rcx,4), %r10d
+	shll	$1, %r10d
+	addl	%r10d, %eax
 	movslq	%eax, %rcx
 	shlq	$0, %rcx
 	sarq	$1, %rcx
 	movl	%ecx, %eax
+	sarl	$1, %r8d
+	sarl	$1, %eax
 	addl	%eax, %r8d
 	movslq	%r9d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
@@ -290,7 +296,7 @@ main:                                   # @main
 	shlq	$1, %rcx
 	shlq	$1, %rcx
 	movl	%ecx, %r11d
-	sarl	$1, %r11d
+	shll	$1, %edi
 	subl	%r11d, %edi
 	movslq	%r9d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
@@ -301,10 +307,12 @@ main:                                   # @main
 	addq	%rcx, %rsi
 	subl	$1, %r10d
 	movslq	%r10d, %rcx
-	addl	(%rsi,%rcx,4), %edi
+	movl	(%rsi,%rcx,4), %r10d
+	shll	$1, %r10d
+	addl	%r10d, %edi
 	movslq	%edi, %rcx
 	shlq	$0, %rcx
-	sarq	$1, %rcx
+	sarq	$2, %rcx
 	movl	%ecx, %edi
 	sarl	$1, %r8d
 	sarl	$1, %edi
@@ -422,9 +430,10 @@ main:                                   # @main
 	movslq	%edi, %rcx
 	movslq	(%rsi,%rcx,4), %rcx
 	shlq	$1, %rcx
-	sarq	$2, %rcx
+	sarq	$1, %rcx
 	movl	%ecx, %r10d
 	sarl	$2, %r8d
+	sarl	$1, %r10d
 	subl	%r10d, %r8d
 	subl	$1, %r9d
 	movslq	%r9d, %rcx
@@ -464,9 +473,10 @@ main:                                   # @main
 	movslq	%edi, %rcx
 	movslq	(%rsi,%rcx,4), %rcx
 	shlq	$1, %rcx
-	sarq	$2, %rcx
+	sarq	$1, %rcx
 	movl	%ecx, %r11d
 	sarl	$2, %eax
+	sarl	$1, %r11d
 	subl	%r11d, %eax
 	movslq	%r9d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
@@ -484,8 +494,6 @@ main:                                   # @main
 	shlq	$0, %rcx
 	sarq	$1, %rcx
 	movl	%ecx, %eax
-	sarl	$1, %r8d
-	sarl	$1, %eax
 	addl	%eax, %r8d
 	movslq	%r9d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
@@ -509,9 +517,10 @@ main:                                   # @main
 	movslq	%r10d, %rcx
 	movslq	(%rsi,%rcx,4), %rcx
 	shlq	$1, %rcx
-	sarq	$2, %rcx
+	sarq	$1, %rcx
 	movl	%ecx, %r11d
 	sarl	$2, %edi
+	sarl	$1, %r11d
 	subl	%r11d, %edi
 	movslq	%r9d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900
@@ -527,8 +536,10 @@ main:                                   # @main
 	addl	%r10d, %edi
 	movslq	%edi, %rcx
 	shlq	$0, %rcx
-	sarq	$2, %rcx
+	sarq	$1, %rcx
 	movl	%ecx, %edi
+	sarl	$1, %r8d
+	sarl	$1, %edi
 	addl	%edi, %r8d
 	movslq	%r9d, %rcx
 	imulq	$6400, %rcx, %rcx       # imm = 0x1900

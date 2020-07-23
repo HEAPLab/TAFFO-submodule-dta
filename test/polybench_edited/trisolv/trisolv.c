@@ -18,12 +18,12 @@ int main(){
 
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) L[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final error(1e-100))"))) x[N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) error(1e-100))"))) x[N];
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) b[N];
 
 
-    int i __attribute__((annotate("scalar(range(-8000, 8000) final disabled)")));
-    int j __attribute__((annotate("scalar(range(-8000, 8000) final disabled)")));
+    int i __attribute__((annotate("scalar(range(-8000, 8000) final)")));
+    int j __attribute__((annotate("scalar(range(-8000, 8000) final)")));
 
     for (i = 0; i < n; i++)
     {

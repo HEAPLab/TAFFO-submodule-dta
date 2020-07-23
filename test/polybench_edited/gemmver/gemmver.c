@@ -32,8 +32,8 @@ int main(){
     DATA_TYPE __attribute((annotate("scalar()"))) z[N];
 
 
-    int i __attribute((annotate("scalar(range(0, 400) final disabled)")));
-    int j __attribute((annotate("scalar(range(0, 400) final disabled)")));
+    int i __attribute((annotate("scalar(range(0, 400) final )")));
+    int j __attribute((annotate("scalar(range(0, 400) final )")));
 
     alpha = 1.5;
     beta = 1.2;

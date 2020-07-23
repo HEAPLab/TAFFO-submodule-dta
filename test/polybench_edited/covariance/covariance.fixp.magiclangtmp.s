@@ -3,7 +3,7 @@
 	.section	.rodata.cst8,"aM",@progbits,8
 	.p2align	3               # -- Begin function main
 .LCPI0_0:
-	.quad	4760304806130614272     # double 17179869184
+	.quad	4755801206503243776     # double 8589934592
 .LCPI0_1:
 	.quad	4683743612465315840     # double 131072
 .LCPI0_2:
@@ -272,7 +272,7 @@ main:                                   # @main
 	movslq	%r9d, %rcx
 	movq	(%rdx,%rcx,8), %rsi
 	movslq	%r8d, %r11
-	shlq	$30, %r11
+	shlq	$29, %r11
 	addq	%r11, %rsi
 	movq	%rsi, (%rdx,%rcx,8)
 # %bb.31:                               # %for.inc95
@@ -304,10 +304,10 @@ main:                                   # @main
 	movq	%rcx, -96440(%rbp)      # 8-byte Spill
 	movq	%r10, %rcx
 	callq	__divti3
-	shrq	$25, %rax
+	shrq	$26, %rax
 	movl	%eax, %r9d
 	movslq	%r9d, %rax
-	shlq	$25, %rax
+	shlq	$26, %rax
 	movq	-96440(%rbp), %rcx      # 8-byte Reload
 	movq	-96432(%rbp), %rdx      # 8-byte Reload
 	movq	%rax, (%rcx,%rdx,8)
