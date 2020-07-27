@@ -8,14 +8,63 @@ target triple = "x86_64-unknown-linux-gnu"
 %struct._IO_codecvt = type opaque
 %struct._IO_wide_data = type opaque
 
-@.str = private unnamed_addr constant [49 x i8] c"scalar(range(-10000, 10000) final error(1e-100))\00", section "llvm.metadata"
-@.str.1 = private unnamed_addr constant [41 x i8] c"polybench_edited/covariance/covariance.c\00", section "llvm.metadata"
-@.str.2 = private unnamed_addr constant [44 x i8] c"scalar(range(-10000, 100000) error(1e-100))\00", section "llvm.metadata"
-@.str.3 = private unnamed_addr constant [47 x i8] c"scalar(range(-5000, 5000) final error(1e-100))\00", section "llvm.metadata"
-@.str.4 = private unnamed_addr constant [31 x i8] c"scalar(range(1, 100) disabled)\00", section "llvm.metadata"
+@time_that_takes = common dso_local global i64 0, align 8
+@stderr = external dso_local global %struct._IO_FILE*, align 8
+@.str = private unnamed_addr constant [4 x i8] c"%ld\00", align 1
+@.str.1 = private unnamed_addr constant [49 x i8] c"scalar(range(-10000, 10000) final error(1e-100))\00", section "llvm.metadata"
+@.str.2 = private unnamed_addr constant [41 x i8] c"polybench_edited/covariance/covariance.c\00", section "llvm.metadata"
+@.str.3 = private unnamed_addr constant [44 x i8] c"scalar(range(-10000, 100000) error(1e-100))\00", section "llvm.metadata"
+@.str.4 = private unnamed_addr constant [47 x i8] c"scalar(range(-5000, 5000) final error(1e-100))\00", section "llvm.metadata"
+@.str.5 = private unnamed_addr constant [28 x i8] c"scalar(range(1, 100) final)\00", section "llvm.metadata"
 @stdout = external dso_local global %struct._IO_FILE*, align 8
-@.str.5 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
-@.str.6 = private unnamed_addr constant [8 x i8] c"%.16lf \00", align 1
+@.str.6 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
+@.str.7 = private unnamed_addr constant [8 x i8] c"%.16lf \00", align 1
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i64 @gettime() #0 {
+entry:
+  %call = call i32 (...) @clock()
+  %conv = sext i32 %call to i64
+  ret i64 %conv
+}
+
+declare dso_local i32 @clock(...) #1
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local void @TIMING_CPUCLOCK_START() #0 {
+entry:
+  %call = call i64 @gettime()
+  store i64 %call, i64* @time_that_takes, align 8
+  ret void
+}
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local void @TIMING_CPUCLOCK_TOGGLE() #0 {
+entry:
+  %call = call i64 @gettime()
+  %0 = load i64, i64* @time_that_takes, align 8
+  %sub = sub i64 %call, %0
+  store i64 %sub, i64* @time_that_takes, align 8
+  ret void
+}
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i64 @TIMING_CPUCLOCK_S() #0 {
+entry:
+  %0 = load i64, i64* @time_that_takes, align 8
+  ret i64 %0
+}
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local void @TIMING_CPUCLOCK_PRINT() #0 {
+entry:
+  %0 = load %struct._IO_FILE*, %struct._IO_FILE** @stderr, align 8
+  %1 = load i64, i64* @time_that_takes, align 8
+  %call = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str, i32 0, i32 0), i64 %1)
+  ret void
+}
+
+declare dso_local i32 @fprintf(%struct._IO_FILE*, i8*, ...) #1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local i32 @main(i32 %argc, i8** %argv) #0 {
@@ -35,22 +84,23 @@ entry:
   store i32 0, i32* %retval, align 4
   store i32 %argc, i32* %argc.addr, align 4
   store i8** %argv, i8*** %argv.addr, align 8
+  call void @TIMING_CPUCLOCK_START()
   store i32 100, i32* %n, align 4
   store i32 80, i32* %m, align 4
   %float_n1 = bitcast double* %float_n to i8*
-  call void @llvm.var.annotation(i8* %float_n1, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 19)
+  call void @llvm.var.annotation(i8* %float_n1, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.2, i32 0, i32 0), i32 20)
   %data2 = bitcast [100 x [80 x double]]* %data to i8*
-  call void @llvm.var.annotation(i8* %data2, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 20)
+  call void @llvm.var.annotation(i8* %data2, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.2, i32 0, i32 0), i32 21)
   %cov3 = bitcast [100 x [80 x double]]* %cov to i8*
-  call void @llvm.var.annotation(i8* %cov3, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 21)
+  call void @llvm.var.annotation(i8* %cov3, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.3, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.2, i32 0, i32 0), i32 22)
   %mean4 = bitcast [80 x double]* %mean to i8*
-  call void @llvm.var.annotation(i8* %mean4, i8* getelementptr inbounds ([47 x i8], [47 x i8]* @.str.3, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 22)
+  call void @llvm.var.annotation(i8* %mean4, i8* getelementptr inbounds ([47 x i8], [47 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.2, i32 0, i32 0), i32 23)
   %i5 = bitcast i32* %i to i8*
-  call void @llvm.var.annotation(i8* %i5, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 25)
+  call void @llvm.var.annotation(i8* %i5, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.5, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.2, i32 0, i32 0), i32 26)
   %j6 = bitcast i32* %j to i8*
-  call void @llvm.var.annotation(i8* %j6, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 26)
+  call void @llvm.var.annotation(i8* %j6, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.5, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.2, i32 0, i32 0), i32 27)
   %k7 = bitcast i32* %k to i8*
-  call void @llvm.var.annotation(i8* %k7, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.1, i32 0, i32 0), i32 27)
+  call void @llvm.var.annotation(i8* %k7, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.5, i32 0, i32 0), i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.2, i32 0, i32 0), i32 28)
   %0 = load i32, i32* %n, align 4
   %conv = sitofp i32 %0 to double
   store double %conv, double* %float_n, align 8
@@ -352,7 +402,7 @@ for.body124:                                      ; preds = %for.cond121
 
 if.then:                                          ; preds = %for.body124
   %64 = load %struct._IO_FILE*, %struct._IO_FILE** @stdout, align 8
-  %call = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %64, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.5, i32 0, i32 0))
+  %call = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %64, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.6, i32 0, i32 0))
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %for.body124
@@ -364,7 +414,7 @@ if.end:                                           ; preds = %if.then, %for.body1
   %idxprom131 = sext i32 %67 to i64
   %arrayidx132 = getelementptr inbounds [80 x double], [80 x double]* %arrayidx130, i64 0, i64 %idxprom131
   %68 = load double, double* %arrayidx132, align 8
-  %call133 = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %65, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.6, i32 0, i32 0), double %68)
+  %call133 = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %65, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.7, i32 0, i32 0), double %68)
   br label %for.inc134
 
 for.inc134:                                       ; preds = %if.end
@@ -383,17 +433,17 @@ for.inc137:                                       ; preds = %for.end136
   br label %for.cond117
 
 for.end139:                                       ; preds = %for.cond117
+  call void @TIMING_CPUCLOCK_TOGGLE()
+  call void @TIMING_CPUCLOCK_PRINT()
   ret i32 0
 }
 
 ; Function Attrs: nounwind
-declare void @llvm.var.annotation(i8*, i8*, i8*, i32) #1
-
-declare dso_local i32 @fprintf(%struct._IO_FILE*, i8*, ...) #2
+declare void @llvm.var.annotation(i8*, i8*, i8*, i32) #2
 
 attributes #0 = { noinline nounwind optnone uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { nounwind }
-attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { nounwind }
 
 !llvm.module.flags = !{!0}
 !llvm.ident = !{!1}

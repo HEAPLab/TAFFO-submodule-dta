@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include "../instrument.h"
 
 
 #define N 28
 #define M 32
 #define DATA_TYPE double
 int main(){
+    TIMING_CPUCLOCK_START();
     DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(1e-100))"))) mean[M];
     DATA_TYPE __attribute((annotate("scalar(range(-10, 10) error(1e-100) final)"))) data[N][M];
     DATA_TYPE __attribute((annotate("scalar(range(0, 5) error(1e-100) final)"))) corr[M][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) error(1e-100) final)"))) stddev[M];
+    DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) error(1e-1) final)"))) stddev[M];
 
 
 
-    int __attribute((annotate("scalar(range(0, 28) final disabled)"))) i;
-    int __attribute((annotate("scalar(range(0, 32) final disabled)"))) j;
-    int __attribute((annotate("scalar(range(0, 32) final disabled)"))) k;
+    int __attribute((annotate("scalar(range(0, 28) final )"))) i;
+    int __attribute((annotate("scalar(range(0, 32) final )"))) j;
+    int __attribute((annotate("scalar(range(0, 32) final )"))) k;
 
 
     DATA_TYPE __attribute((annotate("scalar(range(1, 3000) error(1e-100))"))) float_n;
@@ -118,5 +119,7 @@ int main(){
         }
         printf("\n");
     }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+    return 0;
 }

@@ -5,8 +5,8 @@
 # notice and this notice are preserved. This file is offered as-is,
 # without any warranty.
 
-C99 	= c99
-CFLAGS	= -g -Ofast -DNOFLT80 -DNOFLT128 -DNBRUN=128 -DMEMSIZE=10000000 #-DNOMEMALIGN
+C99 	= clang
+CFLAGS	= -g -O0 -DNOFLT80 -DNOFLT128 -DNBRUN=128 -DMEMSIZE=10000000 #-DNOMEMALIGN
 LDFLAGS	=
 LDLIBS	= -lm -lrt
 

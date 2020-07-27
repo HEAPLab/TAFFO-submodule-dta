@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 #define DATA_TYPE double
 #   define M 80
 #   define N 100
@@ -11,6 +11,7 @@
 
 int main(int argc, char** argv)
 {
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
     int m = M;
@@ -22,9 +23,9 @@ int main(int argc, char** argv)
     DATA_TYPE __attribute((annotate("scalar(range(-5000, 5000) final error(1e-100))"))) mean[M];
 
 
-    int __attribute((annotate("scalar(range(1, 100) disabled)"))) i;
-    int __attribute((annotate("scalar(range(1, 100) disabled)"))) j;
-    int __attribute((annotate("scalar(range(1, 100) disabled)"))) k;
+    int __attribute((annotate("scalar(range(1, 100) final)"))) i;
+    int __attribute((annotate("scalar(range(1, 100) final)"))) j;
+    int __attribute((annotate("scalar(range(1, 100) final)"))) k;
 
     float_n = (DATA_TYPE)n;
 
@@ -77,6 +78,7 @@ int main(int argc, char** argv)
             fprintf (stdout, "%.16lf ", cov[i][j]);
         }
 
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

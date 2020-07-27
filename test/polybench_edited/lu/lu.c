@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
@@ -14,14 +14,15 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 int main(){
+    TIMING_CPUCLOCK_START();
 /* Retrieve problem size. */
     int n = N;
 
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute__((annotate("scalar(range(-2, 1) final error(1e-100))"))) A[N][N];
 
-    int i __attribute__((annotate("scalar(range(-400, 400))")));
-    int j __attribute__((annotate("scalar(range(-400, 400))")));
+    int i __attribute__((annotate("scalar(range(-400, 400) final)")));
+    int j __attribute__((annotate("scalar(range(-400, 400) final)")));
     int k;
 
     for (i = 0; i < n; i++)
@@ -71,6 +72,7 @@ int main(){
             if ((i * n + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j]);
         }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

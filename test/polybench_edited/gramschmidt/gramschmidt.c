@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include "../instrument.h"
 #define POLYBENCH_DUMP_TARGET stdout
 #   define M 60
 #   define N 80
@@ -17,6 +17,7 @@
 #  define POW_FUN(x,y) pow(x,y)
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int m = M;
     int n = N;
@@ -26,8 +27,8 @@ int main(){
     DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) R[N][N];
     DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) Q[M][N];
 
-    int i __attribute__((annotate("scalar(range(-240, 240) final disabled)")));
-    int j __attribute__((annotate("scalar(range(-240, 240) final disabled)")));
+    int i __attribute__((annotate("scalar(range(-240, 240) final)")));
+    int j __attribute__((annotate("scalar(range(-240, 240) final)")));
     int k;
 
     for (i = 0; i < m; i++)
@@ -78,6 +79,7 @@ int main(){
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, Q[i][j]);
         }
 
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

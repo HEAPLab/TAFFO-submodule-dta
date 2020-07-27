@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
@@ -19,7 +19,7 @@
 
 
 int main() {
-
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
     int m = M;
@@ -65,7 +65,8 @@ int main() {
             fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, C[i][j]);
         }
     }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 
 }

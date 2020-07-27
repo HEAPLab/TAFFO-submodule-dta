@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../instrument.h"
 
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
@@ -21,6 +22,7 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int ni = NI;
     int nj = NJ;
@@ -35,8 +37,8 @@ int main(){
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[NK][NJ];
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) C[NJ][NL];
     DATA_TYPE __attribute__((annotate("scalar(range(-16384, 16384) final error(1e-100))"))) D[NI][NL];
-    int i __attribute__((annotate("scalar(range(0, 210) final disabled)")));
-    int j __attribute__((annotate("scalar(range(0, 220) final disabled)")));
+    int i __attribute__((annotate("scalar(range(0, 210) final)")));
+    int j __attribute__((annotate("scalar(range(0, 220) final)")));
     int k;
 
     alpha = 1.5;
@@ -75,5 +77,7 @@ int main(){
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, D[i][j]);
         }
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

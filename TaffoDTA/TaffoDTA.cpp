@@ -124,12 +124,12 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI) {
             if (forceEnableConv)
                 II->IEnableConversion = true;
 
-            /*//FIXME: hack to propagate itofp metadata
+            //FIXME: hack to propagate itofp metadata
             if(isa<UIToFPInst>(v) ||
                isa<SIToFPInst>(v)){
                 dbgs() << "FORCING CONVERSION OF A ITOFP!\n";
                 II->IEnableConversion = true;
-            }*/
+            }
 
             if (!isFloatType(elem.second)) {
                 LLVM_DEBUG(dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n");

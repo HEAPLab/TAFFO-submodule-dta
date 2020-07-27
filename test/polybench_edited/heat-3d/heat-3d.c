@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 #define DATA_TYPE double
 #   define TSTEPS 100
 #   define N 40
@@ -16,17 +16,18 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 int main(){
+    TIMING_CPUCLOCK_START();
     int n = N;
     int tsteps = TSTEPS;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50))"))) A[N][N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50))"))) B[N][N][N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50) error(1e-100))"))) A[N][N][N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50) error(1e-100))"))) B[N][N][N];
 
-    int t __attribute__((annotate("scalar(range(0, 80) final)")));
-    int i __attribute__((annotate("scalar(range(0, 80) final)")));
-    int j __attribute__((annotate("scalar(range(0, 80) final)")));
-    int k __attribute__((annotate("scalar(range(0, 80) final)")));
+    int t __attribute__((annotate("scalar(range(0, 80) final error(1e-100))")));
+    int i __attribute__((annotate("scalar(range(0, 80) final error(1e-100))")));
+    int j __attribute__((annotate("scalar(range(0, 80) final error(1e-100))")));
+    int k __attribute__((annotate("scalar(range(0, 80) final error(1e-100))")));
 
     for (i = 0; i < n; i++)
         for (j = 0; j < n; j++)
@@ -63,5 +64,8 @@ int main(){
                 if ((i * n * n + j * n + k) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
                 fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j][k]);
             }
+
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

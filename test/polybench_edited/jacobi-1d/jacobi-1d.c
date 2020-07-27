@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
@@ -16,6 +16,7 @@
 #define _PB_TSTEPS TSTEPS
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
     int tsteps = TSTEPS;
@@ -25,8 +26,8 @@ int main(){
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[N];
 
 
-    int i __attribute__((annotate("scalar(range(-400,  400) final disabled)")));
-    int t __attribute__((annotate("scalar(range(-100,  100) final disabled)")));
+    int i __attribute__((annotate("scalar(range(-400,  400) final)")));
+    int t __attribute__((annotate("scalar(range(-100,  100) final)")));
 
     for (i = 0; i < n; i++)
     {
@@ -51,6 +52,7 @@ int main(){
     }
 
 
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

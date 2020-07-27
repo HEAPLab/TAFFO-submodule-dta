@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include "../instrument.h"
 
 #define DATA_TYPE double
 
@@ -22,19 +22,20 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int tmax = TMAX;
     int nx = NX;
     int ny = NY;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar()"))) ex[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar()"))) ey[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar()"))) hz[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar()"))) _fict_[TMAX];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ex[NX][NY];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ey[NX][NY];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) hz[NX][NY];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) _fict_[TMAX];
 
-    int i __attribute__((annotate("scalar(range(0, 20))")));
-    int j __attribute__((annotate("scalar(range(0, 30))")));
+    int i __attribute__((annotate("scalar(range(0, 20) final)")));
+    int j __attribute__((annotate("scalar(range(0, 30) final)")));
     int t;
 
     for (i = 0; i < tmax; i++)
@@ -81,4 +82,8 @@ int main(){
             if ((i * nx + j) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
             fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, hz[i][j]);
         }
+
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+    return 0;
 }

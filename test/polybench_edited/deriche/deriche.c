@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include "../instrument.h"
 
 #   define W 192
 #   define H 128
@@ -19,19 +19,20 @@
 #define ALPHA 0.25
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int w = W;
     int h = H;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar()"))) alpha;
-    DATA_TYPE   __attribute__((annotate("scalar()"))) imgIn[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar()"))) imgOut[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar()"))) y1[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar()"))) y2[W][H];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) alpha;
+    DATA_TYPE   __attribute__((annotate("scalar(error(1e-100))"))) imgIn[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) imgOut[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) y1[W][H];
+    DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) y2[W][H];
 
-    int __attribute__((annotate("scalar(range(-192, 192) final disabled)"))) i;
-    int __attribute__((annotate("scalar(range(-128, 128) final disabled)"))) j;
+    int __attribute__((annotate("scalar(range(-192, 192) final )"))) i;
+    int __attribute__((annotate("scalar(range(-128, 128) final )"))) j;
 
 
     alpha=0.25; //parameter of the filter
@@ -42,15 +43,15 @@ int main(){
             imgIn[i][j] = (DATA_TYPE) ((313*i+991*j)%65536) / 65535.0f;
 
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) xm1, tm1, ym1;
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) ym2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) xp1, xp2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) tp1, tp2;
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) yp1, yp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final error(1e-100))"))) xm1, tm1, ym1;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final error(1e-100))"))) ym2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final error(1e-100))"))) xp1, xp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final error(1e-100))"))) tp1, tp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final error(1e-100))"))) yp1, yp2;
 
-    DATA_TYPE __attribute__((annotate("scalar()"))) k;
-    DATA_TYPE __attribute__((annotate("scalar()"))) a1, a2, a3, a4, a5, a6, a7, a8;
-    DATA_TYPE __attribute__((annotate("scalar()"))) b1, b2, c1, c2;
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) k;
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) a1, a2, a3, a4, a5, a6, a7, a8;
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) b1, b2, c1, c2;
 
     k = (SCALAR_VAL(1.0)-EXP_FUN(-ALPHA))*(SCALAR_VAL(1.0)-EXP_FUN(-ALPHA))/(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*ALPHA*EXP_FUN(-ALPHA)-EXP_FUN(SCALAR_VAL(2.0)*ALPHA));
     a1 = a5 = k;
@@ -73,7 +74,6 @@ int main(){
             xm1 = imgIn[i][j];
             ym2 = ym1;
             ym1 = y1[i][j];
-            printf("%.16f ", y1[i][j]);
         }
 
     }
@@ -130,13 +130,14 @@ int main(){
         for (j=0; j<_PB_H; j++)
             imgOut[i][j] = c2*(y1[i][j] + y2[i][j]);
 
-    /*for (i = 0; i < w; i++)
+    for (i = 0; i < w; i++)
         for (j = 0; j < h; j++) {
             if ((i * h + j) % 20 == 0) fprintf(stdout, "\n");
             fprintf(stdout, "%.16lf ", imgOut[i][j]);
         }
-*/
 
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

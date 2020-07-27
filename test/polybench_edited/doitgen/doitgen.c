@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
@@ -20,19 +20,20 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int nr = NR;
     int nq = NQ;
     int np = NP;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final)"))) A[NR][NQ][NP];
-    DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final)"))) sum[NP];
-    DATA_TYPE __attribute__((annotate("scalar()"))) C4[NP][NP];
+    DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final error(1e-100))"))) A[NR][NQ][NP];
+    DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final error(1e-100))"))) sum[NP];
+    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) C4[NP][NP];
 
-    int i __attribute__((annotate("scalar(range(0, 60) final disabled)")));
-    int j __attribute__((annotate("scalar(range(0, 60) final disabled)")));
-    int k __attribute__((annotate("scalar(range(0, 60) final disabled)")));
+    int i __attribute__((annotate("scalar(range(0, 60) final )")));
+    int j __attribute__((annotate("scalar(range(0, 60) final )")));
+    int k __attribute__((annotate("scalar(range(0, 60) final )")));
 
     int p, q, r, s;
 
@@ -61,6 +62,7 @@ int main(){
                 if ((i*nq*np+j*np+k) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
                 fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j][k]);
             }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

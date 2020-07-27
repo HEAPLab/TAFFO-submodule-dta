@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
@@ -15,21 +15,22 @@
 
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
 
     /* Variable declaration/allocation. */
-    DATA_TYPE __attribute((annotate("scalar()"))) alpha;
-    DATA_TYPE __attribute((annotate("scalar()"))) beta;
-    DATA_TYPE __attribute((annotate("scalar(range(-2, 2) final)"))) A[N][N];
-    DATA_TYPE __attribute((annotate("scalar()"))) u1[N];
-    DATA_TYPE __attribute((annotate("scalar()"))) v1[N];
-    DATA_TYPE __attribute((annotate("scalar()"))) u2[N];
-    DATA_TYPE __attribute((annotate("scalar()"))) v2[N];
-    DATA_TYPE __attribute((annotate("scalar(range(-8000, 8000) final)"))) w[N];
-    DATA_TYPE __attribute((annotate("scalar(range(-30, 30) final)"))) x[N];
-    DATA_TYPE __attribute((annotate("scalar()"))) y[N];
-    DATA_TYPE __attribute((annotate("scalar()"))) z[N];
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) alpha;
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) beta;
+    DATA_TYPE __attribute((annotate("scalar(range(-2, 2) final error(1e-100))"))) A[N][N];
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) u1[N];
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) v1[N];
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) u2[N];
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) v2[N];
+    DATA_TYPE __attribute((annotate("scalar(range(-8000, 8000) final error(1e-100))"))) w[N];
+    DATA_TYPE __attribute((annotate("scalar(range(-30, 30) final error(1e-100))"))) x[N];
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) y[N];
+    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) z[N];
 
 
     int i __attribute((annotate("scalar(range(0, 400) final )")));
@@ -73,6 +74,7 @@ int main(){
         if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
         fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, w[i]);
     }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

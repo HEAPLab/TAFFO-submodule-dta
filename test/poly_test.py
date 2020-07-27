@@ -1,3 +1,4 @@
+import datetime
 from subprocess import Popen, PIPE
 from decimal import *
 import os.path
@@ -10,7 +11,9 @@ if not os.path.isfile('./magiclang2.sh'):
     exit(-1)
 
 PROGRAM_NAME = sys.argv[1]
-COST_MODEL = "stm32f4-float.csv"
+COST_MODEL = "i7-4.csv"
+OPT_FLAG="-O0"
+COMPILER_NAME="clang"
 print("Running test for", PROGRAM_NAME, file=sys.stderr)
 
 
@@ -19,10 +22,12 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
 
     global dataset
     global COST_MODEL
+    global orig_run_time
     # Compilation
     compilationParams = []
     compilationParams.append("./magiclang2.sh")
     compilationParams.append("-lm")
+    compilationParams.append(OPT_FLAG)
     compilationParams.append("-Xvra")
     compilationParams.append("-propagate-all")
     compilationParams.append("-Xvra")
@@ -46,9 +51,13 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     compilationParams.append("-o")
     compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp")
 
+
+    start = datetime.datetime.now()
     process = Popen(compilationParams, stderr=PIPE, stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
+    end = datetime.datetime.now()
+    delta = end-start
 
     text_file = open("result.txt", "w")
     text_file.write(err.decode('ascii'))
@@ -59,18 +68,25 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
         print("Error compiling the program!", file=sys.stderr)
         return {"ERROR": "COMPILATION"}
 
-    process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp"], stdout=PIPE)
-    (output, err) = process.communicate()
-    exit_code = process.wait()
+    cumulated_time = 0
+    for i in range(0, 20):
+        process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp"], stdout=PIPE, stderr=PIPE)
+        (output, err) = process.communicate()
+        exit_code = process.wait()
 
-    if (exit_code != 0):
-        print("Error executing the program!", file=sys.stderr)
-        return {"ERROR": "EXECUTION"}
+        if (exit_code != 0):
+            print("Error executing the program!", file=sys.stderr)
+            return {"ERROR": "EXECUTION"}
 
-    output = output.decode('ascii').strip()
-    output = output.replace('\n', '')
-    output = output.split(' ')
+        output = output.decode('ascii').strip()
+        output = output.replace('\n', '')
+        output = output.split(' ')
 
+
+        run_time = float(err.decode('ascii').strip())
+        cumulated_time+=run_time
+
+    run_time = cumulated_time/20
     for i in range(0, len(output)):
         output[i] = float(output[i])
 
@@ -94,6 +110,9 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
 
     var = {}
     var["SKIPPED_TEST"] = skipped
+    var["COMPILE_TIME"] = delta.total_seconds()
+    var["RUNNING_TIME"] = run_time
+    var["SPEEDUP"] = orig_run_time/run_time
 
     if MIX_MODE == "true":
         with open('stats.txt', newline='') as csvfile:
@@ -112,42 +131,59 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
 
 
 def loadReferenceRun():
-    process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".flt"], stdout=PIPE)
+    compilationParams = []
+    compilationParams.append(COMPILER_NAME)
+    compilationParams.append("-lm")
+    compilationParams.append(OPT_FLAG)
+    compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".c")
+    compilationParams.append("-o")
+    compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".flt")
+
+    process = Popen(compilationParams, stderr=PIPE, stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
 
-    if (exit_code != 0):
-        print("Error executing reference the program!", file=sys.stderr)
-        exit(-1)
+    cumulated_time = 0
+    for i in range(0, 20):
+        process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".flt"], stdout=PIPE, stderr=PIPE)
+        (output, err) = process.communicate()
+        exit_code = process.wait()
 
-    output = output.decode('ascii').strip()
-    output = output.replace('\n', '')
-    output = output.split(' ')
+        if (exit_code != 0):
+            print("Error executing reference the program!", file=sys.stderr)
+            exit(-1)
+
+        output = output.decode('ascii').strip()
+        output = output.replace('\n', '')
+        output = output.split(' ')
+
+        run_time = float(err.decode('ascii').strip())
+        cumulated_time+=run_time
 
     for i in range(0, len(output)):
         output[i] = float(output[i])
 
-    return output
+    return (output, cumulated_time/20)
 
 
 # Parameters:
 
 # Loading reference dataset
-dataset = loadReferenceRun()
+dataset, orig_run_time = loadReferenceRun()
 
 
 testSet = {}
 
 #testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
+#testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
+#testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "false")
 
-testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
+#testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "false")
 
-testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 10000, 10000, "true")
+testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
 
-testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
+#testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 
 print(json.dumps(testSet, indent=4))

@@ -525,9 +525,9 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
         if (!fieldInfo) {
             dbgs() << "Not enough information. Bailing out.\n\n";
 
-            if(valueInfo->metadata){
+            if (valueInfo->metadata) {
                 dbgs() << "WTF metadata has a value but it is not an input info...\n\n";
-            }else{
+            } else {
                 dbgs() << "Metadata is really null.\n";
             }
             return;
@@ -543,6 +543,13 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
         shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
                                                                                fieldInfo->IError,
                                                                                instruction->getFunction()->getName());
+
+        //Limiting the ENOB as coming from an integer we can have an error at min of 1
+        //Look that here we have the original program, so these instruction are not related to fixed point implementation!
+        auto constraint = vector<pair<string, double>>();
+        constraint.clear();
+        constraint.push_back(make_pair(variable->getRealEnobVariable(), 1.0));
+        model.insertLinearConstraint(constraint, Model::LE, 1, "Limiting Enob for integer to float conversion");
         return;
     }
 
@@ -983,13 +990,12 @@ void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> arg
         } else {
             dbgs() << tuner->valueInfo(&(*iIt))->metadata->toString() << "\n";
 
-            if(!tuner->valueInfo(&(*iIt))->metadata->getEnableConversion()){
+            if (!tuner->valueInfo(&(*iIt))->metadata->getEnableConversion()) {
                 dbgs() << "Skipping as conversion is disabled!\n";
                 DisabledSkipped++;
                 continue;
             }
         }
-
 
 
         handleInstruction(&(*iIt), tuner->valueInfo(&(*iIt)));
@@ -1268,35 +1274,45 @@ string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
 
 int Optimizer::getMinIntBitOfValue(Value *pValue) {
     int bits = -1024;
-
-    if (!tuner->hasInfo(pValue)) {
-        dbgs() << "No info available for IntBit computation. Using default value\n";
-        return bits;
-    }
-
-    auto metadata = tuner->valueInfo(pValue)->metadata;
-
-    if (!metadata) {
-        dbgs() << "No metadata available for IntBit computation. Using default value\n";
-        return bits;
-    }
-
-
-    auto metadata_InputInfo = dynamic_ptr_cast_or_null<InputInfo>(metadata);
-    assert(metadata_InputInfo && "Not an InputInfo!");
-
-    auto range = metadata_InputInfo->IRange;
-
     double smallestRepresentableNumber;
-    if (range->Min <= 0 && range->Max >= 0) {
-        dbgs() << "The lowest possible number is a 0, infinite ENOB wooooo.\n";
-        return bits;
-    } else if (range->Min >= 0) {
-        //both are greater than 0
-        smallestRepresentableNumber = range->Min;
-    } else {
-        //Both are less than 0
-        smallestRepresentableNumber = abs(range->Max);
+
+    auto *fp_i = dyn_cast<llvm::ConstantFP>(pValue);
+    if (fp_i) {
+        APFloat tmp = fp_i->getValueAPF();
+        bool losesInfo;
+        tmp.convert(APFloatBase::IEEEdouble(), APFloat::roundingMode::rmNearestTiesToEven, &losesInfo);
+        dbgs() << "Getting max bits of constant!\n";
+        smallestRepresentableNumber = tmp.convertToDouble();
+    }else {
+        if (!tuner->hasInfo(pValue)) {
+            dbgs() << "No info available for IntBit computation. Using default value\n";
+            return bits;
+        }
+
+        auto metadata = tuner->valueInfo(pValue)->metadata;
+
+        if (!metadata) {
+            dbgs() << "No metadata available for IntBit computation. Using default value\n";
+            return bits;
+        }
+
+
+        auto metadata_InputInfo = dynamic_ptr_cast_or_null<InputInfo>(metadata);
+        assert(metadata_InputInfo && "Not an InputInfo!");
+
+        auto range = metadata_InputInfo->IRange;
+
+
+        if (range->Min <= 0 && range->Max >= 0) {
+            dbgs() << "The lowest possible number is a 0, infinite ENOB wooooo.\n";
+            return bits;
+        } else if (range->Min >= 0) {
+            //both are greater than 0
+            smallestRepresentableNumber = range->Min;
+        } else {
+            //Both are less than 0
+            smallestRepresentableNumber = abs(range->Max);
+        }
     }
 
     double exponentOfExponent = log2(smallestRepresentableNumber);
@@ -1309,25 +1325,35 @@ int Optimizer::getMinIntBitOfValue(Value *pValue) {
 int Optimizer::getMaxIntBitOfValue(Value *pValue) {
     int bits = 1024;
 
-    if (!tuner->hasInfo(pValue)) {
-        dbgs() << "No info available for IntBit computation. Using default value\n";
-        return bits;
+    double biggestRepresentableNumber;
+    auto *fp_i = dyn_cast<llvm::ConstantFP>(pValue);
+    if (fp_i) {
+        APFloat tmp = fp_i->getValueAPF();
+        bool losesInfo;
+        tmp.convert(APFloatBase::IEEEdouble(), APFloat::roundingMode::rmNearestTiesToEven, &losesInfo);
+        dbgs() << "Getting max bits of constant!\n";
+        biggestRepresentableNumber = tmp.convertToDouble();
+    } else {
+        if (!tuner->hasInfo(pValue)) {
+            dbgs() << "No info available for IntBit computation. Using default value\n";
+            return bits;
+        }
+
+        auto metadata = tuner->valueInfo(pValue)->metadata;
+
+        if (!metadata) {
+            dbgs() << "No metadata available for IntBit computation. Using default value\n";
+            return bits;
+        }
+
+
+        auto metadata_InputInfo = dynamic_ptr_cast_or_null<InputInfo>(metadata);
+        assert(metadata_InputInfo && "Not an InputInfo!");
+
+        auto range = metadata_InputInfo->IRange;
+
+        biggestRepresentableNumber = max(abs(range->Min), abs(range->Max));
     }
-
-    auto metadata = tuner->valueInfo(pValue)->metadata;
-
-    if (!metadata) {
-        dbgs() << "No metadata available for IntBit computation. Using default value\n";
-        return bits;
-    }
-
-
-    auto metadata_InputInfo = dynamic_ptr_cast_or_null<InputInfo>(metadata);
-    assert(metadata_InputInfo && "Not an InputInfo!");
-
-    auto range = metadata_InputInfo->IRange;
-
-    double biggestRepresentableNumber = max(abs(range->Min), abs(range->Max));
 
     double exponentOfExponent = log2(biggestRepresentableNumber);
     bits = round(exponentOfExponent);

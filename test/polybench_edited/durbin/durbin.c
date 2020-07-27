@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "../instrument.h"
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
@@ -16,6 +17,7 @@
 
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
 
@@ -24,7 +26,7 @@ int main(){
     DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final error(1e-100))"))) y[N];
 
 
-    int i __attribute__((annotate("scalar(range(-400, 400) final disabled)")));
+    int i __attribute__((annotate("scalar(range(-400, 400) final )")));
     int k;
 
     for (i = 0; i < n; i++)
@@ -64,6 +66,7 @@ int main(){
         if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
         fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, y[i]);
     }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

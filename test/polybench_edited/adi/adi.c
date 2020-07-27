@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 #define DATA_TYPE double
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
@@ -14,21 +14,25 @@
 #   define _PB_TSTEPS TSTEPS
 #   define _PB_N N
 
-DATA_TYPE __attribute__((annotate("scalar()"))) DX, DY, DT;
-DATA_TYPE __attribute__((annotate("scalar()"))) B1, B2;
-DATA_TYPE __attribute__((annotate("scalar()"))) mul1, mul2;
-DATA_TYPE __attribute__((annotate("scalar()"))) a, b, c, d, e, f;
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) DX, DY, DT;
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B1, B2;
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) mul1, mul2;
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) a, b, c, d, e, f;
+
 
 int main(int argc, char** argv)
 {
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
     int tsteps = TSTEPS;
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-4,4) final)")))u[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-2,2) final)")))v[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-1,1) final)")))p[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-500,500) final)")))q[N][N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-4,4) final error(1e-100))")))u[N][N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-2,2) final error(1e-100))")))v[N][N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-1,1) final error(1e-100))")))p[N][N];
+    DATA_TYPE __attribute__((annotate("scalar(range(-500,500) final error(1e-100))")))q[N][N];
+
+
 
 
     int i __attribute__((annotate("scalar(range(0, 400) final)")));
@@ -114,6 +118,7 @@ int main(int argc, char** argv)
         }
 
 
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }

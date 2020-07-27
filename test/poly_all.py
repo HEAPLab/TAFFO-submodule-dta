@@ -4,6 +4,23 @@ import os.path
 import sys
 import json
 import csv
+import argparse
+
+
+
+parser = argparse.ArgumentParser(description='Run all the polybench tests and instrument errors.')
+parser.add_argument('--dest', type=str,
+                    help='name of the file where to place the results', required=True)
+
+
+args = parser.parse_args()
+
+dest_file = args.dest
+
+print("Results will be saved in file", dest_file)
+
+
+
 
 if not os.path.isfile('./magiclang2.sh'):
     print("Script run from the wrong fodler.")
@@ -69,6 +86,6 @@ print("\nFailed: ", end="")
 for el in NOTOK_SET:
     print(el+", ", end="")
 
-text_file = open("poly_results.json", "w")
+text_file = open(dest_file, "w")
 text_file.write(json.dumps(resAll, indent=4))
 text_file.close()

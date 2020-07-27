@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "../instrument.h"
 
 #  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
@@ -19,6 +19,7 @@
 #   define _PB_N N
 
 int main(){
+    TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int m = M;
     int n = N;
@@ -28,8 +29,8 @@ int main(){
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[M][M];
     DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final error(1e-100))"))) B[M][N];
 
-    int i __attribute__((annotate("scalar(range(0, 200) final disabled)")));
-    int j __attribute__((annotate("scalar(range(0, 240) final disabled)")));
+    int i __attribute__((annotate("scalar(range(0, 200) final)")));
+    int j __attribute__((annotate("scalar(range(0, 240) final)")));
     int k;
 
     alpha = 1.5;
@@ -56,6 +57,7 @@ int main(){
             if ((i * m + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, B[i][j]);
         }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     return 0;
 }
