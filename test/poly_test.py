@@ -10,6 +10,7 @@ if not os.path.isfile('./magiclang2.sh'):
     exit(-1)
 
 PROGRAM_NAME = sys.argv[1]
+COST_MODEL = "stm32f4-float.csv"
 print("Running test for", PROGRAM_NAME, file=sys.stderr)
 
 
@@ -17,6 +18,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     print("Running compilation", NAME, file=sys.stderr)
 
     global dataset
+    global COST_MODEL
     # Compilation
     compilationParams = []
     compilationParams.append("./magiclang2.sh")
@@ -26,9 +28,11 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     compilationParams.append("-Xvra")
     compilationParams.append("-unroll=1")
     compilationParams.append("-Xvra")
-    compilationParams.append("-max-unroll=5")
+    compilationParams.append("-max-unroll=3")
     compilationParams.append("-Xdta")
     compilationParams.append("-mixedmode=" + MIX_MODE)
+    compilationParams.append("-Xdta")
+    compilationParams.append("-costmodelfilename=" + COST_MODEL)
     compilationParams.append("-Xdta")
     compilationParams.append("-mixedtuningenob=" + str(TUNING_ENOB))
     compilationParams.append("-Xdta")
@@ -134,13 +138,15 @@ dataset = loadReferenceRun()
 
 testSet = {}
 
-testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
+#testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-testSet["NOFLOAT"] = compileAndCheck("NOFLOAT", "true", 1000, 1, 1, "false")
+testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "false")
+testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
 
-testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 10000, 10000, "false")
+testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
+
+testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 10000, 10000, "true")
 
 testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 

@@ -36,5 +36,10 @@ llvm::cl::opt<bool> MixedDoubleEnabled("mixeddoubleenabled", llvm::cl::value_des
                                              llvm::cl::desc("Set if the double dataype can be used in the resulting mix"),
                                              llvm::cl::init(true));
 
+
+llvm::cl::opt<string> CostModelFilename("costmodelfilename", llvm::cl::value_desc("Cost model filename"),
+                                       llvm::cl::desc("Set the filename to load optimization constant parameter i.e. operation costs"),
+                                       llvm::cl::init("DOES-NOT-EXIST"));
+
 STATISTIC(FixCast, "Number of fixed point format cast");
 #endif

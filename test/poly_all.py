@@ -28,12 +28,18 @@ def evaluateResults(res):
     allSucceded = True
     for (k) in res:
         v = res[k]
-        if v['ERR'] > 0.1:
-            success = False
-            allSucceded = False
+        if 'ERR' in v:
+            e=v['ERR']
+            if v['ERR'] > 0.2:
+                success = False
+                allSucceded = False
+            else:
+                success = True
         else:
-            success = True
-        print("Error for", k, ":", v['ERR'], success)
+            e=9999
+            allSucceded = False
+            success=False
+        print("Error for", k, ":", e, success)
     return allSucceded
 
 
@@ -44,8 +50,11 @@ TEST_SET = ["2mm", "3mm", "adi", "atax", "bicg", "cholesky", "corr", "covariance
 OK_SET=[]
 NOTOK_SET=[]
 
+resAll={}
+
 for test in TEST_SET:
     res = runSet(test)
+    resAll[test] = res
     allOk=evaluateResults(res)
     if allOk:
         OK_SET.append(test)
@@ -59,3 +68,7 @@ for el in OK_SET:
 print("\nFailed: ", end="")
 for el in NOTOK_SET:
     print(el+", ", end="")
+
+text_file = open("poly_results.json", "w")
+text_file.write(json.dumps(resAll, indent=4))
+text_file.close()

@@ -124,12 +124,12 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI) {
             if (forceEnableConv)
                 II->IEnableConversion = true;
 
-            //FIXME: hack to propagate itofp metadata
+            /*//FIXME: hack to propagate itofp metadata
             if(isa<UIToFPInst>(v) ||
                isa<SIToFPInst>(v)){
                 dbgs() << "FORCING CONVERSION OF A ITOFP!\n";
                 II->IEnableConversion = true;
-            }
+            }*/
 
             if (!isFloatType(elem.second)) {
                 LLVM_DEBUG(dbgs() << "[Info] Skipping a member of " << *v << " because not a float\n");
@@ -658,7 +658,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
                                       const SmallPtrSetImpl<llvm::Value *> &valset) {
     assert(vals.size() == valset.size() && "They must contain the same elements.");
 
-    Optimizer optimizer(m, this, "dummyModel.csv");
+    Optimizer optimizer(m, this, CostModelFilename);
     optimizer.initialize();
 
     dbgs() << "\n============ GLOBALS ============\n";
