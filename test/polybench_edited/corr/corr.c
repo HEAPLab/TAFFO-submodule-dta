@@ -7,14 +7,21 @@
 #define N 28
 #define M 32
 #define DATA_TYPE double
+
+DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(1e-100))"))) mean[M];
+DATA_TYPE __attribute((annotate("scalar(range(-10, 10) error(1e-100) final)"))) data[N][M];
+DATA_TYPE __attribute((annotate("scalar(range(0, 5) error(1e-100) final)"))) corr[M][M];
+DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) error(1e-1) final)"))) stddev[M];
+
+
+
+
+
+
 int main(){
+
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
-    DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(1e-100))"))) mean[M];
-    DATA_TYPE __attribute((annotate("scalar(range(-10, 10) error(1e-100) final)"))) data[N][M];
-    DATA_TYPE __attribute((annotate("scalar(range(0, 5) error(1e-100) final)"))) corr[M][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) error(1e-1) final)"))) stddev[M];
-
-
 
     int __attribute((annotate("scalar(range(0, 28) final )"))) i;
     int __attribute((annotate("scalar(range(0, 32) final )"))) j;
@@ -22,6 +29,7 @@ int main(){
 
 
     DATA_TYPE __attribute((annotate("scalar(range(1, 3000) error(1e-100))"))) float_n;
+
     float_n = (DATA_TYPE)N;
 
     for (i = 0; i < N; i++)
@@ -109,7 +117,8 @@ int main(){
     }
     printf("CORR min: %f, max: %f\n", min, max);*/
 
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
 
     //Print
     //printf("\n\nCORR:\n");
@@ -119,7 +128,6 @@ int main(){
         }
         printf("\n");
     }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

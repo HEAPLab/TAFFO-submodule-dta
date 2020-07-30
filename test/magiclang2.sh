@@ -16,6 +16,7 @@ if [[ -z "$OPT" ]]; then OPT=${llvmbin}opt; fi
 if [[ -z "$LLC" ]]; then LLC=${llvmbin}llc; fi
 if [[ -z "$LLVM_LINK" ]]; then LLVM_LINK=${llvmbin}llvm-link; fi
 
+
 llvm_debug=$(($("$OPT" --version | grep DEBUG | wc -l)))
 
 parse_state=0

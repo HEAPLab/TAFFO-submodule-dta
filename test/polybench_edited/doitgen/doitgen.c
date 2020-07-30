@@ -8,9 +8,9 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
-#   define NQ 40
-#   define NR 50
-#   define NP 60
+#   define NQ 8
+#   define NR 10
+#   define NP 12
 
 #   define _PB_NQ NQ
 #   define _PB_NR NR
@@ -19,17 +19,20 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final error(1e-100))"))) A[NR][NQ][NP];
+DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final error(1e-100))"))) sum[NP];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) C4[NP][NP];
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int nr = NR;
     int nq = NQ;
     int np = NP;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final error(1e-100))"))) A[NR][NQ][NP];
-    DATA_TYPE __attribute__((annotate("scalar(range(-32, 31) final error(1e-100))"))) sum[NP];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) C4[NP][NP];
+
 
     int i __attribute__((annotate("scalar(range(0, 60) final )")));
     int j __attribute__((annotate("scalar(range(0, 60) final )")));
@@ -56,13 +59,17 @@ int main(){
                 A[r][q][p] = sum[p];
         }
 
+
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+
+
     for (i = 0; i < nr; i++)
         for (j = 0; j < nq; j++)
             for (k = 0; k < np; k++) {
                 if ((i*nq*np+j*np+k) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
                 fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j][k]);
             }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

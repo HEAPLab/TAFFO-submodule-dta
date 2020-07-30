@@ -21,18 +21,19 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ex[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ey[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) hz[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) _fict_[TMAX];
+
+
 int main(){
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int tmax = TMAX;
     int nx = NX;
     int ny = NY;
-
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ex[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ey[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) hz[NX][NY];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) _fict_[TMAX];
 
     int i __attribute__((annotate("scalar(range(0, 20) final)")));
     int j __attribute__((annotate("scalar(range(0, 30) final)")));
@@ -64,6 +65,8 @@ int main(){
                                                          ey[i+1][j] - ey[i][j]);
     }
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
 
     for (i = 0; i < nx; i++)
         for (j = 0; j < ny; j++) {
@@ -83,7 +86,6 @@ int main(){
             fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, hz[i][j]);
         }
 
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

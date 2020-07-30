@@ -8,9 +8,9 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
-#   define NI 200
-#   define NJ 220
-#   define NK 240
+#   define NI 20
+#   define NJ 25
+#   define NK 30
 
 #   define _PB_NI NI
 #   define _PB_NJ NJ
@@ -18,7 +18,13 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 
+DATA_TYPE __attribute((annotate("scalar(range(-100, 100)  error(1e-100))"))) C[NI][NJ];
+DATA_TYPE __attribute((annotate("scalar(range(-100, 100) error(1e-100))"))) A[NI][NK];
+DATA_TYPE __attribute((annotate("scalar(range(-100, 100)  error(1e-100))"))) B[NK][NJ];
+
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int ni = NI;
@@ -28,9 +34,6 @@ int main(){
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) alpha;
     DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) beta;
-    DATA_TYPE __attribute((annotate("scalar(range(-100, 100)  error(1e-100))"))) C[NI][NJ];
-    DATA_TYPE __attribute((annotate("scalar(range(-100, 100) error(1e-100))"))) A[NI][NK];
-    DATA_TYPE __attribute((annotate("scalar(range(-100, 100)  error(1e-100))"))) B[NK][NJ];
 
     int i, j, k;
 
@@ -59,13 +62,14 @@ int main(){
     }
 
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
 
     for (i = 0; i < ni; i++)
         for (j = 0; j < nj; j++) {
             if ((i * ni + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, C[i][j]);
         }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

@@ -14,13 +14,17 @@
 #   define N 40
 #   define _PB_N N
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(range(-140, 140) final error(1e-100))"))) A[N][N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[N][N];
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-140, 140) final error(1e-100))"))) A[N][N];
+
 
     int i __attribute__((annotate("scalar(range(-400, 400))")));
     int j __attribute__((annotate("scalar(range(-400, 400))")));
@@ -40,7 +44,7 @@ int main(){
 
     /* Make the matrix positive semi-definite. */
     int r,s,t;
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[N][N];
+
     for (r = 0; r < n; ++r)
         for (s = 0; s < n; ++s)
             ((B))[r][s] = 0;
@@ -71,12 +75,14 @@ int main(){
         A[i][i] = SQRT_FUN(A[i][i]);
     }
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+
     for (i = 0; i < n; i++)
         for (j = 0; j <= i; j++) {
             if ((i * n + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j]);
         }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

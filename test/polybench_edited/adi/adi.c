@@ -8,8 +8,8 @@
 #  define SQRT_FUN(x) sqrt(x)
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
-#   define TSTEPS 100
-#   define N 200
+#   define TSTEPS 20
+#   define N 20
 
 #   define _PB_TSTEPS TSTEPS
 #   define _PB_N N
@@ -20,17 +20,20 @@ DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) mul1, mul2;
 DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) a, b, c, d, e, f;
 
 
+DATA_TYPE __attribute__((annotate("scalar(range(-4,4) final error(1e-100))")))u[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-2,2) final error(1e-100))")))v[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-1,1) final error(1e-100))")))p[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-500,500) final error(1e-100))")))q[N][N];
+
 int main(int argc, char** argv)
 {
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
     int tsteps = TSTEPS;
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-4,4) final error(1e-100))")))u[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-2,2) final error(1e-100))")))v[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-1,1) final error(1e-100))")))p[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-500,500) final error(1e-100))")))q[N][N];
+
 
 
 
@@ -111,6 +114,10 @@ int main(int argc, char** argv)
 
     }
 
+
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+
     for (i = 0; i < n; i++)
         for (j = 0; j < n; j++) {
             if ((i * n + j) % 20 == 0) fprintf(stdout, "\n");
@@ -118,7 +125,6 @@ int main(int argc, char** argv)
         }
 
 
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

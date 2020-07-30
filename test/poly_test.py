@@ -11,7 +11,7 @@ if not os.path.isfile('./magiclang2.sh'):
     exit(-1)
 
 PROGRAM_NAME = sys.argv[1]
-COST_MODEL = "i7-4.csv"
+COST_MODEL = "stm32.csv"
 OPT_FLAG="-O0"
 COMPILER_NAME="clang"
 print("Running test for", PROGRAM_NAME, file=sys.stderr)
@@ -53,6 +53,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
 
 
     start = datetime.datetime.now()
+    print("Compilation params:", " ".join(compilationParams), file=sys.stderr)
     process = Popen(compilationParams, stderr=PIPE, stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
@@ -174,16 +175,16 @@ dataset, orig_run_time = loadReferenceRun()
 
 testSet = {}
 
-#testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
+testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-#testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
+testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-#testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "false")
+testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
 
-#testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "false")
+testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
 
 testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
 
-#testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
+testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 
 print(json.dumps(testSet, indent=4))

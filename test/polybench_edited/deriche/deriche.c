@@ -3,8 +3,8 @@
 #include <math.h>
 #include "../instrument.h"
 
-#   define W 192
-#   define H 128
+#   define W 64
+#   define H 64
 
 #   define _PB_W W
 #   define _PB_H H
@@ -18,7 +18,14 @@
 #define DATA_TYPE double
 #define ALPHA 0.25
 
+
+DATA_TYPE   __attribute__((annotate("scalar(error(1e-100))"))) imgIn[W][H];
+DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) imgOut[W][H];
+DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) _y1[W][H];
+DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) y2[W][H];
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int w = W;
@@ -26,10 +33,6 @@ int main(){
 
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) alpha;
-    DATA_TYPE   __attribute__((annotate("scalar(error(1e-100))"))) imgIn[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) imgOut[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) y1[W][H];
-    DATA_TYPE  __attribute__((annotate("scalar(error(1e-100))"))) y2[W][H];
 
     int __attribute__((annotate("scalar(range(-192, 192) final )"))) i;
     int __attribute__((annotate("scalar(range(-128, 128) final )"))) j;
@@ -70,10 +73,10 @@ int main(){
         ym2 = SCALAR_VAL(0.0);
         xm1 = SCALAR_VAL(0.0);
         for (j=0; j<_PB_H; j++) {
-            y1[i][j] = a1*imgIn[i][j] + a2*xm1 + b1*ym1 + b2*ym2;
+            _y1[i][j] = a1*imgIn[i][j] + a2*xm1 + b1*ym1 + b2*ym2;
             xm1 = imgIn[i][j];
             ym2 = ym1;
-            ym1 = y1[i][j];
+            ym1 = _y1[i][j];
         }
 
     }
@@ -96,7 +99,7 @@ int main(){
 
     for (i=0; i<_PB_W; i++)
         for (j=0; j<_PB_H; j++) {
-            imgOut[i][j] = c1 * (y1[i][j] + y2[i][j]);
+            imgOut[i][j] = c1 * (_y1[i][j] + y2[i][j]);
         }
 
     for (j=0; j<_PB_H; j++) {
@@ -104,10 +107,10 @@ int main(){
         ym1 = SCALAR_VAL(0.0);
         ym2 = SCALAR_VAL(0.0);
         for (i=0; i<_PB_W; i++) {
-            y1[i][j] = a5*imgOut[i][j] + a6*tm1 + b1*ym1 + b2*ym2;
+            _y1[i][j] = a5*imgOut[i][j] + a6*tm1 + b1*ym1 + b2*ym2;
             tm1 = imgOut[i][j];
             ym2 = ym1;
-            ym1 = y1 [i][j];
+            ym1 = _y1 [i][j];
         }
     }
 
@@ -128,7 +131,12 @@ int main(){
 
     for (i=0; i<_PB_W; i++)
         for (j=0; j<_PB_H; j++)
-            imgOut[i][j] = c2*(y1[i][j] + y2[i][j]);
+            imgOut[i][j] = c2*(_y1[i][j] + y2[i][j]);
+
+
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+
 
     for (i = 0; i < w; i++)
         for (j = 0; j < h; j++) {
@@ -137,7 +145,6 @@ int main(){
         }
 
 
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

@@ -9,10 +9,16 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
-#   define NI 180
+/*#   define NI 180
 #   define NJ 190
 #   define NK 210
 #   define NL 220
+*/
+
+#   define NI 16
+#   define NJ 18
+#   define NK 22
+#   define NL 24
 
 #   define _PB_NI NI
 #   define _PB_NJ NJ
@@ -21,7 +27,14 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 
+DATA_TYPE __attribute__((annotate("scalar(range(-16384, 16384) final error(1e-100))"))) tmp[NI][NJ];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[NI][NK];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[NK][NJ];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) C[NJ][NL];
+DATA_TYPE __attribute__((annotate("scalar(range(-16384, 16384) final error(1e-100))"))) D[NI][NL];
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int ni = NI;
@@ -32,11 +45,7 @@ int main(){
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) alpha;
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) beta;
-    DATA_TYPE __attribute__((annotate("scalar(range(-16384, 16384) final error(1e-100))"))) tmp[NI][NJ];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[NI][NK];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[NK][NJ];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) C[NJ][NL];
-    DATA_TYPE __attribute__((annotate("scalar(range(-16384, 16384) final error(1e-100))"))) D[NI][NL];
+
     int i __attribute__((annotate("scalar(range(0, 210) final)")));
     int j __attribute__((annotate("scalar(range(0, 220) final)")));
     int k;
@@ -71,13 +80,14 @@ int main(){
                 D[i][j] += tmp[i][k] * C[k][j];
         }
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     for (i = 0; i < ni; i++)
         for (j = 0; j < nl; j++) {
             if ((i * ni + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, D[i][j]);
         }
 
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "../instrument.h"
 #define DATA_TYPE double
-#   define TSTEPS 100
-#   define N 40
+#   define TSTEPS 20
+#   define N 10
 #define _PB_N N
 
 #  define DATA_TYPE double
@@ -14,15 +14,17 @@
 #  define POW_FUN(x,y) pow(x,y)
 
 #define POLYBENCH_DUMP_TARGET stdout
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(range(-50, 50) error(1e-100))"))) A[N][N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-50, 50) error(1e-100))"))) B[N][N][N];
 
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     int n = N;
     int tsteps = TSTEPS;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50) error(1e-100))"))) A[N][N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-50, 50) error(1e-100))"))) B[N][N][N];
+
 
     int t __attribute__((annotate("scalar(range(0, 80) final error(1e-100))")));
     int i __attribute__((annotate("scalar(range(0, 80) final error(1e-100))")));
@@ -58,6 +60,10 @@ int main(){
         }
     }
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+
+
     for (i = 0; i < n; i++)
         for (j = 0; j < n; j++)
             for (k = 0; k < n; k++) {
@@ -65,7 +71,6 @@ int main(){
                 fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j][k]);
             }
 
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

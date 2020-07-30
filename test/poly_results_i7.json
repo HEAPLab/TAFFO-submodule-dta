@@ -1,310 +1,590 @@
 {
     "2mm": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 13.517905,
-            "RUNNING_TIME": 60269.9,
-            "SPEEDUP": 1.0686204888343933,
-            "MIX_MODE": "false",
-            "ERR": 3.280659364700289e-05,
-            "NAME": "FIX"
+            "COMPILE_TIME": 6.778223,
+            "RUNNING_TIME": 95539.35,
+            "SPEEDUP": 0.8569495187061665,
+            "TOFIX,": "0",
+            "TOFLOAT,": "12",
+            "TODOUBLE,": "53",
+            "COSTENOB,": "-7465",
+            "COSTCAST,": "3.09389",
+            "COSTTIME,": "44.5288",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 4.309492206881908e-08,
+            "NAME": "QUICK"
         }
     },
     "3mm": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 21.104154,
-            "RUNNING_TIME": 77090.9,
-            "SPEEDUP": 0.9209361935066267,
-            "MIX_MODE": "false",
-            "ERR": 0.002203667618650864,
-            "NAME": "FIX"
+            "COMPILE_TIME": 6.497655,
+            "RUNNING_TIME": 125793.95,
+            "SPEEDUP": 0.8481532696922229,
+            "TOFIX,": "0",
+            "TOFLOAT,": "37",
+            "TODOUBLE,": "42",
+            "COSTENOB,": "-7229",
+            "COSTCAST,": "4.4906",
+            "COSTTIME,": "43.3298",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 1.716237690727228e-07,
+            "NAME": "QUICK"
         }
     },
     "adi": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 137.056572,
-            "RUNNING_TIME": 210965.6,
-            "SPEEDUP": 0.6548738277709731,
-            "MIX_MODE": "false",
-            "ERR": 0.0003730258174680055,
-            "NAME": "FIX"
+            "COMPILE_TIME": 24.241253,
+            "RUNNING_TIME": 150495.95,
+            "SPEEDUP": 0.8813323547909429,
+            "TOFIX,": "0",
+            "TOFLOAT,": "86",
+            "TODOUBLE,": "145",
+            "COSTENOB,": "-15964",
+            "COSTCAST,": "56.6806",
+            "COSTTIME,": "152.924",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 2.7557258747843793e-05,
+            "NAME": "QUICK"
         }
     },
     "atax": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 4.948613,
-            "RUNNING_TIME": 1063.15,
-            "SPEEDUP": 1.6852278606029252,
-            "MIX_MODE": "false",
-            "ERR": 1.36382394360432e-05,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.752515,
+            "RUNNING_TIME": 2935.0,
+            "SPEEDUP": 0.9406984667802384,
+            "TOFIX,": "0",
+            "TOFLOAT,": "24",
+            "TODOUBLE,": "20",
+            "COSTENOB,": "-2870",
+            "COSTCAST,": "7.88496",
+            "COSTTIME,": "24.179",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 2.5057932412434194e-07,
+            "NAME": "QUICK"
         }
     },
     "bicg": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 1,
-            "COMPILE_TIME": 4.923227,
-            "RUNNING_TIME": 1302.95,
-            "SPEEDUP": 1.5080010744848227,
-            "MIX_MODE": "false",
-            "ERR": 7.148333257195888e-07,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.842497,
+            "RUNNING_TIME": 3159.75,
+            "SPEEDUP": 0.9239338555265448,
+            "TOFIX,": "0",
+            "TOFLOAT,": "19",
+            "TODOUBLE,": "32",
+            "COSTENOB,": "-5396",
+            "COSTCAST,": "6.18778",
+            "COSTTIME,": "30.243",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 1.9696746162609965e-07,
+            "NAME": "QUICK"
         }
     },
     "cholesky": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 11.267526,
-            "RUNNING_TIME": 423.5,
-            "SPEEDUP": 0.8170011806375442,
-            "MIX_MODE": "false",
-            "ERR": 0.00045450359781444653,
-            "NAME": "FIX"
+            "COMPILE_TIME": 4.465446,
+            "RUNNING_TIME": 680.25,
+            "SPEEDUP": 0.9124586549062845,
+            "TOFIX,": "0",
+            "TOFLOAT,": "22",
+            "TODOUBLE,": "56",
+            "COSTENOB,": "-2797",
+            "COSTCAST,": "13.7723",
+            "COSTTIME,": "28.6667",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 5.51608691159565e-07,
+            "NAME": "QUICK"
         }
     },
     "corr": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 15.60807,
-            "RUNNING_TIME": 400.0,
-            "SPEEDUP": 0.887375,
-            "MIX_MODE": "false",
-            "ERR": 0.0009431279031559244,
-            "NAME": "FIX"
+            "COMPILE_TIME": 5.885219,
+            "RUNNING_TIME": 425.9,
+            "SPEEDUP": 1.0694998826015498,
+            "TOFIX,": "0",
+            "TOFLOAT,": "98",
+            "TODOUBLE,": "8",
+            "COSTENOB,": "-2676",
+            "COSTCAST,": "17.4671",
+            "COSTTIME,": "52.5628",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 8.556526158009364e-08,
+            "NAME": "QUICK"
         }
     },
     "covariance": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 159,
-            "COMPILE_TIME": 7.594706,
-            "RUNNING_TIME": 4205.75,
-            "SPEEDUP": 1.7512928728526422,
-            "MIX_MODE": "false",
-            "ERR": 0.0009916940535874576,
-            "NAME": "FIX"
+            "COMPILE_TIME": 3.338918,
+            "RUNNING_TIME": 6148.75,
+            "SPEEDUP": 1.0043667412075625,
+            "TOFIX,": "0",
+            "TOFLOAT,": "54",
+            "TODOUBLE,": "6",
+            "COSTENOB,": "-1491",
+            "COSTCAST,": "7.88496",
+            "COSTTIME,": "30.3738",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 7.008564719036158e-08,
+            "NAME": "QUICK"
         }
     },
     "deriche": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 13.654567,
-            "RUNNING_TIME": 8155.75,
-            "SPEEDUP": 1.1087698862765534,
-            "MIX_MODE": "false",
-            "ERR": 0.00015655820161721153,
-            "NAME": "FIX"
+            "COMPILE_TIME": 7.372127,
+            "RUNNING_TIME": 8930.75,
+            "SPEEDUP": 1.028144332782801,
+            "TOFIX,": "68",
+            "TOFLOAT,": "18",
+            "TODOUBLE,": "0",
+            "COSTENOB,": "-1232",
+            "COSTCAST,": "8.54108",
+            "COSTTIME,": "14.8052",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 2.7080129396131737e-06,
+            "NAME": "QUICK"
         }
     },
     "doitgen": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 2000,
-            "COMPILE_TIME": 11.327495,
-            "RUNNING_TIME": 99728.25,
-            "SPEEDUP": 0.9777064171887103,
-            "MIX_MODE": "false",
-            "ERR": 1.587266105487974e-07,
-            "NAME": "FIX"
+            "COMPILE_TIME": 5.136069,
+            "RUNNING_TIME": 119115.45,
+            "SPEEDUP": 0.9022192335251221,
+            "TOFIX,": "0",
+            "TOFLOAT,": "10",
+            "TODOUBLE,": "30",
+            "COSTENOB,": "-3375",
+            "COSTCAST,": "3.09389",
+            "COSTTIME,": "18.6661",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 8.296684903625922e-08,
+            "NAME": "QUICK"
         }
     },
     "durbin": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 4.365497,
-            "RUNNING_TIME": 339.6,
-            "SPEEDUP": 0.8723498233215548,
-            "MIX_MODE": "false",
-            "ERR": 0.15210855568823098,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.756595,
+            "RUNNING_TIME": 1363.0,
+            "SPEEDUP": 0.5935803374908291,
+            "TOFIX,": "0",
+            "TOFLOAT,": "20",
+            "TODOUBLE,": "27",
+            "COSTENOB,": "-3613",
+            "COSTCAST,": "15.7699",
+            "COSTTIME,": "29.4572",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 0.00015032970720348635,
+            "NAME": "QUICK"
         }
     },
     "fdtd-2d": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 2,
-            "COMPILE_TIME": 29.918015,
-            "RUNNING_TIME": 872.1,
-            "SPEEDUP": 1.0352597179222567,
-            "MIX_MODE": "false",
-            "ERR": 20908779189.211212,
-            "NAME": "FIX"
+            "COMPILE_TIME": 9.400836,
+            "RUNNING_TIME": 1058.1,
+            "SPEEDUP": 1.0029770343067763,
+            "TOFIX,": "0",
+            "TOFLOAT,": "86",
+            "TODOUBLE,": "12",
+            "COSTENOB,": "-6319",
+            "COSTCAST,": "18.5633",
+            "COSTTIME,": "49.797",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 19940.16624708689,
+            "NAME": "QUICK"
         }
     },
     "gemm": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 5.697933,
-            "RUNNING_TIME": 41195.65,
-            "SPEEDUP": 1.0353471786462891,
-            "MIX_MODE": "false",
+            "COMPILE_TIME": 2.85304,
+            "RUNNING_TIME": 72742.1,
+            "SPEEDUP": 0.8804323768491698,
+            "TOFIX,": "30",
+            "TOFLOAT,": "2",
+            "TODOUBLE,": "4",
+            "COSTENOB,": "-127",
+            "COSTCAST,": "9.54108",
+            "COSTTIME,": "9.37969",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
             "ERR": 0.001195594717454054,
-            "NAME": "FIX"
+            "NAME": "QUICK"
         }
     },
     "gemmver": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 8.784016,
-            "RUNNING_TIME": 1225.9,
-            "SPEEDUP": 1.6341871278244553,
-            "MIX_MODE": "false",
-            "ERR": 2.266432992286082e-06,
-            "NAME": "FIX"
+            "COMPILE_TIME": 4.582444,
+            "RUNNING_TIME": 3248.45,
+            "SPEEDUP": 1.0269359232864905,
+            "TOFIX,": "0",
+            "TOFLOAT,": "83",
+            "TODOUBLE,": "17",
+            "COSTENOB,": "-5512",
+            "COSTCAST,": "8.18543",
+            "COSTTIME,": "109.344",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 6.237797521527738e-09,
+            "NAME": "QUICK"
         }
     },
     "gesummv": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 4.893012,
-            "RUNNING_TIME": 696.25,
-            "SPEEDUP": 1.6367684021543984,
-            "MIX_MODE": "false",
-            "ERR": 7.986440788081148e-07,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.937568,
+            "RUNNING_TIME": 1897.65,
+            "SPEEDUP": 0.9160013701156693,
+            "TOFIX,": "0",
+            "TOFLOAT,": "24",
+            "TODOUBLE,": "35",
+            "COSTENOB,": "-6205",
+            "COSTCAST,": "10.6784",
+            "COSTTIME,": "37.7459",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 1.08545774199239e-07,
+            "NAME": "QUICK"
         }
     },
     "gramschmidt": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 9.8032,
-            "RUNNING_TIME": 1649.05,
-            "SPEEDUP": 1.1968709256844852,
-            "MIX_MODE": "false",
-            "ERR": 72461.02473154399,
-            "NAME": "FIX"
+            "COMPILE_TIME": 4.528479,
+            "RUNNING_TIME": 3475.15,
+            "SPEEDUP": 0.803087636504899,
+            "TOFIX,": "0",
+            "TOFLOAT,": "56",
+            "TODOUBLE,": "26",
+            "COSTENOB,": "-7683",
+            "COSTCAST,": "18.8638",
+            "COSTTIME,": "31.2348",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 0.0,
+            "NAME": "QUICK"
         }
     },
     "heat-3d": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 150.91724,
-            "RUNNING_TIME": 59148.5,
-            "SPEEDUP": 1.112181204933346,
-            "MIX_MODE": "false",
+            "COMPILE_TIME": 35.501272,
+            "RUNNING_TIME": 172273.65,
+            "SPEEDUP": 0.8220398186257736,
+            "TOFIX,": "130",
+            "TOFLOAT,": "0",
+            "TODOUBLE,": "6",
+            "COSTENOB,": "-1235",
+            "COSTCAST,": "30.1678",
+            "COSTTIME,": "67.6784",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
             "ERR": 0.0,
-            "NAME": "FIX"
+            "NAME": "QUICK"
         }
     },
     "jacobi-1d": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 3.840934,
-            "RUNNING_TIME": 249.05,
-            "SPEEDUP": 1.0536036940373417,
-            "MIX_MODE": "false",
-            "ERR": 2.161149749692703e-06,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.574069,
+            "RUNNING_TIME": 501.75,
+            "SPEEDUP": 0.8578973592426506,
+            "TOFIX,": "0",
+            "TOFLOAT,": "34",
+            "TODOUBLE,": "4",
+            "COSTENOB,": "-1864",
+            "COSTCAST,": "7.88496",
+            "COSTTIME,": "28.1491",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 1.8098834173911012e-07,
+            "NAME": "QUICK"
         }
     },
     "jacobi-2d": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 15.963095,
-            "RUNNING_TIME": 71288.75,
-            "SPEEDUP": 0.7653318370710667,
-            "MIX_MODE": "false",
-            "ERR": 9.411120554332622e-06,
-            "NAME": "FIX"
+            "COMPILE_TIME": 7.087574,
+            "RUNNING_TIME": 115141.8,
+            "SPEEDUP": 0.8061481581840826,
+            "TOFIX,": "0",
+            "TOFLOAT,": "59",
+            "TODOUBLE,": "10",
+            "COSTENOB,": "-4612",
+            "COSTCAST,": "10.6784",
+            "COSTTIME,": "40.0693",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 1.1370865523973843e-07,
+            "NAME": "QUICK"
         }
     },
     "lu": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 10.086555,
-            "RUNNING_TIME": 127331.35,
-            "SPEEDUP": 1.295574106455323,
-            "MIX_MODE": "false",
-            "ERR": 1.8470556034668088e-07,
-            "NAME": "FIX"
+            "COMPILE_TIME": 4.22151,
+            "RUNNING_TIME": 426959.8,
+            "SPEEDUP": 0.7396335673756639,
+            "TOFIX,": "0",
+            "TOFLOAT,": "23",
+            "TODOUBLE,": "48",
+            "COSTENOB,": "-2464",
+            "COSTCAST,": "13.7723",
+            "COSTTIME,": "28.6667",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 8.432066597715271e-06,
+            "NAME": "QUICK"
         }
     },
     "ludcmp": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 15.870002,
-            "RUNNING_TIME": 90140.25,
-            "SPEEDUP": 0.9050585060502938,
-            "MIX_MODE": "false",
-            "ERR": 61.282246651082644,
-            "NAME": "FIX"
+            "COMPILE_TIME": 6.155802,
+            "RUNNING_TIME": 392249.2,
+            "SPEEDUP": 0.5846070559226124,
+            "TOFIX,": "0",
+            "TOFLOAT,": "46",
+            "TODOUBLE,": "67",
+            "COSTENOB,": "-4998",
+            "COSTCAST,": "22.7535",
+            "COSTTIME,": "58.5933",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 0.01287353249221897,
+            "NAME": "QUICK"
         }
     },
     "mvt": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 1,
-            "COMPILE_TIME": 5.154883,
-            "RUNNING_TIME": 1404.2,
-            "SPEEDUP": 1.4751103831363053,
-            "MIX_MODE": "false",
-            "ERR": 7.821418323385499e-07,
-            "NAME": "FIX"
+            "COMPILE_TIME": 3.009845,
+            "RUNNING_TIME": 3447.15,
+            "SPEEDUP": 0.8936512771419869,
+            "TOFIX,": "0",
+            "TOFLOAT,": "26",
+            "TODOUBLE,": "31",
+            "COSTENOB,": "-5698",
+            "COSTCAST,": "6.18778",
+            "COSTTIME,": "43.527",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 1.7555054102690495e-07,
+            "NAME": "QUICK"
         }
     },
     "seidel-2d": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 13.076501,
-            "RUNNING_TIME": 177840.15,
-            "SPEEDUP": 1.4870548073649286,
-            "MIX_MODE": "false",
-            "ERR": 7.369478580398918e-05,
-            "NAME": "FIX"
+            "COMPILE_TIME": 5.197235,
+            "RUNNING_TIME": 259655.2,
+            "SPEEDUP": 1.328845522831817,
+            "TOFIX,": "0",
+            "TOFLOAT,": "49",
+            "TODOUBLE,": "3",
+            "COSTENOB,": "-2718",
+            "COSTCAST,": "3.09389",
+            "COSTTIME,": "29.5511",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 4.75271715629434e-08,
+            "NAME": "QUICK"
         }
     },
     "symm": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 0,
-            "COMPILE_TIME": 7.107486,
-            "RUNNING_TIME": 45489.5,
-            "SPEEDUP": 1.0414864968838962,
-            "MIX_MODE": "false",
-            "ERR": 0.00017767543404066685,
-            "NAME": "FIX"
+            "COMPILE_TIME": 4.084026,
+            "RUNNING_TIME": 71908.9,
+            "SPEEDUP": 0.8964272850787595,
+            "TOFIX,": "0",
+            "TOFLOAT,": "25",
+            "TODOUBLE,": "42",
+            "COSTENOB,": "-6128",
+            "COSTCAST,": "12.0751",
+            "COSTTIME,": "47.8169",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 1.4019781140132802e-07,
+            "NAME": "QUICK"
         }
     },
     "syr2k": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 80,
-            "COMPILE_TIME": 4.840153,
-            "RUNNING_TIME": 48045.05,
-            "SPEEDUP": 0.8989375596445419,
-            "MIX_MODE": "false",
-            "ERR": 5.744205702332277e-07,
-            "NAME": "FIX"
+            "COMPILE_TIME": 3.383065,
+            "RUNNING_TIME": 72132.65,
+            "SPEEDUP": 0.8138741610075327,
+            "TOFIX,": "0",
+            "TOFLOAT,": "3",
+            "TODOUBLE,": "48",
+            "COSTENOB,": "-6091",
+            "COSTCAST,": "5.88731",
+            "COSTTIME,": "39.2887",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 8.452272459992945e-08,
+            "NAME": "QUICK"
         }
     },
     "syrk": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 117,
-            "COMPILE_TIME": 4.577951,
-            "RUNNING_TIME": 34499.0,
-            "SPEEDUP": 1.1207948056465407,
-            "MIX_MODE": "false",
-            "ERR": 0.0027061757720874065,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.817789,
+            "RUNNING_TIME": 56795.35,
+            "SPEEDUP": 0.8893738659943112,
+            "TOFIX,": "0",
+            "TOFLOAT,": "0",
+            "TODOUBLE,": "35",
+            "COSTENOB,": "-4084",
+            "COSTCAST,": "0",
+            "COSTTIME,": "25.8627",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 0.0,
+            "NAME": "QUICK"
         }
     },
     "trisolv": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 1,
-            "COMPILE_TIME": 4.166144,
-            "RUNNING_TIME": 539.1,
-            "SPEEDUP": 1.9006677796327214,
-            "MIX_MODE": "false",
-            "ERR": 0.008588152328498485,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.204157,
+            "RUNNING_TIME": 1484.15,
+            "SPEEDUP": 0.991173398915204,
+            "TOFIX,": "0",
+            "TOFLOAT,": "0",
+            "TODOUBLE,": "39",
+            "COSTENOB,": "-4149",
+            "COSTCAST,": "0",
+            "COSTTIME,": "22.8474",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 0.0,
+            "NAME": "QUICK"
         }
     },
     "trmm": {
-        "FIX": {
+        "QUICK": {
             "SKIPPED_TEST": 1,
-            "COMPILE_TIME": 4.359368,
-            "RUNNING_TIME": 42680.7,
-            "SPEEDUP": 0.9415988959881164,
-            "MIX_MODE": "false",
-            "ERR": 1.4743643606900078e-06,
-            "NAME": "FIX"
+            "COMPILE_TIME": 2.633278,
+            "RUNNING_TIME": 53294.3,
+            "SPEEDUP": 0.9037120292414009,
+            "TOFIX,": "0",
+            "TOFLOAT,": "1",
+            "TODOUBLE,": "38",
+            "COSTENOB,": "-3751",
+            "COSTCAST,": "0",
+            "COSTTIME,": "22.8474",
+            "TUNING_ENOB": 1,
+            "TUNING_TIME": 1000,
+            "TUNING_CAST_TIME": 1000,
+            "DOUBLE_ENABLED": "true",
+            "MIX_MODE": "true",
+            "ERR": 0.0,
+            "NAME": "QUICK"
         }
     }
 }

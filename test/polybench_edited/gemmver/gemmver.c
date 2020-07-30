@@ -10,11 +10,21 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 
-#   define N 400
+#   define N 40
 #define _PB_N N
 
+DATA_TYPE __attribute((annotate("scalar(range(-2, 2) final error(1e-100))"))) A[N][N];
+DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) u1[N];
+DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) v1[N];
+DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) u2[N];
+DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) v2[N];
+DATA_TYPE __attribute((annotate("scalar(range(-8000, 8000) final error(1e-100))"))) w[N];
+DATA_TYPE __attribute((annotate("scalar(range(-30, 30) final error(1e-100))"))) x[N];
+DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) y[N];
+DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) z[N];
 
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
@@ -22,15 +32,7 @@ int main(){
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) alpha;
     DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) beta;
-    DATA_TYPE __attribute((annotate("scalar(range(-2, 2) final error(1e-100))"))) A[N][N];
-    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) u1[N];
-    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) v1[N];
-    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) u2[N];
-    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) v2[N];
-    DATA_TYPE __attribute((annotate("scalar(range(-8000, 8000) final error(1e-100))"))) w[N];
-    DATA_TYPE __attribute((annotate("scalar(range(-30, 30) final error(1e-100))"))) x[N];
-    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) y[N];
-    DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) z[N];
+
 
 
     int i __attribute((annotate("scalar(range(0, 400) final )")));
@@ -69,12 +71,12 @@ int main(){
     for (i = 0; i < _PB_N; i++)
         for (j = 0; j < _PB_N; j++)
             w[i] = w[i] +  alpha * A[i][j] * x[j];
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     for (i = 0; i < n; i++) {
         if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
         fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, w[i]);
     }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

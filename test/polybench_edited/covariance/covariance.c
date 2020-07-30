@@ -2,15 +2,19 @@
 #include <stdlib.h>
 #include "../instrument.h"
 #define DATA_TYPE double
-#   define M 80
-#   define N 100
+#   define M 28
+#   define N 32
 
 #define _PB_M M
 #define _PB_N N
 
+DATA_TYPE __attribute((annotate("scalar(range(-2097152, 2097151) final error(1e-100))"))) data[N][M];
+DATA_TYPE __attribute((annotate("scalar(range(-2097152, 2097151) final error(1e-100))"))) cov[N][M];
+DATA_TYPE __attribute((annotate("scalar(error(1e-100))"))) mean[M];
 
 int main(int argc, char** argv)
 {
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
@@ -18,9 +22,7 @@ int main(int argc, char** argv)
 
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final error(1e-100))"))) float_n;
-    DATA_TYPE __attribute((annotate("scalar(range(-10000, 10000) final error(1e-100))"))) data[N][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-10000, 100000) error(1e-100))"))) cov[N][M];
-    DATA_TYPE __attribute((annotate("scalar(range(-5000, 5000) final error(1e-100))"))) mean[M];
+
 
 
     int __attribute((annotate("scalar(range(1, 100) final)"))) i;
@@ -70,7 +72,8 @@ int main(int argc, char** argv)
 
 
 
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
 
     for (i = 0; i < m; i++)
         for (j = 0; j < m; j++) {
@@ -78,7 +81,6 @@ int main(int argc, char** argv)
             fprintf (stdout, "%.16lf ", cov[i][j]);
         }
 
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }
