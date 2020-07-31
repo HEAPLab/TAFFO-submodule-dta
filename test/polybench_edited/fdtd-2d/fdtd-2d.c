@@ -22,10 +22,10 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 /* Variable declaration/allocation. */
-DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ex[NX][NY];
-DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) ey[NX][NY];
-DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) hz[NX][NY];
-DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) _fict_[TMAX];
+DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) ex[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) ey[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) hz[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) _fict_[TMAX];
 
 
 int main(){
@@ -35,8 +35,8 @@ int main(){
     int nx = NX;
     int ny = NY;
 
-    int i __attribute__((annotate("scalar(range(0, 20) final)")));
-    int j __attribute__((annotate("scalar(range(0, 30) final)")));
+    int i __attribute__((annotate("scalar(range(-20, 20) final)")));
+    int j __attribute__((annotate("scalar(range(-30, 30) final)")));
     int t;
 
     for (i = 0; i < tmax; i++)
@@ -51,8 +51,9 @@ int main(){
 
     for(t = 0; t < _PB_TMAX; t++)
     {
+        i=0;
         for (j = 0; j < _PB_NY; j++)
-            ey[0][j] = _fict_[t];
+            ey[i][j] = _fict_[t];
         for (i = 1; i < _PB_NX; i++)
             for (j = 0; j < _PB_NY; j++)
                 ey[i][j] = ey[i][j] - SCALAR_VAL(0.5)*(hz[i][j]-hz[i-1][j]);

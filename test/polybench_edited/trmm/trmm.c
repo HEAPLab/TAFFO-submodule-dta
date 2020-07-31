@@ -12,13 +12,18 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 
-#   define M 200
-#   define N 240
+#   define M 20
+#   define N 30
 
 #   define _PB_M M
 #   define _PB_N N
 
+
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[M][M];
+DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final error(1e-100))"))) B[M][N];
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int m = M;
@@ -26,8 +31,6 @@ int main(){
 
     /* Variable declaration/allocation. */
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) alpha;
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[M][M];
-    DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final error(1e-100))"))) B[M][N];
 
     int i __attribute__((annotate("scalar(range(0, 200) final)")));
     int j __attribute__((annotate("scalar(range(0, 240) final)")));
@@ -51,13 +54,13 @@ int main(){
             B[i][j] = alpha * B[i][j];
         }
 
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     for (i = 0; i < m; i++)
         for (j = 0; j < n; j++) {
             if ((i * m + j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, B[i][j]);
         }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

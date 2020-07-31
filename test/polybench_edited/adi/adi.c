@@ -20,7 +20,7 @@ DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) mul1, mul2;
 DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) a, b, c, d, e, f;
 
 
-DATA_TYPE __attribute__((annotate("scalar(range(-4,4) final error(1e-100))")))u[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-60,60) final error(1e-100))")))u[N][N];
 DATA_TYPE __attribute__((annotate("scalar(range(-2,2) final error(1e-100))")))v[N][N];
 DATA_TYPE __attribute__((annotate("scalar(range(-1,1) final error(1e-100))")))p[N][N];
 DATA_TYPE __attribute__((annotate("scalar(range(-500,500) final error(1e-100))")))q[N][N];
@@ -38,8 +38,8 @@ int main(int argc, char** argv)
 
 
 
-    int i __attribute__((annotate("scalar(range(0, 400) final)")));
-    int j __attribute__((annotate("scalar(range(0, 400) final)")));
+    int i __attribute__((annotate("scalar(range(-4000, 4000) final)")));
+    int j __attribute__((annotate("scalar(range(-4000, 4000) final)")));
 
     for (i = 0; i < n; i++)
         for (j = 0; j < n; j++)
@@ -72,10 +72,10 @@ int main(int argc, char** argv)
     for (t=1; t<=_PB_TSTEPS; t++) {
         //Column Sweep
         for (i=1; i<_PB_N-1; i++) {
-
-            v[0][i] = SCALAR_VAL(1.0);
-            p[i][0] = SCALAR_VAL(0.0);
-            q[i][0] = v[0][i];
+            j=0; //TRYING TO FIX
+            v[j][i] = SCALAR_VAL(1.0);
+            p[i][j] = SCALAR_VAL(0.0);
+            q[i][j] = v[j][i];
 
             for (j=1; j<_PB_N-1; j++) {
 
@@ -87,8 +87,8 @@ int main(int argc, char** argv)
 
             }
 
-
-            v[_PB_N-1][i] = SCALAR_VAL(1.0);
+            j=_PB_N-1;
+            v[j][i] = SCALAR_VAL(1.0);
 
             for (j=_PB_N-2; j>=1; j--) {
                 v[j][i] = p[i][j] * v[j+1][i] + q[i][j];
@@ -98,15 +98,17 @@ int main(int argc, char** argv)
 
         //Row Sweep
         for (i=1; i<_PB_N-1; i++) {
-            u[i][0] = SCALAR_VAL(1.0);
-            p[i][0] = SCALAR_VAL(0.0);
-            q[i][0] = u[i][0];
+            j=0; //TRYING TO FIX
+            u[i][j] = SCALAR_VAL(1.0);
+            p[i][j] = SCALAR_VAL(0.0);
+            q[i][j] = u[i][j];
             for (j=1; j<_PB_N-1; j++) {
                 p[i][j] = -f / (d*p[i][j-1]+e); //FIXME: here is the error
                 q[i][j] = (-a*v[i-1][j]+(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*a)*v[i][j] - c*v[i+1][j]-d*q[i][j-1]);
                 q[i][j] /= (d*p[i][j-1]+e);
             }
-            u[i][_PB_N-1] = SCALAR_VAL(1.0);
+            j=_PB_N-1;
+            u[i][j] = SCALAR_VAL(1.0);
             for (j=_PB_N-2; j>=1; j--) {
                 u[i][j] = p[i][j] * u[i][j+1] + q[i][j];
             }

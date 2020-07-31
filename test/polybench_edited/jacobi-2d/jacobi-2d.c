@@ -10,20 +10,25 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 
-#   define TSTEPS 100
-#   define N 250
+#   define TSTEPS 20
+#   define N 30
 
 #   define _PB_TSTEPS TSTEPS
 #   define _PB_N N
+
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[N][N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[N][N];
+
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
 /* Retrieve problem size. */
     int n = N;
     int tsteps = TSTEPS;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[N][N];
+
 
 
     int i __attribute__((annotate("scalar(range(-250, 250) final)")));
@@ -46,13 +51,13 @@ int main(){
             for (j = 1; j < _PB_N - 1; j++)
                 A[i][j] = SCALAR_VAL(0.2) * (B[i][j] + B[i][j-1] + B[i][1+j] + B[1+i][j] + B[i-1][j]);
     }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     for (i = 0; i < n; i++)
         for (j = 0; j < n; j++) {
             if ((i * n + j) % 20 == 0) fprintf(POLYBENCH_DUMP_TARGET, "\n");
             fprintf(POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, A[i][j]);
         }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

@@ -8,22 +8,26 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
-#   define N 400
+#   define N 40
 #   define _PB_N N
 
 #define POLYBENCH_DUMP_TARGET stdout
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final error(1e-100))"))) x1[N];
+DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final error(1e-100))"))) x2[N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) y_1[N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) y_2[N];
+
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) A[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final error(1e-100))"))) x1[N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final error(1e-100))"))) x2[N];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) y_1[N];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) y_2[N];
+
 
 
     int i __attribute__((annotate("scalar(range(0, 400) final)")));
@@ -45,6 +49,8 @@ int main(){
     for (i = 0; i < _PB_N; i++)
         for (j = 0; j < _PB_N; j++)
             x2[i] = x2[i] + A[j][i] * y_2[j];
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
 
     for (i = 0; i < n; i++) {
         if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
@@ -56,7 +62,6 @@ int main(){
         if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
         fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, x2[i]);
     }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

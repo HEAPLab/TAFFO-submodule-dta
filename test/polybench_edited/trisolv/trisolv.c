@@ -9,18 +9,21 @@
 #  define POW_FUN(x,y) pow(x,y)
 
 #define POLYBENCH_DUMP_TARGET stdout
-#   define N 400
+#   define N 40
 #   define _PB_N N
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) L[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final error(1e-100))"))) x[N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) b[N];
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) L[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) error(1e-100))"))) x[N];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) b[N];
+
 
 
     int i __attribute__((annotate("scalar(range(-8000, 8000) final)")));
@@ -41,12 +44,12 @@ int main(){
             x[i] -= L[i][j] * x[j];
         x[i] = x[i] / L[i][i];
     }
-
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
     for (i = 0; i < n; i++) {
         fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, x[i]);
         if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
     }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

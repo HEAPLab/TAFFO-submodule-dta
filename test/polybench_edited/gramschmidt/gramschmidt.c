@@ -3,29 +3,32 @@
 #include <math.h>
 #include "../instrument.h"
 #define POLYBENCH_DUMP_TARGET stdout
-#   define M 60
-#   define N 80
+#   define M 20
+#   define N 30
 
 #   define _PB_M M
 #   define _PB_N N
 
 #  define DATA_TYPE float
-#  define DATA_PRINTF_MODIFIER "%0.16f "
+#  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
 #  define SQRT_FUN(x) sqrt(x)
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) A[M][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) R[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) Q[M][N];
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int m = M;
     int n = N;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) A[M][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) R[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) Q[M][N];
+
 
     int i __attribute__((annotate("scalar(range(-240, 240) final)")));
     int j __attribute__((annotate("scalar(range(-240, 240) final)")));
@@ -51,7 +54,7 @@ int main(){
             nrm += A[i][k] * A[i][k];
         R[k][k] = SQRT_FUN(nrm);
         for (i = 0; i < _PB_M; i++)
-            if (R[k][k] != 0.0)
+            if (R[k][k] != 0)
                 Q[i][k] = A[i][k] / R[k][k];
             else
                 Q[i][k] = 0.0;
@@ -65,12 +68,13 @@ int main(){
         }
     }
 
-
-    /*for (i = 0; i < n; i++)
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+    for (i = 0; i < n; i++)
         for (j = 0; j < n; j++) {
             if ((i*n+j) % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, R[i][j]);
-        }*/
+        }
 
 
     for (i = 0; i < m; i++)
@@ -79,7 +83,6 @@ int main(){
             fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, Q[i][j]);
         }
 
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }

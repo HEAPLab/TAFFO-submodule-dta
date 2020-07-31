@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../instrument.h"
-#   define N 400
+#   define N 40
 #   define _PB_N N
 
 #  define DATA_TYPE double
@@ -14,16 +14,21 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final error(1e-100))"))) A[N][N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) b[N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) x[N];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) y[N];
+DATA_TYPE __attribute__((annotate("scalar()"))) B[N][N];
+
+
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int n = N;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(range(-8, 8) final error(1e-100))"))) A[N][N];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) b[N];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) x[N];
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) y[N];
+
 
 
     int i __attribute__((annotate("scalar(range(-400, 400) final)")));
@@ -51,7 +56,6 @@ int main(){
     /* Make the matrix positive semi-definite. */
     /* not necessary for LU, but using same code as cholesky */
     int r,s,t;
-    DATA_TYPE __attribute__((annotate("scalar()"))) B[N][N];
     for (r = 0; r < n; ++r)
         for (s = 0; s < n; ++s)
             ((B))[r][s] = 0;
@@ -63,7 +67,7 @@ int main(){
         for (s = 0; s < n; ++s)
             A[r][s] = ((B))[r][s];
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-200, 200) final error(1e-100))"))) w;
+    DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final error(1e-100))"))) w;
 
     for (i = 0; i < _PB_N; i++) {
         for (j = 0; j <i; j++) {
@@ -96,11 +100,14 @@ int main(){
         x[i] = w / (A[i][i]);
     }
 
+    TIMING_CPUCLOCK_TOGGLE();
+    TIMING_CPUCLOCK_PRINT();
+
+
     for (i = 0; i < n; i++) {
         if (i % 20 == 0) fprintf (POLYBENCH_DUMP_TARGET, "\n");
         fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER, x[i]);
     }
-    TIMING_CPUCLOCK_TOGGLE();
-    TIMING_CPUCLOCK_PRINT();
+
     return 0;
 }
