@@ -62,7 +62,7 @@ def evaluateResults(res):
 
 TEST_SET = ["2mm", "3mm", "adi", "atax", "bicg", "cholesky", "corr", "covariance", "deriche", "doitgen", "durbin",
             "fdtd-2d", "gemm", "gemmver", "gesummv", "gramschmidt", "heat-3d", "jacobi-1d", "jacobi-2d", "lu", "ludcmp",
-            "mvt", "seidel-2d", "symm", "syr2k", "syrk", "trisolv", "trmm"]
+            "mvt", "seidel-2d", "symm", "syr2k", "syrk", "trisolv", "trmm", "floyd-warshall"]
 
 OK_SET=[]
 NOTOK_SET=[]

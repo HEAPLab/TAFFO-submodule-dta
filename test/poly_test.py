@@ -105,6 +105,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
             accumulator += tmp
             if tmp>1:
                 print(output[i], dataset[i], file=sys.stderr)
+            #print(output[i], dataset[i], file=sys.stderr)
         else:
             skipped += 1
 

@@ -14,14 +14,16 @@
 
 #define _PB_N N
 
+/* Variable declaration/allocation. */
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) path[N][N];
+
 int main(){
     TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
 /* Retrieve problem size. */
     int n = N;
 
-    /* Variable declaration/allocation. */
-    DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) path[N][N];
+
 
 
     int i __attribute__((annotate("scalar(range(-60, 60))")));
