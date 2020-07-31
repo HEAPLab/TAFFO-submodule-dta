@@ -177,15 +177,15 @@ dataset, orig_run_time = loadReferenceRun()
 
 testSet = {}
 
-#testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
+testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-#testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
+testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-#testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
+testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
 
-#testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
+testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
 
-#testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
+testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
 
 testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 
