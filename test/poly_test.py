@@ -69,6 +69,10 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
         print("Error compiling the program!", file=sys.stderr)
         return {"ERROR": "COMPILATION"}
 
+    if NAME == "NONE":
+        print(".ll files generated, not performing tests...", file=sys.stderr)
+        return {"ERROR": "NO DATA"}
+
     cumulated_time = 0
     for i in range(0, 20):
         process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp"], stdout=PIPE, stderr=PIPE)
@@ -139,7 +143,7 @@ def loadReferenceRun():
     compilationParams.append(COMPILER_NAME)
     compilationParams.append("-lm")
     compilationParams.append(OPT_FLAG)
-    compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".c")
+    compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp.1.magiclangtmp.ll")
     compilationParams.append("-o")
     compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".flt")
 
@@ -173,6 +177,9 @@ def loadReferenceRun():
 # Parameters:
 
 # Loading reference dataset
+
+#pre compilation in order to prepare the correct ll file
+compileAndCheck("NONE", "false", 0, 0, 0, "false")
 dataset, orig_run_time = loadReferenceRun()
 
 
