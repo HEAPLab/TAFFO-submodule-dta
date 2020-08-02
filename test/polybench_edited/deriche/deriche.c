@@ -3,8 +3,30 @@
 #include <math.h>
 #include "../instrument.h"
 
+#  ifdef MINI_DATASET
 #   define W 64
 #   define H 64
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define W 192
+#   define H 128
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define W 720
+#   define H 480
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define W 4096
+#   define H 2160
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define W 7680
+#   define H 4320
+#  endif
 
 #   define _PB_W W
 #   define _PB_H H

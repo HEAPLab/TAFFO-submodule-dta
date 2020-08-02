@@ -8,9 +8,35 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
+#  ifdef MINI_DATASET
 #   define NI 20
 #   define NJ 25
 #   define NK 30
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define NI 60
+#   define NJ 70
+#   define NK 80
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define NI 200
+#   define NJ 220
+#   define NK 240
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define NI 1000
+#   define NJ 1100
+#   define NK 1200
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define NI 2000
+#   define NJ 2300
+#   define NK 2600
+#  endif
 
 #   define _PB_NI NI
 #   define _PB_NJ NJ

@@ -4,8 +4,30 @@
 #include "../instrument.h"
 
 
-#define N 28
-#define M 32
+#  ifdef MINI_DATASET
+#   define M 28
+#   define N 32
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define M 80
+#   define N 100
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define M 240
+#   define N 260
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define M 1200
+#   define N 1400
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define M 2600
+#   define N 3000
+#  endif
 #define DATA_TYPE double
 
 DATA_TYPE __attribute((annotate("scalar(range(-50000, 50000) final error(1e-100))"))) mean[M];
@@ -23,9 +45,9 @@ int main(){
     TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
 
-    int __attribute((annotate("scalar(range(0, 28) final )"))) i;
-    int __attribute((annotate("scalar(range(0, 32) final )"))) j;
-    int __attribute((annotate("scalar(range(0, 32) final )"))) k;
+    int __attribute((annotate("scalar(range(0, 240) final )"))) i;
+    int __attribute((annotate("scalar(range(0, 260) final )"))) j;
+    int __attribute((annotate("scalar(range(0, 260) final )"))) k;
 
 
     DATA_TYPE __attribute((annotate("scalar(range(1, 3000) error(1e-100))"))) float_n;

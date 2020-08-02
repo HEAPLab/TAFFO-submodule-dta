@@ -9,8 +9,30 @@
 #  define POW_FUN(x,y) pow(x,y)
 
 
+#  ifdef MINI_DATASET
 #   define M 20
 #   define N 30
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define M 60
+#   define N 80
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define M 200
+#   define N 240
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define M 1000
+#   define N 1200
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define M 2000
+#   define N 2600
+#  endif
 
 
 #   define _PB_M M

@@ -11,9 +11,10 @@ if not os.path.isfile('./magiclang2.sh'):
     exit(-1)
 
 PROGRAM_NAME = sys.argv[1]
-COST_MODEL = "stm32.csv"
+COST_MODEL = "i7-4.csv"
 OPT_FLAG="-O0"
 COMPILER_NAME="clang"
+TEST_DIM="MINI"
 print("Running test for", PROGRAM_NAME, file=sys.stderr)
 
 
@@ -23,6 +24,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     global dataset
     global COST_MODEL
     global orig_run_time
+    global TEST_DIM
     # Compilation
     compilationParams = []
     compilationParams.append("./magiclang2.sh")
@@ -47,6 +49,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     compilationParams.append("-Xdta")
     compilationParams.append("-mixeddoubleenabled=" + DOUBLE_ENABLED)
     compilationParams.append("-debug-taffo")
+    compilationParams.append("-D"+TEST_DIM+"_DATASET")
     compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".c")
     compilationParams.append("-o")
     compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp")
@@ -187,14 +190,14 @@ testSet = {}
 
 testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
+#testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
+#testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
 
-testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
+#testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
 
-testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
+#testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
 
-testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
+#testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 
 print(json.dumps(testSet, indent=4))

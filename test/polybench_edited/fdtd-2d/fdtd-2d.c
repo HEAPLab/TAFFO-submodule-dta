@@ -11,9 +11,35 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
+#  ifdef MINI_DATASET
 #   define TMAX 20
 #   define NX 20
 #   define NY 30
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define TMAX 40
+#   define NX 60
+#   define NY 80
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define TMAX 100
+#   define NX 200
+#   define NY 240
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define TMAX 500
+#   define NX 1000
+#   define NY 1200
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define TMAX 1000
+#   define NX 2000
+#   define NY 2600
+#  endif
 
 #   define _PB_TMAX TMAX
 #   define _PB_NX NX

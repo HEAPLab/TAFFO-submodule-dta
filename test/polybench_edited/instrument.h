@@ -19,7 +19,9 @@ long unsigned gettime(){
     return DWT->CYCCNT;
 #else
 #warning On general linux architecture
-    return clock();
+    struct timespec tmp;
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tmp);
+    return (unsigned long)(tmp.tv_sec * 1000000 + tmp.tv_nsec / 1000);
 #endif
 }
 

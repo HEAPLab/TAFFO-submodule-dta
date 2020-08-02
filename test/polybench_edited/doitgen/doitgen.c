@@ -8,9 +8,35 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
+#  ifdef MINI_DATASET
 #   define NQ 8
 #   define NR 10
 #   define NP 12
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define NQ 20
+#   define NR 25
+#   define NP 30
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define NQ 40
+#   define NR 50
+#   define NP 60
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define NQ 140
+#   define NR 150
+#   define NP 160
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define NQ 220
+#   define NR 250
+#   define NP 270
+#  endif
 
 #   define _PB_NQ NQ
 #   define _PB_NR NR

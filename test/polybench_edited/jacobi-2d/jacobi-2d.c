@@ -10,8 +10,30 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 
+#  ifdef MINI_DATASET
 #   define TSTEPS 20
 #   define N 30
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define TSTEPS 40
+#   define N 90
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define TSTEPS 100
+#   define N 250
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define TSTEPS 500
+#   define N 1300
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define TSTEPS 1000
+#   define N 2800
+#  endif
 
 #   define _PB_TSTEPS TSTEPS
 #   define _PB_N N

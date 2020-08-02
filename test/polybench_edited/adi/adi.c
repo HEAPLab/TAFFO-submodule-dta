@@ -8,8 +8,30 @@
 #  define SQRT_FUN(x) sqrt(x)
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
+#  ifdef MINI_DATASET
 #   define TSTEPS 20
 #   define N 20
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define TSTEPS 40
+#   define N 60
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define TSTEPS 100
+#   define N 200
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define TSTEPS 500
+#   define N 1000
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define TSTEPS 1000
+#   define N 2000
+#  endif
 
 #   define _PB_TSTEPS TSTEPS
 #   define _PB_N N

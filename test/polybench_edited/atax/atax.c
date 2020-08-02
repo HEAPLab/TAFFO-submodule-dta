@@ -8,8 +8,30 @@
 #  define EXP_FUN(x) exp(x)
 #  define POW_FUN(x,y) pow(x,y)
 
+#  ifdef MINI_DATASET
 #   define M 38
 #   define N 42
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define M 116
+#   define N 124
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define M 390
+#   define N 410
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define M 1900
+#   define N 2100
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define M 1800
+#   define N 2200
+#  endif
 
 #   define _PB_M M
 #   define _PB_N N

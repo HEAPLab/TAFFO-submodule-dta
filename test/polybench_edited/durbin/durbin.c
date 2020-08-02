@@ -11,7 +11,25 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 
+#  ifdef MINI_DATASET
 #   define N 40
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define N 120
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define N 400
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define N 2000
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define N 4000
+#  endif
 
 #   define _PB_N N
 
@@ -29,8 +47,8 @@ int main(){
 
 
 
-    int i __attribute__((annotate("scalar(range(-40, 40) final )")));
-    int k  __attribute__((annotate("scalar(range(-40, 40) final )")));
+    int i __attribute__((annotate("scalar(range(-400, 400) final )")));
+    int k  __attribute__((annotate("scalar(range(-400, 400) final )")));
     DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final error(1e-100))"))) alpha;
     DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final error(1e-100))"))) beta;
     DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) sum;

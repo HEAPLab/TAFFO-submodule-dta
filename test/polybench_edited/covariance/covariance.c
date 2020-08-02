@@ -2,8 +2,30 @@
 #include <stdlib.h>
 #include "../instrument.h"
 #define DATA_TYPE double
+#  ifdef MINI_DATASET
 #   define M 28
 #   define N 32
+#  endif
+
+#  ifdef SMALL_DATASET
+#   define M 80
+#   define N 100
+#  endif
+
+#  ifdef MEDIUM_DATASET
+#   define M 240
+#   define N 260
+#  endif
+
+#  ifdef LARGE_DATASET
+#   define M 1200
+#   define N 1400
+#  endif
+
+#  ifdef EXTRALARGE_DATASET
+#   define M 2600
+#   define N 3000
+#  endif
 
 #define _PB_M M
 #define _PB_N N
