@@ -69,9 +69,15 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
         if (constantExpr->isGEPWithNoNotionalOverIndexing()) {
             return handleGEPConstant(constantExpr);
         }
-
+        dbgs() << "Unknown constant expr!\n";
+        return nullptr;
     }
 
+
+    dbgs() << "Cannot handle ";
+    constant->print(dbgs());
+    dbgs() << "!\n\n";
+    constant->getType()->print(dbgs());
     llvm_unreachable("Constant not handled!");
 }
 
