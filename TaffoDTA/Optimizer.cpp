@@ -1,4 +1,6 @@
+#include <llvm/Analysis/ScalarEvolution.h>
 #include "Optimizer.h"
+#include "LoopAnalyzerUtil.h"
 
 using namespace tuner;
 using namespace mdutils;
@@ -235,6 +237,8 @@ shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
 void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
     //This will be a mess. God bless you.
 
+    auto info = LoopAnalyzerUtil::computeFullTripCount(tuner, instruction);
+    dbgs() << "Optimizer: got trip count " << info << "\n";
 
     const unsigned opCode = instruction->getOpcode();
     if (opCode == Instruction::Call) {

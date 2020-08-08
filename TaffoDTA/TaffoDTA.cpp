@@ -1,4 +1,5 @@
 #include <llvm/Analysis/MemorySSA.h>
+#include <llvm/Analysis/ScalarEvolution.h>
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
@@ -30,6 +31,7 @@ static RegisterPass<TaffoTuner> X(
 void TaffoTuner::getAnalysisUsage(AnalysisUsage &AU) const {
     AU.addRequiredTransitive<LoopInfoWrapperPass>();
     AU.addRequiredTransitive<MemorySSAWrapperPass>();
+    AU.addRequiredTransitive<ScalarEvolutionWrapperPass>();
     AU.setPreservesAll();
 }
 

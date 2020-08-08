@@ -17,6 +17,8 @@ add_llvm_library(TaffoDTA MODULE
         MemSSAUtils.cpp
         MemSSAUtils.hpp
         MemWatcher.cpp
+        LoopAnalyzerUtil.cpp
+        LoopAnalyzerUtil.h
 
         PLUGIN_TOOL
         opt

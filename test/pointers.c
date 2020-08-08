@@ -23,6 +23,6 @@ int main(){
     return 0;
 }
 
-double resolvePointer(double * pointing){
+double __attribute((annotate("scalar(range(1, 2))"))) resolvePointer(double * pointing){
     return *pointing;
 }
