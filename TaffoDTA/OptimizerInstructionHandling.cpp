@@ -559,6 +559,12 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
         return;
     }
 
+    if(isa<IntToPtrInst>(instruction) ||
+            isa<PtrToIntInst>(instruction)){
+        dbgs() << "Black magic with pointers is happening. We do not want to awake the dragon, rigth?\n";
+        return;
+    }
+
 
     llvm_unreachable("Did I really forgot something?");
 }
@@ -1109,9 +1115,9 @@ void Optimizer::handleCallFromRoot(Function *f) {
 
 
 
-
+    dbgs() << "\n============ FUNCTION FROM ROOT: " << f->getName() << " ============\n";
     const std::string calledFunctionName = f->getName();
-    dbgs() << ("We are calling " + calledFunctionName + "\n");
+    dbgs() << ("We are calling " + calledFunctionName + " from root\n");
 
 
     auto function = known_functions.find(calledFunctionName);

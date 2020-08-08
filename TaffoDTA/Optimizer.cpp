@@ -21,6 +21,9 @@ void Optimizer::initialize() {
 void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo) {
     dbgs() << "handleGlobal called.\n";
 
+    auto * globalVar = dyn_cast_or_null<GlobalVariable>(glob);
+    assert(globalVar && "glob is not a global variable!");
+
     if (!glob->getValueType()->isPointerTy()) {
         if(!valueInfo->metadata->getEnableConversion()){
             dbgs() << "Skipping as conversion is disabled!";
@@ -63,7 +66,51 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
             dbgs() << "Skipping as conversion is disabled!";
             return;
         }
-        dbgs() << " ^ this is a pointer, skipping as it is unsupported at the moment.\n";
+        dbgs() << " ^ this is a pointer.\n";
+
+        if (valueInfo->metadata->getKind() == MDInfo::K_Field) {
+            dbgs() << " ^ This is a real field ptr\n";
+            auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
+            if (!fieldInfo) {
+                dbgs() << "Not enough information. Bailing out.\n\n";
+                return;
+            }
+
+            auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
+            if (!fptype) {
+                dbgs() << "No fixed point info associated. Bailing out.\n";
+                return;
+            }
+            //FIXME: hack, this is done to respect the fact that a pointer (yes, even a simple pointer) may be used by hugly people
+            //as array, that are allocated through a malloc. In this way we must use this as a form of bypass. We allocate a new
+            //value even if it may be overwritten at some time...
+
+            if(globalVar->hasInitializer() && !globalVar->getInitializer()->isNullValue()){
+                dbgs() << "Has initializer and it is not a null value! Need more processing!\n";
+            }else{
+                dbgs() << "No initializer, or null value!\n";
+                auto optInfo = allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, fieldInfo->IError, "", false);
+                //This is a pointer, so the reference to it is a pointer to a pointer yay
+                saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(make_shared<OptimizerPointerInfo>(optInfo)));
+            }
+
+        } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
+            dbgs() << " ^ This is a real structure ptr\n";
+
+            auto fieldInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata);
+            if (!fieldInfo) {
+                dbgs() << "No struct info. Bailing out.\n";
+                return;
+            }
+
+            auto optInfo = loadStructInfo(glob, fieldInfo, "");
+            saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(optInfo));
+
+        } else {
+            llvm_unreachable("Unknown metadata!");
+        }
+
+
         return;
     }
 
