@@ -821,7 +821,11 @@ shared_ptr<mdutils::MDInfo> Optimizer::buildDataHierarchy(shared_ptr<OptimizerIn
         return result;
     }
 
-
+    if(!info){
+        dbgs() << "OptimizerInfo null!\n";
+    }else{
+        dbgs() << "Unknown OptimizerInfo: \n";
+    }
     llvm_unreachable("Unnknown data type");
 }
 

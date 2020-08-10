@@ -28,6 +28,10 @@ unsigned LoopAnalyzerUtil::computeFullTripCount(ModulePass *tuner, Loop *loop) {
         auto scev = tuner->getAnalysis<ScalarEvolutionWrapperPass>(
                 *loop->getHeader()->getParent()).getSE().getSmallConstantTripCount(loop);
         dbgs() << "Got SCEV " << scev << "; looking for nested loops...\n";
+        if(scev == 0){
+            scev = 1;
+            dbgs() << "[Warning] Could not find a loop trip count, forcing to be at least 1.\n";
+        }
         return scev * computeFullTripCount(tuner, loop->getParentLoop());
     } else {
         dbgs() << "Loop Info: loop is null! Not part of a loop, finishing search!\n";

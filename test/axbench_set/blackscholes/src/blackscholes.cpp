@@ -34,14 +34,14 @@
 #define NUM_RUNS 1
 
 typedef struct OptionData_ {
-        fptype r;          // risk-free interest rate
-        fptype divq;       // dividend rate
-        fptype v;          // volatility
-        fptype t;          // time to maturity or option expiration in years
-                           //     (1yr = 1.0, 6mos = 0.5, 3mos = 0.25, ..., etc)
-        char OptionType;   // Option type.  "P"=PUT, "C"=CALL
-        fptype divs;       // dividend vals (not used in this test)
-        fptype DGrefval;   // DerivaGem Reference Value (unused)
+    fptype r;          // risk-free interest rate
+    fptype divq;       // dividend rate
+    fptype v;          // volatility
+    fptype t;          // time to maturity or option expiration in years
+    //     (1yr = 1.0, 6mos = 0.5, 3mos = 0.25, ..., etc)
+    char OptionType;   // Option type.  "P"=PUT, "C"=CALL
+    fptype divs;       // dividend vals (not used in this test)
+    fptype DGrefval;   // DerivaGem Reference Value (unused)
 } OptionData;
 
 OptionData *data;
@@ -50,12 +50,12 @@ fptype *stk;    // strike price // TEMPORARY: USED ONLY BY PARSER
 fptype *prices;
 int numOptions;
 
-int    * otype;
+int *otype;
 fptype __attribute((annotate("scalar(range(0.35,0.84) error(1e-8))"))) *sptprice;
 fptype __attribute((annotate("scalar(range(0.33,0.92) error(1e-8))"))) *strike;
-fptype __attribute((annotate("scalar(range(0.0275,0.1) error(0))"))) *rate;
+fptype __attribute((annotate("scalar(range(0.0275,0.1) error(1e-8))"))) *rate;
 fptype __attribute((annotate("scalar(range(0.05,0.65) error(1e-8))"))) *volatility;
-fptype __attribute((annotate("scalar(range(0.05,1) error(0))"))) *otime;
+fptype __attribute((annotate("scalar(range(0.05,1) error(1e-8))"))) *otime;
 int numError = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,8 +66,7 @@ int numError = 0;
 // See Hull, Section 11.8, P.243-244
 #define inv_sqrt_2xPI 0.39894228040143270286
 
-fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
-{
+fptype CNDF(fptype __attribute((annotate("scalar()"))) InputX) {
     int sign;
 
     fptype __attribute((annotate("scalar()"))) OutputX;
@@ -114,13 +113,13 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
     xLocal_2 = xLocal_2 + xLocal_3;
 
     xLocal_1 = xLocal_2 + xLocal_1;
-    xLocal   = xLocal_1 * xNPrimeofX;
+    xLocal = xLocal_1 * xNPrimeofX;
 
     //printf("# xLocal: %10.10f\n", xLocal);
 
-    xLocal   = 1.0 - xLocal;
+    xLocal = 1.0 - xLocal;
 
-    OutputX  = xLocal;
+    OutputX = xLocal;
 
     //printf("# Output: %10.10f\n", OutputX);
 
@@ -135,16 +134,15 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
-fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
-                            fptype __attribute((annotate("scalar()"))) strike,
-			    fptype __attribute((annotate("scalar()"))) rate,
-                            fptype __attribute((annotate("scalar()"))) volatility,
-			    fptype __attribute((annotate("scalar()"))) time,
-                            int otype,
-			    float __attribute((annotate("scalar()"))) timet,
-                            fptype* __attribute((annotate("scalar()"))) N1,
-			    fptype* __attribute((annotate("scalar()"))) N2 )
-{
+fptype BlkSchlsEqEuroNoDiv(fptype __attribute((annotate("scalar()"))) sptprice,
+                           fptype __attribute((annotate("scalar()"))) strike,
+                           fptype __attribute((annotate("scalar()"))) rate,
+                           fptype __attribute((annotate("scalar()"))) volatility,
+                           fptype __attribute((annotate("scalar()"))) time,
+                           int otype,
+                           float __attribute((annotate("scalar()"))) timet,
+                           fptype *__attribute((annotate("scalar()"))) N1,
+                           fptype *__attribute((annotate("scalar()"))) N2) {
     //printf("BlkSchlsEqEuroNoDiv %f %f %f %f %f %f\n", sptprice, strike, rate, volatility, time, timet);
     fptype __attribute((annotate("scalar()"))) OptionPrice;
 
@@ -179,7 +177,7 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 
     xSqrtTime = sqrt(xTime);
 
-    logValues = log( sptprice / strike );
+    logValues = log(sptprice / strike);
 
     xLogTerm = logValues;
 
@@ -193,28 +191,28 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 
     xDen = xVolatility * xSqrtTime;
     xD1 = xD1 / xDen;
-    xD2 = xD1 -  xDen;
+    xD2 = xD1 - xDen;
 
     d1 = xD1;
     d2 = xD2;
 
-    NofXd1 = CNDF( d1 );
+    NofXd1 = CNDF(d1);
 
-    if(NofXd1 > 1.0) {
+    if (NofXd1 > 1.0) {
         //std::cerr << "Greater than one!" << std::endl ;
     }
     //printf("# d1: %10.10f\n", NofXd1);
 
-    NofXd2 = CNDF( d2 );
-    if(NofXd2 > 1.0) {
-         // std::cerr << "Greater than one!" << std::endl ;
+    NofXd2 = CNDF(d2);
+    if (NofXd2 > 1.0) {
+        // std::cerr << "Greater than one!" << std::endl ;
     }
     //printf("# d2: %10.10f\n", NofXd2);
 
-    *N1 = NofXd1 ;
-    *N2 = NofXd2 ;
+    *N1 = NofXd1;
+    *N2 = NofXd2;
 
-    FutureValueX = strike * ( exp( -(rate)*(time) ) );
+    FutureValueX = strike * (exp(-(rate) * (time)));
     if (otype == 0) {
         OptionPrice = (sptprice * NofXd1) - (FutureValueX * NofXd2);
 
@@ -228,65 +226,46 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 }
 
 
-double normalize(double in, double min, double max, double min_new, double max_new)
-{
-    return (((in - min) / (max - min)) * (max_new - min_new)) + min_new ;
+double normalize(double in, double min, double max, double min_new, double max_new) {
+    return (((in - min) / (max - min)) * (max_new - min_new)) + min_new;
 }
 
 int bs_thread(void *tid_ptr) {
     int i, j;
 
-    int tid = *(int *)tid_ptr;
+    int tid = *(int *) tid_ptr;
     int start = tid * (numOptions);
     int end = start + (numOptions);
     fptype __attribute((annotate("target('price_orig') scalar()"))) price_orig;
 
-    for (j=0; j<NUM_RUNS; j++) {
-        for (i=start; i<end; i++) {
+    for (j = 0; j < NUM_RUNS; j++) {
+        for (i = start; i < end; i++) {
             /* Calling main function to calculate option value based on
              * Black & Scholes's equation.
              */
-            fptype __attribute((annotate("scalar()"))) N1,
-	      __attribute((annotate("scalar()"))) N2;
-            float __attribute((annotate("scalar(range(0,1) error(0))"))) timet = 0;
-/*
-            double dataIn[6];
-            double dataOut[1];
+            fptype __attribute((annotate("scalar()"))) N1;
+            fptype __attribute((annotate("scalar()"))) N2;
+            float __attribute((annotate("scalar(range(0,1) error(1e-8))"))) timet = 0;
 
-            dataIn[0]   = sptprice[i];
-            dataIn[1]   = strike[i];
-            dataIn[2]   = rate[i];
-            dataIn[3]   = volatility[i];
-            dataIn[4]   = otime[i];
-            dataIn[5]   = otype[i];
-
-#pragma parrot(input, "blackscholes", [6]dataIn)
-*/
-                price_orig = BlkSchlsEqEuroNoDiv( sptprice[i], strike[i],
-                                         rate[i], volatility[i], otime[i],
-                                         otype[i], timet, &N1, &N2);
-/*
-                dataOut[0] = price_orig;
-
-#pragma parrot(output, "blackscholes", [1]<0.1; 0.9>dataOut)
-*/
-                prices[i] = price_orig;
+            price_orig = BlkSchlsEqEuroNoDiv(sptprice[i], strike[i],
+                                             rate[i], volatility[i], otime[i],
+                                             otype[i], timet, &N1, &N2);
+            prices[i] = price_orig;
         }
     }
     return 0;
 }
 
-int main (int argc, char **argv)
-{
+int main(int argc, char **argv) {
     FILE *file;
     int i;
     int loopnum;
-    fptype * buffer;
-    int * buffer2;
+    fptype *buffer;
+    int *buffer2;
     int rv;
 
 
-	fflush(NULL);
+    fflush(NULL);
 
 
     char *inputFile = argv[1];
@@ -294,97 +273,97 @@ int main (int argc, char **argv)
 
     //Read input data from file
     file = fopen(inputFile, "r");
-    if(file == NULL) {
-      printf("ERROR: Unable to open file `%s'.\n", inputFile);
-      exit(1);
+    if (file == NULL) {
+        printf("ERROR: Unable to open file `%s'.\n", inputFile);
+        exit(1);
     }
     rv = fscanf(file, "%i", &numOptions);
-    if(rv != 1) {
-      printf("ERROR: Unable to read from file `%s'.\n", inputFile);
-      fclose(file);
-      exit(1);
+    if (rv != 1) {
+        printf("ERROR: Unable to read from file `%s'.\n", inputFile);
+        fclose(file);
+        exit(1);
     }
 
 
     // alloc spaces for the option data
-    data = (OptionData*)malloc(numOptions*sizeof(OptionData));
-    s = (fptype*)malloc(numOptions*sizeof(fptype));
-    stk = (fptype*)malloc(numOptions*sizeof(fptype));
-    prices = (fptype*)malloc(numOptions*sizeof(fptype));
-    for ( loopnum = 0; loopnum < numOptions; ++ loopnum )
-    {
+    data = (OptionData *) malloc(numOptions * sizeof(OptionData));
+    s = (fptype *) malloc(numOptions * sizeof(fptype));
+    stk = (fptype *) malloc(numOptions * sizeof(fptype));
+    prices = (fptype *) malloc(numOptions * sizeof(fptype));
+    for (loopnum = 0; loopnum < numOptions; ++loopnum) {
 
         rv = fscanf(file, "%f %f ", &s[loopnum], &stk[loopnum]);
-        rv += fscanf(file, "%f %f %f %f %c %f %f", &data[loopnum].r, &data[loopnum].divq, &data[loopnum].v, &data[loopnum].t, &data[loopnum].OptionType, &data[loopnum].divs, &data[loopnum].DGrefval);
-        if(rv != 9) {
-          printf("ERROR: Unable to read from file `%s'.\n", inputFile);
-          fclose(file);
-          exit(1);
+        rv += fscanf(file, "%f %f %f %f %c %f %f", &data[loopnum].r, &data[loopnum].divq, &data[loopnum].v,
+                     &data[loopnum].t, &data[loopnum].OptionType, &data[loopnum].divs, &data[loopnum].DGrefval);
+        if (rv != 9) {
+            printf("ERROR: Unable to read from file `%s'.\n", inputFile);
+            fclose(file);
+            exit(1);
         }
     }
     rv = fclose(file);
-    if(rv != 0) {
-      printf("ERROR: Unable to close file `%s'.\n", inputFile);
-      exit(1);
+    if (rv != 0) {
+        printf("ERROR: Unable to close file `%s'.\n", inputFile);
+        exit(1);
     }
 
 #define PAD 256
 #define LINESIZE 64
 
     buffer = (fptype *) malloc(5 * numOptions * sizeof(fptype) + PAD);
-    sptprice = (fptype *) (((unsigned long long)buffer + PAD) & ~(LINESIZE - 1));
+    sptprice = (fptype *) (((unsigned long long) buffer + PAD) & ~(LINESIZE - 1));
     strike = sptprice + numOptions;
     rate = strike + numOptions;
     volatility = rate + numOptions;
     otime = volatility + numOptions;
 
     buffer2 = (int *) malloc(numOptions * sizeof(fptype) + PAD);
-    otype = (int *) (((unsigned long long)buffer2 + PAD) & ~(LINESIZE - 1));
+    otype = (int *) (((unsigned long long) buffer2 + PAD) & ~(LINESIZE - 1));
 
-    for (i=0; i<numOptions; i++) {
-        otype[i]      = (data[i].OptionType == 'P') ? 1 : 0;
-        sptprice[i]   = s[i] / DIVIDE;
-        strike[i]     = stk[i] / DIVIDE;
-        rate[i]       = data[i].r;
+    for (i = 0; i < numOptions; i++) {
+        otype[i] = (data[i].OptionType == 'P') ? 1 : 0;
+        sptprice[i] = s[i] / DIVIDE;
+        strike[i] = stk[i] / DIVIDE;
+        rate[i] = data[i].r;
         volatility[i] = data[i].v;
-        otime[i]      = data[i].t;
+        otime[i] = data[i].t;
     }
 
     //serial version
 
     AxBenchTimer timer;
 
-    int tid=0;
+    int tid = 0;
     bs_thread(&tid);
 
     uint64_t time = timer.nanosecondsSinceInit();
-	  std::cout << "kernel time = " << ((double)time) / 1000000000.0 << " s\n";
+    std::cout << "kernel time = " << ((double) time) / 1000000000.0 << " s\n";
 
 
     //Write prices to output file
     file = fopen(outputFile, "w");
-    if(file == NULL) {
-      printf("ERROR: Unable to open file `%s'.\n", outputFile);
-      exit(1);
+    if (file == NULL) {
+        printf("ERROR: Unable to open file `%s'.\n", outputFile);
+        exit(1);
     }
     //rv = fprintf(file, "%i\n", numOptions);
-    if(rv < 0) {
-      printf("ERROR: Unable to write to file `%s'.\n", outputFile);
-      fclose(file);
-      exit(1);
-    }
-    for(i=0; i<numOptions; i++) {
-      rv = fprintf(file, "%.18f\n", prices[i]);
-      if(rv < 0) {
+    if (rv < 0) {
         printf("ERROR: Unable to write to file `%s'.\n", outputFile);
         fclose(file);
         exit(1);
-      }
+    }
+    for (i = 0; i < numOptions; i++) {
+        rv = fprintf(file, "%.18f\n", prices[i]);
+        if (rv < 0) {
+            printf("ERROR: Unable to write to file `%s'.\n", outputFile);
+            fclose(file);
+            exit(1);
+        }
     }
     rv = fclose(file);
-    if(rv != 0) {
-      printf("ERROR: Unable to close file `%s'.\n", outputFile);
-      exit(1);
+    if (rv != 0) {
+        printf("ERROR: Unable to close file `%s'.\n", outputFile);
+        exit(1);
     }
 
     free(data);

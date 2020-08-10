@@ -35,7 +35,7 @@ solver.Add( + (1)*strike_fixbits + (-10000)*strike_fixp<=0)    #If not fix, frac
 
 
 
-#Stuff for @rate = dso_local global float* null, align 8, !taffo.info !11, !taffo.initweight !6
+#Stuff for @rate = dso_local global float* null, align 8, !taffo.info !3, !taffo.initweight !6
 rate_fixbits = solver.IntVar(0, 31, 'rate_fixbits')
 rate_fixp = solver.IntVar(0, 1, 'rate_fixp')
 rate_float = solver.IntVar(0, 1, 'rate_float')
@@ -45,7 +45,7 @@ solver.Add( + (1)*rate_enob + (-1)*rate_fixbits + (10000)*rate_fixp<=10000)    #
 solver.Add( + (1)*rate_enob + (10000)*rate_float<=10025)    #Enob constraint for float
 solver.Add( + (1)*rate_enob + (10000)*rate_double<=10054)    #Enob constraint for double
 solver.Add( + (1)*rate_fixbits + (-10000)*rate_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*rate_enob<=0)    #Enob constraint for error maximal
+solver.Add( + (1)*rate_enob<=27)    #Enob constraint for error maximal
 enobCostObj +=  + (-1)*rate_enob
 solver.Add( + (1)*rate_fixp + (1)*rate_float + (1)*rate_double==1)    #Exactly one selected type
 solver.Add( + (1)*rate_fixbits + (-10000)*rate_fixp<=0)    #If not fix, frac part to zero
@@ -69,7 +69,7 @@ solver.Add( + (1)*volatility_fixbits + (-10000)*volatility_fixp<=0)    #If not f
 
 
 
-#Stuff for @otime = dso_local global float* null, align 8, !taffo.info !11, !taffo.initweight !6
+#Stuff for @otime = dso_local global float* null, align 8, !taffo.info !3, !taffo.initweight !6
 otime_fixbits = solver.IntVar(0, 31, 'otime_fixbits')
 otime_fixp = solver.IntVar(0, 1, 'otime_fixp')
 otime_float = solver.IntVar(0, 1, 'otime_float')
@@ -79,7 +79,7 @@ solver.Add( + (1)*otime_enob + (-1)*otime_fixbits + (10000)*otime_fixp<=10000)  
 solver.Add( + (1)*otime_enob + (10000)*otime_float<=10025)    #Enob constraint for float
 solver.Add( + (1)*otime_enob + (10000)*otime_double<=10054)    #Enob constraint for double
 solver.Add( + (1)*otime_fixbits + (-10000)*otime_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*otime_enob<=0)    #Enob constraint for error maximal
+solver.Add( + (1)*otime_enob<=27)    #Enob constraint for error maximal
 enobCostObj +=  + (-1)*otime_enob
 solver.Add( + (1)*otime_fixp + (1)*otime_float + (1)*otime_double==1)    #Exactly one selected type
 solver.Add( + (1)*otime_fixbits + (-10000)*otime_fixp<=0)    #If not fix, frac part to zero
@@ -146,7 +146,7 @@ solver.Add( + (1)*ConstantValue__2_fixbits + (-10000)*ConstantValue__2_fixp<=0) 
 
 
 
-#Stuff for   %N1 = alloca float, align 4, !taffo.info !28, !taffo.initweight !6
+#Stuff for   %N1 = alloca float, align 4, !taffo.info !26, !taffo.initweight !6
 _Z9bs_threadPv_N1_fixbits = solver.IntVar(0, 29, '_Z9bs_threadPv_N1_fixbits')
 _Z9bs_threadPv_N1_fixp = solver.IntVar(0, 1, '_Z9bs_threadPv_N1_fixp')
 _Z9bs_threadPv_N1_float = solver.IntVar(0, 1, '_Z9bs_threadPv_N1_float')
@@ -162,7 +162,7 @@ solver.Add( + (1)*_Z9bs_threadPv_N1_fixbits + (-10000)*_Z9bs_threadPv_N1_fixp<=0
 
 
 
-#Stuff for   %N2 = alloca float, align 4, !taffo.info !28, !taffo.initweight !6
+#Stuff for   %N2 = alloca float, align 4, !taffo.info !26, !taffo.initweight !6
 _Z9bs_threadPv_N2_fixbits = solver.IntVar(0, 29, '_Z9bs_threadPv_N2_fixbits')
 _Z9bs_threadPv_N2_fixp = solver.IntVar(0, 1, '_Z9bs_threadPv_N2_fixp')
 _Z9bs_threadPv_N2_float = solver.IntVar(0, 1, '_Z9bs_threadPv_N2_float')
@@ -223,7 +223,7 @@ solver.Add( + (1)*ConstantValue__3_fixbits + (-10000)*ConstantValue__3_fixp<=0) 
 
 
 
-#Stuff for   %call = call float @_Z19BlkSchlsEqEuroNoDivfffffifPfS_.5(float %tmp5, float %tmp7, float %tmp9, float %tmp11, float %tmp13, i32 %tmp15, float 0.000000e+00, float* %N1, float* %N2), !taffo.info !49, !taffo.initweight !34, !taffo.constinfo !51, !taffo.originalCall !52
+#Stuff for   %call = call float @_Z19BlkSchlsEqEuroNoDivfffffifPfS_.5(float %tmp5, float %tmp7, float %tmp9, float %tmp11, float %tmp13, i32 %tmp15, float 0.000000e+00, float* %N1, float* %N2), !taffo.info !47, !taffo.initweight !32, !taffo.constinfo !49, !taffo.originalCall !50
 _Z9bs_threadPv_call_fixbits = solver.IntVar(0, 30, '_Z9bs_threadPv_call_fixbits')
 _Z9bs_threadPv_call_fixp = solver.IntVar(0, 1, '_Z9bs_threadPv_call_fixp')
 _Z9bs_threadPv_call_float = solver.IntVar(0, 1, '_Z9bs_threadPv_call_float')
@@ -239,7 +239,7 @@ solver.Add( + (1)*_Z9bs_threadPv_call_fixbits + (-10000)*_Z9bs_threadPv_call_fix
 
 
 
-#Stuff for   %call = call float @_ZSt4sqrtf.1.12(float %time), !taffo.info !39, !taffo.initweight !41, !taffo.constinfo !42, !taffo.originalCall !43
+#Stuff for   %call = call float @_ZSt4sqrtf.1.12(float %time), !taffo.info !37, !taffo.initweight !39, !taffo.constinfo !40, !taffo.originalCall !41
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_float')
@@ -255,7 +255,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_fixbits + (-10000)*_
 
 
 
-#Stuff for   %call = call float @sqrtf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Stuff for   %call = call float @sqrtf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _ZSt4sqrtf_1_12_call_fixbits = solver.IntVar(0, 31, '_ZSt4sqrtf_1_12_call_fixbits')
 _ZSt4sqrtf_1_12_call_fixp = solver.IntVar(0, 1, '_ZSt4sqrtf_1_12_call_fixp')
 _ZSt4sqrtf_1_12_call_float = solver.IntVar(0, 1, '_ZSt4sqrtf_1_12_call_float')
@@ -272,7 +272,7 @@ solver.Add( + (1)*_ZSt4sqrtf_1_12_call_float==1)    #Type constraint for return 
 
 
 
-#Constraint for cast for   %call = call float @sqrtf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Constraint for cast for   %call = call float @sqrtf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 sptprice_CAST_call_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_call_fixbits')
 sptprice_CAST_call_fixp = solver.IntVar(0, 1, 'sptprice_CAST_call_fixp')
 sptprice_CAST_call_float = solver.IntVar(0, 1, 'sptprice_CAST_call_float')
@@ -307,7 +307,7 @@ solver.Add( + (1)*sptprice_CAST_call_float==1)    #Type constraint for argument 
 
 
 
-#Constraint for cast for   ret float %call, !taffo.info !34, !taffo.initweight !35
+#Constraint for cast for   ret float %call, !taffo.info !32, !taffo.initweight !33
 _ZSt4sqrtf_1_12_call_CAST_ret_fixbits = solver.IntVar(0, 31, '_ZSt4sqrtf_1_12_call_CAST_ret_fixbits')
 _ZSt4sqrtf_1_12_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt4sqrtf_1_12_call_CAST_ret_fixp')
 _ZSt4sqrtf_1_12_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt4sqrtf_1_12_call_CAST_ret_float')
@@ -345,7 +345,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_fixbits + (-1)*_ZSt4
 
 
 
-#Constraint for cast for   %div = fdiv float %sptprice, %strike, !taffo.info !44, !taffo.initweight !41
+#Constraint for cast for   %div = fdiv float %sptprice, %strike, !taffo.info !42, !taffo.initweight !39
 sptprice_CAST_div_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_div_fixbits')
 sptprice_CAST_div_fixp = solver.IntVar(0, 1, 'sptprice_CAST_div_fixp')
 sptprice_CAST_div_float = solver.IntVar(0, 1, 'sptprice_CAST_div_float')
@@ -379,7 +379,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_div
 
 
 
-#Constraint for cast for   %div = fdiv float %sptprice, %strike, !taffo.info !44, !taffo.initweight !41
+#Constraint for cast for   %div = fdiv float %sptprice, %strike, !taffo.info !42, !taffo.initweight !39
 sptprice_CAST_div_0_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_div_0_fixbits')
 sptprice_CAST_div_0_fixp = solver.IntVar(0, 1, 'sptprice_CAST_div_0_fixp')
 sptprice_CAST_div_0_float = solver.IntVar(0, 1, 'sptprice_CAST_div_0_float')
@@ -413,7 +413,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_div_0
 
 
 
-#Stuff for   %div = fdiv float %sptprice, %strike, !taffo.info !44, !taffo.initweight !41
+#Stuff for   %div = fdiv float %sptprice, %strike, !taffo.info !42, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_float')
@@ -443,7 +443,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_enob + (-1)*sptprice_
 
 
 
-#Stuff for   %call27 = call float @_ZSt3logf.4.10(float %div), !taffo.info !46, !taffo.initweight !48, !taffo.constinfo !42, !taffo.originalCall !49
+#Stuff for   %call27 = call float @_ZSt3logf.4.10(float %div), !taffo.info !44, !taffo.initweight !46, !taffo.constinfo !40, !taffo.originalCall !47
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_float')
@@ -459,7 +459,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_fixbits + (-10000)
 
 
 
-#Stuff for   %call = call float @logf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Stuff for   %call = call float @logf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _ZSt3logf_4_10_call_fixbits = solver.IntVar(0, 30, '_ZSt3logf_4_10_call_fixbits')
 _ZSt3logf_4_10_call_fixp = solver.IntVar(0, 1, '_ZSt3logf_4_10_call_fixp')
 _ZSt3logf_4_10_call_float = solver.IntVar(0, 1, '_ZSt3logf_4_10_call_float')
@@ -476,7 +476,7 @@ solver.Add( + (1)*_ZSt3logf_4_10_call_float==1)    #Type constraint for return v
 
 
 
-#Constraint for cast for   %call = call float @logf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Constraint for cast for   %call = call float @logf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_CAST_call_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_CAST_call_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_CAST_call_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_CAST_call_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_CAST_call_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_CAST_call_float')
@@ -511,7 +511,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div_CAST_call_float==1)  
 
 
 
-#Constraint for cast for   ret float %call, !taffo.info !34, !taffo.initweight !35
+#Constraint for cast for   ret float %call, !taffo.info !32, !taffo.initweight !33
 _ZSt3logf_4_10_call_CAST_ret_fixbits = solver.IntVar(0, 30, '_ZSt3logf_4_10_call_CAST_ret_fixbits')
 _ZSt3logf_4_10_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt3logf_4_10_call_CAST_ret_fixp')
 _ZSt3logf_4_10_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt3logf_4_10_call_CAST_ret_float')
@@ -549,7 +549,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_fixbits + (-1)*_ZS
 
 
 
-#Constraint for cast for   %mul = fmul float %volatility, %volatility, !taffo.info !50, !taffo.initweight !41
+#Constraint for cast for   %mul = fmul float %volatility, %volatility, !taffo.info !48, !taffo.initweight !39
 sptprice_CAST_mul_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul_fixbits')
 sptprice_CAST_mul_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul_fixp')
 sptprice_CAST_mul_float = solver.IntVar(0, 1, 'sptprice_CAST_mul_float')
@@ -583,7 +583,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul
 
 
 
-#Constraint for cast for   %mul = fmul float %volatility, %volatility, !taffo.info !50, !taffo.initweight !41
+#Constraint for cast for   %mul = fmul float %volatility, %volatility, !taffo.info !48, !taffo.initweight !39
 sptprice_CAST_mul_0_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul_0_fixbits')
 sptprice_CAST_mul_0_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul_0_fixp')
 sptprice_CAST_mul_0_float = solver.IntVar(0, 1, 'sptprice_CAST_mul_0_float')
@@ -617,7 +617,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul_0
 
 
 
-#Stuff for   %mul = fmul float %volatility, %volatility, !taffo.info !50, !taffo.initweight !41
+#Stuff for   %mul = fmul float %volatility, %volatility, !taffo.info !48, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_float')
@@ -677,7 +677,7 @@ solver.Add( + (1)*ConstantValue__5_fixbits + (-10000)*ConstantValue__5_fixp<=0) 
 
 
 
-#Constraint for cast for   %mul28 = fmul double %conv, 5.000000e-01, !taffo.info !52, !taffo.initweight !48, !taffo.constinfo !54
+#Constraint for cast for   %mul28 = fmul double %conv, 5.000000e-01, !taffo.info !50, !taffo.initweight !46, !taffo.constinfo !52
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_CAST_mul28_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_CAST_mul28_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_CAST_mul28_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_CAST_mul28_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_CAST_mul28_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul_CAST_mul28_float')
@@ -726,7 +726,7 @@ solver.Add( + (1)*ConstantValue__6_fixbits + (-10000)*ConstantValue__6_fixp<=0) 
 
 
 
-#Constraint for cast for   %mul28 = fmul double %conv, 5.000000e-01, !taffo.info !52, !taffo.initweight !48, !taffo.constinfo !54
+#Constraint for cast for   %mul28 = fmul double %conv, 5.000000e-01, !taffo.info !50, !taffo.initweight !46, !taffo.constinfo !52
 ConstantValue__6_CAST_mul28_fixbits = solver.IntVar(0, 31, 'ConstantValue__6_CAST_mul28_fixbits')
 ConstantValue__6_CAST_mul28_fixp = solver.IntVar(0, 1, 'ConstantValue__6_CAST_mul28_fixp')
 ConstantValue__6_CAST_mul28_float = solver.IntVar(0, 1, 'ConstantValue__6_CAST_mul28_float')
@@ -760,7 +760,7 @@ castCostObj +=  + (5.90592)*C8_ConstantValue__6_CAST_mul28
 
 
 
-#Stuff for   %mul28 = fmul double %conv, 5.000000e-01, !taffo.info !52, !taffo.initweight !48, !taffo.constinfo !54
+#Stuff for   %mul28 = fmul double %conv, 5.000000e-01, !taffo.info !50, !taffo.initweight !46, !taffo.constinfo !52
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_float')
@@ -790,7 +790,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_enob + (-1)*_Z19Blk
 
 
 
-#Constraint for cast for   %add = fadd float %rate, %conv29, !taffo.info !60, !taffo.initweight !41
+#Constraint for cast for   %add = fadd float %rate, %conv29, !taffo.info !58, !taffo.initweight !39
 sptprice_CAST_add_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_add_fixbits')
 sptprice_CAST_add_fixp = solver.IntVar(0, 1, 'sptprice_CAST_add_fixp')
 sptprice_CAST_add_float = solver.IntVar(0, 1, 'sptprice_CAST_add_float')
@@ -824,7 +824,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_add
 
 
 
-#Constraint for cast for   %add = fadd float %rate, %conv29, !taffo.info !60, !taffo.initweight !41
+#Constraint for cast for   %add = fadd float %rate, %conv29, !taffo.info !58, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_CAST_add_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_CAST_add_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_CAST_add_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_CAST_add_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_CAST_add_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_CAST_add_float')
@@ -858,7 +858,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul28_CAST_a
 
 
 
-#Stuff for   %add = fadd float %rate, %conv29, !taffo.info !60, !taffo.initweight !41
+#Stuff for   %add = fadd float %rate, %conv29, !taffo.info !58, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_float')
@@ -887,7 +887,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_enob + (-1)*_Z19BlkSc
 
 
 
-#Constraint for cast for   %mul30 = fmul float %add, %time, !taffo.info !62, !taffo.initweight !41
+#Constraint for cast for   %mul30 = fmul float %add, %time, !taffo.info !60, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_CAST_mul30_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_CAST_mul30_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_CAST_mul30_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_CAST_mul30_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_CAST_mul30_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_CAST_mul30_float')
@@ -921,7 +921,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add_CAST_mul
 
 
 
-#Constraint for cast for   %mul30 = fmul float %add, %time, !taffo.info !62, !taffo.initweight !41
+#Constraint for cast for   %mul30 = fmul float %add, %time, !taffo.info !60, !taffo.initweight !39
 sptprice_CAST_mul30_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul30_fixbits')
 sptprice_CAST_mul30_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul30_fixp')
 sptprice_CAST_mul30_float = solver.IntVar(0, 1, 'sptprice_CAST_mul30_float')
@@ -955,7 +955,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul30
 
 
 
-#Stuff for   %mul30 = fmul float %add, %time, !taffo.info !62, !taffo.initweight !41
+#Stuff for   %mul30 = fmul float %add, %time, !taffo.info !60, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_float')
@@ -985,7 +985,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_enob + (-1)*_Z19Blk
 
 
 
-#Constraint for cast for   %add31 = fadd float %mul30, %call27, !taffo.info !64, !taffo.initweight !41
+#Constraint for cast for   %add31 = fadd float %mul30, %call27, !taffo.info !62, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_CAST_add31_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_CAST_add31_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_CAST_add31_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_CAST_add31_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_CAST_add31_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_CAST_add31_float')
@@ -1019,7 +1019,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul30_CAST_a
 
 
 
-#Constraint for cast for   %add31 = fadd float %mul30, %call27, !taffo.info !64, !taffo.initweight !41
+#Constraint for cast for   %add31 = fadd float %mul30, %call27, !taffo.info !62, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_CAST_add31_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_CAST_add31_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_CAST_add31_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_CAST_add31_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_CAST_add31_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_CAST_add31_float')
@@ -1053,7 +1053,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call27_CAST_
 
 
 
-#Stuff for   %add31 = fadd float %mul30, %call27, !taffo.info !64, !taffo.initweight !41
+#Stuff for   %add31 = fadd float %mul30, %call27, !taffo.info !62, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_float')
@@ -1082,7 +1082,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_enob + (-1)*_Z19Blk
 
 
 
-#Constraint for cast for   %mul32 = fmul float %volatility, %call, !taffo.info !66, !taffo.initweight !41
+#Constraint for cast for   %mul32 = fmul float %volatility, %call, !taffo.info !64, !taffo.initweight !39
 sptprice_CAST_mul32_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul32_fixbits')
 sptprice_CAST_mul32_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul32_fixp')
 sptprice_CAST_mul32_float = solver.IntVar(0, 1, 'sptprice_CAST_mul32_float')
@@ -1116,7 +1116,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul32
 
 
 
-#Constraint for cast for   %mul32 = fmul float %volatility, %call, !taffo.info !66, !taffo.initweight !41
+#Constraint for cast for   %mul32 = fmul float %volatility, %call, !taffo.info !64, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_CAST_mul32_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_CAST_mul32_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_CAST_mul32_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_CAST_mul32_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_CAST_mul32_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_CAST_mul32_float')
@@ -1150,7 +1150,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call_CAST_mu
 
 
 
-#Stuff for   %mul32 = fmul float %volatility, %call, !taffo.info !66, !taffo.initweight !41
+#Stuff for   %mul32 = fmul float %volatility, %call, !taffo.info !64, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_float')
@@ -1180,7 +1180,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_enob + (-1)*sptpric
 
 
 
-#Constraint for cast for   %div33 = fdiv float %add31, %mul32, !taffo.info !68, !taffo.initweight !41
+#Constraint for cast for   %div33 = fdiv float %add31, %mul32, !taffo.info !66, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_CAST_div33_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_CAST_div33_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_CAST_div33_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_CAST_div33_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_CAST_div33_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_CAST_div33_float')
@@ -1214,7 +1214,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_add31_CAST_d
 
 
 
-#Constraint for cast for   %div33 = fdiv float %add31, %mul32, !taffo.info !68, !taffo.initweight !41
+#Constraint for cast for   %div33 = fdiv float %add31, %mul32, !taffo.info !66, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_div33_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_div33_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_div33_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_div33_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_div33_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_div33_float')
@@ -1248,7 +1248,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_d
 
 
 
-#Stuff for   %div33 = fdiv float %add31, %mul32, !taffo.info !68, !taffo.initweight !41
+#Stuff for   %div33 = fdiv float %add31, %mul32, !taffo.info !66, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_float')
@@ -1278,7 +1278,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_enob + (-1)*_Z19Blk
 
 
 
-#Constraint for cast for   %sub = fsub float %div33, %mul32, !taffo.info !70, !taffo.initweight !41
+#Constraint for cast for   %sub = fsub float %div33, %mul32, !taffo.info !68, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_float')
@@ -1312,7 +1312,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_s
 
 
 
-#Constraint for cast for   %sub = fsub float %div33, %mul32, !taffo.info !70, !taffo.initweight !41
+#Constraint for cast for   %sub = fsub float %div33, %mul32, !taffo.info !68, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_sub_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_sub_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_sub_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_sub_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_sub_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_sub_float')
@@ -1346,7 +1346,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul32_CAST_s
 
 
 
-#Stuff for   %sub = fsub float %div33, %mul32, !taffo.info !70, !taffo.initweight !41
+#Stuff for   %sub = fsub float %div33, %mul32, !taffo.info !68, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_float')
@@ -1375,7 +1375,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_enob + (-1)*_Z19BlkSc
 
 
 
-#Stuff for   %call34 = call float @_Z4CNDFf.2.13(float %div33), !taffo.info !36, !taffo.initweight !41, !taffo.constinfo !42, !taffo.originalCall !72
+#Stuff for   %call34 = call float @_Z4CNDFf.2.13(float %div33), !taffo.info !34, !taffo.initweight !39, !taffo.constinfo !40, !taffo.originalCall !70
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_float')
@@ -1406,41 +1406,7 @@ solver.Add( + (1)*ConstantValue__7_fixbits + (-10000)*ConstantValue__7_fixp<=0) 
 
 
 
-#Constraint for cast for   %cmp = fcmp olt double %conv, 0.000000e+00, !taffo.info !30, !taffo.initweight !32
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixbits')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixp')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_float')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_double = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_double')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixbits + (-10000)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixbits + (-10000)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixbits + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixbits + (-10000)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-castCostObj +=  + (1.13006)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp = solver.IntVar(0, 1, 'C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_float + (-1)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixp + (-1)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_double + (-1)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixp + (-1)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_double + (-1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_float + (-1)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp
-
-
-
-#Stuff for double 0.000000e+00
+#Stuff for float -0.000000e+00
 ConstantValue__8_fixbits = solver.IntVar(0, 32, 'ConstantValue__8_fixbits')
 ConstantValue__8_fixp = solver.IntVar(0, 1, 'ConstantValue__8_fixp')
 ConstantValue__8_float = solver.IntVar(0, 1, 'ConstantValue__8_float')
@@ -1452,44 +1418,6 @@ solver.Add( + (1)*ConstantValue__8_enob + (10000)*ConstantValue__8_double<=11074
 solver.Add( + (1)*ConstantValue__8_fixbits + (-10000)*ConstantValue__8_fixp>=-9969)    #Limit the lower number of frac bits32
 solver.Add( + (1)*ConstantValue__8_fixp + (1)*ConstantValue__8_float + (1)*ConstantValue__8_double==1)    #Exactly one selected type
 solver.Add( + (1)*ConstantValue__8_fixbits + (-10000)*ConstantValue__8_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %cmp = fcmp olt double %conv, 0.000000e+00, !taffo.info !30, !taffo.initweight !32
-ConstantValue__8_CAST_cmp_fixbits = solver.IntVar(0, 32, 'ConstantValue__8_CAST_cmp_fixbits')
-ConstantValue__8_CAST_cmp_fixp = solver.IntVar(0, 1, 'ConstantValue__8_CAST_cmp_fixp')
-ConstantValue__8_CAST_cmp_float = solver.IntVar(0, 1, 'ConstantValue__8_CAST_cmp_float')
-ConstantValue__8_CAST_cmp_double = solver.IntVar(0, 1, 'ConstantValue__8_CAST_cmp_double')
-solver.Add( + (1)*ConstantValue__8_CAST_cmp_fixp + (1)*ConstantValue__8_CAST_cmp_float + (1)*ConstantValue__8_CAST_cmp_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__8_CAST_cmp_fixbits + (-10000)*ConstantValue__8_CAST_cmp_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C1_ConstantValue__8_CAST_cmp')
-C2_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C2_ConstantValue__8_CAST_cmp')
-solver.Add( + (1)*ConstantValue__8_fixbits + (-1)*ConstantValue__8_CAST_cmp_fixbits + (-10000)*C1_ConstantValue__8_CAST_cmp<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__8_fixbits + (1)*ConstantValue__8_CAST_cmp_fixbits + (-10000)*C2_ConstantValue__8_CAST_cmp<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__8_CAST_cmp
-castCostObj +=  + (1.13006)*C2_ConstantValue__8_CAST_cmp
-C3_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C3_ConstantValue__8_CAST_cmp')
-C4_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C4_ConstantValue__8_CAST_cmp')
-C5_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C5_ConstantValue__8_CAST_cmp')
-C6_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C6_ConstantValue__8_CAST_cmp')
-C7_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C7_ConstantValue__8_CAST_cmp')
-C8_ConstantValue__8_CAST_cmp = solver.IntVar(0, 1, 'C8_ConstantValue__8_CAST_cmp')
-solver.Add( + (1)*ConstantValue__8_fixp + (1)*ConstantValue__8_CAST_cmp_float + (-1)*C3_ConstantValue__8_CAST_cmp<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__8_CAST_cmp
-solver.Add( + (1)*ConstantValue__8_float + (1)*ConstantValue__8_CAST_cmp_fixp + (-1)*C4_ConstantValue__8_CAST_cmp<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__8_CAST_cmp
-solver.Add( + (1)*ConstantValue__8_fixp + (1)*ConstantValue__8_CAST_cmp_double + (-1)*C5_ConstantValue__8_CAST_cmp<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__8_CAST_cmp
-solver.Add( + (1)*ConstantValue__8_double + (1)*ConstantValue__8_CAST_cmp_fixp + (-1)*C6_ConstantValue__8_CAST_cmp<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__8_CAST_cmp
-solver.Add( + (1)*ConstantValue__8_float + (1)*ConstantValue__8_CAST_cmp_double + (-1)*C7_ConstantValue__8_CAST_cmp<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__8_CAST_cmp
-solver.Add( + (1)*ConstantValue__8_double + (1)*ConstantValue__8_CAST_cmp_float + (-1)*C8_ConstantValue__8_CAST_cmp<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__8_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixp + (-1)*ConstantValue__8_CAST_cmp_fixp==0)    #fix equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_float + (-1)*ConstantValue__8_CAST_cmp_float==0)    #float equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_double + (-1)*ConstantValue__8_CAST_cmp_double==0)    #double equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_cmp_fixbits + (-1)*ConstantValue__8_CAST_cmp_fixbits==0)    #same fractional bit
 
 
 
@@ -1523,56 +1451,41 @@ solver.Add( + (1)*ConstantValue__10_fixbits + (-10000)*ConstantValue__10_fixp<=0
 
 
 
-#Stuff for float -0.000000e+00
-ConstantValue__11_fixbits = solver.IntVar(0, 32, 'ConstantValue__11_fixbits')
-ConstantValue__11_fixp = solver.IntVar(0, 1, 'ConstantValue__11_fixp')
-ConstantValue__11_float = solver.IntVar(0, 1, 'ConstantValue__11_float')
-ConstantValue__11_double = solver.IntVar(0, 1, 'ConstantValue__11_double')
-ConstantValue__11_enob = solver.IntVar(-10000, 10000, 'ConstantValue__11_enob')
-solver.Add( + (1)*ConstantValue__11_enob + (-1)*ConstantValue__11_fixbits + (10000)*ConstantValue__11_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__11_enob + (10000)*ConstantValue__11_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__11_enob + (10000)*ConstantValue__11_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__11_fixbits + (-10000)*ConstantValue__11_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__11_fixp + (1)*ConstantValue__11_float + (1)*ConstantValue__11_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__11_fixbits + (-10000)*ConstantValue__11_fixp<=0)    #If not fix, frac part to zero
+#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !33, !taffo.initweight !23, !taffo.constinfo !35
+ConstantValue__10_CAST_sub_fixbits = solver.IntVar(0, 32, 'ConstantValue__10_CAST_sub_fixbits')
+ConstantValue__10_CAST_sub_fixp = solver.IntVar(0, 1, 'ConstantValue__10_CAST_sub_fixp')
+ConstantValue__10_CAST_sub_float = solver.IntVar(0, 1, 'ConstantValue__10_CAST_sub_float')
+ConstantValue__10_CAST_sub_double = solver.IntVar(0, 1, 'ConstantValue__10_CAST_sub_double')
+solver.Add( + (1)*ConstantValue__10_CAST_sub_fixp + (1)*ConstantValue__10_CAST_sub_float + (1)*ConstantValue__10_CAST_sub_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__10_CAST_sub_fixbits + (-10000)*ConstantValue__10_CAST_sub_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C1_ConstantValue__10_CAST_sub')
+C2_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C2_ConstantValue__10_CAST_sub')
+solver.Add( + (1)*ConstantValue__10_fixbits + (-1)*ConstantValue__10_CAST_sub_fixbits + (-10000)*C1_ConstantValue__10_CAST_sub<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__10_fixbits + (1)*ConstantValue__10_CAST_sub_fixbits + (-10000)*C2_ConstantValue__10_CAST_sub<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__10_CAST_sub
+castCostObj +=  + (1.13006)*C2_ConstantValue__10_CAST_sub
+C3_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C3_ConstantValue__10_CAST_sub')
+C4_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C4_ConstantValue__10_CAST_sub')
+C5_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C5_ConstantValue__10_CAST_sub')
+C6_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C6_ConstantValue__10_CAST_sub')
+C7_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C7_ConstantValue__10_CAST_sub')
+C8_ConstantValue__10_CAST_sub = solver.IntVar(0, 1, 'C8_ConstantValue__10_CAST_sub')
+solver.Add( + (1)*ConstantValue__10_fixp + (1)*ConstantValue__10_CAST_sub_float + (-1)*C3_ConstantValue__10_CAST_sub<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__10_CAST_sub
+solver.Add( + (1)*ConstantValue__10_float + (1)*ConstantValue__10_CAST_sub_fixp + (-1)*C4_ConstantValue__10_CAST_sub<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__10_CAST_sub
+solver.Add( + (1)*ConstantValue__10_fixp + (1)*ConstantValue__10_CAST_sub_double + (-1)*C5_ConstantValue__10_CAST_sub<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__10_CAST_sub
+solver.Add( + (1)*ConstantValue__10_double + (1)*ConstantValue__10_CAST_sub_fixp + (-1)*C6_ConstantValue__10_CAST_sub<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__10_CAST_sub
+solver.Add( + (1)*ConstantValue__10_float + (1)*ConstantValue__10_CAST_sub_double + (-1)*C7_ConstantValue__10_CAST_sub<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__10_CAST_sub
+solver.Add( + (1)*ConstantValue__10_double + (1)*ConstantValue__10_CAST_sub_float + (-1)*C8_ConstantValue__10_CAST_sub<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__10_CAST_sub
 
 
 
-#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !35, !taffo.initweight !25, !taffo.constinfo !37
-ConstantValue__11_CAST_sub_fixbits = solver.IntVar(0, 32, 'ConstantValue__11_CAST_sub_fixbits')
-ConstantValue__11_CAST_sub_fixp = solver.IntVar(0, 1, 'ConstantValue__11_CAST_sub_fixp')
-ConstantValue__11_CAST_sub_float = solver.IntVar(0, 1, 'ConstantValue__11_CAST_sub_float')
-ConstantValue__11_CAST_sub_double = solver.IntVar(0, 1, 'ConstantValue__11_CAST_sub_double')
-solver.Add( + (1)*ConstantValue__11_CAST_sub_fixp + (1)*ConstantValue__11_CAST_sub_float + (1)*ConstantValue__11_CAST_sub_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__11_CAST_sub_fixbits + (-10000)*ConstantValue__11_CAST_sub_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C1_ConstantValue__11_CAST_sub')
-C2_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C2_ConstantValue__11_CAST_sub')
-solver.Add( + (1)*ConstantValue__11_fixbits + (-1)*ConstantValue__11_CAST_sub_fixbits + (-10000)*C1_ConstantValue__11_CAST_sub<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__11_fixbits + (1)*ConstantValue__11_CAST_sub_fixbits + (-10000)*C2_ConstantValue__11_CAST_sub<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__11_CAST_sub
-castCostObj +=  + (1.13006)*C2_ConstantValue__11_CAST_sub
-C3_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C3_ConstantValue__11_CAST_sub')
-C4_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C4_ConstantValue__11_CAST_sub')
-C5_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C5_ConstantValue__11_CAST_sub')
-C6_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C6_ConstantValue__11_CAST_sub')
-C7_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C7_ConstantValue__11_CAST_sub')
-C8_ConstantValue__11_CAST_sub = solver.IntVar(0, 1, 'C8_ConstantValue__11_CAST_sub')
-solver.Add( + (1)*ConstantValue__11_fixp + (1)*ConstantValue__11_CAST_sub_float + (-1)*C3_ConstantValue__11_CAST_sub<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__11_CAST_sub
-solver.Add( + (1)*ConstantValue__11_float + (1)*ConstantValue__11_CAST_sub_fixp + (-1)*C4_ConstantValue__11_CAST_sub<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__11_CAST_sub
-solver.Add( + (1)*ConstantValue__11_fixp + (1)*ConstantValue__11_CAST_sub_double + (-1)*C5_ConstantValue__11_CAST_sub<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__11_CAST_sub
-solver.Add( + (1)*ConstantValue__11_double + (1)*ConstantValue__11_CAST_sub_fixp + (-1)*C6_ConstantValue__11_CAST_sub<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__11_CAST_sub
-solver.Add( + (1)*ConstantValue__11_float + (1)*ConstantValue__11_CAST_sub_double + (-1)*C7_ConstantValue__11_CAST_sub<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__11_CAST_sub
-solver.Add( + (1)*ConstantValue__11_double + (1)*ConstantValue__11_CAST_sub_float + (-1)*C8_ConstantValue__11_CAST_sub<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__11_CAST_sub
-
-
-
-#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !35, !taffo.initweight !25, !taffo.constinfo !37
+#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !33, !taffo.initweight !23, !taffo.constinfo !35
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_float')
@@ -1606,7 +1519,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_s
 
 
 
-#Stuff for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !35, !taffo.initweight !25, !taffo.constinfo !37
+#Stuff for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !33, !taffo.initweight !23, !taffo.constinfo !35
 _Z4CNDFf_2_13_sub_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_2_13_sub_fixbits')
 _Z4CNDFf_2_13_sub_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub_fixp')
 _Z4CNDFf_2_13_sub_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub_float')
@@ -1619,23 +1532,23 @@ solver.Add( + (1)*_Z4CNDFf_2_13_sub_fixbits + (-10000)*_Z4CNDFf_2_13_sub_fixp>=-
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_sub_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_sub_fixp + (1)*_Z4CNDFf_2_13_sub_float + (1)*_Z4CNDFf_2_13_sub_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_sub_fixbits + (-10000)*_Z4CNDFf_2_13_sub_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__11_CAST_sub_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__11_CAST_sub_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__11_CAST_sub_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__11_CAST_sub_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__11_CAST_sub_fixp + (-1)*_Z4CNDFf_2_13_sub_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__11_CAST_sub_float + (-1)*_Z4CNDFf_2_13_sub_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__11_CAST_sub_double + (-1)*_Z4CNDFf_2_13_sub_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__11_CAST_sub_fixbits + (-1)*_Z4CNDFf_2_13_sub_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__10_CAST_sub_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__10_CAST_sub_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__10_CAST_sub_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__10_CAST_sub_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_sub_0_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__10_CAST_sub_fixp + (-1)*_Z4CNDFf_2_13_sub_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__10_CAST_sub_float + (-1)*_Z4CNDFf_2_13_sub_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__10_CAST_sub_double + (-1)*_Z4CNDFf_2_13_sub_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__10_CAST_sub_fixbits + (-1)*_Z4CNDFf_2_13_sub_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z4CNDFf_2_13_sub_fixp
 mathCostObj +=  + (1.80596)*_Z4CNDFf_2_13_sub_float
 mathCostObj +=  + (2.15411)*_Z4CNDFf_2_13_sub_double
-solver.Add( + (1)*_Z4CNDFf_2_13_sub_enob + (-1)*ConstantValue__9_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z4CNDFf_2_13_sub_enob + (-1)*ConstantValue__8_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z4CNDFf_2_13_sub_enob + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_enob<=0)    #Enob propagation in sub second addend
 
 
 
-#Stuff for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !41
+#Stuff for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !39
 _Z4CNDFf_2_13_InputX_addr_0_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_2_13_InputX_addr_0_fixbits')
 _Z4CNDFf_2_13_InputX_addr_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_fixp')
 _Z4CNDFf_2_13_InputX_addr_0_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_float')
@@ -1654,7 +1567,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_InputX_addr_0_enob_0 + (1)*_Z4CNDF
 
 
 
-#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !41
+#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !39
 _Z4CNDFf_2_13_sub_CAST_InputX_addr_0_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_2_13_sub_CAST_InputX_addr_0_fixbits')
 _Z4CNDFf_2_13_sub_CAST_InputX_addr_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub_CAST_InputX_addr_0_fixp')
 _Z4CNDFf_2_13_sub_CAST_InputX_addr_0_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub_CAST_InputX_addr_0_float')
@@ -1693,7 +1606,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_InputX_addr_0_enob + (-1)*_Z4CNDFf_2_13_sub_enob
 
 
 
-#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !41
+#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_InputX_addr_0_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_InputX_addr_0_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_InputX_addr_0_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_InputX_addr_0_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_InputX_addr_0_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_div33_CAST_InputX_addr_0_float')
@@ -1732,7 +1645,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_InputX_addr_0_enob + (-1)*_Z19BlkSchlsEqEuroNoDi
 
 
 
-#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !43, !taffo.initweight !25
+#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !41, !taffo.initweight !23
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul_fixbits')
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul_fixp')
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul_float')
@@ -1766,7 +1679,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_InputX_addr_0_CAST_mul
 
 
 
-#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !43, !taffo.initweight !25
+#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !41, !taffo.initweight !23
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul_0_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul_0_fixbits')
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul_0_fixp')
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul_0_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul_0_float')
@@ -1800,7 +1713,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_InputX_addr_0_CAST_mul_0
 
 
 
-#Stuff for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !43, !taffo.initweight !25
+#Stuff for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !41, !taffo.initweight !23
 _Z4CNDFf_2_13_mul_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_2_13_mul_fixbits')
 _Z4CNDFf_2_13_mul_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul_fixp')
 _Z4CNDFf_2_13_mul_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul_float')
@@ -1827,6 +1740,21 @@ _Z4CNDFf_2_13__Z4CNDFf_2_13_mul_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4C
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*_Z4CNDFf_2_13_mul_enob + (-1)*_Z4CNDFf_2_13_InputX_addr_0_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_2_13_mul_enob + (-1)*_Z4CNDFf_2_13_InputX_addr_0_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul_enob_2<=1024)    #Enob: propagation in product 2
+
+
+
+#Stuff for float -5.000000e-01
+ConstantValue__11_fixbits = solver.IntVar(0, 30, 'ConstantValue__11_fixbits')
+ConstantValue__11_fixp = solver.IntVar(0, 1, 'ConstantValue__11_fixp')
+ConstantValue__11_float = solver.IntVar(0, 1, 'ConstantValue__11_float')
+ConstantValue__11_double = solver.IntVar(0, 1, 'ConstantValue__11_double')
+ConstantValue__11_enob = solver.IntVar(-10000, 10000, 'ConstantValue__11_enob')
+solver.Add( + (1)*ConstantValue__11_enob + (-1)*ConstantValue__11_fixbits + (10000)*ConstantValue__11_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__11_enob + (10000)*ConstantValue__11_float<=10024)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__11_enob + (10000)*ConstantValue__11_double<=10053)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__11_fixbits + (-10000)*ConstantValue__11_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__11_fixp + (1)*ConstantValue__11_float + (1)*ConstantValue__11_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__11_fixbits + (-10000)*ConstantValue__11_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -1860,56 +1788,41 @@ solver.Add( + (1)*ConstantValue__13_fixbits + (-10000)*ConstantValue__13_fixp<=0
 
 
 
-#Stuff for float -5.000000e-01
-ConstantValue__14_fixbits = solver.IntVar(0, 30, 'ConstantValue__14_fixbits')
-ConstantValue__14_fixp = solver.IntVar(0, 1, 'ConstantValue__14_fixp')
-ConstantValue__14_float = solver.IntVar(0, 1, 'ConstantValue__14_float')
-ConstantValue__14_double = solver.IntVar(0, 1, 'ConstantValue__14_double')
-ConstantValue__14_enob = solver.IntVar(-10000, 10000, 'ConstantValue__14_enob')
-solver.Add( + (1)*ConstantValue__14_enob + (-1)*ConstantValue__14_fixbits + (10000)*ConstantValue__14_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__14_enob + (10000)*ConstantValue__14_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__14_enob + (10000)*ConstantValue__14_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__14_fixbits + (-10000)*ConstantValue__14_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__14_fixp + (1)*ConstantValue__14_float + (1)*ConstantValue__14_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__14_fixbits + (-10000)*ConstantValue__14_fixp<=0)    #If not fix, frac part to zero
+#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !43, !taffo.initweight !30, !taffo.constinfo !45
+ConstantValue__13_CAST_mul16_fixbits = solver.IntVar(0, 30, 'ConstantValue__13_CAST_mul16_fixbits')
+ConstantValue__13_CAST_mul16_fixp = solver.IntVar(0, 1, 'ConstantValue__13_CAST_mul16_fixp')
+ConstantValue__13_CAST_mul16_float = solver.IntVar(0, 1, 'ConstantValue__13_CAST_mul16_float')
+ConstantValue__13_CAST_mul16_double = solver.IntVar(0, 1, 'ConstantValue__13_CAST_mul16_double')
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_fixp + (1)*ConstantValue__13_CAST_mul16_float + (1)*ConstantValue__13_CAST_mul16_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_fixbits + (-10000)*ConstantValue__13_CAST_mul16_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C1_ConstantValue__13_CAST_mul16')
+C2_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C2_ConstantValue__13_CAST_mul16')
+solver.Add( + (1)*ConstantValue__13_fixbits + (-1)*ConstantValue__13_CAST_mul16_fixbits + (-10000)*C1_ConstantValue__13_CAST_mul16<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__13_fixbits + (1)*ConstantValue__13_CAST_mul16_fixbits + (-10000)*C2_ConstantValue__13_CAST_mul16<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__13_CAST_mul16
+castCostObj +=  + (1.13006)*C2_ConstantValue__13_CAST_mul16
+C3_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C3_ConstantValue__13_CAST_mul16')
+C4_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C4_ConstantValue__13_CAST_mul16')
+C5_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C5_ConstantValue__13_CAST_mul16')
+C6_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C6_ConstantValue__13_CAST_mul16')
+C7_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C7_ConstantValue__13_CAST_mul16')
+C8_ConstantValue__13_CAST_mul16 = solver.IntVar(0, 1, 'C8_ConstantValue__13_CAST_mul16')
+solver.Add( + (1)*ConstantValue__13_fixp + (1)*ConstantValue__13_CAST_mul16_float + (-1)*C3_ConstantValue__13_CAST_mul16<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__13_CAST_mul16
+solver.Add( + (1)*ConstantValue__13_float + (1)*ConstantValue__13_CAST_mul16_fixp + (-1)*C4_ConstantValue__13_CAST_mul16<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__13_CAST_mul16
+solver.Add( + (1)*ConstantValue__13_fixp + (1)*ConstantValue__13_CAST_mul16_double + (-1)*C5_ConstantValue__13_CAST_mul16<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__13_CAST_mul16
+solver.Add( + (1)*ConstantValue__13_double + (1)*ConstantValue__13_CAST_mul16_fixp + (-1)*C6_ConstantValue__13_CAST_mul16<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__13_CAST_mul16
+solver.Add( + (1)*ConstantValue__13_float + (1)*ConstantValue__13_CAST_mul16_double + (-1)*C7_ConstantValue__13_CAST_mul16<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__13_CAST_mul16
+solver.Add( + (1)*ConstantValue__13_double + (1)*ConstantValue__13_CAST_mul16_float + (-1)*C8_ConstantValue__13_CAST_mul16<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__13_CAST_mul16
 
 
 
-#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !45, !taffo.initweight !32, !taffo.constinfo !47
-ConstantValue__14_CAST_mul16_fixbits = solver.IntVar(0, 30, 'ConstantValue__14_CAST_mul16_fixbits')
-ConstantValue__14_CAST_mul16_fixp = solver.IntVar(0, 1, 'ConstantValue__14_CAST_mul16_fixp')
-ConstantValue__14_CAST_mul16_float = solver.IntVar(0, 1, 'ConstantValue__14_CAST_mul16_float')
-ConstantValue__14_CAST_mul16_double = solver.IntVar(0, 1, 'ConstantValue__14_CAST_mul16_double')
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_fixp + (1)*ConstantValue__14_CAST_mul16_float + (1)*ConstantValue__14_CAST_mul16_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_fixbits + (-10000)*ConstantValue__14_CAST_mul16_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C1_ConstantValue__14_CAST_mul16')
-C2_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C2_ConstantValue__14_CAST_mul16')
-solver.Add( + (1)*ConstantValue__14_fixbits + (-1)*ConstantValue__14_CAST_mul16_fixbits + (-10000)*C1_ConstantValue__14_CAST_mul16<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__14_fixbits + (1)*ConstantValue__14_CAST_mul16_fixbits + (-10000)*C2_ConstantValue__14_CAST_mul16<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__14_CAST_mul16
-castCostObj +=  + (1.13006)*C2_ConstantValue__14_CAST_mul16
-C3_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C3_ConstantValue__14_CAST_mul16')
-C4_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C4_ConstantValue__14_CAST_mul16')
-C5_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C5_ConstantValue__14_CAST_mul16')
-C6_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C6_ConstantValue__14_CAST_mul16')
-C7_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C7_ConstantValue__14_CAST_mul16')
-C8_ConstantValue__14_CAST_mul16 = solver.IntVar(0, 1, 'C8_ConstantValue__14_CAST_mul16')
-solver.Add( + (1)*ConstantValue__14_fixp + (1)*ConstantValue__14_CAST_mul16_float + (-1)*C3_ConstantValue__14_CAST_mul16<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__14_CAST_mul16
-solver.Add( + (1)*ConstantValue__14_float + (1)*ConstantValue__14_CAST_mul16_fixp + (-1)*C4_ConstantValue__14_CAST_mul16<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__14_CAST_mul16
-solver.Add( + (1)*ConstantValue__14_fixp + (1)*ConstantValue__14_CAST_mul16_double + (-1)*C5_ConstantValue__14_CAST_mul16<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__14_CAST_mul16
-solver.Add( + (1)*ConstantValue__14_double + (1)*ConstantValue__14_CAST_mul16_fixp + (-1)*C6_ConstantValue__14_CAST_mul16<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__14_CAST_mul16
-solver.Add( + (1)*ConstantValue__14_float + (1)*ConstantValue__14_CAST_mul16_double + (-1)*C7_ConstantValue__14_CAST_mul16<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__14_CAST_mul16
-solver.Add( + (1)*ConstantValue__14_double + (1)*ConstantValue__14_CAST_mul16_float + (-1)*C8_ConstantValue__14_CAST_mul16<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__14_CAST_mul16
-
-
-
-#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !45, !taffo.initweight !32, !taffo.constinfo !47
+#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !43, !taffo.initweight !30, !taffo.constinfo !45
 _Z4CNDFf_2_13_mul_CAST_mul16_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_2_13_mul_CAST_mul16_fixbits')
 _Z4CNDFf_2_13_mul_CAST_mul16_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul_CAST_mul16_fixp')
 _Z4CNDFf_2_13_mul_CAST_mul16_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul_CAST_mul16_float')
@@ -1943,7 +1856,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul_CAST_mul16
 
 
 
-#Stuff for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !45, !taffo.initweight !32, !taffo.constinfo !47
+#Stuff for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !43, !taffo.initweight !30, !taffo.constinfo !45
 _Z4CNDFf_2_13_mul16_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_2_13_mul16_fixbits')
 _Z4CNDFf_2_13_mul16_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul16_fixp')
 _Z4CNDFf_2_13_mul16_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul16_float')
@@ -1956,24 +1869,24 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul16_fixbits + (-10000)*_Z4CNDFf_2_13_mul16_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul16_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul16_fixp + (1)*_Z4CNDFf_2_13_mul16_float + (1)*_Z4CNDFf_2_13_mul16_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul16_fixbits + (-10000)*_Z4CNDFf_2_13_mul16_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_fixp + (-1)*_Z4CNDFf_2_13_mul_CAST_mul16_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_float + (-1)*_Z4CNDFf_2_13_mul_CAST_mul16_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_double + (-1)*_Z4CNDFf_2_13_mul_CAST_mul16_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_fixp + (-1)*_Z4CNDFf_2_13_mul16_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_float + (-1)*_Z4CNDFf_2_13_mul16_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__14_CAST_mul16_double + (-1)*_Z4CNDFf_2_13_mul16_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_fixp + (-1)*_Z4CNDFf_2_13_mul_CAST_mul16_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_float + (-1)*_Z4CNDFf_2_13_mul_CAST_mul16_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_double + (-1)*_Z4CNDFf_2_13_mul_CAST_mul16_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_fixp + (-1)*_Z4CNDFf_2_13_mul16_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_float + (-1)*_Z4CNDFf_2_13_mul16_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__13_CAST_mul16_double + (-1)*_Z4CNDFf_2_13_mul16_double==0)    #double equality
 mathCostObj +=  + (2.04123)*_Z4CNDFf_2_13_mul16_fixp
 mathCostObj +=  + (3.34669)*_Z4CNDFf_2_13_mul16_float
 mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul16_double
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_1')
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_13_mul16_enob + (-1)*_Z4CNDFf_2_13_mul_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_1<=-2.14748e+09)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_2_13_mul16_enob + (-1)*ConstantValue__12_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_2<=1024)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_2_13_mul16_enob + (-1)*_Z4CNDFf_2_13_mul_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_1<=1)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_2_13_mul16_enob + (-1)*ConstantValue__11_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul16_enob_2<=1024)    #Enob: propagation in product 2
 
 
 
-#Stuff for   %call = call float @_ZSt3expf.8.15(float %mul16), !taffo.info !50, !taffo.initweight !34, !taffo.constinfo !52, !taffo.originalCall !53
+#Stuff for   %call = call float @_ZSt3expf.8.15(float %mul16), !taffo.info !48, !taffo.initweight !32, !taffo.constinfo !50, !taffo.originalCall !51
 _Z4CNDFf_2_13_call_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_13_call_fixbits')
 _Z4CNDFf_2_13_call_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_call_fixp')
 _Z4CNDFf_2_13_call_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_call_float')
@@ -1989,7 +1902,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_call_fixbits + (-10000)*_Z4CNDFf_2_13_call_fixp<
 
 
 
-#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _ZSt3expf_8_15_call_fixbits = solver.IntVar(0, 31, '_ZSt3expf_8_15_call_fixbits')
 _ZSt3expf_8_15_call_fixp = solver.IntVar(0, 1, '_ZSt3expf_8_15_call_fixp')
 _ZSt3expf_8_15_call_float = solver.IntVar(0, 1, '_ZSt3expf_8_15_call_float')
@@ -2006,7 +1919,7 @@ solver.Add( + (1)*_ZSt3expf_8_15_call_float==1)    #Type constraint for return v
 
 
 
-#Constraint for cast for   %call = call float @expf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Constraint for cast for   %call = call float @expf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _Z4CNDFf_2_13_mul16_CAST_call_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_2_13_mul16_CAST_call_fixbits')
 _Z4CNDFf_2_13_mul16_CAST_call_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul16_CAST_call_fixp')
 _Z4CNDFf_2_13_mul16_CAST_call_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul16_CAST_call_float')
@@ -2041,7 +1954,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul16_CAST_call_float==1)    #Type constraint fo
 
 
 
-#Constraint for cast for   ret float %call, !taffo.info !34, !taffo.initweight !36
+#Constraint for cast for   ret float %call, !taffo.info !32, !taffo.initweight !34
 _ZSt3expf_8_15_call_CAST_ret_fixbits = solver.IntVar(0, 31, '_ZSt3expf_8_15_call_CAST_ret_fixbits')
 _ZSt3expf_8_15_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt3expf_8_15_call_CAST_ret_fixp')
 _ZSt3expf_8_15_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt3expf_8_15_call_CAST_ret_float')
@@ -2080,6 +1993,21 @@ solver.Add( + (1)*_Z4CNDFf_2_13_call_fixbits + (-1)*_ZSt3expf_8_15_call_CAST_ret
 
 
 #Stuff for double 0x3FD9884533D43651
+ConstantValue__14_fixbits = solver.IntVar(0, 31, 'ConstantValue__14_fixbits')
+ConstantValue__14_fixp = solver.IntVar(0, 1, 'ConstantValue__14_fixp')
+ConstantValue__14_float = solver.IntVar(0, 1, 'ConstantValue__14_float')
+ConstantValue__14_double = solver.IntVar(0, 1, 'ConstantValue__14_double')
+ConstantValue__14_enob = solver.IntVar(-10000, 10000, 'ConstantValue__14_enob')
+solver.Add( + (1)*ConstantValue__14_enob + (-1)*ConstantValue__14_fixbits + (10000)*ConstantValue__14_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__14_enob + (10000)*ConstantValue__14_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__14_enob + (10000)*ConstantValue__14_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__14_fixbits + (-10000)*ConstantValue__14_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__14_fixp + (1)*ConstantValue__14_float + (1)*ConstantValue__14_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__14_fixbits + (-10000)*ConstantValue__14_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 0x3FD9884533D43651
 ConstantValue__15_fixbits = solver.IntVar(0, 31, 'ConstantValue__15_fixbits')
 ConstantValue__15_fixp = solver.IntVar(0, 1, 'ConstantValue__15_fixp')
 ConstantValue__15_float = solver.IntVar(0, 1, 'ConstantValue__15_float')
@@ -2094,22 +2022,7 @@ solver.Add( + (1)*ConstantValue__15_fixbits + (-10000)*ConstantValue__15_fixp<=0
 
 
 
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__16_fixbits = solver.IntVar(0, 31, 'ConstantValue__16_fixbits')
-ConstantValue__16_fixp = solver.IntVar(0, 1, 'ConstantValue__16_fixp')
-ConstantValue__16_float = solver.IntVar(0, 1, 'ConstantValue__16_float')
-ConstantValue__16_double = solver.IntVar(0, 1, 'ConstantValue__16_double')
-ConstantValue__16_enob = solver.IntVar(-10000, 10000, 'ConstantValue__16_enob')
-solver.Add( + (1)*ConstantValue__16_enob + (-1)*ConstantValue__16_fixbits + (10000)*ConstantValue__16_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__16_enob + (10000)*ConstantValue__16_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__16_enob + (10000)*ConstantValue__16_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__16_fixbits + (-10000)*ConstantValue__16_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__16_fixp + (1)*ConstantValue__16_float + (1)*ConstantValue__16_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__16_fixbits + (-10000)*ConstantValue__16_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !55, !taffo.initweight !32, !taffo.constinfo !57
+#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !53, !taffo.initweight !30, !taffo.constinfo !55
 _Z4CNDFf_2_13_call_CAST_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_13_call_CAST_mul18_fixbits')
 _Z4CNDFf_2_13_call_CAST_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_call_CAST_mul18_fixp')
 _Z4CNDFf_2_13_call_CAST_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_call_CAST_mul18_float')
@@ -2144,55 +2057,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_call_CAST_mul18
 
 
 #Stuff for double 0x3FD9884533D43651
-ConstantValue__17_fixbits = solver.IntVar(0, 31, 'ConstantValue__17_fixbits')
-ConstantValue__17_fixp = solver.IntVar(0, 1, 'ConstantValue__17_fixp')
-ConstantValue__17_float = solver.IntVar(0, 1, 'ConstantValue__17_float')
-ConstantValue__17_double = solver.IntVar(0, 1, 'ConstantValue__17_double')
-ConstantValue__17_enob = solver.IntVar(-10000, 10000, 'ConstantValue__17_enob')
-solver.Add( + (1)*ConstantValue__17_enob + (-1)*ConstantValue__17_fixbits + (10000)*ConstantValue__17_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__17_enob + (10000)*ConstantValue__17_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__17_enob + (10000)*ConstantValue__17_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__17_fixbits + (-10000)*ConstantValue__17_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__17_fixp + (1)*ConstantValue__17_float + (1)*ConstantValue__17_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__17_fixbits + (-10000)*ConstantValue__17_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__16_fixbits = solver.IntVar(0, 31, 'ConstantValue__16_fixbits')
+ConstantValue__16_fixp = solver.IntVar(0, 1, 'ConstantValue__16_fixp')
+ConstantValue__16_float = solver.IntVar(0, 1, 'ConstantValue__16_float')
+ConstantValue__16_double = solver.IntVar(0, 1, 'ConstantValue__16_double')
+ConstantValue__16_enob = solver.IntVar(-10000, 10000, 'ConstantValue__16_enob')
+solver.Add( + (1)*ConstantValue__16_enob + (-1)*ConstantValue__16_fixbits + (10000)*ConstantValue__16_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__16_enob + (10000)*ConstantValue__16_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__16_enob + (10000)*ConstantValue__16_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__16_fixbits + (-10000)*ConstantValue__16_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__16_fixp + (1)*ConstantValue__16_float + (1)*ConstantValue__16_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__16_fixbits + (-10000)*ConstantValue__16_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !55, !taffo.initweight !32, !taffo.constinfo !57
-ConstantValue__17_CAST_mul18_fixbits = solver.IntVar(0, 31, 'ConstantValue__17_CAST_mul18_fixbits')
-ConstantValue__17_CAST_mul18_fixp = solver.IntVar(0, 1, 'ConstantValue__17_CAST_mul18_fixp')
-ConstantValue__17_CAST_mul18_float = solver.IntVar(0, 1, 'ConstantValue__17_CAST_mul18_float')
-ConstantValue__17_CAST_mul18_double = solver.IntVar(0, 1, 'ConstantValue__17_CAST_mul18_double')
-solver.Add( + (1)*ConstantValue__17_CAST_mul18_fixp + (1)*ConstantValue__17_CAST_mul18_float + (1)*ConstantValue__17_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__17_CAST_mul18_fixbits + (-10000)*ConstantValue__17_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C1_ConstantValue__17_CAST_mul18')
-C2_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C2_ConstantValue__17_CAST_mul18')
-solver.Add( + (1)*ConstantValue__17_fixbits + (-1)*ConstantValue__17_CAST_mul18_fixbits + (-10000)*C1_ConstantValue__17_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__17_fixbits + (1)*ConstantValue__17_CAST_mul18_fixbits + (-10000)*C2_ConstantValue__17_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__17_CAST_mul18
-castCostObj +=  + (1.13006)*C2_ConstantValue__17_CAST_mul18
-C3_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C3_ConstantValue__17_CAST_mul18')
-C4_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C4_ConstantValue__17_CAST_mul18')
-C5_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C5_ConstantValue__17_CAST_mul18')
-C6_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C6_ConstantValue__17_CAST_mul18')
-C7_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C7_ConstantValue__17_CAST_mul18')
-C8_ConstantValue__17_CAST_mul18 = solver.IntVar(0, 1, 'C8_ConstantValue__17_CAST_mul18')
-solver.Add( + (1)*ConstantValue__17_fixp + (1)*ConstantValue__17_CAST_mul18_float + (-1)*C3_ConstantValue__17_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__17_CAST_mul18
-solver.Add( + (1)*ConstantValue__17_float + (1)*ConstantValue__17_CAST_mul18_fixp + (-1)*C4_ConstantValue__17_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__17_CAST_mul18
-solver.Add( + (1)*ConstantValue__17_fixp + (1)*ConstantValue__17_CAST_mul18_double + (-1)*C5_ConstantValue__17_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__17_CAST_mul18
-solver.Add( + (1)*ConstantValue__17_double + (1)*ConstantValue__17_CAST_mul18_fixp + (-1)*C6_ConstantValue__17_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__17_CAST_mul18
-solver.Add( + (1)*ConstantValue__17_float + (1)*ConstantValue__17_CAST_mul18_double + (-1)*C7_ConstantValue__17_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__17_CAST_mul18
-solver.Add( + (1)*ConstantValue__17_double + (1)*ConstantValue__17_CAST_mul18_float + (-1)*C8_ConstantValue__17_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__17_CAST_mul18
+#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !53, !taffo.initweight !30, !taffo.constinfo !55
+ConstantValue__16_CAST_mul18_fixbits = solver.IntVar(0, 31, 'ConstantValue__16_CAST_mul18_fixbits')
+ConstantValue__16_CAST_mul18_fixp = solver.IntVar(0, 1, 'ConstantValue__16_CAST_mul18_fixp')
+ConstantValue__16_CAST_mul18_float = solver.IntVar(0, 1, 'ConstantValue__16_CAST_mul18_float')
+ConstantValue__16_CAST_mul18_double = solver.IntVar(0, 1, 'ConstantValue__16_CAST_mul18_double')
+solver.Add( + (1)*ConstantValue__16_CAST_mul18_fixp + (1)*ConstantValue__16_CAST_mul18_float + (1)*ConstantValue__16_CAST_mul18_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__16_CAST_mul18_fixbits + (-10000)*ConstantValue__16_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C1_ConstantValue__16_CAST_mul18')
+C2_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C2_ConstantValue__16_CAST_mul18')
+solver.Add( + (1)*ConstantValue__16_fixbits + (-1)*ConstantValue__16_CAST_mul18_fixbits + (-10000)*C1_ConstantValue__16_CAST_mul18<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__16_fixbits + (1)*ConstantValue__16_CAST_mul18_fixbits + (-10000)*C2_ConstantValue__16_CAST_mul18<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__16_CAST_mul18
+castCostObj +=  + (1.13006)*C2_ConstantValue__16_CAST_mul18
+C3_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C3_ConstantValue__16_CAST_mul18')
+C4_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C4_ConstantValue__16_CAST_mul18')
+C5_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C5_ConstantValue__16_CAST_mul18')
+C6_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C6_ConstantValue__16_CAST_mul18')
+C7_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C7_ConstantValue__16_CAST_mul18')
+C8_ConstantValue__16_CAST_mul18 = solver.IntVar(0, 1, 'C8_ConstantValue__16_CAST_mul18')
+solver.Add( + (1)*ConstantValue__16_fixp + (1)*ConstantValue__16_CAST_mul18_float + (-1)*C3_ConstantValue__16_CAST_mul18<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__16_CAST_mul18
+solver.Add( + (1)*ConstantValue__16_float + (1)*ConstantValue__16_CAST_mul18_fixp + (-1)*C4_ConstantValue__16_CAST_mul18<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__16_CAST_mul18
+solver.Add( + (1)*ConstantValue__16_fixp + (1)*ConstantValue__16_CAST_mul18_double + (-1)*C5_ConstantValue__16_CAST_mul18<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__16_CAST_mul18
+solver.Add( + (1)*ConstantValue__16_double + (1)*ConstantValue__16_CAST_mul18_fixp + (-1)*C6_ConstantValue__16_CAST_mul18<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__16_CAST_mul18
+solver.Add( + (1)*ConstantValue__16_float + (1)*ConstantValue__16_CAST_mul18_double + (-1)*C7_ConstantValue__16_CAST_mul18<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__16_CAST_mul18
+solver.Add( + (1)*ConstantValue__16_double + (1)*ConstantValue__16_CAST_mul18_float + (-1)*C8_ConstantValue__16_CAST_mul18<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__16_CAST_mul18
 
 
 
-#Stuff for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !55, !taffo.initweight !32, !taffo.constinfo !57
+#Stuff for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !53, !taffo.initweight !30, !taffo.constinfo !55
 _Z4CNDFf_2_13_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_13_mul18_fixbits')
 _Z4CNDFf_2_13_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul18_fixp')
 _Z4CNDFf_2_13_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul18_float')
@@ -2205,9 +2118,9 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul18_fixbits + (-10000)*_Z4CNDFf_2_13_mul18_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul18_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul18_fixp + (1)*_Z4CNDFf_2_13_mul18_float + (1)*_Z4CNDFf_2_13_mul18_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul18_fixbits + (-10000)*_Z4CNDFf_2_13_mul18_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_fixp + (-1)*ConstantValue__17_CAST_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_float + (-1)*ConstantValue__17_CAST_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_double + (-1)*ConstantValue__17_CAST_mul18_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_fixp + (-1)*ConstantValue__16_CAST_mul18_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_float + (-1)*ConstantValue__16_CAST_mul18_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_double + (-1)*ConstantValue__16_CAST_mul18_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_fixp + (-1)*_Z4CNDFf_2_13_mul18_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_float + (-1)*_Z4CNDFf_2_13_mul18_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_2_13_call_CAST_mul18_double + (-1)*_Z4CNDFf_2_13_mul18_double==0)    #double equality
@@ -2217,8 +2130,23 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul18_double
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_1')
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_13_mul18_enob + (-1)*ConstantValue__15_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_2_13_mul18_enob + (-1)*ConstantValue__14_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_2_13_mul18_enob + (-1)*_Z4CNDFf_2_13_call_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul18_enob_2<=1)    #Enob: propagation in product 2
+
+
+
+#Stuff for double 0x3FCDA6711871100E
+ConstantValue__17_fixbits = solver.IntVar(0, 31, 'ConstantValue__17_fixbits')
+ConstantValue__17_fixp = solver.IntVar(0, 1, 'ConstantValue__17_fixp')
+ConstantValue__17_float = solver.IntVar(0, 1, 'ConstantValue__17_float')
+ConstantValue__17_double = solver.IntVar(0, 1, 'ConstantValue__17_double')
+ConstantValue__17_enob = solver.IntVar(-10000, 10000, 'ConstantValue__17_enob')
+solver.Add( + (1)*ConstantValue__17_enob + (-1)*ConstantValue__17_fixbits + (10000)*ConstantValue__17_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__17_enob + (10000)*ConstantValue__17_float<=10026)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__17_enob + (10000)*ConstantValue__17_double<=10055)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__17_fixbits + (-10000)*ConstantValue__17_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__17_fixp + (1)*ConstantValue__17_float + (1)*ConstantValue__17_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__17_fixbits + (-10000)*ConstantValue__17_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -2252,56 +2180,41 @@ solver.Add( + (1)*ConstantValue__19_fixbits + (-10000)*ConstantValue__19_fixp<=0
 
 
 
-#Stuff for double 0x3FCDA6711871100E
-ConstantValue__20_fixbits = solver.IntVar(0, 31, 'ConstantValue__20_fixbits')
-ConstantValue__20_fixp = solver.IntVar(0, 1, 'ConstantValue__20_fixp')
-ConstantValue__20_float = solver.IntVar(0, 1, 'ConstantValue__20_float')
-ConstantValue__20_double = solver.IntVar(0, 1, 'ConstantValue__20_double')
-ConstantValue__20_enob = solver.IntVar(-10000, 10000, 'ConstantValue__20_enob')
-solver.Add( + (1)*ConstantValue__20_enob + (-1)*ConstantValue__20_fixbits + (10000)*ConstantValue__20_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__20_enob + (10000)*ConstantValue__20_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__20_enob + (10000)*ConstantValue__20_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__20_fixbits + (-10000)*ConstantValue__20_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__20_fixp + (1)*ConstantValue__20_float + (1)*ConstantValue__20_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__20_fixbits + (-10000)*ConstantValue__20_fixp<=0)    #If not fix, frac part to zero
+#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !61, !taffo.initweight !30, !taffo.constinfo !63
+ConstantValue__19_CAST_mul21_fixbits = solver.IntVar(0, 31, 'ConstantValue__19_CAST_mul21_fixbits')
+ConstantValue__19_CAST_mul21_fixp = solver.IntVar(0, 1, 'ConstantValue__19_CAST_mul21_fixp')
+ConstantValue__19_CAST_mul21_float = solver.IntVar(0, 1, 'ConstantValue__19_CAST_mul21_float')
+ConstantValue__19_CAST_mul21_double = solver.IntVar(0, 1, 'ConstantValue__19_CAST_mul21_double')
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_fixp + (1)*ConstantValue__19_CAST_mul21_float + (1)*ConstantValue__19_CAST_mul21_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_fixbits + (-10000)*ConstantValue__19_CAST_mul21_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C1_ConstantValue__19_CAST_mul21')
+C2_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C2_ConstantValue__19_CAST_mul21')
+solver.Add( + (1)*ConstantValue__19_fixbits + (-1)*ConstantValue__19_CAST_mul21_fixbits + (-10000)*C1_ConstantValue__19_CAST_mul21<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__19_fixbits + (1)*ConstantValue__19_CAST_mul21_fixbits + (-10000)*C2_ConstantValue__19_CAST_mul21<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__19_CAST_mul21
+castCostObj +=  + (1.13006)*C2_ConstantValue__19_CAST_mul21
+C3_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C3_ConstantValue__19_CAST_mul21')
+C4_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C4_ConstantValue__19_CAST_mul21')
+C5_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C5_ConstantValue__19_CAST_mul21')
+C6_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C6_ConstantValue__19_CAST_mul21')
+C7_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C7_ConstantValue__19_CAST_mul21')
+C8_ConstantValue__19_CAST_mul21 = solver.IntVar(0, 1, 'C8_ConstantValue__19_CAST_mul21')
+solver.Add( + (1)*ConstantValue__19_fixp + (1)*ConstantValue__19_CAST_mul21_float + (-1)*C3_ConstantValue__19_CAST_mul21<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__19_CAST_mul21
+solver.Add( + (1)*ConstantValue__19_float + (1)*ConstantValue__19_CAST_mul21_fixp + (-1)*C4_ConstantValue__19_CAST_mul21<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__19_CAST_mul21
+solver.Add( + (1)*ConstantValue__19_fixp + (1)*ConstantValue__19_CAST_mul21_double + (-1)*C5_ConstantValue__19_CAST_mul21<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__19_CAST_mul21
+solver.Add( + (1)*ConstantValue__19_double + (1)*ConstantValue__19_CAST_mul21_fixp + (-1)*C6_ConstantValue__19_CAST_mul21<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__19_CAST_mul21
+solver.Add( + (1)*ConstantValue__19_float + (1)*ConstantValue__19_CAST_mul21_double + (-1)*C7_ConstantValue__19_CAST_mul21<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__19_CAST_mul21
+solver.Add( + (1)*ConstantValue__19_double + (1)*ConstantValue__19_CAST_mul21_float + (-1)*C8_ConstantValue__19_CAST_mul21<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__19_CAST_mul21
 
 
 
-#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !63, !taffo.initweight !32, !taffo.constinfo !65
-ConstantValue__20_CAST_mul21_fixbits = solver.IntVar(0, 31, 'ConstantValue__20_CAST_mul21_fixbits')
-ConstantValue__20_CAST_mul21_fixp = solver.IntVar(0, 1, 'ConstantValue__20_CAST_mul21_fixp')
-ConstantValue__20_CAST_mul21_float = solver.IntVar(0, 1, 'ConstantValue__20_CAST_mul21_float')
-ConstantValue__20_CAST_mul21_double = solver.IntVar(0, 1, 'ConstantValue__20_CAST_mul21_double')
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_fixp + (1)*ConstantValue__20_CAST_mul21_float + (1)*ConstantValue__20_CAST_mul21_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_fixbits + (-10000)*ConstantValue__20_CAST_mul21_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C1_ConstantValue__20_CAST_mul21')
-C2_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C2_ConstantValue__20_CAST_mul21')
-solver.Add( + (1)*ConstantValue__20_fixbits + (-1)*ConstantValue__20_CAST_mul21_fixbits + (-10000)*C1_ConstantValue__20_CAST_mul21<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__20_fixbits + (1)*ConstantValue__20_CAST_mul21_fixbits + (-10000)*C2_ConstantValue__20_CAST_mul21<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__20_CAST_mul21
-castCostObj +=  + (1.13006)*C2_ConstantValue__20_CAST_mul21
-C3_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C3_ConstantValue__20_CAST_mul21')
-C4_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C4_ConstantValue__20_CAST_mul21')
-C5_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C5_ConstantValue__20_CAST_mul21')
-C6_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C6_ConstantValue__20_CAST_mul21')
-C7_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C7_ConstantValue__20_CAST_mul21')
-C8_ConstantValue__20_CAST_mul21 = solver.IntVar(0, 1, 'C8_ConstantValue__20_CAST_mul21')
-solver.Add( + (1)*ConstantValue__20_fixp + (1)*ConstantValue__20_CAST_mul21_float + (-1)*C3_ConstantValue__20_CAST_mul21<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__20_CAST_mul21
-solver.Add( + (1)*ConstantValue__20_float + (1)*ConstantValue__20_CAST_mul21_fixp + (-1)*C4_ConstantValue__20_CAST_mul21<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__20_CAST_mul21
-solver.Add( + (1)*ConstantValue__20_fixp + (1)*ConstantValue__20_CAST_mul21_double + (-1)*C5_ConstantValue__20_CAST_mul21<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__20_CAST_mul21
-solver.Add( + (1)*ConstantValue__20_double + (1)*ConstantValue__20_CAST_mul21_fixp + (-1)*C6_ConstantValue__20_CAST_mul21<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__20_CAST_mul21
-solver.Add( + (1)*ConstantValue__20_float + (1)*ConstantValue__20_CAST_mul21_double + (-1)*C7_ConstantValue__20_CAST_mul21<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__20_CAST_mul21
-solver.Add( + (1)*ConstantValue__20_double + (1)*ConstantValue__20_CAST_mul21_float + (-1)*C8_ConstantValue__20_CAST_mul21<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__20_CAST_mul21
-
-
-
-#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !63, !taffo.initweight !32, !taffo.constinfo !65
+#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !61, !taffo.initweight !30, !taffo.constinfo !63
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_fixbits')
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_fixp')
 _Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_float')
@@ -2335,7 +2248,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_InputX_addr_0_CAST_mul21
 
 
 
-#Stuff for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !63, !taffo.initweight !32, !taffo.constinfo !65
+#Stuff for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !61, !taffo.initweight !30, !taffo.constinfo !63
 _Z4CNDFf_2_13_mul21_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_2_13_mul21_fixbits')
 _Z4CNDFf_2_13_mul21_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul21_fixp')
 _Z4CNDFf_2_13_mul21_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul21_float')
@@ -2348,12 +2261,12 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul21_fixbits + (-10000)*_Z4CNDFf_2_13_mul21_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul21_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul21_fixp + (1)*_Z4CNDFf_2_13_mul21_float + (1)*_Z4CNDFf_2_13_mul21_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul21_fixbits + (-10000)*_Z4CNDFf_2_13_mul21_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_fixp + (-1)*_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_float + (-1)*_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_double + (-1)*_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_fixp + (-1)*_Z4CNDFf_2_13_mul21_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_float + (-1)*_Z4CNDFf_2_13_mul21_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__20_CAST_mul21_double + (-1)*_Z4CNDFf_2_13_mul21_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_fixp + (-1)*_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_float + (-1)*_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_double + (-1)*_Z4CNDFf_2_13_InputX_addr_0_CAST_mul21_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_fixp + (-1)*_Z4CNDFf_2_13_mul21_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_float + (-1)*_Z4CNDFf_2_13_mul21_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__19_CAST_mul21_double + (-1)*_Z4CNDFf_2_13_mul21_double==0)    #double equality
 mathCostObj +=  + (2.04123)*_Z4CNDFf_2_13_mul21_fixp
 mathCostObj +=  + (3.34669)*_Z4CNDFf_2_13_mul21_float
 mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul21_double
@@ -2361,7 +2274,22 @@ _Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*_Z4CNDFf_2_13_mul21_enob + (-1)*_Z4CNDFf_2_13_InputX_addr_0_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_1<=2)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_2_13_mul21_enob + (-1)*ConstantValue__18_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_2<=1024)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_2_13_mul21_enob + (-1)*ConstantValue__17_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul21_enob_2<=1024)    #Enob: propagation in product 2
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__20_fixbits = solver.IntVar(0, 31, 'ConstantValue__20_fixbits')
+ConstantValue__20_fixp = solver.IntVar(0, 1, 'ConstantValue__20_fixp')
+ConstantValue__20_float = solver.IntVar(0, 1, 'ConstantValue__20_float')
+ConstantValue__20_double = solver.IntVar(0, 1, 'ConstantValue__20_double')
+ConstantValue__20_enob = solver.IntVar(-10000, 10000, 'ConstantValue__20_enob')
+solver.Add( + (1)*ConstantValue__20_enob + (-1)*ConstantValue__20_fixbits + (10000)*ConstantValue__20_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__20_enob + (10000)*ConstantValue__20_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__20_enob + (10000)*ConstantValue__20_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__20_fixbits + (-10000)*ConstantValue__20_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__20_fixp + (1)*ConstantValue__20_float + (1)*ConstantValue__20_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__20_fixbits + (-10000)*ConstantValue__20_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -2395,56 +2323,41 @@ solver.Add( + (1)*ConstantValue__22_fixbits + (-10000)*ConstantValue__22_fixp<=0
 
 
 
-#Stuff for double 1.000000e+00
-ConstantValue__23_fixbits = solver.IntVar(0, 31, 'ConstantValue__23_fixbits')
-ConstantValue__23_fixp = solver.IntVar(0, 1, 'ConstantValue__23_fixp')
-ConstantValue__23_float = solver.IntVar(0, 1, 'ConstantValue__23_float')
-ConstantValue__23_double = solver.IntVar(0, 1, 'ConstantValue__23_double')
-ConstantValue__23_enob = solver.IntVar(-10000, 10000, 'ConstantValue__23_enob')
-solver.Add( + (1)*ConstantValue__23_enob + (-1)*ConstantValue__23_fixbits + (10000)*ConstantValue__23_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__23_enob + (10000)*ConstantValue__23_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__23_enob + (10000)*ConstantValue__23_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__23_fixbits + (-10000)*ConstantValue__23_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__23_fixp + (1)*ConstantValue__23_float + (1)*ConstantValue__23_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__23_fixbits + (-10000)*ConstantValue__23_fixp<=0)    #If not fix, frac part to zero
+#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !68, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__22_CAST_add_fixbits = solver.IntVar(0, 31, 'ConstantValue__22_CAST_add_fixbits')
+ConstantValue__22_CAST_add_fixp = solver.IntVar(0, 1, 'ConstantValue__22_CAST_add_fixp')
+ConstantValue__22_CAST_add_float = solver.IntVar(0, 1, 'ConstantValue__22_CAST_add_float')
+ConstantValue__22_CAST_add_double = solver.IntVar(0, 1, 'ConstantValue__22_CAST_add_double')
+solver.Add( + (1)*ConstantValue__22_CAST_add_fixp + (1)*ConstantValue__22_CAST_add_float + (1)*ConstantValue__22_CAST_add_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__22_CAST_add_fixbits + (-10000)*ConstantValue__22_CAST_add_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C1_ConstantValue__22_CAST_add')
+C2_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C2_ConstantValue__22_CAST_add')
+solver.Add( + (1)*ConstantValue__22_fixbits + (-1)*ConstantValue__22_CAST_add_fixbits + (-10000)*C1_ConstantValue__22_CAST_add<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__22_fixbits + (1)*ConstantValue__22_CAST_add_fixbits + (-10000)*C2_ConstantValue__22_CAST_add<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__22_CAST_add
+castCostObj +=  + (1.13006)*C2_ConstantValue__22_CAST_add
+C3_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C3_ConstantValue__22_CAST_add')
+C4_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C4_ConstantValue__22_CAST_add')
+C5_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C5_ConstantValue__22_CAST_add')
+C6_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C6_ConstantValue__22_CAST_add')
+C7_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C7_ConstantValue__22_CAST_add')
+C8_ConstantValue__22_CAST_add = solver.IntVar(0, 1, 'C8_ConstantValue__22_CAST_add')
+solver.Add( + (1)*ConstantValue__22_fixp + (1)*ConstantValue__22_CAST_add_float + (-1)*C3_ConstantValue__22_CAST_add<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__22_CAST_add
+solver.Add( + (1)*ConstantValue__22_float + (1)*ConstantValue__22_CAST_add_fixp + (-1)*C4_ConstantValue__22_CAST_add<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__22_CAST_add
+solver.Add( + (1)*ConstantValue__22_fixp + (1)*ConstantValue__22_CAST_add_double + (-1)*C5_ConstantValue__22_CAST_add<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__22_CAST_add
+solver.Add( + (1)*ConstantValue__22_double + (1)*ConstantValue__22_CAST_add_fixp + (-1)*C6_ConstantValue__22_CAST_add<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__22_CAST_add
+solver.Add( + (1)*ConstantValue__22_float + (1)*ConstantValue__22_CAST_add_double + (-1)*C7_ConstantValue__22_CAST_add<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__22_CAST_add
+solver.Add( + (1)*ConstantValue__22_double + (1)*ConstantValue__22_CAST_add_float + (-1)*C8_ConstantValue__22_CAST_add<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__22_CAST_add
 
 
 
-#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !70, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__23_CAST_add_fixbits = solver.IntVar(0, 31, 'ConstantValue__23_CAST_add_fixbits')
-ConstantValue__23_CAST_add_fixp = solver.IntVar(0, 1, 'ConstantValue__23_CAST_add_fixp')
-ConstantValue__23_CAST_add_float = solver.IntVar(0, 1, 'ConstantValue__23_CAST_add_float')
-ConstantValue__23_CAST_add_double = solver.IntVar(0, 1, 'ConstantValue__23_CAST_add_double')
-solver.Add( + (1)*ConstantValue__23_CAST_add_fixp + (1)*ConstantValue__23_CAST_add_float + (1)*ConstantValue__23_CAST_add_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__23_CAST_add_fixbits + (-10000)*ConstantValue__23_CAST_add_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C1_ConstantValue__23_CAST_add')
-C2_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C2_ConstantValue__23_CAST_add')
-solver.Add( + (1)*ConstantValue__23_fixbits + (-1)*ConstantValue__23_CAST_add_fixbits + (-10000)*C1_ConstantValue__23_CAST_add<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__23_fixbits + (1)*ConstantValue__23_CAST_add_fixbits + (-10000)*C2_ConstantValue__23_CAST_add<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__23_CAST_add
-castCostObj +=  + (1.13006)*C2_ConstantValue__23_CAST_add
-C3_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C3_ConstantValue__23_CAST_add')
-C4_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C4_ConstantValue__23_CAST_add')
-C5_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C5_ConstantValue__23_CAST_add')
-C6_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C6_ConstantValue__23_CAST_add')
-C7_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C7_ConstantValue__23_CAST_add')
-C8_ConstantValue__23_CAST_add = solver.IntVar(0, 1, 'C8_ConstantValue__23_CAST_add')
-solver.Add( + (1)*ConstantValue__23_fixp + (1)*ConstantValue__23_CAST_add_float + (-1)*C3_ConstantValue__23_CAST_add<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__23_CAST_add
-solver.Add( + (1)*ConstantValue__23_float + (1)*ConstantValue__23_CAST_add_fixp + (-1)*C4_ConstantValue__23_CAST_add<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__23_CAST_add
-solver.Add( + (1)*ConstantValue__23_fixp + (1)*ConstantValue__23_CAST_add_double + (-1)*C5_ConstantValue__23_CAST_add<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__23_CAST_add
-solver.Add( + (1)*ConstantValue__23_double + (1)*ConstantValue__23_CAST_add_fixp + (-1)*C6_ConstantValue__23_CAST_add<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__23_CAST_add
-solver.Add( + (1)*ConstantValue__23_float + (1)*ConstantValue__23_CAST_add_double + (-1)*C7_ConstantValue__23_CAST_add<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__23_CAST_add
-solver.Add( + (1)*ConstantValue__23_double + (1)*ConstantValue__23_CAST_add_float + (-1)*C8_ConstantValue__23_CAST_add<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__23_CAST_add
-
-
-
-#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !70, !taffo.initweight !32, !taffo.constinfo !72
+#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !68, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_mul21_CAST_add_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_2_13_mul21_CAST_add_fixbits')
 _Z4CNDFf_2_13_mul21_CAST_add_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul21_CAST_add_fixp')
 _Z4CNDFf_2_13_mul21_CAST_add_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul21_CAST_add_float')
@@ -2478,7 +2391,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul21_CAST_add
 
 
 
-#Stuff for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !70, !taffo.initweight !32, !taffo.constinfo !72
+#Stuff for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !68, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_add_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_2_13_add_fixbits')
 _Z4CNDFf_2_13_add_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add_fixp')
 _Z4CNDFf_2_13_add_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add_float')
@@ -2491,19 +2404,34 @@ solver.Add( + (1)*_Z4CNDFf_2_13_add_fixbits + (-10000)*_Z4CNDFf_2_13_add_fixp>=-
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_add_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_add_fixp + (1)*_Z4CNDFf_2_13_add_float + (1)*_Z4CNDFf_2_13_add_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_add_fixbits + (-10000)*_Z4CNDFf_2_13_add_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__23_CAST_add_fixp + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__23_CAST_add_float + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__23_CAST_add_double + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__23_CAST_add_fixbits + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__23_CAST_add_fixp + (-1)*_Z4CNDFf_2_13_add_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__23_CAST_add_float + (-1)*_Z4CNDFf_2_13_add_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__23_CAST_add_double + (-1)*_Z4CNDFf_2_13_add_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__23_CAST_add_fixbits + (-1)*_Z4CNDFf_2_13_add_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__22_CAST_add_fixp + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__22_CAST_add_float + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__22_CAST_add_double + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__22_CAST_add_fixbits + (-1)*_Z4CNDFf_2_13_mul21_CAST_add_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__22_CAST_add_fixp + (-1)*_Z4CNDFf_2_13_add_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__22_CAST_add_float + (-1)*_Z4CNDFf_2_13_add_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__22_CAST_add_double + (-1)*_Z4CNDFf_2_13_add_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__22_CAST_add_fixbits + (-1)*_Z4CNDFf_2_13_add_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z4CNDFf_2_13_add_fixp
 mathCostObj +=  + (1.80596)*_Z4CNDFf_2_13_add_float
 mathCostObj +=  + (2.15411)*_Z4CNDFf_2_13_add_double
-solver.Add( + (1)*_Z4CNDFf_2_13_add_enob + (-1)*ConstantValue__21_enob<=0)    #Enob propagation in sum first addend
+solver.Add( + (1)*_Z4CNDFf_2_13_add_enob + (-1)*ConstantValue__20_enob<=0)    #Enob propagation in sum first addend
 solver.Add( + (1)*_Z4CNDFf_2_13_add_enob + (-1)*_Z4CNDFf_2_13_mul21_enob<=0)    #Enob propagation in sum second addend
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__23_fixbits = solver.IntVar(0, 31, 'ConstantValue__23_fixbits')
+ConstantValue__23_fixp = solver.IntVar(0, 1, 'ConstantValue__23_fixp')
+ConstantValue__23_float = solver.IntVar(0, 1, 'ConstantValue__23_float')
+ConstantValue__23_double = solver.IntVar(0, 1, 'ConstantValue__23_double')
+ConstantValue__23_enob = solver.IntVar(-10000, 10000, 'ConstantValue__23_enob')
+solver.Add( + (1)*ConstantValue__23_enob + (-1)*ConstantValue__23_fixbits + (10000)*ConstantValue__23_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__23_enob + (10000)*ConstantValue__23_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__23_enob + (10000)*ConstantValue__23_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__23_fixbits + (-10000)*ConstantValue__23_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__23_fixp + (1)*ConstantValue__23_float + (1)*ConstantValue__23_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__23_fixbits + (-10000)*ConstantValue__23_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -2537,56 +2465,41 @@ solver.Add( + (1)*ConstantValue__25_fixbits + (-10000)*ConstantValue__25_fixp<=0
 
 
 
-#Stuff for double 1.000000e+00
-ConstantValue__26_fixbits = solver.IntVar(0, 31, 'ConstantValue__26_fixbits')
-ConstantValue__26_fixp = solver.IntVar(0, 1, 'ConstantValue__26_fixp')
-ConstantValue__26_float = solver.IntVar(0, 1, 'ConstantValue__26_float')
-ConstantValue__26_double = solver.IntVar(0, 1, 'ConstantValue__26_double')
-ConstantValue__26_enob = solver.IntVar(-10000, 10000, 'ConstantValue__26_enob')
-solver.Add( + (1)*ConstantValue__26_enob + (-1)*ConstantValue__26_fixbits + (10000)*ConstantValue__26_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__26_enob + (10000)*ConstantValue__26_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__26_enob + (10000)*ConstantValue__26_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__26_fixbits + (-10000)*ConstantValue__26_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__26_fixp + (1)*ConstantValue__26_float + (1)*ConstantValue__26_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__26_fixbits + (-10000)*ConstantValue__26_fixp<=0)    #If not fix, frac part to zero
+#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !73, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__25_CAST_div_fixbits = solver.IntVar(0, 31, 'ConstantValue__25_CAST_div_fixbits')
+ConstantValue__25_CAST_div_fixp = solver.IntVar(0, 1, 'ConstantValue__25_CAST_div_fixp')
+ConstantValue__25_CAST_div_float = solver.IntVar(0, 1, 'ConstantValue__25_CAST_div_float')
+ConstantValue__25_CAST_div_double = solver.IntVar(0, 1, 'ConstantValue__25_CAST_div_double')
+solver.Add( + (1)*ConstantValue__25_CAST_div_fixp + (1)*ConstantValue__25_CAST_div_float + (1)*ConstantValue__25_CAST_div_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__25_CAST_div_fixbits + (-10000)*ConstantValue__25_CAST_div_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C1_ConstantValue__25_CAST_div')
+C2_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C2_ConstantValue__25_CAST_div')
+solver.Add( + (1)*ConstantValue__25_fixbits + (-1)*ConstantValue__25_CAST_div_fixbits + (-10000)*C1_ConstantValue__25_CAST_div<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__25_fixbits + (1)*ConstantValue__25_CAST_div_fixbits + (-10000)*C2_ConstantValue__25_CAST_div<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__25_CAST_div
+castCostObj +=  + (1.13006)*C2_ConstantValue__25_CAST_div
+C3_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C3_ConstantValue__25_CAST_div')
+C4_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C4_ConstantValue__25_CAST_div')
+C5_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C5_ConstantValue__25_CAST_div')
+C6_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C6_ConstantValue__25_CAST_div')
+C7_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C7_ConstantValue__25_CAST_div')
+C8_ConstantValue__25_CAST_div = solver.IntVar(0, 1, 'C8_ConstantValue__25_CAST_div')
+solver.Add( + (1)*ConstantValue__25_fixp + (1)*ConstantValue__25_CAST_div_float + (-1)*C3_ConstantValue__25_CAST_div<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__25_CAST_div
+solver.Add( + (1)*ConstantValue__25_float + (1)*ConstantValue__25_CAST_div_fixp + (-1)*C4_ConstantValue__25_CAST_div<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__25_CAST_div
+solver.Add( + (1)*ConstantValue__25_fixp + (1)*ConstantValue__25_CAST_div_double + (-1)*C5_ConstantValue__25_CAST_div<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__25_CAST_div
+solver.Add( + (1)*ConstantValue__25_double + (1)*ConstantValue__25_CAST_div_fixp + (-1)*C6_ConstantValue__25_CAST_div<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__25_CAST_div
+solver.Add( + (1)*ConstantValue__25_float + (1)*ConstantValue__25_CAST_div_double + (-1)*C7_ConstantValue__25_CAST_div<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__25_CAST_div
+solver.Add( + (1)*ConstantValue__25_double + (1)*ConstantValue__25_CAST_div_float + (-1)*C8_ConstantValue__25_CAST_div<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__25_CAST_div
 
 
 
-#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !75, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__26_CAST_div_fixbits = solver.IntVar(0, 31, 'ConstantValue__26_CAST_div_fixbits')
-ConstantValue__26_CAST_div_fixp = solver.IntVar(0, 1, 'ConstantValue__26_CAST_div_fixp')
-ConstantValue__26_CAST_div_float = solver.IntVar(0, 1, 'ConstantValue__26_CAST_div_float')
-ConstantValue__26_CAST_div_double = solver.IntVar(0, 1, 'ConstantValue__26_CAST_div_double')
-solver.Add( + (1)*ConstantValue__26_CAST_div_fixp + (1)*ConstantValue__26_CAST_div_float + (1)*ConstantValue__26_CAST_div_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__26_CAST_div_fixbits + (-10000)*ConstantValue__26_CAST_div_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C1_ConstantValue__26_CAST_div')
-C2_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C2_ConstantValue__26_CAST_div')
-solver.Add( + (1)*ConstantValue__26_fixbits + (-1)*ConstantValue__26_CAST_div_fixbits + (-10000)*C1_ConstantValue__26_CAST_div<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__26_fixbits + (1)*ConstantValue__26_CAST_div_fixbits + (-10000)*C2_ConstantValue__26_CAST_div<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__26_CAST_div
-castCostObj +=  + (1.13006)*C2_ConstantValue__26_CAST_div
-C3_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C3_ConstantValue__26_CAST_div')
-C4_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C4_ConstantValue__26_CAST_div')
-C5_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C5_ConstantValue__26_CAST_div')
-C6_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C6_ConstantValue__26_CAST_div')
-C7_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C7_ConstantValue__26_CAST_div')
-C8_ConstantValue__26_CAST_div = solver.IntVar(0, 1, 'C8_ConstantValue__26_CAST_div')
-solver.Add( + (1)*ConstantValue__26_fixp + (1)*ConstantValue__26_CAST_div_float + (-1)*C3_ConstantValue__26_CAST_div<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__26_CAST_div
-solver.Add( + (1)*ConstantValue__26_float + (1)*ConstantValue__26_CAST_div_fixp + (-1)*C4_ConstantValue__26_CAST_div<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__26_CAST_div
-solver.Add( + (1)*ConstantValue__26_fixp + (1)*ConstantValue__26_CAST_div_double + (-1)*C5_ConstantValue__26_CAST_div<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__26_CAST_div
-solver.Add( + (1)*ConstantValue__26_double + (1)*ConstantValue__26_CAST_div_fixp + (-1)*C6_ConstantValue__26_CAST_div<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__26_CAST_div
-solver.Add( + (1)*ConstantValue__26_float + (1)*ConstantValue__26_CAST_div_double + (-1)*C7_ConstantValue__26_CAST_div<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__26_CAST_div
-solver.Add( + (1)*ConstantValue__26_double + (1)*ConstantValue__26_CAST_div_float + (-1)*C8_ConstantValue__26_CAST_div<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__26_CAST_div
-
-
-
-#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !75, !taffo.initweight !32, !taffo.constinfo !72
+#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !73, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_add_CAST_div_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_2_13_add_CAST_div_fixbits')
 _Z4CNDFf_2_13_add_CAST_div_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add_CAST_div_fixp')
 _Z4CNDFf_2_13_add_CAST_div_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add_CAST_div_float')
@@ -2620,7 +2533,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_add_CAST_div
 
 
 
-#Stuff for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !75, !taffo.initweight !32, !taffo.constinfo !72
+#Stuff for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !73, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_div_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_div_fixbits')
 _Z4CNDFf_2_13_div_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_fixp')
 _Z4CNDFf_2_13_div_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_float')
@@ -2633,12 +2546,12 @@ solver.Add( + (1)*_Z4CNDFf_2_13_div_fixbits + (-10000)*_Z4CNDFf_2_13_div_fixp>=-
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_div_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_div_fixp + (1)*_Z4CNDFf_2_13_div_float + (1)*_Z4CNDFf_2_13_div_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_div_fixbits + (-10000)*_Z4CNDFf_2_13_div_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__26_CAST_div_fixp + (-1)*_Z4CNDFf_2_13_add_CAST_div_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__26_CAST_div_float + (-1)*_Z4CNDFf_2_13_add_CAST_div_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__26_CAST_div_double + (-1)*_Z4CNDFf_2_13_add_CAST_div_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__26_CAST_div_fixp + (-1)*_Z4CNDFf_2_13_div_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__26_CAST_div_float + (-1)*_Z4CNDFf_2_13_div_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__26_CAST_div_double + (-1)*_Z4CNDFf_2_13_div_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__25_CAST_div_fixp + (-1)*_Z4CNDFf_2_13_add_CAST_div_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__25_CAST_div_float + (-1)*_Z4CNDFf_2_13_add_CAST_div_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__25_CAST_div_double + (-1)*_Z4CNDFf_2_13_add_CAST_div_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__25_CAST_div_fixp + (-1)*_Z4CNDFf_2_13_div_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__25_CAST_div_float + (-1)*_Z4CNDFf_2_13_div_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__25_CAST_div_double + (-1)*_Z4CNDFf_2_13_div_double==0)    #double equality
 mathCostObj +=  + (3.45438)*_Z4CNDFf_2_13_div_fixp
 mathCostObj +=  + (4.13283)*_Z4CNDFf_2_13_div_float
 mathCostObj +=  + (5.68177)*_Z4CNDFf_2_13_div_double
@@ -2646,11 +2559,11 @@ _Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4C
 _Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*_Z4CNDFf_2_13_div_enob + (-1)*_Z4CNDFf_2_13_add_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_1<=10)    #Enob: propagation in division 1
-solver.Add( + (1)*_Z4CNDFf_2_13_div_enob + (-1)*ConstantValue__24_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_2<=1034)    #Enob: propagation in division 2
+solver.Add( + (1)*_Z4CNDFf_2_13_div_enob + (-1)*ConstantValue__23_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_div_enob_2<=1034)    #Enob: propagation in division 2
 
 
 
-#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !79, !taffo.initweight !25
+#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !77, !taffo.initweight !23
 _Z4CNDFf_2_13_div_CAST_mul27_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_div_CAST_mul27_fixbits')
 _Z4CNDFf_2_13_div_CAST_mul27_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul27_fixp')
 _Z4CNDFf_2_13_div_CAST_mul27_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul27_float')
@@ -2684,7 +2597,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_div_CAST_mul27
 
 
 
-#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !79, !taffo.initweight !25
+#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !77, !taffo.initweight !23
 _Z4CNDFf_2_13_div_CAST_mul27_0_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_div_CAST_mul27_0_fixbits')
 _Z4CNDFf_2_13_div_CAST_mul27_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul27_0_fixp')
 _Z4CNDFf_2_13_div_CAST_mul27_0_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul27_0_float')
@@ -2718,7 +2631,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_div_CAST_mul27_0
 
 
 
-#Stuff for   %mul27 = fmul float %conv26, %conv26, !taffo.info !79, !taffo.initweight !25
+#Stuff for   %mul27 = fmul float %conv26, %conv26, !taffo.info !77, !taffo.initweight !23
 _Z4CNDFf_2_13_mul27_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_13_mul27_fixbits')
 _Z4CNDFf_2_13_mul27_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul27_fixp')
 _Z4CNDFf_2_13_mul27_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul27_float')
@@ -2748,7 +2661,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul27_enob + (-1)*_Z4CNDFf_2_13_div_enob + (-100
 
 
 
-#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !81, !taffo.initweight !25
+#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !79, !taffo.initweight !23
 _Z4CNDFf_2_13_mul27_CAST_mul28_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_13_mul27_CAST_mul28_fixbits')
 _Z4CNDFf_2_13_mul27_CAST_mul28_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul27_CAST_mul28_fixp')
 _Z4CNDFf_2_13_mul27_CAST_mul28_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul27_CAST_mul28_float')
@@ -2782,7 +2695,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul27_CAST_mul28
 
 
 
-#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !81, !taffo.initweight !25
+#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !79, !taffo.initweight !23
 _Z4CNDFf_2_13_div_CAST_mul28_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_div_CAST_mul28_fixbits')
 _Z4CNDFf_2_13_div_CAST_mul28_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul28_fixp')
 _Z4CNDFf_2_13_div_CAST_mul28_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul28_float')
@@ -2816,7 +2729,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_div_CAST_mul28
 
 
 
-#Stuff for   %mul28 = fmul float %mul27, %conv26, !taffo.info !81, !taffo.initweight !25
+#Stuff for   %mul28 = fmul float %mul27, %conv26, !taffo.info !79, !taffo.initweight !23
 _Z4CNDFf_2_13_mul28_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul28_fixbits')
 _Z4CNDFf_2_13_mul28_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul28_fixp')
 _Z4CNDFf_2_13_mul28_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul28_float')
@@ -2846,7 +2759,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul28_enob + (-1)*_Z4CNDFf_2_13_mul27_enob + (-1
 
 
 
-#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !83, !taffo.initweight !25
+#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !81, !taffo.initweight !23
 _Z4CNDFf_2_13_mul28_CAST_mul29_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul28_CAST_mul29_fixbits')
 _Z4CNDFf_2_13_mul28_CAST_mul29_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul28_CAST_mul29_fixp')
 _Z4CNDFf_2_13_mul28_CAST_mul29_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul28_CAST_mul29_float')
@@ -2880,7 +2793,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul28_CAST_mul29
 
 
 
-#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !83, !taffo.initweight !25
+#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !81, !taffo.initweight !23
 _Z4CNDFf_2_13_div_CAST_mul29_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_div_CAST_mul29_fixbits')
 _Z4CNDFf_2_13_div_CAST_mul29_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul29_fixp')
 _Z4CNDFf_2_13_div_CAST_mul29_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul29_float')
@@ -2914,7 +2827,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_div_CAST_mul29
 
 
 
-#Stuff for   %mul29 = fmul float %mul28, %conv26, !taffo.info !83, !taffo.initweight !25
+#Stuff for   %mul29 = fmul float %mul28, %conv26, !taffo.info !81, !taffo.initweight !23
 _Z4CNDFf_2_13_mul29_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul29_fixbits')
 _Z4CNDFf_2_13_mul29_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul29_fixp')
 _Z4CNDFf_2_13_mul29_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul29_float')
@@ -2944,7 +2857,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul29_enob + (-1)*_Z4CNDFf_2_13_mul28_enob + (-1
 
 
 
-#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !85, !taffo.initweight !25
+#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !83, !taffo.initweight !23
 _Z4CNDFf_2_13_mul29_CAST_mul30_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul29_CAST_mul30_fixbits')
 _Z4CNDFf_2_13_mul29_CAST_mul30_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul29_CAST_mul30_fixp')
 _Z4CNDFf_2_13_mul29_CAST_mul30_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul29_CAST_mul30_float')
@@ -2978,7 +2891,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul29_CAST_mul30
 
 
 
-#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !85, !taffo.initweight !25
+#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !83, !taffo.initweight !23
 _Z4CNDFf_2_13_div_CAST_mul30_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_div_CAST_mul30_fixbits')
 _Z4CNDFf_2_13_div_CAST_mul30_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul30_fixp')
 _Z4CNDFf_2_13_div_CAST_mul30_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul30_float')
@@ -3012,7 +2925,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_div_CAST_mul30
 
 
 
-#Stuff for   %mul30 = fmul float %mul29, %conv26, !taffo.info !85, !taffo.initweight !25
+#Stuff for   %mul30 = fmul float %mul29, %conv26, !taffo.info !83, !taffo.initweight !23
 _Z4CNDFf_2_13_mul30_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul30_fixbits')
 _Z4CNDFf_2_13_mul30_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul30_fixp')
 _Z4CNDFf_2_13_mul30_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul30_float')
@@ -3043,6 +2956,21 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul30_enob + (-1)*_Z4CNDFf_2_13_mul29_enob + (-1
 
 
 #Stuff for double 0x3FD470BF3A92F8EC
+ConstantValue__26_fixbits = solver.IntVar(0, 31, 'ConstantValue__26_fixbits')
+ConstantValue__26_fixp = solver.IntVar(0, 1, 'ConstantValue__26_fixp')
+ConstantValue__26_float = solver.IntVar(0, 1, 'ConstantValue__26_float')
+ConstantValue__26_double = solver.IntVar(0, 1, 'ConstantValue__26_double')
+ConstantValue__26_enob = solver.IntVar(-10000, 10000, 'ConstantValue__26_enob')
+solver.Add( + (1)*ConstantValue__26_enob + (-1)*ConstantValue__26_fixbits + (10000)*ConstantValue__26_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__26_enob + (10000)*ConstantValue__26_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__26_enob + (10000)*ConstantValue__26_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__26_fixbits + (-10000)*ConstantValue__26_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__26_fixp + (1)*ConstantValue__26_float + (1)*ConstantValue__26_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__26_fixbits + (-10000)*ConstantValue__26_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 0x3FD470BF3A92F8EC
 ConstantValue__27_fixbits = solver.IntVar(0, 31, 'ConstantValue__27_fixbits')
 ConstantValue__27_fixp = solver.IntVar(0, 1, 'ConstantValue__27_fixp')
 ConstantValue__27_float = solver.IntVar(0, 1, 'ConstantValue__27_float')
@@ -3057,22 +2985,7 @@ solver.Add( + (1)*ConstantValue__27_fixbits + (-10000)*ConstantValue__27_fixp<=0
 
 
 
-#Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__28_fixbits = solver.IntVar(0, 31, 'ConstantValue__28_fixbits')
-ConstantValue__28_fixp = solver.IntVar(0, 1, 'ConstantValue__28_fixp')
-ConstantValue__28_float = solver.IntVar(0, 1, 'ConstantValue__28_float')
-ConstantValue__28_double = solver.IntVar(0, 1, 'ConstantValue__28_double')
-ConstantValue__28_enob = solver.IntVar(-10000, 10000, 'ConstantValue__28_enob')
-solver.Add( + (1)*ConstantValue__28_enob + (-1)*ConstantValue__28_fixbits + (10000)*ConstantValue__28_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__28_enob + (10000)*ConstantValue__28_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__28_enob + (10000)*ConstantValue__28_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__28_fixbits + (-10000)*ConstantValue__28_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__28_fixp + (1)*ConstantValue__28_float + (1)*ConstantValue__28_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__28_fixbits + (-10000)*ConstantValue__28_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !87, !taffo.initweight !32, !taffo.constinfo !89
+#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !85, !taffo.initweight !30, !taffo.constinfo !87
 _Z4CNDFf_2_13_div_CAST_mul32_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_div_CAST_mul32_fixbits')
 _Z4CNDFf_2_13_div_CAST_mul32_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul32_fixp')
 _Z4CNDFf_2_13_div_CAST_mul32_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_div_CAST_mul32_float')
@@ -3107,55 +3020,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_div_CAST_mul32
 
 
 #Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__29_fixbits = solver.IntVar(0, 31, 'ConstantValue__29_fixbits')
-ConstantValue__29_fixp = solver.IntVar(0, 1, 'ConstantValue__29_fixp')
-ConstantValue__29_float = solver.IntVar(0, 1, 'ConstantValue__29_float')
-ConstantValue__29_double = solver.IntVar(0, 1, 'ConstantValue__29_double')
-ConstantValue__29_enob = solver.IntVar(-10000, 10000, 'ConstantValue__29_enob')
-solver.Add( + (1)*ConstantValue__29_enob + (-1)*ConstantValue__29_fixbits + (10000)*ConstantValue__29_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__29_enob + (10000)*ConstantValue__29_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__29_enob + (10000)*ConstantValue__29_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__29_fixbits + (-10000)*ConstantValue__29_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__29_fixp + (1)*ConstantValue__29_float + (1)*ConstantValue__29_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__29_fixbits + (-10000)*ConstantValue__29_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__28_fixbits = solver.IntVar(0, 31, 'ConstantValue__28_fixbits')
+ConstantValue__28_fixp = solver.IntVar(0, 1, 'ConstantValue__28_fixp')
+ConstantValue__28_float = solver.IntVar(0, 1, 'ConstantValue__28_float')
+ConstantValue__28_double = solver.IntVar(0, 1, 'ConstantValue__28_double')
+ConstantValue__28_enob = solver.IntVar(-10000, 10000, 'ConstantValue__28_enob')
+solver.Add( + (1)*ConstantValue__28_enob + (-1)*ConstantValue__28_fixbits + (10000)*ConstantValue__28_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__28_enob + (10000)*ConstantValue__28_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__28_enob + (10000)*ConstantValue__28_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__28_fixbits + (-10000)*ConstantValue__28_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__28_fixp + (1)*ConstantValue__28_float + (1)*ConstantValue__28_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__28_fixbits + (-10000)*ConstantValue__28_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !87, !taffo.initweight !32, !taffo.constinfo !89
-ConstantValue__29_CAST_mul32_fixbits = solver.IntVar(0, 31, 'ConstantValue__29_CAST_mul32_fixbits')
-ConstantValue__29_CAST_mul32_fixp = solver.IntVar(0, 1, 'ConstantValue__29_CAST_mul32_fixp')
-ConstantValue__29_CAST_mul32_float = solver.IntVar(0, 1, 'ConstantValue__29_CAST_mul32_float')
-ConstantValue__29_CAST_mul32_double = solver.IntVar(0, 1, 'ConstantValue__29_CAST_mul32_double')
-solver.Add( + (1)*ConstantValue__29_CAST_mul32_fixp + (1)*ConstantValue__29_CAST_mul32_float + (1)*ConstantValue__29_CAST_mul32_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__29_CAST_mul32_fixbits + (-10000)*ConstantValue__29_CAST_mul32_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C1_ConstantValue__29_CAST_mul32')
-C2_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C2_ConstantValue__29_CAST_mul32')
-solver.Add( + (1)*ConstantValue__29_fixbits + (-1)*ConstantValue__29_CAST_mul32_fixbits + (-10000)*C1_ConstantValue__29_CAST_mul32<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__29_fixbits + (1)*ConstantValue__29_CAST_mul32_fixbits + (-10000)*C2_ConstantValue__29_CAST_mul32<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__29_CAST_mul32
-castCostObj +=  + (1.13006)*C2_ConstantValue__29_CAST_mul32
-C3_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C3_ConstantValue__29_CAST_mul32')
-C4_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C4_ConstantValue__29_CAST_mul32')
-C5_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C5_ConstantValue__29_CAST_mul32')
-C6_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C6_ConstantValue__29_CAST_mul32')
-C7_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C7_ConstantValue__29_CAST_mul32')
-C8_ConstantValue__29_CAST_mul32 = solver.IntVar(0, 1, 'C8_ConstantValue__29_CAST_mul32')
-solver.Add( + (1)*ConstantValue__29_fixp + (1)*ConstantValue__29_CAST_mul32_float + (-1)*C3_ConstantValue__29_CAST_mul32<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__29_CAST_mul32
-solver.Add( + (1)*ConstantValue__29_float + (1)*ConstantValue__29_CAST_mul32_fixp + (-1)*C4_ConstantValue__29_CAST_mul32<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__29_CAST_mul32
-solver.Add( + (1)*ConstantValue__29_fixp + (1)*ConstantValue__29_CAST_mul32_double + (-1)*C5_ConstantValue__29_CAST_mul32<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__29_CAST_mul32
-solver.Add( + (1)*ConstantValue__29_double + (1)*ConstantValue__29_CAST_mul32_fixp + (-1)*C6_ConstantValue__29_CAST_mul32<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__29_CAST_mul32
-solver.Add( + (1)*ConstantValue__29_float + (1)*ConstantValue__29_CAST_mul32_double + (-1)*C7_ConstantValue__29_CAST_mul32<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__29_CAST_mul32
-solver.Add( + (1)*ConstantValue__29_double + (1)*ConstantValue__29_CAST_mul32_float + (-1)*C8_ConstantValue__29_CAST_mul32<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__29_CAST_mul32
+#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !85, !taffo.initweight !30, !taffo.constinfo !87
+ConstantValue__28_CAST_mul32_fixbits = solver.IntVar(0, 31, 'ConstantValue__28_CAST_mul32_fixbits')
+ConstantValue__28_CAST_mul32_fixp = solver.IntVar(0, 1, 'ConstantValue__28_CAST_mul32_fixp')
+ConstantValue__28_CAST_mul32_float = solver.IntVar(0, 1, 'ConstantValue__28_CAST_mul32_float')
+ConstantValue__28_CAST_mul32_double = solver.IntVar(0, 1, 'ConstantValue__28_CAST_mul32_double')
+solver.Add( + (1)*ConstantValue__28_CAST_mul32_fixp + (1)*ConstantValue__28_CAST_mul32_float + (1)*ConstantValue__28_CAST_mul32_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__28_CAST_mul32_fixbits + (-10000)*ConstantValue__28_CAST_mul32_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C1_ConstantValue__28_CAST_mul32')
+C2_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C2_ConstantValue__28_CAST_mul32')
+solver.Add( + (1)*ConstantValue__28_fixbits + (-1)*ConstantValue__28_CAST_mul32_fixbits + (-10000)*C1_ConstantValue__28_CAST_mul32<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__28_fixbits + (1)*ConstantValue__28_CAST_mul32_fixbits + (-10000)*C2_ConstantValue__28_CAST_mul32<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__28_CAST_mul32
+castCostObj +=  + (1.13006)*C2_ConstantValue__28_CAST_mul32
+C3_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C3_ConstantValue__28_CAST_mul32')
+C4_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C4_ConstantValue__28_CAST_mul32')
+C5_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C5_ConstantValue__28_CAST_mul32')
+C6_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C6_ConstantValue__28_CAST_mul32')
+C7_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C7_ConstantValue__28_CAST_mul32')
+C8_ConstantValue__28_CAST_mul32 = solver.IntVar(0, 1, 'C8_ConstantValue__28_CAST_mul32')
+solver.Add( + (1)*ConstantValue__28_fixp + (1)*ConstantValue__28_CAST_mul32_float + (-1)*C3_ConstantValue__28_CAST_mul32<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__28_CAST_mul32
+solver.Add( + (1)*ConstantValue__28_float + (1)*ConstantValue__28_CAST_mul32_fixp + (-1)*C4_ConstantValue__28_CAST_mul32<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__28_CAST_mul32
+solver.Add( + (1)*ConstantValue__28_fixp + (1)*ConstantValue__28_CAST_mul32_double + (-1)*C5_ConstantValue__28_CAST_mul32<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__28_CAST_mul32
+solver.Add( + (1)*ConstantValue__28_double + (1)*ConstantValue__28_CAST_mul32_fixp + (-1)*C6_ConstantValue__28_CAST_mul32<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__28_CAST_mul32
+solver.Add( + (1)*ConstantValue__28_float + (1)*ConstantValue__28_CAST_mul32_double + (-1)*C7_ConstantValue__28_CAST_mul32<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__28_CAST_mul32
+solver.Add( + (1)*ConstantValue__28_double + (1)*ConstantValue__28_CAST_mul32_float + (-1)*C8_ConstantValue__28_CAST_mul32<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__28_CAST_mul32
 
 
 
-#Stuff for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !87, !taffo.initweight !32, !taffo.constinfo !89
+#Stuff for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !85, !taffo.initweight !30, !taffo.constinfo !87
 _Z4CNDFf_2_13_mul32_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul32_fixbits')
 _Z4CNDFf_2_13_mul32_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul32_fixp')
 _Z4CNDFf_2_13_mul32_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul32_float')
@@ -3168,9 +3081,9 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul32_fixbits + (-10000)*_Z4CNDFf_2_13_mul32_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul32_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul32_fixp + (1)*_Z4CNDFf_2_13_mul32_float + (1)*_Z4CNDFf_2_13_mul32_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul32_fixbits + (-10000)*_Z4CNDFf_2_13_mul32_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_fixp + (-1)*ConstantValue__29_CAST_mul32_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_float + (-1)*ConstantValue__29_CAST_mul32_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_double + (-1)*ConstantValue__29_CAST_mul32_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_fixp + (-1)*ConstantValue__28_CAST_mul32_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_float + (-1)*ConstantValue__28_CAST_mul32_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_double + (-1)*ConstantValue__28_CAST_mul32_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_fixp + (-1)*_Z4CNDFf_2_13_mul32_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_float + (-1)*_Z4CNDFf_2_13_mul32_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_2_13_div_CAST_mul32_double + (-1)*_Z4CNDFf_2_13_mul32_double==0)    #double equality
@@ -3180,8 +3093,23 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul32_double
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_1')
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_13_mul32_enob + (-1)*ConstantValue__27_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_2_13_mul32_enob + (-1)*ConstantValue__26_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_2_13_mul32_enob + (-1)*_Z4CNDFf_2_13_div_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul32_enob_2<=2)    #Enob: propagation in product 2
+
+
+
+#Stuff for double 0xBFD6D1F0E5A8325B
+ConstantValue__29_fixbits = solver.IntVar(0, 30, 'ConstantValue__29_fixbits')
+ConstantValue__29_fixp = solver.IntVar(0, 1, 'ConstantValue__29_fixp')
+ConstantValue__29_float = solver.IntVar(0, 1, 'ConstantValue__29_float')
+ConstantValue__29_double = solver.IntVar(0, 1, 'ConstantValue__29_double')
+ConstantValue__29_enob = solver.IntVar(-10000, 10000, 'ConstantValue__29_enob')
+solver.Add( + (1)*ConstantValue__29_enob + (-1)*ConstantValue__29_fixbits + (10000)*ConstantValue__29_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__29_enob + (10000)*ConstantValue__29_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__29_enob + (10000)*ConstantValue__29_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__29_fixbits + (-10000)*ConstantValue__29_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__29_fixp + (1)*ConstantValue__29_float + (1)*ConstantValue__29_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__29_fixbits + (-10000)*ConstantValue__29_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -3200,22 +3128,7 @@ solver.Add( + (1)*ConstantValue__30_fixbits + (-10000)*ConstantValue__30_fixp<=0
 
 
 
-#Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__31_fixbits = solver.IntVar(0, 30, 'ConstantValue__31_fixbits')
-ConstantValue__31_fixp = solver.IntVar(0, 1, 'ConstantValue__31_fixp')
-ConstantValue__31_float = solver.IntVar(0, 1, 'ConstantValue__31_float')
-ConstantValue__31_double = solver.IntVar(0, 1, 'ConstantValue__31_double')
-ConstantValue__31_enob = solver.IntVar(-10000, 10000, 'ConstantValue__31_enob')
-solver.Add( + (1)*ConstantValue__31_enob + (-1)*ConstantValue__31_fixbits + (10000)*ConstantValue__31_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__31_enob + (10000)*ConstantValue__31_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__31_enob + (10000)*ConstantValue__31_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__31_fixbits + (-10000)*ConstantValue__31_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__31_fixp + (1)*ConstantValue__31_float + (1)*ConstantValue__31_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__31_fixbits + (-10000)*ConstantValue__31_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !94, !taffo.initweight !32, !taffo.constinfo !96
+#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !92, !taffo.initweight !30, !taffo.constinfo !94
 _Z4CNDFf_2_13_mul27_CAST_mul35_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_13_mul27_CAST_mul35_fixbits')
 _Z4CNDFf_2_13_mul27_CAST_mul35_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul27_CAST_mul35_fixp')
 _Z4CNDFf_2_13_mul27_CAST_mul35_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul27_CAST_mul35_float')
@@ -3250,55 +3163,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul27_CAST_mul35
 
 
 #Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__32_fixbits = solver.IntVar(0, 30, 'ConstantValue__32_fixbits')
-ConstantValue__32_fixp = solver.IntVar(0, 1, 'ConstantValue__32_fixp')
-ConstantValue__32_float = solver.IntVar(0, 1, 'ConstantValue__32_float')
-ConstantValue__32_double = solver.IntVar(0, 1, 'ConstantValue__32_double')
-ConstantValue__32_enob = solver.IntVar(-10000, 10000, 'ConstantValue__32_enob')
-solver.Add( + (1)*ConstantValue__32_enob + (-1)*ConstantValue__32_fixbits + (10000)*ConstantValue__32_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__32_enob + (10000)*ConstantValue__32_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__32_enob + (10000)*ConstantValue__32_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__32_fixbits + (-10000)*ConstantValue__32_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__32_fixp + (1)*ConstantValue__32_float + (1)*ConstantValue__32_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__32_fixbits + (-10000)*ConstantValue__32_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__31_fixbits = solver.IntVar(0, 30, 'ConstantValue__31_fixbits')
+ConstantValue__31_fixp = solver.IntVar(0, 1, 'ConstantValue__31_fixp')
+ConstantValue__31_float = solver.IntVar(0, 1, 'ConstantValue__31_float')
+ConstantValue__31_double = solver.IntVar(0, 1, 'ConstantValue__31_double')
+ConstantValue__31_enob = solver.IntVar(-10000, 10000, 'ConstantValue__31_enob')
+solver.Add( + (1)*ConstantValue__31_enob + (-1)*ConstantValue__31_fixbits + (10000)*ConstantValue__31_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__31_enob + (10000)*ConstantValue__31_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__31_enob + (10000)*ConstantValue__31_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__31_fixbits + (-10000)*ConstantValue__31_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__31_fixp + (1)*ConstantValue__31_float + (1)*ConstantValue__31_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__31_fixbits + (-10000)*ConstantValue__31_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !94, !taffo.initweight !32, !taffo.constinfo !96
-ConstantValue__32_CAST_mul35_fixbits = solver.IntVar(0, 30, 'ConstantValue__32_CAST_mul35_fixbits')
-ConstantValue__32_CAST_mul35_fixp = solver.IntVar(0, 1, 'ConstantValue__32_CAST_mul35_fixp')
-ConstantValue__32_CAST_mul35_float = solver.IntVar(0, 1, 'ConstantValue__32_CAST_mul35_float')
-ConstantValue__32_CAST_mul35_double = solver.IntVar(0, 1, 'ConstantValue__32_CAST_mul35_double')
-solver.Add( + (1)*ConstantValue__32_CAST_mul35_fixp + (1)*ConstantValue__32_CAST_mul35_float + (1)*ConstantValue__32_CAST_mul35_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__32_CAST_mul35_fixbits + (-10000)*ConstantValue__32_CAST_mul35_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C1_ConstantValue__32_CAST_mul35')
-C2_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C2_ConstantValue__32_CAST_mul35')
-solver.Add( + (1)*ConstantValue__32_fixbits + (-1)*ConstantValue__32_CAST_mul35_fixbits + (-10000)*C1_ConstantValue__32_CAST_mul35<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__32_fixbits + (1)*ConstantValue__32_CAST_mul35_fixbits + (-10000)*C2_ConstantValue__32_CAST_mul35<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__32_CAST_mul35
-castCostObj +=  + (1.13006)*C2_ConstantValue__32_CAST_mul35
-C3_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C3_ConstantValue__32_CAST_mul35')
-C4_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C4_ConstantValue__32_CAST_mul35')
-C5_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C5_ConstantValue__32_CAST_mul35')
-C6_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C6_ConstantValue__32_CAST_mul35')
-C7_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C7_ConstantValue__32_CAST_mul35')
-C8_ConstantValue__32_CAST_mul35 = solver.IntVar(0, 1, 'C8_ConstantValue__32_CAST_mul35')
-solver.Add( + (1)*ConstantValue__32_fixp + (1)*ConstantValue__32_CAST_mul35_float + (-1)*C3_ConstantValue__32_CAST_mul35<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__32_CAST_mul35
-solver.Add( + (1)*ConstantValue__32_float + (1)*ConstantValue__32_CAST_mul35_fixp + (-1)*C4_ConstantValue__32_CAST_mul35<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__32_CAST_mul35
-solver.Add( + (1)*ConstantValue__32_fixp + (1)*ConstantValue__32_CAST_mul35_double + (-1)*C5_ConstantValue__32_CAST_mul35<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__32_CAST_mul35
-solver.Add( + (1)*ConstantValue__32_double + (1)*ConstantValue__32_CAST_mul35_fixp + (-1)*C6_ConstantValue__32_CAST_mul35<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__32_CAST_mul35
-solver.Add( + (1)*ConstantValue__32_float + (1)*ConstantValue__32_CAST_mul35_double + (-1)*C7_ConstantValue__32_CAST_mul35<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__32_CAST_mul35
-solver.Add( + (1)*ConstantValue__32_double + (1)*ConstantValue__32_CAST_mul35_float + (-1)*C8_ConstantValue__32_CAST_mul35<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__32_CAST_mul35
+#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !92, !taffo.initweight !30, !taffo.constinfo !94
+ConstantValue__31_CAST_mul35_fixbits = solver.IntVar(0, 30, 'ConstantValue__31_CAST_mul35_fixbits')
+ConstantValue__31_CAST_mul35_fixp = solver.IntVar(0, 1, 'ConstantValue__31_CAST_mul35_fixp')
+ConstantValue__31_CAST_mul35_float = solver.IntVar(0, 1, 'ConstantValue__31_CAST_mul35_float')
+ConstantValue__31_CAST_mul35_double = solver.IntVar(0, 1, 'ConstantValue__31_CAST_mul35_double')
+solver.Add( + (1)*ConstantValue__31_CAST_mul35_fixp + (1)*ConstantValue__31_CAST_mul35_float + (1)*ConstantValue__31_CAST_mul35_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__31_CAST_mul35_fixbits + (-10000)*ConstantValue__31_CAST_mul35_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C1_ConstantValue__31_CAST_mul35')
+C2_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C2_ConstantValue__31_CAST_mul35')
+solver.Add( + (1)*ConstantValue__31_fixbits + (-1)*ConstantValue__31_CAST_mul35_fixbits + (-10000)*C1_ConstantValue__31_CAST_mul35<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__31_fixbits + (1)*ConstantValue__31_CAST_mul35_fixbits + (-10000)*C2_ConstantValue__31_CAST_mul35<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__31_CAST_mul35
+castCostObj +=  + (1.13006)*C2_ConstantValue__31_CAST_mul35
+C3_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C3_ConstantValue__31_CAST_mul35')
+C4_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C4_ConstantValue__31_CAST_mul35')
+C5_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C5_ConstantValue__31_CAST_mul35')
+C6_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C6_ConstantValue__31_CAST_mul35')
+C7_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C7_ConstantValue__31_CAST_mul35')
+C8_ConstantValue__31_CAST_mul35 = solver.IntVar(0, 1, 'C8_ConstantValue__31_CAST_mul35')
+solver.Add( + (1)*ConstantValue__31_fixp + (1)*ConstantValue__31_CAST_mul35_float + (-1)*C3_ConstantValue__31_CAST_mul35<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__31_CAST_mul35
+solver.Add( + (1)*ConstantValue__31_float + (1)*ConstantValue__31_CAST_mul35_fixp + (-1)*C4_ConstantValue__31_CAST_mul35<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__31_CAST_mul35
+solver.Add( + (1)*ConstantValue__31_fixp + (1)*ConstantValue__31_CAST_mul35_double + (-1)*C5_ConstantValue__31_CAST_mul35<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__31_CAST_mul35
+solver.Add( + (1)*ConstantValue__31_double + (1)*ConstantValue__31_CAST_mul35_fixp + (-1)*C6_ConstantValue__31_CAST_mul35<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__31_CAST_mul35
+solver.Add( + (1)*ConstantValue__31_float + (1)*ConstantValue__31_CAST_mul35_double + (-1)*C7_ConstantValue__31_CAST_mul35<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__31_CAST_mul35
+solver.Add( + (1)*ConstantValue__31_double + (1)*ConstantValue__31_CAST_mul35_float + (-1)*C8_ConstantValue__31_CAST_mul35<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__31_CAST_mul35
 
 
 
-#Stuff for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !94, !taffo.initweight !32, !taffo.constinfo !96
+#Stuff for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !92, !taffo.initweight !30, !taffo.constinfo !94
 _Z4CNDFf_2_13_mul35_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul35_fixbits')
 _Z4CNDFf_2_13_mul35_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul35_fixp')
 _Z4CNDFf_2_13_mul35_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul35_float')
@@ -3311,9 +3224,9 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul35_fixbits + (-10000)*_Z4CNDFf_2_13_mul35_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul35_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul35_fixp + (1)*_Z4CNDFf_2_13_mul35_float + (1)*_Z4CNDFf_2_13_mul35_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul35_fixbits + (-10000)*_Z4CNDFf_2_13_mul35_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_fixp + (-1)*ConstantValue__32_CAST_mul35_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_float + (-1)*ConstantValue__32_CAST_mul35_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_double + (-1)*ConstantValue__32_CAST_mul35_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_fixp + (-1)*ConstantValue__31_CAST_mul35_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_float + (-1)*ConstantValue__31_CAST_mul35_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_double + (-1)*ConstantValue__31_CAST_mul35_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_fixp + (-1)*_Z4CNDFf_2_13_mul35_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_float + (-1)*_Z4CNDFf_2_13_mul35_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul27_CAST_mul35_double + (-1)*_Z4CNDFf_2_13_mul35_double==0)    #double equality
@@ -3323,8 +3236,23 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul35_double
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_1')
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_13_mul35_enob + (-1)*ConstantValue__30_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_1<=1024)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_2_13_mul35_enob + (-1)*_Z4CNDFf_2_13_mul27_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_2<=-2.14748e+09)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_2_13_mul35_enob + (-1)*ConstantValue__29_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_2_13_mul35_enob + (-1)*_Z4CNDFf_2_13_mul27_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul35_enob_2<=1)    #Enob: propagation in product 2
+
+
+
+#Stuff for double 0x3FFC80EF025F5E68
+ConstantValue__32_fixbits = solver.IntVar(0, 30, 'ConstantValue__32_fixbits')
+ConstantValue__32_fixp = solver.IntVar(0, 1, 'ConstantValue__32_fixp')
+ConstantValue__32_float = solver.IntVar(0, 1, 'ConstantValue__32_float')
+ConstantValue__32_double = solver.IntVar(0, 1, 'ConstantValue__32_double')
+ConstantValue__32_enob = solver.IntVar(-10000, 10000, 'ConstantValue__32_enob')
+solver.Add( + (1)*ConstantValue__32_enob + (-1)*ConstantValue__32_fixbits + (10000)*ConstantValue__32_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__32_enob + (10000)*ConstantValue__32_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__32_enob + (10000)*ConstantValue__32_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__32_fixbits + (-10000)*ConstantValue__32_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__32_fixp + (1)*ConstantValue__32_float + (1)*ConstantValue__32_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__32_fixbits + (-10000)*ConstantValue__32_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -3343,22 +3271,7 @@ solver.Add( + (1)*ConstantValue__33_fixbits + (-10000)*ConstantValue__33_fixp<=0
 
 
 
-#Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__34_fixbits = solver.IntVar(0, 30, 'ConstantValue__34_fixbits')
-ConstantValue__34_fixp = solver.IntVar(0, 1, 'ConstantValue__34_fixp')
-ConstantValue__34_float = solver.IntVar(0, 1, 'ConstantValue__34_float')
-ConstantValue__34_double = solver.IntVar(0, 1, 'ConstantValue__34_double')
-ConstantValue__34_enob = solver.IntVar(-10000, 10000, 'ConstantValue__34_enob')
-solver.Add( + (1)*ConstantValue__34_enob + (-1)*ConstantValue__34_fixbits + (10000)*ConstantValue__34_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__34_enob + (10000)*ConstantValue__34_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__34_enob + (10000)*ConstantValue__34_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__34_fixbits + (-10000)*ConstantValue__34_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__34_fixp + (1)*ConstantValue__34_float + (1)*ConstantValue__34_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__34_fixbits + (-10000)*ConstantValue__34_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !101, !taffo.initweight !32, !taffo.constinfo !103
+#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !99, !taffo.initweight !30, !taffo.constinfo !101
 _Z4CNDFf_2_13_mul28_CAST_mul38_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul28_CAST_mul38_fixbits')
 _Z4CNDFf_2_13_mul28_CAST_mul38_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul28_CAST_mul38_fixp')
 _Z4CNDFf_2_13_mul28_CAST_mul38_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul28_CAST_mul38_float')
@@ -3393,55 +3306,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul28_CAST_mul38
 
 
 #Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__35_fixbits = solver.IntVar(0, 30, 'ConstantValue__35_fixbits')
-ConstantValue__35_fixp = solver.IntVar(0, 1, 'ConstantValue__35_fixp')
-ConstantValue__35_float = solver.IntVar(0, 1, 'ConstantValue__35_float')
-ConstantValue__35_double = solver.IntVar(0, 1, 'ConstantValue__35_double')
-ConstantValue__35_enob = solver.IntVar(-10000, 10000, 'ConstantValue__35_enob')
-solver.Add( + (1)*ConstantValue__35_enob + (-1)*ConstantValue__35_fixbits + (10000)*ConstantValue__35_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__35_enob + (10000)*ConstantValue__35_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__35_enob + (10000)*ConstantValue__35_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__35_fixbits + (-10000)*ConstantValue__35_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__35_fixp + (1)*ConstantValue__35_float + (1)*ConstantValue__35_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__35_fixbits + (-10000)*ConstantValue__35_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__34_fixbits = solver.IntVar(0, 30, 'ConstantValue__34_fixbits')
+ConstantValue__34_fixp = solver.IntVar(0, 1, 'ConstantValue__34_fixp')
+ConstantValue__34_float = solver.IntVar(0, 1, 'ConstantValue__34_float')
+ConstantValue__34_double = solver.IntVar(0, 1, 'ConstantValue__34_double')
+ConstantValue__34_enob = solver.IntVar(-10000, 10000, 'ConstantValue__34_enob')
+solver.Add( + (1)*ConstantValue__34_enob + (-1)*ConstantValue__34_fixbits + (10000)*ConstantValue__34_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__34_enob + (10000)*ConstantValue__34_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__34_enob + (10000)*ConstantValue__34_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__34_fixbits + (-10000)*ConstantValue__34_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__34_fixp + (1)*ConstantValue__34_float + (1)*ConstantValue__34_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__34_fixbits + (-10000)*ConstantValue__34_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !101, !taffo.initweight !32, !taffo.constinfo !103
-ConstantValue__35_CAST_mul38_fixbits = solver.IntVar(0, 30, 'ConstantValue__35_CAST_mul38_fixbits')
-ConstantValue__35_CAST_mul38_fixp = solver.IntVar(0, 1, 'ConstantValue__35_CAST_mul38_fixp')
-ConstantValue__35_CAST_mul38_float = solver.IntVar(0, 1, 'ConstantValue__35_CAST_mul38_float')
-ConstantValue__35_CAST_mul38_double = solver.IntVar(0, 1, 'ConstantValue__35_CAST_mul38_double')
-solver.Add( + (1)*ConstantValue__35_CAST_mul38_fixp + (1)*ConstantValue__35_CAST_mul38_float + (1)*ConstantValue__35_CAST_mul38_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__35_CAST_mul38_fixbits + (-10000)*ConstantValue__35_CAST_mul38_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C1_ConstantValue__35_CAST_mul38')
-C2_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C2_ConstantValue__35_CAST_mul38')
-solver.Add( + (1)*ConstantValue__35_fixbits + (-1)*ConstantValue__35_CAST_mul38_fixbits + (-10000)*C1_ConstantValue__35_CAST_mul38<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__35_fixbits + (1)*ConstantValue__35_CAST_mul38_fixbits + (-10000)*C2_ConstantValue__35_CAST_mul38<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__35_CAST_mul38
-castCostObj +=  + (1.13006)*C2_ConstantValue__35_CAST_mul38
-C3_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C3_ConstantValue__35_CAST_mul38')
-C4_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C4_ConstantValue__35_CAST_mul38')
-C5_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C5_ConstantValue__35_CAST_mul38')
-C6_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C6_ConstantValue__35_CAST_mul38')
-C7_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C7_ConstantValue__35_CAST_mul38')
-C8_ConstantValue__35_CAST_mul38 = solver.IntVar(0, 1, 'C8_ConstantValue__35_CAST_mul38')
-solver.Add( + (1)*ConstantValue__35_fixp + (1)*ConstantValue__35_CAST_mul38_float + (-1)*C3_ConstantValue__35_CAST_mul38<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__35_CAST_mul38
-solver.Add( + (1)*ConstantValue__35_float + (1)*ConstantValue__35_CAST_mul38_fixp + (-1)*C4_ConstantValue__35_CAST_mul38<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__35_CAST_mul38
-solver.Add( + (1)*ConstantValue__35_fixp + (1)*ConstantValue__35_CAST_mul38_double + (-1)*C5_ConstantValue__35_CAST_mul38<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__35_CAST_mul38
-solver.Add( + (1)*ConstantValue__35_double + (1)*ConstantValue__35_CAST_mul38_fixp + (-1)*C6_ConstantValue__35_CAST_mul38<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__35_CAST_mul38
-solver.Add( + (1)*ConstantValue__35_float + (1)*ConstantValue__35_CAST_mul38_double + (-1)*C7_ConstantValue__35_CAST_mul38<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__35_CAST_mul38
-solver.Add( + (1)*ConstantValue__35_double + (1)*ConstantValue__35_CAST_mul38_float + (-1)*C8_ConstantValue__35_CAST_mul38<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__35_CAST_mul38
+#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !99, !taffo.initweight !30, !taffo.constinfo !101
+ConstantValue__34_CAST_mul38_fixbits = solver.IntVar(0, 30, 'ConstantValue__34_CAST_mul38_fixbits')
+ConstantValue__34_CAST_mul38_fixp = solver.IntVar(0, 1, 'ConstantValue__34_CAST_mul38_fixp')
+ConstantValue__34_CAST_mul38_float = solver.IntVar(0, 1, 'ConstantValue__34_CAST_mul38_float')
+ConstantValue__34_CAST_mul38_double = solver.IntVar(0, 1, 'ConstantValue__34_CAST_mul38_double')
+solver.Add( + (1)*ConstantValue__34_CAST_mul38_fixp + (1)*ConstantValue__34_CAST_mul38_float + (1)*ConstantValue__34_CAST_mul38_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__34_CAST_mul38_fixbits + (-10000)*ConstantValue__34_CAST_mul38_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C1_ConstantValue__34_CAST_mul38')
+C2_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C2_ConstantValue__34_CAST_mul38')
+solver.Add( + (1)*ConstantValue__34_fixbits + (-1)*ConstantValue__34_CAST_mul38_fixbits + (-10000)*C1_ConstantValue__34_CAST_mul38<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__34_fixbits + (1)*ConstantValue__34_CAST_mul38_fixbits + (-10000)*C2_ConstantValue__34_CAST_mul38<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__34_CAST_mul38
+castCostObj +=  + (1.13006)*C2_ConstantValue__34_CAST_mul38
+C3_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C3_ConstantValue__34_CAST_mul38')
+C4_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C4_ConstantValue__34_CAST_mul38')
+C5_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C5_ConstantValue__34_CAST_mul38')
+C6_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C6_ConstantValue__34_CAST_mul38')
+C7_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C7_ConstantValue__34_CAST_mul38')
+C8_ConstantValue__34_CAST_mul38 = solver.IntVar(0, 1, 'C8_ConstantValue__34_CAST_mul38')
+solver.Add( + (1)*ConstantValue__34_fixp + (1)*ConstantValue__34_CAST_mul38_float + (-1)*C3_ConstantValue__34_CAST_mul38<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__34_CAST_mul38
+solver.Add( + (1)*ConstantValue__34_float + (1)*ConstantValue__34_CAST_mul38_fixp + (-1)*C4_ConstantValue__34_CAST_mul38<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__34_CAST_mul38
+solver.Add( + (1)*ConstantValue__34_fixp + (1)*ConstantValue__34_CAST_mul38_double + (-1)*C5_ConstantValue__34_CAST_mul38<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__34_CAST_mul38
+solver.Add( + (1)*ConstantValue__34_double + (1)*ConstantValue__34_CAST_mul38_fixp + (-1)*C6_ConstantValue__34_CAST_mul38<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__34_CAST_mul38
+solver.Add( + (1)*ConstantValue__34_float + (1)*ConstantValue__34_CAST_mul38_double + (-1)*C7_ConstantValue__34_CAST_mul38<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__34_CAST_mul38
+solver.Add( + (1)*ConstantValue__34_double + (1)*ConstantValue__34_CAST_mul38_float + (-1)*C8_ConstantValue__34_CAST_mul38<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__34_CAST_mul38
 
 
 
-#Stuff for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !101, !taffo.initweight !32, !taffo.constinfo !103
+#Stuff for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !99, !taffo.initweight !30, !taffo.constinfo !101
 _Z4CNDFf_2_13_mul38_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul38_fixbits')
 _Z4CNDFf_2_13_mul38_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul38_fixp')
 _Z4CNDFf_2_13_mul38_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul38_float')
@@ -3454,9 +3367,9 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul38_fixbits + (-10000)*_Z4CNDFf_2_13_mul38_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul38_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul38_fixp + (1)*_Z4CNDFf_2_13_mul38_float + (1)*_Z4CNDFf_2_13_mul38_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul38_fixbits + (-10000)*_Z4CNDFf_2_13_mul38_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_fixp + (-1)*ConstantValue__35_CAST_mul38_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_float + (-1)*ConstantValue__35_CAST_mul38_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_double + (-1)*ConstantValue__35_CAST_mul38_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_fixp + (-1)*ConstantValue__34_CAST_mul38_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_float + (-1)*ConstantValue__34_CAST_mul38_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_double + (-1)*ConstantValue__34_CAST_mul38_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_fixp + (-1)*_Z4CNDFf_2_13_mul38_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_float + (-1)*_Z4CNDFf_2_13_mul38_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul28_CAST_mul38_double + (-1)*_Z4CNDFf_2_13_mul38_double==0)    #double equality
@@ -3466,12 +3379,12 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul38_double
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_1')
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_13_mul38_enob + (-1)*ConstantValue__33_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_2_13_mul38_enob + (-1)*ConstantValue__32_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_2_13_mul38_enob + (-1)*_Z4CNDFf_2_13_mul28_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul38_enob_2<=-1)    #Enob: propagation in product 2
 
 
 
-#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !108, !taffo.initweight !25
+#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !106, !taffo.initweight !23
 _Z4CNDFf_2_13_mul35_CAST_add40_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul35_CAST_add40_fixbits')
 _Z4CNDFf_2_13_mul35_CAST_add40_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul35_CAST_add40_fixp')
 _Z4CNDFf_2_13_mul35_CAST_add40_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul35_CAST_add40_float')
@@ -3505,7 +3418,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul35_CAST_add40
 
 
 
-#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !108, !taffo.initweight !25
+#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !106, !taffo.initweight !23
 _Z4CNDFf_2_13_mul38_CAST_add40_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul38_CAST_add40_fixbits')
 _Z4CNDFf_2_13_mul38_CAST_add40_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul38_CAST_add40_fixp')
 _Z4CNDFf_2_13_mul38_CAST_add40_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul38_CAST_add40_float')
@@ -3539,7 +3452,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul38_CAST_add40
 
 
 
-#Stuff for   %add40 = fadd float %conv36, %conv39, !taffo.info !108, !taffo.initweight !25
+#Stuff for   %add40 = fadd float %conv36, %conv39, !taffo.info !106, !taffo.initweight !23
 _Z4CNDFf_2_13_add40_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add40_fixbits')
 _Z4CNDFf_2_13_add40_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add40_fixp')
 _Z4CNDFf_2_13_add40_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add40_float')
@@ -3569,6 +3482,21 @@ solver.Add( + (1)*_Z4CNDFf_2_13_add40_enob + (-1)*_Z4CNDFf_2_13_mul38_enob<=0)  
 
 
 #Stuff for double 0xBFFD23DD4EF278D0
+ConstantValue__35_fixbits = solver.IntVar(0, 29, 'ConstantValue__35_fixbits')
+ConstantValue__35_fixp = solver.IntVar(0, 1, 'ConstantValue__35_fixp')
+ConstantValue__35_float = solver.IntVar(0, 1, 'ConstantValue__35_float')
+ConstantValue__35_double = solver.IntVar(0, 1, 'ConstantValue__35_double')
+ConstantValue__35_enob = solver.IntVar(-10000, 10000, 'ConstantValue__35_enob')
+solver.Add( + (1)*ConstantValue__35_enob + (-1)*ConstantValue__35_fixbits + (10000)*ConstantValue__35_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__35_enob + (10000)*ConstantValue__35_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__35_enob + (10000)*ConstantValue__35_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__35_fixbits + (-10000)*ConstantValue__35_fixp>=-9972)    #Limit the lower number of frac bits29
+solver.Add( + (1)*ConstantValue__35_fixp + (1)*ConstantValue__35_float + (1)*ConstantValue__35_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__35_fixbits + (-10000)*ConstantValue__35_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 0xBFFD23DD4EF278D0
 ConstantValue__36_fixbits = solver.IntVar(0, 29, 'ConstantValue__36_fixbits')
 ConstantValue__36_fixp = solver.IntVar(0, 1, 'ConstantValue__36_fixp')
 ConstantValue__36_float = solver.IntVar(0, 1, 'ConstantValue__36_float')
@@ -3583,22 +3511,7 @@ solver.Add( + (1)*ConstantValue__36_fixbits + (-10000)*ConstantValue__36_fixp<=0
 
 
 
-#Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__37_fixbits = solver.IntVar(0, 29, 'ConstantValue__37_fixbits')
-ConstantValue__37_fixp = solver.IntVar(0, 1, 'ConstantValue__37_fixp')
-ConstantValue__37_float = solver.IntVar(0, 1, 'ConstantValue__37_float')
-ConstantValue__37_double = solver.IntVar(0, 1, 'ConstantValue__37_double')
-ConstantValue__37_enob = solver.IntVar(-10000, 10000, 'ConstantValue__37_enob')
-solver.Add( + (1)*ConstantValue__37_enob + (-1)*ConstantValue__37_fixbits + (10000)*ConstantValue__37_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__37_enob + (10000)*ConstantValue__37_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__37_enob + (10000)*ConstantValue__37_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__37_fixbits + (-10000)*ConstantValue__37_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__37_fixp + (1)*ConstantValue__37_float + (1)*ConstantValue__37_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__37_fixbits + (-10000)*ConstantValue__37_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !110, !taffo.initweight !32, !taffo.constinfo !112
+#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !108, !taffo.initweight !30, !taffo.constinfo !110
 _Z4CNDFf_2_13_mul29_CAST_mul42_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul29_CAST_mul42_fixbits')
 _Z4CNDFf_2_13_mul29_CAST_mul42_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul29_CAST_mul42_fixp')
 _Z4CNDFf_2_13_mul29_CAST_mul42_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul29_CAST_mul42_float')
@@ -3633,55 +3546,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul29_CAST_mul42
 
 
 #Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__38_fixbits = solver.IntVar(0, 29, 'ConstantValue__38_fixbits')
-ConstantValue__38_fixp = solver.IntVar(0, 1, 'ConstantValue__38_fixp')
-ConstantValue__38_float = solver.IntVar(0, 1, 'ConstantValue__38_float')
-ConstantValue__38_double = solver.IntVar(0, 1, 'ConstantValue__38_double')
-ConstantValue__38_enob = solver.IntVar(-10000, 10000, 'ConstantValue__38_enob')
-solver.Add( + (1)*ConstantValue__38_enob + (-1)*ConstantValue__38_fixbits + (10000)*ConstantValue__38_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__38_enob + (10000)*ConstantValue__38_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__38_enob + (10000)*ConstantValue__38_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__38_fixbits + (-10000)*ConstantValue__38_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__38_fixp + (1)*ConstantValue__38_float + (1)*ConstantValue__38_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__38_fixbits + (-10000)*ConstantValue__38_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__37_fixbits = solver.IntVar(0, 29, 'ConstantValue__37_fixbits')
+ConstantValue__37_fixp = solver.IntVar(0, 1, 'ConstantValue__37_fixp')
+ConstantValue__37_float = solver.IntVar(0, 1, 'ConstantValue__37_float')
+ConstantValue__37_double = solver.IntVar(0, 1, 'ConstantValue__37_double')
+ConstantValue__37_enob = solver.IntVar(-10000, 10000, 'ConstantValue__37_enob')
+solver.Add( + (1)*ConstantValue__37_enob + (-1)*ConstantValue__37_fixbits + (10000)*ConstantValue__37_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__37_enob + (10000)*ConstantValue__37_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__37_enob + (10000)*ConstantValue__37_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__37_fixbits + (-10000)*ConstantValue__37_fixp>=-9972)    #Limit the lower number of frac bits29
+solver.Add( + (1)*ConstantValue__37_fixp + (1)*ConstantValue__37_float + (1)*ConstantValue__37_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__37_fixbits + (-10000)*ConstantValue__37_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !110, !taffo.initweight !32, !taffo.constinfo !112
-ConstantValue__38_CAST_mul42_fixbits = solver.IntVar(0, 29, 'ConstantValue__38_CAST_mul42_fixbits')
-ConstantValue__38_CAST_mul42_fixp = solver.IntVar(0, 1, 'ConstantValue__38_CAST_mul42_fixp')
-ConstantValue__38_CAST_mul42_float = solver.IntVar(0, 1, 'ConstantValue__38_CAST_mul42_float')
-ConstantValue__38_CAST_mul42_double = solver.IntVar(0, 1, 'ConstantValue__38_CAST_mul42_double')
-solver.Add( + (1)*ConstantValue__38_CAST_mul42_fixp + (1)*ConstantValue__38_CAST_mul42_float + (1)*ConstantValue__38_CAST_mul42_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__38_CAST_mul42_fixbits + (-10000)*ConstantValue__38_CAST_mul42_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C1_ConstantValue__38_CAST_mul42')
-C2_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C2_ConstantValue__38_CAST_mul42')
-solver.Add( + (1)*ConstantValue__38_fixbits + (-1)*ConstantValue__38_CAST_mul42_fixbits + (-10000)*C1_ConstantValue__38_CAST_mul42<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__38_fixbits + (1)*ConstantValue__38_CAST_mul42_fixbits + (-10000)*C2_ConstantValue__38_CAST_mul42<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__38_CAST_mul42
-castCostObj +=  + (1.13006)*C2_ConstantValue__38_CAST_mul42
-C3_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C3_ConstantValue__38_CAST_mul42')
-C4_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C4_ConstantValue__38_CAST_mul42')
-C5_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C5_ConstantValue__38_CAST_mul42')
-C6_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C6_ConstantValue__38_CAST_mul42')
-C7_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C7_ConstantValue__38_CAST_mul42')
-C8_ConstantValue__38_CAST_mul42 = solver.IntVar(0, 1, 'C8_ConstantValue__38_CAST_mul42')
-solver.Add( + (1)*ConstantValue__38_fixp + (1)*ConstantValue__38_CAST_mul42_float + (-1)*C3_ConstantValue__38_CAST_mul42<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__38_CAST_mul42
-solver.Add( + (1)*ConstantValue__38_float + (1)*ConstantValue__38_CAST_mul42_fixp + (-1)*C4_ConstantValue__38_CAST_mul42<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__38_CAST_mul42
-solver.Add( + (1)*ConstantValue__38_fixp + (1)*ConstantValue__38_CAST_mul42_double + (-1)*C5_ConstantValue__38_CAST_mul42<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__38_CAST_mul42
-solver.Add( + (1)*ConstantValue__38_double + (1)*ConstantValue__38_CAST_mul42_fixp + (-1)*C6_ConstantValue__38_CAST_mul42<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__38_CAST_mul42
-solver.Add( + (1)*ConstantValue__38_float + (1)*ConstantValue__38_CAST_mul42_double + (-1)*C7_ConstantValue__38_CAST_mul42<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__38_CAST_mul42
-solver.Add( + (1)*ConstantValue__38_double + (1)*ConstantValue__38_CAST_mul42_float + (-1)*C8_ConstantValue__38_CAST_mul42<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__38_CAST_mul42
+#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !108, !taffo.initweight !30, !taffo.constinfo !110
+ConstantValue__37_CAST_mul42_fixbits = solver.IntVar(0, 29, 'ConstantValue__37_CAST_mul42_fixbits')
+ConstantValue__37_CAST_mul42_fixp = solver.IntVar(0, 1, 'ConstantValue__37_CAST_mul42_fixp')
+ConstantValue__37_CAST_mul42_float = solver.IntVar(0, 1, 'ConstantValue__37_CAST_mul42_float')
+ConstantValue__37_CAST_mul42_double = solver.IntVar(0, 1, 'ConstantValue__37_CAST_mul42_double')
+solver.Add( + (1)*ConstantValue__37_CAST_mul42_fixp + (1)*ConstantValue__37_CAST_mul42_float + (1)*ConstantValue__37_CAST_mul42_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__37_CAST_mul42_fixbits + (-10000)*ConstantValue__37_CAST_mul42_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C1_ConstantValue__37_CAST_mul42')
+C2_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C2_ConstantValue__37_CAST_mul42')
+solver.Add( + (1)*ConstantValue__37_fixbits + (-1)*ConstantValue__37_CAST_mul42_fixbits + (-10000)*C1_ConstantValue__37_CAST_mul42<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__37_fixbits + (1)*ConstantValue__37_CAST_mul42_fixbits + (-10000)*C2_ConstantValue__37_CAST_mul42<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__37_CAST_mul42
+castCostObj +=  + (1.13006)*C2_ConstantValue__37_CAST_mul42
+C3_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C3_ConstantValue__37_CAST_mul42')
+C4_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C4_ConstantValue__37_CAST_mul42')
+C5_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C5_ConstantValue__37_CAST_mul42')
+C6_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C6_ConstantValue__37_CAST_mul42')
+C7_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C7_ConstantValue__37_CAST_mul42')
+C8_ConstantValue__37_CAST_mul42 = solver.IntVar(0, 1, 'C8_ConstantValue__37_CAST_mul42')
+solver.Add( + (1)*ConstantValue__37_fixp + (1)*ConstantValue__37_CAST_mul42_float + (-1)*C3_ConstantValue__37_CAST_mul42<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__37_CAST_mul42
+solver.Add( + (1)*ConstantValue__37_float + (1)*ConstantValue__37_CAST_mul42_fixp + (-1)*C4_ConstantValue__37_CAST_mul42<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__37_CAST_mul42
+solver.Add( + (1)*ConstantValue__37_fixp + (1)*ConstantValue__37_CAST_mul42_double + (-1)*C5_ConstantValue__37_CAST_mul42<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__37_CAST_mul42
+solver.Add( + (1)*ConstantValue__37_double + (1)*ConstantValue__37_CAST_mul42_fixp + (-1)*C6_ConstantValue__37_CAST_mul42<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__37_CAST_mul42
+solver.Add( + (1)*ConstantValue__37_float + (1)*ConstantValue__37_CAST_mul42_double + (-1)*C7_ConstantValue__37_CAST_mul42<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__37_CAST_mul42
+solver.Add( + (1)*ConstantValue__37_double + (1)*ConstantValue__37_CAST_mul42_float + (-1)*C8_ConstantValue__37_CAST_mul42<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__37_CAST_mul42
 
 
 
-#Stuff for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !110, !taffo.initweight !32, !taffo.constinfo !112
+#Stuff for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !108, !taffo.initweight !30, !taffo.constinfo !110
 _Z4CNDFf_2_13_mul42_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul42_fixbits')
 _Z4CNDFf_2_13_mul42_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul42_fixp')
 _Z4CNDFf_2_13_mul42_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul42_float')
@@ -3694,9 +3607,9 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul42_fixbits + (-10000)*_Z4CNDFf_2_13_mul42_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul42_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul42_fixp + (1)*_Z4CNDFf_2_13_mul42_float + (1)*_Z4CNDFf_2_13_mul42_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul42_fixbits + (-10000)*_Z4CNDFf_2_13_mul42_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_fixp + (-1)*ConstantValue__38_CAST_mul42_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_float + (-1)*ConstantValue__38_CAST_mul42_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_double + (-1)*ConstantValue__38_CAST_mul42_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_fixp + (-1)*ConstantValue__37_CAST_mul42_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_float + (-1)*ConstantValue__37_CAST_mul42_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_double + (-1)*ConstantValue__37_CAST_mul42_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_fixp + (-1)*_Z4CNDFf_2_13_mul42_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_float + (-1)*_Z4CNDFf_2_13_mul42_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul29_CAST_mul42_double + (-1)*_Z4CNDFf_2_13_mul42_double==0)    #double equality
@@ -3706,12 +3619,12 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul42_double
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_1')
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_13_mul42_enob + (-1)*ConstantValue__36_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_1<=1024)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_2_13_mul42_enob + (-1)*_Z4CNDFf_2_13_mul29_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_2<=-2.14748e+09)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_2_13_mul42_enob + (-1)*ConstantValue__35_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_2_13_mul42_enob + (-1)*_Z4CNDFf_2_13_mul29_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul42_enob_2<=-1)    #Enob: propagation in product 2
 
 
 
-#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !117, !taffo.initweight !25
+#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !115, !taffo.initweight !23
 _Z4CNDFf_2_13_add40_CAST_add44_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add40_CAST_add44_fixbits')
 _Z4CNDFf_2_13_add40_CAST_add44_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add40_CAST_add44_fixp')
 _Z4CNDFf_2_13_add40_CAST_add44_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add40_CAST_add44_float')
@@ -3745,7 +3658,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_add40_CAST_add44
 
 
 
-#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !117, !taffo.initweight !25
+#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !115, !taffo.initweight !23
 _Z4CNDFf_2_13_mul42_CAST_add44_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul42_CAST_add44_fixbits')
 _Z4CNDFf_2_13_mul42_CAST_add44_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul42_CAST_add44_fixp')
 _Z4CNDFf_2_13_mul42_CAST_add44_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul42_CAST_add44_float')
@@ -3779,7 +3692,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul42_CAST_add44
 
 
 
-#Stuff for   %add44 = fadd float %add40, %conv43, !taffo.info !117, !taffo.initweight !25
+#Stuff for   %add44 = fadd float %add40, %conv43, !taffo.info !115, !taffo.initweight !23
 _Z4CNDFf_2_13_add44_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add44_fixbits')
 _Z4CNDFf_2_13_add44_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add44_fixp')
 _Z4CNDFf_2_13_add44_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add44_float')
@@ -3809,6 +3722,21 @@ solver.Add( + (1)*_Z4CNDFf_2_13_add44_enob + (-1)*_Z4CNDFf_2_13_mul42_enob<=0)  
 
 
 #Stuff for double 0x3FF548CDD6F42943
+ConstantValue__38_fixbits = solver.IntVar(0, 30, 'ConstantValue__38_fixbits')
+ConstantValue__38_fixp = solver.IntVar(0, 1, 'ConstantValue__38_fixp')
+ConstantValue__38_float = solver.IntVar(0, 1, 'ConstantValue__38_float')
+ConstantValue__38_double = solver.IntVar(0, 1, 'ConstantValue__38_double')
+ConstantValue__38_enob = solver.IntVar(-10000, 10000, 'ConstantValue__38_enob')
+solver.Add( + (1)*ConstantValue__38_enob + (-1)*ConstantValue__38_fixbits + (10000)*ConstantValue__38_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__38_enob + (10000)*ConstantValue__38_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__38_enob + (10000)*ConstantValue__38_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__38_fixbits + (-10000)*ConstantValue__38_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__38_fixp + (1)*ConstantValue__38_float + (1)*ConstantValue__38_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__38_fixbits + (-10000)*ConstantValue__38_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 0x3FF548CDD6F42943
 ConstantValue__39_fixbits = solver.IntVar(0, 30, 'ConstantValue__39_fixbits')
 ConstantValue__39_fixp = solver.IntVar(0, 1, 'ConstantValue__39_fixp')
 ConstantValue__39_float = solver.IntVar(0, 1, 'ConstantValue__39_float')
@@ -3823,22 +3751,7 @@ solver.Add( + (1)*ConstantValue__39_fixbits + (-10000)*ConstantValue__39_fixp<=0
 
 
 
-#Stuff for double 0x3FF548CDD6F42943
-ConstantValue__40_fixbits = solver.IntVar(0, 30, 'ConstantValue__40_fixbits')
-ConstantValue__40_fixp = solver.IntVar(0, 1, 'ConstantValue__40_fixp')
-ConstantValue__40_float = solver.IntVar(0, 1, 'ConstantValue__40_float')
-ConstantValue__40_double = solver.IntVar(0, 1, 'ConstantValue__40_double')
-ConstantValue__40_enob = solver.IntVar(-10000, 10000, 'ConstantValue__40_enob')
-solver.Add( + (1)*ConstantValue__40_enob + (-1)*ConstantValue__40_fixbits + (10000)*ConstantValue__40_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__40_enob + (10000)*ConstantValue__40_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__40_enob + (10000)*ConstantValue__40_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__40_fixbits + (-10000)*ConstantValue__40_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__40_fixp + (1)*ConstantValue__40_float + (1)*ConstantValue__40_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__40_fixbits + (-10000)*ConstantValue__40_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !119, !taffo.initweight !32, !taffo.constinfo !121
+#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !117, !taffo.initweight !30, !taffo.constinfo !119
 _Z4CNDFf_2_13_mul30_CAST_mul46_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul30_CAST_mul46_fixbits')
 _Z4CNDFf_2_13_mul30_CAST_mul46_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul30_CAST_mul46_fixp')
 _Z4CNDFf_2_13_mul30_CAST_mul46_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul30_CAST_mul46_float')
@@ -3873,55 +3786,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul30_CAST_mul46
 
 
 #Stuff for double 0x3FF548CDD6F42943
-ConstantValue__41_fixbits = solver.IntVar(0, 30, 'ConstantValue__41_fixbits')
-ConstantValue__41_fixp = solver.IntVar(0, 1, 'ConstantValue__41_fixp')
-ConstantValue__41_float = solver.IntVar(0, 1, 'ConstantValue__41_float')
-ConstantValue__41_double = solver.IntVar(0, 1, 'ConstantValue__41_double')
-ConstantValue__41_enob = solver.IntVar(-10000, 10000, 'ConstantValue__41_enob')
-solver.Add( + (1)*ConstantValue__41_enob + (-1)*ConstantValue__41_fixbits + (10000)*ConstantValue__41_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__41_enob + (10000)*ConstantValue__41_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__41_enob + (10000)*ConstantValue__41_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__41_fixbits + (-10000)*ConstantValue__41_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__41_fixp + (1)*ConstantValue__41_float + (1)*ConstantValue__41_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__41_fixbits + (-10000)*ConstantValue__41_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__40_fixbits = solver.IntVar(0, 30, 'ConstantValue__40_fixbits')
+ConstantValue__40_fixp = solver.IntVar(0, 1, 'ConstantValue__40_fixp')
+ConstantValue__40_float = solver.IntVar(0, 1, 'ConstantValue__40_float')
+ConstantValue__40_double = solver.IntVar(0, 1, 'ConstantValue__40_double')
+ConstantValue__40_enob = solver.IntVar(-10000, 10000, 'ConstantValue__40_enob')
+solver.Add( + (1)*ConstantValue__40_enob + (-1)*ConstantValue__40_fixbits + (10000)*ConstantValue__40_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__40_enob + (10000)*ConstantValue__40_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__40_enob + (10000)*ConstantValue__40_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__40_fixbits + (-10000)*ConstantValue__40_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__40_fixp + (1)*ConstantValue__40_float + (1)*ConstantValue__40_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__40_fixbits + (-10000)*ConstantValue__40_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !119, !taffo.initweight !32, !taffo.constinfo !121
-ConstantValue__41_CAST_mul46_fixbits = solver.IntVar(0, 30, 'ConstantValue__41_CAST_mul46_fixbits')
-ConstantValue__41_CAST_mul46_fixp = solver.IntVar(0, 1, 'ConstantValue__41_CAST_mul46_fixp')
-ConstantValue__41_CAST_mul46_float = solver.IntVar(0, 1, 'ConstantValue__41_CAST_mul46_float')
-ConstantValue__41_CAST_mul46_double = solver.IntVar(0, 1, 'ConstantValue__41_CAST_mul46_double')
-solver.Add( + (1)*ConstantValue__41_CAST_mul46_fixp + (1)*ConstantValue__41_CAST_mul46_float + (1)*ConstantValue__41_CAST_mul46_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__41_CAST_mul46_fixbits + (-10000)*ConstantValue__41_CAST_mul46_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C1_ConstantValue__41_CAST_mul46')
-C2_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C2_ConstantValue__41_CAST_mul46')
-solver.Add( + (1)*ConstantValue__41_fixbits + (-1)*ConstantValue__41_CAST_mul46_fixbits + (-10000)*C1_ConstantValue__41_CAST_mul46<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__41_fixbits + (1)*ConstantValue__41_CAST_mul46_fixbits + (-10000)*C2_ConstantValue__41_CAST_mul46<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__41_CAST_mul46
-castCostObj +=  + (1.13006)*C2_ConstantValue__41_CAST_mul46
-C3_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C3_ConstantValue__41_CAST_mul46')
-C4_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C4_ConstantValue__41_CAST_mul46')
-C5_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C5_ConstantValue__41_CAST_mul46')
-C6_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C6_ConstantValue__41_CAST_mul46')
-C7_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C7_ConstantValue__41_CAST_mul46')
-C8_ConstantValue__41_CAST_mul46 = solver.IntVar(0, 1, 'C8_ConstantValue__41_CAST_mul46')
-solver.Add( + (1)*ConstantValue__41_fixp + (1)*ConstantValue__41_CAST_mul46_float + (-1)*C3_ConstantValue__41_CAST_mul46<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__41_CAST_mul46
-solver.Add( + (1)*ConstantValue__41_float + (1)*ConstantValue__41_CAST_mul46_fixp + (-1)*C4_ConstantValue__41_CAST_mul46<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__41_CAST_mul46
-solver.Add( + (1)*ConstantValue__41_fixp + (1)*ConstantValue__41_CAST_mul46_double + (-1)*C5_ConstantValue__41_CAST_mul46<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__41_CAST_mul46
-solver.Add( + (1)*ConstantValue__41_double + (1)*ConstantValue__41_CAST_mul46_fixp + (-1)*C6_ConstantValue__41_CAST_mul46<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__41_CAST_mul46
-solver.Add( + (1)*ConstantValue__41_float + (1)*ConstantValue__41_CAST_mul46_double + (-1)*C7_ConstantValue__41_CAST_mul46<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__41_CAST_mul46
-solver.Add( + (1)*ConstantValue__41_double + (1)*ConstantValue__41_CAST_mul46_float + (-1)*C8_ConstantValue__41_CAST_mul46<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__41_CAST_mul46
+#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !117, !taffo.initweight !30, !taffo.constinfo !119
+ConstantValue__40_CAST_mul46_fixbits = solver.IntVar(0, 30, 'ConstantValue__40_CAST_mul46_fixbits')
+ConstantValue__40_CAST_mul46_fixp = solver.IntVar(0, 1, 'ConstantValue__40_CAST_mul46_fixp')
+ConstantValue__40_CAST_mul46_float = solver.IntVar(0, 1, 'ConstantValue__40_CAST_mul46_float')
+ConstantValue__40_CAST_mul46_double = solver.IntVar(0, 1, 'ConstantValue__40_CAST_mul46_double')
+solver.Add( + (1)*ConstantValue__40_CAST_mul46_fixp + (1)*ConstantValue__40_CAST_mul46_float + (1)*ConstantValue__40_CAST_mul46_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__40_CAST_mul46_fixbits + (-10000)*ConstantValue__40_CAST_mul46_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C1_ConstantValue__40_CAST_mul46')
+C2_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C2_ConstantValue__40_CAST_mul46')
+solver.Add( + (1)*ConstantValue__40_fixbits + (-1)*ConstantValue__40_CAST_mul46_fixbits + (-10000)*C1_ConstantValue__40_CAST_mul46<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__40_fixbits + (1)*ConstantValue__40_CAST_mul46_fixbits + (-10000)*C2_ConstantValue__40_CAST_mul46<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__40_CAST_mul46
+castCostObj +=  + (1.13006)*C2_ConstantValue__40_CAST_mul46
+C3_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C3_ConstantValue__40_CAST_mul46')
+C4_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C4_ConstantValue__40_CAST_mul46')
+C5_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C5_ConstantValue__40_CAST_mul46')
+C6_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C6_ConstantValue__40_CAST_mul46')
+C7_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C7_ConstantValue__40_CAST_mul46')
+C8_ConstantValue__40_CAST_mul46 = solver.IntVar(0, 1, 'C8_ConstantValue__40_CAST_mul46')
+solver.Add( + (1)*ConstantValue__40_fixp + (1)*ConstantValue__40_CAST_mul46_float + (-1)*C3_ConstantValue__40_CAST_mul46<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__40_CAST_mul46
+solver.Add( + (1)*ConstantValue__40_float + (1)*ConstantValue__40_CAST_mul46_fixp + (-1)*C4_ConstantValue__40_CAST_mul46<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__40_CAST_mul46
+solver.Add( + (1)*ConstantValue__40_fixp + (1)*ConstantValue__40_CAST_mul46_double + (-1)*C5_ConstantValue__40_CAST_mul46<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__40_CAST_mul46
+solver.Add( + (1)*ConstantValue__40_double + (1)*ConstantValue__40_CAST_mul46_fixp + (-1)*C6_ConstantValue__40_CAST_mul46<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__40_CAST_mul46
+solver.Add( + (1)*ConstantValue__40_float + (1)*ConstantValue__40_CAST_mul46_double + (-1)*C7_ConstantValue__40_CAST_mul46<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__40_CAST_mul46
+solver.Add( + (1)*ConstantValue__40_double + (1)*ConstantValue__40_CAST_mul46_float + (-1)*C8_ConstantValue__40_CAST_mul46<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__40_CAST_mul46
 
 
 
-#Stuff for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !119, !taffo.initweight !32, !taffo.constinfo !121
+#Stuff for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !117, !taffo.initweight !30, !taffo.constinfo !119
 _Z4CNDFf_2_13_mul46_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul46_fixbits')
 _Z4CNDFf_2_13_mul46_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul46_fixp')
 _Z4CNDFf_2_13_mul46_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul46_float')
@@ -3934,9 +3847,9 @@ solver.Add( + (1)*_Z4CNDFf_2_13_mul46_fixbits + (-10000)*_Z4CNDFf_2_13_mul46_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_mul46_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_mul46_fixp + (1)*_Z4CNDFf_2_13_mul46_float + (1)*_Z4CNDFf_2_13_mul46_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_mul46_fixbits + (-10000)*_Z4CNDFf_2_13_mul46_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_fixp + (-1)*ConstantValue__41_CAST_mul46_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_float + (-1)*ConstantValue__41_CAST_mul46_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_double + (-1)*ConstantValue__41_CAST_mul46_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_fixp + (-1)*ConstantValue__40_CAST_mul46_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_float + (-1)*ConstantValue__40_CAST_mul46_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_double + (-1)*ConstantValue__40_CAST_mul46_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_fixp + (-1)*_Z4CNDFf_2_13_mul46_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_float + (-1)*_Z4CNDFf_2_13_mul46_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_2_13_mul30_CAST_mul46_double + (-1)*_Z4CNDFf_2_13_mul46_double==0)    #double equality
@@ -3946,12 +3859,12 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_2_13_mul46_double
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_1')
 _Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_2')
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_13_mul46_enob + (-1)*ConstantValue__39_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_2_13_mul46_enob + (-1)*ConstantValue__38_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_2_13_mul46_enob + (-1)*_Z4CNDFf_2_13_mul30_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul46_enob_2<=0)    #Enob: propagation in product 2
 
 
 
-#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !126, !taffo.initweight !25
+#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !124, !taffo.initweight !23
 _Z4CNDFf_2_13_add44_CAST_add48_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add44_CAST_add48_fixbits')
 _Z4CNDFf_2_13_add44_CAST_add48_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add44_CAST_add48_fixp')
 _Z4CNDFf_2_13_add44_CAST_add48_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add44_CAST_add48_float')
@@ -3985,7 +3898,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_add44_CAST_add48
 
 
 
-#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !126, !taffo.initweight !25
+#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !124, !taffo.initweight !23
 _Z4CNDFf_2_13_mul46_CAST_add48_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul46_CAST_add48_fixbits')
 _Z4CNDFf_2_13_mul46_CAST_add48_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul46_CAST_add48_fixp')
 _Z4CNDFf_2_13_mul46_CAST_add48_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul46_CAST_add48_float')
@@ -4019,7 +3932,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul46_CAST_add48
 
 
 
-#Stuff for   %add48 = fadd float %add44, %conv47, !taffo.info !126, !taffo.initweight !25
+#Stuff for   %add48 = fadd float %add44, %conv47, !taffo.info !124, !taffo.initweight !23
 _Z4CNDFf_2_13_add48_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add48_fixbits')
 _Z4CNDFf_2_13_add48_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add48_fixp')
 _Z4CNDFf_2_13_add48_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add48_float')
@@ -4048,7 +3961,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_add48_enob + (-1)*_Z4CNDFf_2_13_mul46_enob<=0)  
 
 
 
-#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !128, !taffo.initweight !25
+#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !126, !taffo.initweight !23
 _Z4CNDFf_2_13_add48_CAST_add49_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add48_CAST_add49_fixbits')
 _Z4CNDFf_2_13_add48_CAST_add49_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add48_CAST_add49_fixp')
 _Z4CNDFf_2_13_add48_CAST_add49_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add48_CAST_add49_float')
@@ -4082,7 +3995,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_add48_CAST_add49
 
 
 
-#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !128, !taffo.initweight !25
+#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !126, !taffo.initweight !23
 _Z4CNDFf_2_13_mul32_CAST_add49_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul32_CAST_add49_fixbits')
 _Z4CNDFf_2_13_mul32_CAST_add49_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul32_CAST_add49_fixp')
 _Z4CNDFf_2_13_mul32_CAST_add49_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul32_CAST_add49_float')
@@ -4116,7 +4029,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul32_CAST_add49
 
 
 
-#Stuff for   %add49 = fadd float %add48, %conv33, !taffo.info !128, !taffo.initweight !25
+#Stuff for   %add49 = fadd float %add48, %conv33, !taffo.info !126, !taffo.initweight !23
 _Z4CNDFf_2_13_add49_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add49_fixbits')
 _Z4CNDFf_2_13_add49_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add49_fixp')
 _Z4CNDFf_2_13_add49_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add49_float')
@@ -4145,7 +4058,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_add49_enob + (-1)*_Z4CNDFf_2_13_mul32_enob<=0)  
 
 
 
-#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !130, !taffo.initweight !25
+#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !128, !taffo.initweight !23
 _Z4CNDFf_2_13_add49_CAST_mul50_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_add49_CAST_mul50_fixbits')
 _Z4CNDFf_2_13_add49_CAST_mul50_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add49_CAST_mul50_fixp')
 _Z4CNDFf_2_13_add49_CAST_mul50_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_add49_CAST_mul50_float')
@@ -4179,7 +4092,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_add49_CAST_mul50
 
 
 
-#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !130, !taffo.initweight !25
+#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !128, !taffo.initweight !23
 _Z4CNDFf_2_13_mul18_CAST_mul50_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_13_mul18_CAST_mul50_fixbits')
 _Z4CNDFf_2_13_mul18_CAST_mul50_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul18_CAST_mul50_fixp')
 _Z4CNDFf_2_13_mul18_CAST_mul50_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul18_CAST_mul50_float')
@@ -4213,7 +4126,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul18_CAST_mul50
 
 
 
-#Stuff for   %mul50 = fmul float %add49, %conv19, !taffo.info !130, !taffo.initweight !25
+#Stuff for   %mul50 = fmul float %add49, %conv19, !taffo.info !128, !taffo.initweight !23
 _Z4CNDFf_2_13_mul50_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul50_fixbits')
 _Z4CNDFf_2_13_mul50_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul50_fixp')
 _Z4CNDFf_2_13_mul50_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul50_float')
@@ -4240,6 +4153,21 @@ _Z4CNDFf_2_13__Z4CNDFf_2_13_mul50_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2_13__Z
 solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul50_enob_1 + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul50_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*_Z4CNDFf_2_13_mul50_enob + (-1)*_Z4CNDFf_2_13_mul18_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul50_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_2_13_mul50_enob + (-1)*_Z4CNDFf_2_13_add49_enob + (-10000)*_Z4CNDFf_2_13__Z4CNDFf_2_13_mul50_enob_2<=1024)    #Enob: propagation in product 2
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__41_fixbits = solver.IntVar(0, 31, 'ConstantValue__41_fixbits')
+ConstantValue__41_fixp = solver.IntVar(0, 1, 'ConstantValue__41_fixp')
+ConstantValue__41_float = solver.IntVar(0, 1, 'ConstantValue__41_float')
+ConstantValue__41_double = solver.IntVar(0, 1, 'ConstantValue__41_double')
+ConstantValue__41_enob = solver.IntVar(-10000, 10000, 'ConstantValue__41_enob')
+solver.Add( + (1)*ConstantValue__41_enob + (-1)*ConstantValue__41_fixbits + (10000)*ConstantValue__41_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__41_enob + (10000)*ConstantValue__41_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__41_enob + (10000)*ConstantValue__41_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__41_fixbits + (-10000)*ConstantValue__41_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__41_fixp + (1)*ConstantValue__41_float + (1)*ConstantValue__41_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__41_fixbits + (-10000)*ConstantValue__41_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -4273,56 +4201,41 @@ solver.Add( + (1)*ConstantValue__43_fixbits + (-10000)*ConstantValue__43_fixp<=0
 
 
 
-#Stuff for double 1.000000e+00
-ConstantValue__44_fixbits = solver.IntVar(0, 31, 'ConstantValue__44_fixbits')
-ConstantValue__44_fixp = solver.IntVar(0, 1, 'ConstantValue__44_fixp')
-ConstantValue__44_float = solver.IntVar(0, 1, 'ConstantValue__44_float')
-ConstantValue__44_double = solver.IntVar(0, 1, 'ConstantValue__44_double')
-ConstantValue__44_enob = solver.IntVar(-10000, 10000, 'ConstantValue__44_enob')
-solver.Add( + (1)*ConstantValue__44_enob + (-1)*ConstantValue__44_fixbits + (10000)*ConstantValue__44_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__44_enob + (10000)*ConstantValue__44_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__44_enob + (10000)*ConstantValue__44_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__44_fixbits + (-10000)*ConstantValue__44_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__44_fixp + (1)*ConstantValue__44_float + (1)*ConstantValue__44_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__44_fixbits + (-10000)*ConstantValue__44_fixp<=0)    #If not fix, frac part to zero
+#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !130, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__43_CAST_sub52_fixbits = solver.IntVar(0, 31, 'ConstantValue__43_CAST_sub52_fixbits')
+ConstantValue__43_CAST_sub52_fixp = solver.IntVar(0, 1, 'ConstantValue__43_CAST_sub52_fixp')
+ConstantValue__43_CAST_sub52_float = solver.IntVar(0, 1, 'ConstantValue__43_CAST_sub52_float')
+ConstantValue__43_CAST_sub52_double = solver.IntVar(0, 1, 'ConstantValue__43_CAST_sub52_double')
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_fixp + (1)*ConstantValue__43_CAST_sub52_float + (1)*ConstantValue__43_CAST_sub52_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_fixbits + (-10000)*ConstantValue__43_CAST_sub52_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C1_ConstantValue__43_CAST_sub52')
+C2_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C2_ConstantValue__43_CAST_sub52')
+solver.Add( + (1)*ConstantValue__43_fixbits + (-1)*ConstantValue__43_CAST_sub52_fixbits + (-10000)*C1_ConstantValue__43_CAST_sub52<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__43_fixbits + (1)*ConstantValue__43_CAST_sub52_fixbits + (-10000)*C2_ConstantValue__43_CAST_sub52<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__43_CAST_sub52
+castCostObj +=  + (1.13006)*C2_ConstantValue__43_CAST_sub52
+C3_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C3_ConstantValue__43_CAST_sub52')
+C4_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C4_ConstantValue__43_CAST_sub52')
+C5_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C5_ConstantValue__43_CAST_sub52')
+C6_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C6_ConstantValue__43_CAST_sub52')
+C7_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C7_ConstantValue__43_CAST_sub52')
+C8_ConstantValue__43_CAST_sub52 = solver.IntVar(0, 1, 'C8_ConstantValue__43_CAST_sub52')
+solver.Add( + (1)*ConstantValue__43_fixp + (1)*ConstantValue__43_CAST_sub52_float + (-1)*C3_ConstantValue__43_CAST_sub52<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__43_CAST_sub52
+solver.Add( + (1)*ConstantValue__43_float + (1)*ConstantValue__43_CAST_sub52_fixp + (-1)*C4_ConstantValue__43_CAST_sub52<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__43_CAST_sub52
+solver.Add( + (1)*ConstantValue__43_fixp + (1)*ConstantValue__43_CAST_sub52_double + (-1)*C5_ConstantValue__43_CAST_sub52<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__43_CAST_sub52
+solver.Add( + (1)*ConstantValue__43_double + (1)*ConstantValue__43_CAST_sub52_fixp + (-1)*C6_ConstantValue__43_CAST_sub52<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__43_CAST_sub52
+solver.Add( + (1)*ConstantValue__43_float + (1)*ConstantValue__43_CAST_sub52_double + (-1)*C7_ConstantValue__43_CAST_sub52<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__43_CAST_sub52
+solver.Add( + (1)*ConstantValue__43_double + (1)*ConstantValue__43_CAST_sub52_float + (-1)*C8_ConstantValue__43_CAST_sub52<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__43_CAST_sub52
 
 
 
-#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !132, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__44_CAST_sub52_fixbits = solver.IntVar(0, 31, 'ConstantValue__44_CAST_sub52_fixbits')
-ConstantValue__44_CAST_sub52_fixp = solver.IntVar(0, 1, 'ConstantValue__44_CAST_sub52_fixp')
-ConstantValue__44_CAST_sub52_float = solver.IntVar(0, 1, 'ConstantValue__44_CAST_sub52_float')
-ConstantValue__44_CAST_sub52_double = solver.IntVar(0, 1, 'ConstantValue__44_CAST_sub52_double')
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_fixp + (1)*ConstantValue__44_CAST_sub52_float + (1)*ConstantValue__44_CAST_sub52_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_fixbits + (-10000)*ConstantValue__44_CAST_sub52_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C1_ConstantValue__44_CAST_sub52')
-C2_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C2_ConstantValue__44_CAST_sub52')
-solver.Add( + (1)*ConstantValue__44_fixbits + (-1)*ConstantValue__44_CAST_sub52_fixbits + (-10000)*C1_ConstantValue__44_CAST_sub52<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__44_fixbits + (1)*ConstantValue__44_CAST_sub52_fixbits + (-10000)*C2_ConstantValue__44_CAST_sub52<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__44_CAST_sub52
-castCostObj +=  + (1.13006)*C2_ConstantValue__44_CAST_sub52
-C3_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C3_ConstantValue__44_CAST_sub52')
-C4_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C4_ConstantValue__44_CAST_sub52')
-C5_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C5_ConstantValue__44_CAST_sub52')
-C6_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C6_ConstantValue__44_CAST_sub52')
-C7_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C7_ConstantValue__44_CAST_sub52')
-C8_ConstantValue__44_CAST_sub52 = solver.IntVar(0, 1, 'C8_ConstantValue__44_CAST_sub52')
-solver.Add( + (1)*ConstantValue__44_fixp + (1)*ConstantValue__44_CAST_sub52_float + (-1)*C3_ConstantValue__44_CAST_sub52<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__44_CAST_sub52
-solver.Add( + (1)*ConstantValue__44_float + (1)*ConstantValue__44_CAST_sub52_fixp + (-1)*C4_ConstantValue__44_CAST_sub52<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__44_CAST_sub52
-solver.Add( + (1)*ConstantValue__44_fixp + (1)*ConstantValue__44_CAST_sub52_double + (-1)*C5_ConstantValue__44_CAST_sub52<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__44_CAST_sub52
-solver.Add( + (1)*ConstantValue__44_double + (1)*ConstantValue__44_CAST_sub52_fixp + (-1)*C6_ConstantValue__44_CAST_sub52<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__44_CAST_sub52
-solver.Add( + (1)*ConstantValue__44_float + (1)*ConstantValue__44_CAST_sub52_double + (-1)*C7_ConstantValue__44_CAST_sub52<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__44_CAST_sub52
-solver.Add( + (1)*ConstantValue__44_double + (1)*ConstantValue__44_CAST_sub52_float + (-1)*C8_ConstantValue__44_CAST_sub52<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__44_CAST_sub52
-
-
-
-#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !132, !taffo.initweight !32, !taffo.constinfo !72
+#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !130, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_mul50_CAST_sub52_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_mul50_CAST_sub52_fixbits')
 _Z4CNDFf_2_13_mul50_CAST_sub52_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul50_CAST_sub52_fixp')
 _Z4CNDFf_2_13_mul50_CAST_sub52_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_mul50_CAST_sub52_float')
@@ -4356,7 +4269,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_mul50_CAST_sub52
 
 
 
-#Stuff for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !132, !taffo.initweight !32, !taffo.constinfo !72
+#Stuff for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !130, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_sub52_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_sub52_fixbits')
 _Z4CNDFf_2_13_sub52_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub52_fixp')
 _Z4CNDFf_2_13_sub52_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub52_float')
@@ -4369,19 +4282,34 @@ solver.Add( + (1)*_Z4CNDFf_2_13_sub52_fixbits + (-10000)*_Z4CNDFf_2_13_sub52_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_sub52_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_sub52_fixp + (1)*_Z4CNDFf_2_13_sub52_float + (1)*_Z4CNDFf_2_13_sub52_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_sub52_fixbits + (-10000)*_Z4CNDFf_2_13_sub52_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_fixp + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_float + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_double + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_fixbits + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_fixp + (-1)*_Z4CNDFf_2_13_sub52_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_float + (-1)*_Z4CNDFf_2_13_sub52_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_double + (-1)*_Z4CNDFf_2_13_sub52_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__44_CAST_sub52_fixbits + (-1)*_Z4CNDFf_2_13_sub52_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_fixp + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_float + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_double + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_fixbits + (-1)*_Z4CNDFf_2_13_mul50_CAST_sub52_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_fixp + (-1)*_Z4CNDFf_2_13_sub52_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_float + (-1)*_Z4CNDFf_2_13_sub52_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_double + (-1)*_Z4CNDFf_2_13_sub52_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__43_CAST_sub52_fixbits + (-1)*_Z4CNDFf_2_13_sub52_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z4CNDFf_2_13_sub52_fixp
 mathCostObj +=  + (1.80596)*_Z4CNDFf_2_13_sub52_float
 mathCostObj +=  + (2.15411)*_Z4CNDFf_2_13_sub52_double
-solver.Add( + (1)*_Z4CNDFf_2_13_sub52_enob + (-1)*ConstantValue__42_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z4CNDFf_2_13_sub52_enob + (-1)*ConstantValue__41_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z4CNDFf_2_13_sub52_enob + (-1)*_Z4CNDFf_2_13_mul50_enob<=0)    #Enob propagation in sub second addend
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__44_fixbits = solver.IntVar(0, 31, 'ConstantValue__44_fixbits')
+ConstantValue__44_fixp = solver.IntVar(0, 1, 'ConstantValue__44_fixp')
+ConstantValue__44_float = solver.IntVar(0, 1, 'ConstantValue__44_float')
+ConstantValue__44_double = solver.IntVar(0, 1, 'ConstantValue__44_double')
+ConstantValue__44_enob = solver.IntVar(-10000, 10000, 'ConstantValue__44_enob')
+solver.Add( + (1)*ConstantValue__44_enob + (-1)*ConstantValue__44_fixbits + (10000)*ConstantValue__44_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__44_enob + (10000)*ConstantValue__44_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__44_enob + (10000)*ConstantValue__44_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__44_fixbits + (-10000)*ConstantValue__44_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__44_fixp + (1)*ConstantValue__44_float + (1)*ConstantValue__44_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__44_fixbits + (-10000)*ConstantValue__44_fixp<=0)    #If not fix, frac part to zero
 
 
 
@@ -4415,56 +4343,41 @@ solver.Add( + (1)*ConstantValue__46_fixbits + (-10000)*ConstantValue__46_fixp<=0
 
 
 
-#Stuff for double 1.000000e+00
-ConstantValue__47_fixbits = solver.IntVar(0, 31, 'ConstantValue__47_fixbits')
-ConstantValue__47_fixp = solver.IntVar(0, 1, 'ConstantValue__47_fixp')
-ConstantValue__47_float = solver.IntVar(0, 1, 'ConstantValue__47_float')
-ConstantValue__47_double = solver.IntVar(0, 1, 'ConstantValue__47_double')
-ConstantValue__47_enob = solver.IntVar(-10000, 10000, 'ConstantValue__47_enob')
-solver.Add( + (1)*ConstantValue__47_enob + (-1)*ConstantValue__47_fixbits + (10000)*ConstantValue__47_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__47_enob + (10000)*ConstantValue__47_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__47_enob + (10000)*ConstantValue__47_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__47_fixbits + (-10000)*ConstantValue__47_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__47_fixp + (1)*ConstantValue__47_float + (1)*ConstantValue__47_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__47_fixbits + (-10000)*ConstantValue__47_fixp<=0)    #If not fix, frac part to zero
+#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !134, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__46_CAST_sub56_fixbits = solver.IntVar(0, 31, 'ConstantValue__46_CAST_sub56_fixbits')
+ConstantValue__46_CAST_sub56_fixp = solver.IntVar(0, 1, 'ConstantValue__46_CAST_sub56_fixp')
+ConstantValue__46_CAST_sub56_float = solver.IntVar(0, 1, 'ConstantValue__46_CAST_sub56_float')
+ConstantValue__46_CAST_sub56_double = solver.IntVar(0, 1, 'ConstantValue__46_CAST_sub56_double')
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_fixp + (1)*ConstantValue__46_CAST_sub56_float + (1)*ConstantValue__46_CAST_sub56_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_fixbits + (-10000)*ConstantValue__46_CAST_sub56_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C1_ConstantValue__46_CAST_sub56')
+C2_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C2_ConstantValue__46_CAST_sub56')
+solver.Add( + (1)*ConstantValue__46_fixbits + (-1)*ConstantValue__46_CAST_sub56_fixbits + (-10000)*C1_ConstantValue__46_CAST_sub56<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__46_fixbits + (1)*ConstantValue__46_CAST_sub56_fixbits + (-10000)*C2_ConstantValue__46_CAST_sub56<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__46_CAST_sub56
+castCostObj +=  + (1.13006)*C2_ConstantValue__46_CAST_sub56
+C3_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C3_ConstantValue__46_CAST_sub56')
+C4_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C4_ConstantValue__46_CAST_sub56')
+C5_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C5_ConstantValue__46_CAST_sub56')
+C6_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C6_ConstantValue__46_CAST_sub56')
+C7_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C7_ConstantValue__46_CAST_sub56')
+C8_ConstantValue__46_CAST_sub56 = solver.IntVar(0, 1, 'C8_ConstantValue__46_CAST_sub56')
+solver.Add( + (1)*ConstantValue__46_fixp + (1)*ConstantValue__46_CAST_sub56_float + (-1)*C3_ConstantValue__46_CAST_sub56<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__46_CAST_sub56
+solver.Add( + (1)*ConstantValue__46_float + (1)*ConstantValue__46_CAST_sub56_fixp + (-1)*C4_ConstantValue__46_CAST_sub56<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__46_CAST_sub56
+solver.Add( + (1)*ConstantValue__46_fixp + (1)*ConstantValue__46_CAST_sub56_double + (-1)*C5_ConstantValue__46_CAST_sub56<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__46_CAST_sub56
+solver.Add( + (1)*ConstantValue__46_double + (1)*ConstantValue__46_CAST_sub56_fixp + (-1)*C6_ConstantValue__46_CAST_sub56<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__46_CAST_sub56
+solver.Add( + (1)*ConstantValue__46_float + (1)*ConstantValue__46_CAST_sub56_double + (-1)*C7_ConstantValue__46_CAST_sub56<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__46_CAST_sub56
+solver.Add( + (1)*ConstantValue__46_double + (1)*ConstantValue__46_CAST_sub56_float + (-1)*C8_ConstantValue__46_CAST_sub56<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__46_CAST_sub56
 
 
 
-#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !136, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__47_CAST_sub56_fixbits = solver.IntVar(0, 31, 'ConstantValue__47_CAST_sub56_fixbits')
-ConstantValue__47_CAST_sub56_fixp = solver.IntVar(0, 1, 'ConstantValue__47_CAST_sub56_fixp')
-ConstantValue__47_CAST_sub56_float = solver.IntVar(0, 1, 'ConstantValue__47_CAST_sub56_float')
-ConstantValue__47_CAST_sub56_double = solver.IntVar(0, 1, 'ConstantValue__47_CAST_sub56_double')
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_fixp + (1)*ConstantValue__47_CAST_sub56_float + (1)*ConstantValue__47_CAST_sub56_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_fixbits + (-10000)*ConstantValue__47_CAST_sub56_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C1_ConstantValue__47_CAST_sub56')
-C2_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C2_ConstantValue__47_CAST_sub56')
-solver.Add( + (1)*ConstantValue__47_fixbits + (-1)*ConstantValue__47_CAST_sub56_fixbits + (-10000)*C1_ConstantValue__47_CAST_sub56<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__47_fixbits + (1)*ConstantValue__47_CAST_sub56_fixbits + (-10000)*C2_ConstantValue__47_CAST_sub56<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__47_CAST_sub56
-castCostObj +=  + (1.13006)*C2_ConstantValue__47_CAST_sub56
-C3_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C3_ConstantValue__47_CAST_sub56')
-C4_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C4_ConstantValue__47_CAST_sub56')
-C5_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C5_ConstantValue__47_CAST_sub56')
-C6_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C6_ConstantValue__47_CAST_sub56')
-C7_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C7_ConstantValue__47_CAST_sub56')
-C8_ConstantValue__47_CAST_sub56 = solver.IntVar(0, 1, 'C8_ConstantValue__47_CAST_sub56')
-solver.Add( + (1)*ConstantValue__47_fixp + (1)*ConstantValue__47_CAST_sub56_float + (-1)*C3_ConstantValue__47_CAST_sub56<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__47_CAST_sub56
-solver.Add( + (1)*ConstantValue__47_float + (1)*ConstantValue__47_CAST_sub56_fixp + (-1)*C4_ConstantValue__47_CAST_sub56<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__47_CAST_sub56
-solver.Add( + (1)*ConstantValue__47_fixp + (1)*ConstantValue__47_CAST_sub56_double + (-1)*C5_ConstantValue__47_CAST_sub56<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__47_CAST_sub56
-solver.Add( + (1)*ConstantValue__47_double + (1)*ConstantValue__47_CAST_sub56_fixp + (-1)*C6_ConstantValue__47_CAST_sub56<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__47_CAST_sub56
-solver.Add( + (1)*ConstantValue__47_float + (1)*ConstantValue__47_CAST_sub56_double + (-1)*C7_ConstantValue__47_CAST_sub56<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__47_CAST_sub56
-solver.Add( + (1)*ConstantValue__47_double + (1)*ConstantValue__47_CAST_sub56_float + (-1)*C8_ConstantValue__47_CAST_sub56<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__47_CAST_sub56
-
-
-
-#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !136, !taffo.initweight !32, !taffo.constinfo !72
+#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !134, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_sub52_CAST_sub56_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_sub52_CAST_sub56_fixbits')
 _Z4CNDFf_2_13_sub52_CAST_sub56_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub52_CAST_sub56_fixp')
 _Z4CNDFf_2_13_sub52_CAST_sub56_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub52_CAST_sub56_float')
@@ -4498,7 +4411,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_13_sub52_CAST_sub56
 
 
 
-#Stuff for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !136, !taffo.initweight !32, !taffo.constinfo !72
+#Stuff for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !134, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_2_13_sub56_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_sub56_fixbits')
 _Z4CNDFf_2_13_sub56_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub56_fixp')
 _Z4CNDFf_2_13_sub56_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub56_float')
@@ -4511,23 +4424,23 @@ solver.Add( + (1)*_Z4CNDFf_2_13_sub56_fixbits + (-10000)*_Z4CNDFf_2_13_sub56_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_2_13_sub56_enob
 solver.Add( + (1)*_Z4CNDFf_2_13_sub56_fixp + (1)*_Z4CNDFf_2_13_sub56_float + (1)*_Z4CNDFf_2_13_sub56_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_2_13_sub56_fixbits + (-10000)*_Z4CNDFf_2_13_sub56_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_fixp + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_float + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_double + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_fixbits + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_fixp + (-1)*_Z4CNDFf_2_13_sub56_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_float + (-1)*_Z4CNDFf_2_13_sub56_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_double + (-1)*_Z4CNDFf_2_13_sub56_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__47_CAST_sub56_fixbits + (-1)*_Z4CNDFf_2_13_sub56_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_fixp + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_float + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_double + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_fixbits + (-1)*_Z4CNDFf_2_13_sub52_CAST_sub56_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_fixp + (-1)*_Z4CNDFf_2_13_sub56_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_float + (-1)*_Z4CNDFf_2_13_sub56_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_double + (-1)*_Z4CNDFf_2_13_sub56_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__46_CAST_sub56_fixbits + (-1)*_Z4CNDFf_2_13_sub56_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z4CNDFf_2_13_sub56_fixp
 mathCostObj +=  + (1.80596)*_Z4CNDFf_2_13_sub56_float
 mathCostObj +=  + (2.15411)*_Z4CNDFf_2_13_sub56_double
-solver.Add( + (1)*_Z4CNDFf_2_13_sub56_enob + (-1)*ConstantValue__45_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z4CNDFf_2_13_sub56_enob + (-1)*ConstantValue__44_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z4CNDFf_2_13_sub56_enob + (-1)*_Z4CNDFf_2_13_sub52_enob<=0)    #Enob propagation in sub second addend
 
 
 
-#Stuff for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !138
+#Stuff for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !136
 _Z4CNDFf_2_13_OutputX_0_fixbits = solver.IntVar(0, 29, '_Z4CNDFf_2_13_OutputX_0_fixbits')
 _Z4CNDFf_2_13_OutputX_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_OutputX_0_fixp')
 _Z4CNDFf_2_13_OutputX_0_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_OutputX_0_float')
@@ -4546,7 +4459,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13__Z4CNDFf_2_13_OutputX_0_enob_0 + (1)*_Z4CNDFf_2_
 
 
 
-#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !138
+#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !136
 _Z4CNDFf_2_13_sub56_CAST_OutputX_0_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_sub56_CAST_OutputX_0_fixbits')
 _Z4CNDFf_2_13_sub56_CAST_OutputX_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub56_CAST_OutputX_0_fixp')
 _Z4CNDFf_2_13_sub56_CAST_OutputX_0_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub56_CAST_OutputX_0_float')
@@ -4585,7 +4498,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_OutputX_0_enob + (-1)*_Z4CNDFf_2_13_sub56_enob +
 
 
 
-#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !138
+#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !136
 _Z4CNDFf_2_13_sub52_CAST_OutputX_0_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_2_13_sub52_CAST_OutputX_0_fixbits')
 _Z4CNDFf_2_13_sub52_CAST_OutputX_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub52_CAST_OutputX_0_fixp')
 _Z4CNDFf_2_13_sub52_CAST_OutputX_0_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_sub52_CAST_OutputX_0_float')
@@ -4624,7 +4537,7 @@ solver.Add( + (1)*_Z4CNDFf_2_13_OutputX_0_enob + (-1)*_Z4CNDFf_2_13_sub52_enob +
 
 
 
-#Constraint for cast for   ret float %OutputX.0, !taffo.info !33, !taffo.initweight !25
+#Constraint for cast for   ret float %OutputX.0, !taffo.info !31, !taffo.initweight !23
 _Z4CNDFf_2_13_OutputX_0_CAST_ret_fixbits = solver.IntVar(0, 29, '_Z4CNDFf_2_13_OutputX_0_CAST_ret_fixbits')
 _Z4CNDFf_2_13_OutputX_0_CAST_ret_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_13_OutputX_0_CAST_ret_fixp')
 _Z4CNDFf_2_13_OutputX_0_CAST_ret_float = solver.IntVar(0, 1, '_Z4CNDFf_2_13_OutputX_0_CAST_ret_float')
@@ -4663,108 +4576,21 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixbits + (-1)*_Z4
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__48_fixbits = solver.IntVar(0, 31, 'ConstantValue__48_fixbits')
-ConstantValue__48_fixp = solver.IntVar(0, 1, 'ConstantValue__48_fixp')
-ConstantValue__48_float = solver.IntVar(0, 1, 'ConstantValue__48_float')
-ConstantValue__48_double = solver.IntVar(0, 1, 'ConstantValue__48_double')
-ConstantValue__48_enob = solver.IntVar(-10000, 10000, 'ConstantValue__48_enob')
-solver.Add( + (1)*ConstantValue__48_enob + (-1)*ConstantValue__48_fixbits + (10000)*ConstantValue__48_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__48_enob + (10000)*ConstantValue__48_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__48_enob + (10000)*ConstantValue__48_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__48_fixbits + (-10000)*ConstantValue__48_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__48_fixp + (1)*ConstantValue__48_float + (1)*ConstantValue__48_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__48_fixbits + (-10000)*ConstantValue__48_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__47_fixbits = solver.IntVar(0, 31, 'ConstantValue__47_fixbits')
+ConstantValue__47_fixp = solver.IntVar(0, 1, 'ConstantValue__47_fixp')
+ConstantValue__47_float = solver.IntVar(0, 1, 'ConstantValue__47_float')
+ConstantValue__47_double = solver.IntVar(0, 1, 'ConstantValue__47_double')
+ConstantValue__47_enob = solver.IntVar(-10000, 10000, 'ConstantValue__47_enob')
+solver.Add( + (1)*ConstantValue__47_enob + (-1)*ConstantValue__47_fixbits + (10000)*ConstantValue__47_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__47_enob + (10000)*ConstantValue__47_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__47_enob + (10000)*ConstantValue__47_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__47_fixbits + (-10000)*ConstantValue__47_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__47_fixp + (1)*ConstantValue__47_float + (1)*ConstantValue__47_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__47_fixbits + (-10000)*ConstantValue__47_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %cmp = fcmp ogt double %conv35, 1.000000e+00, !taffo.info !73, !taffo.initweight !48
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixbits')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixp')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_float')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_double = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_double')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixbits + (-10000)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixbits + (-10000)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixbits + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixbits + (-10000)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-castCostObj +=  + (1.13006)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp = solver.IntVar(0, 1, 'C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_float + (-1)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixp + (-1)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_double + (-1)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixp + (-1)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_double + (-1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_float + (-1)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__49_fixbits = solver.IntVar(0, 31, 'ConstantValue__49_fixbits')
-ConstantValue__49_fixp = solver.IntVar(0, 1, 'ConstantValue__49_fixp')
-ConstantValue__49_float = solver.IntVar(0, 1, 'ConstantValue__49_float')
-ConstantValue__49_double = solver.IntVar(0, 1, 'ConstantValue__49_double')
-ConstantValue__49_enob = solver.IntVar(-10000, 10000, 'ConstantValue__49_enob')
-solver.Add( + (1)*ConstantValue__49_enob + (-1)*ConstantValue__49_fixbits + (10000)*ConstantValue__49_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__49_enob + (10000)*ConstantValue__49_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__49_enob + (10000)*ConstantValue__49_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__49_fixbits + (-10000)*ConstantValue__49_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__49_fixp + (1)*ConstantValue__49_float + (1)*ConstantValue__49_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__49_fixbits + (-10000)*ConstantValue__49_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %cmp = fcmp ogt double %conv35, 1.000000e+00, !taffo.info !73, !taffo.initweight !48
-ConstantValue__49_CAST_cmp_fixbits = solver.IntVar(0, 31, 'ConstantValue__49_CAST_cmp_fixbits')
-ConstantValue__49_CAST_cmp_fixp = solver.IntVar(0, 1, 'ConstantValue__49_CAST_cmp_fixp')
-ConstantValue__49_CAST_cmp_float = solver.IntVar(0, 1, 'ConstantValue__49_CAST_cmp_float')
-ConstantValue__49_CAST_cmp_double = solver.IntVar(0, 1, 'ConstantValue__49_CAST_cmp_double')
-solver.Add( + (1)*ConstantValue__49_CAST_cmp_fixp + (1)*ConstantValue__49_CAST_cmp_float + (1)*ConstantValue__49_CAST_cmp_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__49_CAST_cmp_fixbits + (-10000)*ConstantValue__49_CAST_cmp_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C1_ConstantValue__49_CAST_cmp')
-C2_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C2_ConstantValue__49_CAST_cmp')
-solver.Add( + (1)*ConstantValue__49_fixbits + (-1)*ConstantValue__49_CAST_cmp_fixbits + (-10000)*C1_ConstantValue__49_CAST_cmp<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__49_fixbits + (1)*ConstantValue__49_CAST_cmp_fixbits + (-10000)*C2_ConstantValue__49_CAST_cmp<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__49_CAST_cmp
-castCostObj +=  + (1.13006)*C2_ConstantValue__49_CAST_cmp
-C3_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C3_ConstantValue__49_CAST_cmp')
-C4_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C4_ConstantValue__49_CAST_cmp')
-C5_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C5_ConstantValue__49_CAST_cmp')
-C6_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C6_ConstantValue__49_CAST_cmp')
-C7_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C7_ConstantValue__49_CAST_cmp')
-C8_ConstantValue__49_CAST_cmp = solver.IntVar(0, 1, 'C8_ConstantValue__49_CAST_cmp')
-solver.Add( + (1)*ConstantValue__49_fixp + (1)*ConstantValue__49_CAST_cmp_float + (-1)*C3_ConstantValue__49_CAST_cmp<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__49_CAST_cmp
-solver.Add( + (1)*ConstantValue__49_float + (1)*ConstantValue__49_CAST_cmp_fixp + (-1)*C4_ConstantValue__49_CAST_cmp<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__49_CAST_cmp
-solver.Add( + (1)*ConstantValue__49_fixp + (1)*ConstantValue__49_CAST_cmp_double + (-1)*C5_ConstantValue__49_CAST_cmp<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__49_CAST_cmp
-solver.Add( + (1)*ConstantValue__49_double + (1)*ConstantValue__49_CAST_cmp_fixp + (-1)*C6_ConstantValue__49_CAST_cmp<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__49_CAST_cmp
-solver.Add( + (1)*ConstantValue__49_float + (1)*ConstantValue__49_CAST_cmp_double + (-1)*C7_ConstantValue__49_CAST_cmp<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__49_CAST_cmp
-solver.Add( + (1)*ConstantValue__49_double + (1)*ConstantValue__49_CAST_cmp_float + (-1)*C8_ConstantValue__49_CAST_cmp<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__49_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixp + (-1)*ConstantValue__49_CAST_cmp_fixp==0)    #fix equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_float + (-1)*ConstantValue__49_CAST_cmp_float==0)    #float equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_double + (-1)*ConstantValue__49_CAST_cmp_double==0)    #double equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_cmp_fixbits + (-1)*ConstantValue__49_CAST_cmp_fixbits==0)    #same fractional bit
-
-
-
-#Stuff for   %call36 = call float @_Z4CNDFf.3.14(float %sub), !taffo.info !36, !taffo.initweight !41, !taffo.constinfo !42, !taffo.originalCall !76
+#Stuff for   %call36 = call float @_Z4CNDFf.3.14(float %sub), !taffo.info !34, !taffo.initweight !39, !taffo.constinfo !40, !taffo.originalCall !74
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_float')
@@ -4781,6 +4607,36 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixbits + (-10000)
 
 
 #Stuff for double 0.000000e+00
+ConstantValue__48_fixbits = solver.IntVar(0, 32, 'ConstantValue__48_fixbits')
+ConstantValue__48_fixp = solver.IntVar(0, 1, 'ConstantValue__48_fixp')
+ConstantValue__48_float = solver.IntVar(0, 1, 'ConstantValue__48_float')
+ConstantValue__48_double = solver.IntVar(0, 1, 'ConstantValue__48_double')
+ConstantValue__48_enob = solver.IntVar(-10000, 10000, 'ConstantValue__48_enob')
+solver.Add( + (1)*ConstantValue__48_enob + (-1)*ConstantValue__48_fixbits + (10000)*ConstantValue__48_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__48_enob + (10000)*ConstantValue__48_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__48_enob + (10000)*ConstantValue__48_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__48_fixbits + (-10000)*ConstantValue__48_fixp>=-9969)    #Limit the lower number of frac bits32
+solver.Add( + (1)*ConstantValue__48_fixp + (1)*ConstantValue__48_float + (1)*ConstantValue__48_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__48_fixbits + (-10000)*ConstantValue__48_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for float -0.000000e+00
+ConstantValue__49_fixbits = solver.IntVar(0, 32, 'ConstantValue__49_fixbits')
+ConstantValue__49_fixp = solver.IntVar(0, 1, 'ConstantValue__49_fixp')
+ConstantValue__49_float = solver.IntVar(0, 1, 'ConstantValue__49_float')
+ConstantValue__49_double = solver.IntVar(0, 1, 'ConstantValue__49_double')
+ConstantValue__49_enob = solver.IntVar(-10000, 10000, 'ConstantValue__49_enob')
+solver.Add( + (1)*ConstantValue__49_enob + (-1)*ConstantValue__49_fixbits + (10000)*ConstantValue__49_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__49_enob + (10000)*ConstantValue__49_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__49_enob + (10000)*ConstantValue__49_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__49_fixbits + (-10000)*ConstantValue__49_fixp>=-9969)    #Limit the lower number of frac bits32
+solver.Add( + (1)*ConstantValue__49_fixp + (1)*ConstantValue__49_float + (1)*ConstantValue__49_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__49_fixbits + (-10000)*ConstantValue__49_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for float -0.000000e+00
 ConstantValue__50_fixbits = solver.IntVar(0, 32, 'ConstantValue__50_fixbits')
 ConstantValue__50_fixp = solver.IntVar(0, 1, 'ConstantValue__50_fixp')
 ConstantValue__50_float = solver.IntVar(0, 1, 'ConstantValue__50_float')
@@ -4795,41 +4651,7 @@ solver.Add( + (1)*ConstantValue__50_fixbits + (-10000)*ConstantValue__50_fixp<=0
 
 
 
-#Constraint for cast for   %cmp = fcmp olt double %conv, 0.000000e+00, !taffo.info !30, !taffo.initweight !32
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixbits')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixp')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_float')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_double = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_double')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixbits + (-10000)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixbits + (-10000)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixbits + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixbits + (-10000)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-castCostObj +=  + (1.13006)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp = solver.IntVar(0, 1, 'C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_float + (-1)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixp + (-1)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_double + (-1)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixp + (-1)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_double + (-1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_float + (-1)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp
-
-
-
-#Stuff for double 0.000000e+00
+#Stuff for float -0.000000e+00
 ConstantValue__51_fixbits = solver.IntVar(0, 32, 'ConstantValue__51_fixbits')
 ConstantValue__51_fixp = solver.IntVar(0, 1, 'ConstantValue__51_fixp')
 ConstantValue__51_float = solver.IntVar(0, 1, 'ConstantValue__51_float')
@@ -4844,124 +4666,41 @@ solver.Add( + (1)*ConstantValue__51_fixbits + (-10000)*ConstantValue__51_fixp<=0
 
 
 
-#Constraint for cast for   %cmp = fcmp olt double %conv, 0.000000e+00, !taffo.info !30, !taffo.initweight !32
-ConstantValue__51_CAST_cmp_fixbits = solver.IntVar(0, 32, 'ConstantValue__51_CAST_cmp_fixbits')
-ConstantValue__51_CAST_cmp_fixp = solver.IntVar(0, 1, 'ConstantValue__51_CAST_cmp_fixp')
-ConstantValue__51_CAST_cmp_float = solver.IntVar(0, 1, 'ConstantValue__51_CAST_cmp_float')
-ConstantValue__51_CAST_cmp_double = solver.IntVar(0, 1, 'ConstantValue__51_CAST_cmp_double')
-solver.Add( + (1)*ConstantValue__51_CAST_cmp_fixp + (1)*ConstantValue__51_CAST_cmp_float + (1)*ConstantValue__51_CAST_cmp_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__51_CAST_cmp_fixbits + (-10000)*ConstantValue__51_CAST_cmp_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C1_ConstantValue__51_CAST_cmp')
-C2_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C2_ConstantValue__51_CAST_cmp')
-solver.Add( + (1)*ConstantValue__51_fixbits + (-1)*ConstantValue__51_CAST_cmp_fixbits + (-10000)*C1_ConstantValue__51_CAST_cmp<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__51_fixbits + (1)*ConstantValue__51_CAST_cmp_fixbits + (-10000)*C2_ConstantValue__51_CAST_cmp<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__51_CAST_cmp
-castCostObj +=  + (1.13006)*C2_ConstantValue__51_CAST_cmp
-C3_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C3_ConstantValue__51_CAST_cmp')
-C4_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C4_ConstantValue__51_CAST_cmp')
-C5_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C5_ConstantValue__51_CAST_cmp')
-C6_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C6_ConstantValue__51_CAST_cmp')
-C7_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C7_ConstantValue__51_CAST_cmp')
-C8_ConstantValue__51_CAST_cmp = solver.IntVar(0, 1, 'C8_ConstantValue__51_CAST_cmp')
-solver.Add( + (1)*ConstantValue__51_fixp + (1)*ConstantValue__51_CAST_cmp_float + (-1)*C3_ConstantValue__51_CAST_cmp<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__51_CAST_cmp
-solver.Add( + (1)*ConstantValue__51_float + (1)*ConstantValue__51_CAST_cmp_fixp + (-1)*C4_ConstantValue__51_CAST_cmp<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__51_CAST_cmp
-solver.Add( + (1)*ConstantValue__51_fixp + (1)*ConstantValue__51_CAST_cmp_double + (-1)*C5_ConstantValue__51_CAST_cmp<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__51_CAST_cmp
-solver.Add( + (1)*ConstantValue__51_double + (1)*ConstantValue__51_CAST_cmp_fixp + (-1)*C6_ConstantValue__51_CAST_cmp<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__51_CAST_cmp
-solver.Add( + (1)*ConstantValue__51_float + (1)*ConstantValue__51_CAST_cmp_double + (-1)*C7_ConstantValue__51_CAST_cmp<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__51_CAST_cmp
-solver.Add( + (1)*ConstantValue__51_double + (1)*ConstantValue__51_CAST_cmp_float + (-1)*C8_ConstantValue__51_CAST_cmp<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__51_CAST_cmp
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixp + (-1)*ConstantValue__51_CAST_cmp_fixp==0)    #fix equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_float + (-1)*ConstantValue__51_CAST_cmp_float==0)    #float equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_double + (-1)*ConstantValue__51_CAST_cmp_double==0)    #double equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_cmp_fixbits + (-1)*ConstantValue__51_CAST_cmp_fixbits==0)    #same fractional bit
+#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !33, !taffo.initweight !23, !taffo.constinfo !35
+ConstantValue__51_CAST_sub_fixbits = solver.IntVar(0, 32, 'ConstantValue__51_CAST_sub_fixbits')
+ConstantValue__51_CAST_sub_fixp = solver.IntVar(0, 1, 'ConstantValue__51_CAST_sub_fixp')
+ConstantValue__51_CAST_sub_float = solver.IntVar(0, 1, 'ConstantValue__51_CAST_sub_float')
+ConstantValue__51_CAST_sub_double = solver.IntVar(0, 1, 'ConstantValue__51_CAST_sub_double')
+solver.Add( + (1)*ConstantValue__51_CAST_sub_fixp + (1)*ConstantValue__51_CAST_sub_float + (1)*ConstantValue__51_CAST_sub_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__51_CAST_sub_fixbits + (-10000)*ConstantValue__51_CAST_sub_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C1_ConstantValue__51_CAST_sub')
+C2_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C2_ConstantValue__51_CAST_sub')
+solver.Add( + (1)*ConstantValue__51_fixbits + (-1)*ConstantValue__51_CAST_sub_fixbits + (-10000)*C1_ConstantValue__51_CAST_sub<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__51_fixbits + (1)*ConstantValue__51_CAST_sub_fixbits + (-10000)*C2_ConstantValue__51_CAST_sub<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__51_CAST_sub
+castCostObj +=  + (1.13006)*C2_ConstantValue__51_CAST_sub
+C3_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C3_ConstantValue__51_CAST_sub')
+C4_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C4_ConstantValue__51_CAST_sub')
+C5_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C5_ConstantValue__51_CAST_sub')
+C6_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C6_ConstantValue__51_CAST_sub')
+C7_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C7_ConstantValue__51_CAST_sub')
+C8_ConstantValue__51_CAST_sub = solver.IntVar(0, 1, 'C8_ConstantValue__51_CAST_sub')
+solver.Add( + (1)*ConstantValue__51_fixp + (1)*ConstantValue__51_CAST_sub_float + (-1)*C3_ConstantValue__51_CAST_sub<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__51_CAST_sub
+solver.Add( + (1)*ConstantValue__51_float + (1)*ConstantValue__51_CAST_sub_fixp + (-1)*C4_ConstantValue__51_CAST_sub<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__51_CAST_sub
+solver.Add( + (1)*ConstantValue__51_fixp + (1)*ConstantValue__51_CAST_sub_double + (-1)*C5_ConstantValue__51_CAST_sub<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__51_CAST_sub
+solver.Add( + (1)*ConstantValue__51_double + (1)*ConstantValue__51_CAST_sub_fixp + (-1)*C6_ConstantValue__51_CAST_sub<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__51_CAST_sub
+solver.Add( + (1)*ConstantValue__51_float + (1)*ConstantValue__51_CAST_sub_double + (-1)*C7_ConstantValue__51_CAST_sub<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__51_CAST_sub
+solver.Add( + (1)*ConstantValue__51_double + (1)*ConstantValue__51_CAST_sub_float + (-1)*C8_ConstantValue__51_CAST_sub<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__51_CAST_sub
 
 
 
-#Stuff for float -0.000000e+00
-ConstantValue__52_fixbits = solver.IntVar(0, 32, 'ConstantValue__52_fixbits')
-ConstantValue__52_fixp = solver.IntVar(0, 1, 'ConstantValue__52_fixp')
-ConstantValue__52_float = solver.IntVar(0, 1, 'ConstantValue__52_float')
-ConstantValue__52_double = solver.IntVar(0, 1, 'ConstantValue__52_double')
-ConstantValue__52_enob = solver.IntVar(-10000, 10000, 'ConstantValue__52_enob')
-solver.Add( + (1)*ConstantValue__52_enob + (-1)*ConstantValue__52_fixbits + (10000)*ConstantValue__52_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__52_enob + (10000)*ConstantValue__52_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__52_enob + (10000)*ConstantValue__52_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__52_fixbits + (-10000)*ConstantValue__52_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__52_fixp + (1)*ConstantValue__52_float + (1)*ConstantValue__52_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__52_fixbits + (-10000)*ConstantValue__52_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__53_fixbits = solver.IntVar(0, 32, 'ConstantValue__53_fixbits')
-ConstantValue__53_fixp = solver.IntVar(0, 1, 'ConstantValue__53_fixp')
-ConstantValue__53_float = solver.IntVar(0, 1, 'ConstantValue__53_float')
-ConstantValue__53_double = solver.IntVar(0, 1, 'ConstantValue__53_double')
-ConstantValue__53_enob = solver.IntVar(-10000, 10000, 'ConstantValue__53_enob')
-solver.Add( + (1)*ConstantValue__53_enob + (-1)*ConstantValue__53_fixbits + (10000)*ConstantValue__53_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__53_enob + (10000)*ConstantValue__53_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__53_enob + (10000)*ConstantValue__53_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__53_fixbits + (-10000)*ConstantValue__53_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__53_fixp + (1)*ConstantValue__53_float + (1)*ConstantValue__53_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__53_fixbits + (-10000)*ConstantValue__53_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__54_fixbits = solver.IntVar(0, 32, 'ConstantValue__54_fixbits')
-ConstantValue__54_fixp = solver.IntVar(0, 1, 'ConstantValue__54_fixp')
-ConstantValue__54_float = solver.IntVar(0, 1, 'ConstantValue__54_float')
-ConstantValue__54_double = solver.IntVar(0, 1, 'ConstantValue__54_double')
-ConstantValue__54_enob = solver.IntVar(-10000, 10000, 'ConstantValue__54_enob')
-solver.Add( + (1)*ConstantValue__54_enob + (-1)*ConstantValue__54_fixbits + (10000)*ConstantValue__54_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__54_enob + (10000)*ConstantValue__54_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__54_enob + (10000)*ConstantValue__54_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__54_fixbits + (-10000)*ConstantValue__54_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__54_fixp + (1)*ConstantValue__54_float + (1)*ConstantValue__54_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__54_fixbits + (-10000)*ConstantValue__54_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !35, !taffo.initweight !25, !taffo.constinfo !37
-ConstantValue__54_CAST_sub_fixbits = solver.IntVar(0, 32, 'ConstantValue__54_CAST_sub_fixbits')
-ConstantValue__54_CAST_sub_fixp = solver.IntVar(0, 1, 'ConstantValue__54_CAST_sub_fixp')
-ConstantValue__54_CAST_sub_float = solver.IntVar(0, 1, 'ConstantValue__54_CAST_sub_float')
-ConstantValue__54_CAST_sub_double = solver.IntVar(0, 1, 'ConstantValue__54_CAST_sub_double')
-solver.Add( + (1)*ConstantValue__54_CAST_sub_fixp + (1)*ConstantValue__54_CAST_sub_float + (1)*ConstantValue__54_CAST_sub_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__54_CAST_sub_fixbits + (-10000)*ConstantValue__54_CAST_sub_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C1_ConstantValue__54_CAST_sub')
-C2_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C2_ConstantValue__54_CAST_sub')
-solver.Add( + (1)*ConstantValue__54_fixbits + (-1)*ConstantValue__54_CAST_sub_fixbits + (-10000)*C1_ConstantValue__54_CAST_sub<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__54_fixbits + (1)*ConstantValue__54_CAST_sub_fixbits + (-10000)*C2_ConstantValue__54_CAST_sub<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__54_CAST_sub
-castCostObj +=  + (1.13006)*C2_ConstantValue__54_CAST_sub
-C3_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C3_ConstantValue__54_CAST_sub')
-C4_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C4_ConstantValue__54_CAST_sub')
-C5_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C5_ConstantValue__54_CAST_sub')
-C6_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C6_ConstantValue__54_CAST_sub')
-C7_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C7_ConstantValue__54_CAST_sub')
-C8_ConstantValue__54_CAST_sub = solver.IntVar(0, 1, 'C8_ConstantValue__54_CAST_sub')
-solver.Add( + (1)*ConstantValue__54_fixp + (1)*ConstantValue__54_CAST_sub_float + (-1)*C3_ConstantValue__54_CAST_sub<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__54_CAST_sub
-solver.Add( + (1)*ConstantValue__54_float + (1)*ConstantValue__54_CAST_sub_fixp + (-1)*C4_ConstantValue__54_CAST_sub<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__54_CAST_sub
-solver.Add( + (1)*ConstantValue__54_fixp + (1)*ConstantValue__54_CAST_sub_double + (-1)*C5_ConstantValue__54_CAST_sub<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__54_CAST_sub
-solver.Add( + (1)*ConstantValue__54_double + (1)*ConstantValue__54_CAST_sub_fixp + (-1)*C6_ConstantValue__54_CAST_sub<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__54_CAST_sub
-solver.Add( + (1)*ConstantValue__54_float + (1)*ConstantValue__54_CAST_sub_double + (-1)*C7_ConstantValue__54_CAST_sub<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__54_CAST_sub
-solver.Add( + (1)*ConstantValue__54_double + (1)*ConstantValue__54_CAST_sub_float + (-1)*C8_ConstantValue__54_CAST_sub<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__54_CAST_sub
-
-
-
-#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !35, !taffo.initweight !25, !taffo.constinfo !37
+#Constraint for cast for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !33, !taffo.initweight !23, !taffo.constinfo !35
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_float')
@@ -4995,7 +4734,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub
 
 
 
-#Stuff for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !35, !taffo.initweight !25, !taffo.constinfo !37
+#Stuff for   %sub = fsub float -0.000000e+00, %InputX, !taffo.info !33, !taffo.initweight !23, !taffo.constinfo !35
 _Z4CNDFf_3_14_sub_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_3_14_sub_fixbits')
 _Z4CNDFf_3_14_sub_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub_fixp')
 _Z4CNDFf_3_14_sub_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub_float')
@@ -5008,23 +4747,23 @@ solver.Add( + (1)*_Z4CNDFf_3_14_sub_fixbits + (-10000)*_Z4CNDFf_3_14_sub_fixp>=-
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_sub_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_sub_fixp + (1)*_Z4CNDFf_3_14_sub_float + (1)*_Z4CNDFf_3_14_sub_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_sub_fixbits + (-10000)*_Z4CNDFf_3_14_sub_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__54_CAST_sub_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__54_CAST_sub_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__54_CAST_sub_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__54_CAST_sub_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__54_CAST_sub_fixp + (-1)*_Z4CNDFf_3_14_sub_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__54_CAST_sub_float + (-1)*_Z4CNDFf_3_14_sub_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__54_CAST_sub_double + (-1)*_Z4CNDFf_3_14_sub_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__54_CAST_sub_fixbits + (-1)*_Z4CNDFf_3_14_sub_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__51_CAST_sub_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__51_CAST_sub_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__51_CAST_sub_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__51_CAST_sub_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_sub_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__51_CAST_sub_fixp + (-1)*_Z4CNDFf_3_14_sub_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__51_CAST_sub_float + (-1)*_Z4CNDFf_3_14_sub_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__51_CAST_sub_double + (-1)*_Z4CNDFf_3_14_sub_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__51_CAST_sub_fixbits + (-1)*_Z4CNDFf_3_14_sub_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z4CNDFf_3_14_sub_fixp
 mathCostObj +=  + (1.80596)*_Z4CNDFf_3_14_sub_float
 mathCostObj +=  + (2.15411)*_Z4CNDFf_3_14_sub_double
-solver.Add( + (1)*_Z4CNDFf_3_14_sub_enob + (-1)*ConstantValue__52_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z4CNDFf_3_14_sub_enob + (-1)*ConstantValue__49_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z4CNDFf_3_14_sub_enob + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_enob<=0)    #Enob propagation in sub second addend
 
 
 
-#Stuff for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !41
+#Stuff for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !39
 _Z4CNDFf_3_14_InputX_addr_0_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_3_14_InputX_addr_0_fixbits')
 _Z4CNDFf_3_14_InputX_addr_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_fixp')
 _Z4CNDFf_3_14_InputX_addr_0_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_float')
@@ -5043,7 +4782,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_InputX_addr_0_enob_0 + (1)*_Z4CNDF
 
 
 
-#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !41
+#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !39
 _Z4CNDFf_3_14_sub_CAST_InputX_addr_0_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_3_14_sub_CAST_InputX_addr_0_fixbits')
 _Z4CNDFf_3_14_sub_CAST_InputX_addr_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub_CAST_InputX_addr_0_fixp')
 _Z4CNDFf_3_14_sub_CAST_InputX_addr_0_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub_CAST_InputX_addr_0_float')
@@ -5082,7 +4821,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_InputX_addr_0_enob + (-1)*_Z4CNDFf_3_14_sub_enob
 
 
 
-#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !41
+#Constraint for cast for   %InputX.addr.0 = phi float [ %sub, %if.then ], [ %InputX, %if.else ], !taffo.info !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_InputX_addr_0_fixbits = solver.IntVar(0, 24, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_InputX_addr_0_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_InputX_addr_0_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_InputX_addr_0_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_InputX_addr_0_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub_CAST_InputX_addr_0_float')
@@ -5121,7 +4860,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_InputX_addr_0_enob + (-1)*_Z19BlkSchlsEqEuroNoDi
 
 
 
-#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !43, !taffo.initweight !25
+#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !41, !taffo.initweight !23
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul_fixbits')
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul_fixp')
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul_float')
@@ -5155,7 +4894,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_InputX_addr_0_CAST_mul
 
 
 
-#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !43, !taffo.initweight !25
+#Constraint for cast for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !41, !taffo.initweight !23
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul_0_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul_0_fixbits')
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul_0_fixp')
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul_0_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul_0_float')
@@ -5189,7 +4928,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_InputX_addr_0_CAST_mul_0
 
 
 
-#Stuff for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !43, !taffo.initweight !25
+#Stuff for   %mul = fmul float %InputX.addr.0, %InputX.addr.0, !taffo.info !41, !taffo.initweight !23
 _Z4CNDFf_3_14_mul_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_3_14_mul_fixbits')
 _Z4CNDFf_3_14_mul_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul_fixp')
 _Z4CNDFf_3_14_mul_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul_float')
@@ -5220,85 +4959,85 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul_enob + (-1)*_Z4CNDFf_3_14_InputX_addr_0_enob
 
 
 #Stuff for float -5.000000e-01
-ConstantValue__55_fixbits = solver.IntVar(0, 30, 'ConstantValue__55_fixbits')
-ConstantValue__55_fixp = solver.IntVar(0, 1, 'ConstantValue__55_fixp')
-ConstantValue__55_float = solver.IntVar(0, 1, 'ConstantValue__55_float')
-ConstantValue__55_double = solver.IntVar(0, 1, 'ConstantValue__55_double')
-ConstantValue__55_enob = solver.IntVar(-10000, 10000, 'ConstantValue__55_enob')
-solver.Add( + (1)*ConstantValue__55_enob + (-1)*ConstantValue__55_fixbits + (10000)*ConstantValue__55_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__55_enob + (10000)*ConstantValue__55_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__55_enob + (10000)*ConstantValue__55_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__55_fixbits + (-10000)*ConstantValue__55_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__55_fixp + (1)*ConstantValue__55_float + (1)*ConstantValue__55_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__55_fixbits + (-10000)*ConstantValue__55_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__52_fixbits = solver.IntVar(0, 30, 'ConstantValue__52_fixbits')
+ConstantValue__52_fixp = solver.IntVar(0, 1, 'ConstantValue__52_fixp')
+ConstantValue__52_float = solver.IntVar(0, 1, 'ConstantValue__52_float')
+ConstantValue__52_double = solver.IntVar(0, 1, 'ConstantValue__52_double')
+ConstantValue__52_enob = solver.IntVar(-10000, 10000, 'ConstantValue__52_enob')
+solver.Add( + (1)*ConstantValue__52_enob + (-1)*ConstantValue__52_fixbits + (10000)*ConstantValue__52_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__52_enob + (10000)*ConstantValue__52_float<=10024)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__52_enob + (10000)*ConstantValue__52_double<=10053)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__52_fixbits + (-10000)*ConstantValue__52_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__52_fixp + (1)*ConstantValue__52_float + (1)*ConstantValue__52_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__52_fixbits + (-10000)*ConstantValue__52_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for float -5.000000e-01
-ConstantValue__56_fixbits = solver.IntVar(0, 30, 'ConstantValue__56_fixbits')
-ConstantValue__56_fixp = solver.IntVar(0, 1, 'ConstantValue__56_fixp')
-ConstantValue__56_float = solver.IntVar(0, 1, 'ConstantValue__56_float')
-ConstantValue__56_double = solver.IntVar(0, 1, 'ConstantValue__56_double')
-ConstantValue__56_enob = solver.IntVar(-10000, 10000, 'ConstantValue__56_enob')
-solver.Add( + (1)*ConstantValue__56_enob + (-1)*ConstantValue__56_fixbits + (10000)*ConstantValue__56_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__56_enob + (10000)*ConstantValue__56_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__56_enob + (10000)*ConstantValue__56_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__56_fixbits + (-10000)*ConstantValue__56_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__56_fixp + (1)*ConstantValue__56_float + (1)*ConstantValue__56_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__56_fixbits + (-10000)*ConstantValue__56_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__53_fixbits = solver.IntVar(0, 30, 'ConstantValue__53_fixbits')
+ConstantValue__53_fixp = solver.IntVar(0, 1, 'ConstantValue__53_fixp')
+ConstantValue__53_float = solver.IntVar(0, 1, 'ConstantValue__53_float')
+ConstantValue__53_double = solver.IntVar(0, 1, 'ConstantValue__53_double')
+ConstantValue__53_enob = solver.IntVar(-10000, 10000, 'ConstantValue__53_enob')
+solver.Add( + (1)*ConstantValue__53_enob + (-1)*ConstantValue__53_fixbits + (10000)*ConstantValue__53_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__53_enob + (10000)*ConstantValue__53_float<=10024)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__53_enob + (10000)*ConstantValue__53_double<=10053)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__53_fixbits + (-10000)*ConstantValue__53_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__53_fixp + (1)*ConstantValue__53_float + (1)*ConstantValue__53_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__53_fixbits + (-10000)*ConstantValue__53_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for float -5.000000e-01
-ConstantValue__57_fixbits = solver.IntVar(0, 30, 'ConstantValue__57_fixbits')
-ConstantValue__57_fixp = solver.IntVar(0, 1, 'ConstantValue__57_fixp')
-ConstantValue__57_float = solver.IntVar(0, 1, 'ConstantValue__57_float')
-ConstantValue__57_double = solver.IntVar(0, 1, 'ConstantValue__57_double')
-ConstantValue__57_enob = solver.IntVar(-10000, 10000, 'ConstantValue__57_enob')
-solver.Add( + (1)*ConstantValue__57_enob + (-1)*ConstantValue__57_fixbits + (10000)*ConstantValue__57_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__57_enob + (10000)*ConstantValue__57_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__57_enob + (10000)*ConstantValue__57_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__57_fixbits + (-10000)*ConstantValue__57_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__57_fixp + (1)*ConstantValue__57_float + (1)*ConstantValue__57_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__57_fixbits + (-10000)*ConstantValue__57_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__54_fixbits = solver.IntVar(0, 30, 'ConstantValue__54_fixbits')
+ConstantValue__54_fixp = solver.IntVar(0, 1, 'ConstantValue__54_fixp')
+ConstantValue__54_float = solver.IntVar(0, 1, 'ConstantValue__54_float')
+ConstantValue__54_double = solver.IntVar(0, 1, 'ConstantValue__54_double')
+ConstantValue__54_enob = solver.IntVar(-10000, 10000, 'ConstantValue__54_enob')
+solver.Add( + (1)*ConstantValue__54_enob + (-1)*ConstantValue__54_fixbits + (10000)*ConstantValue__54_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__54_enob + (10000)*ConstantValue__54_float<=10024)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__54_enob + (10000)*ConstantValue__54_double<=10053)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__54_fixbits + (-10000)*ConstantValue__54_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__54_fixp + (1)*ConstantValue__54_float + (1)*ConstantValue__54_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__54_fixbits + (-10000)*ConstantValue__54_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !45, !taffo.initweight !32, !taffo.constinfo !47
-ConstantValue__57_CAST_mul16_fixbits = solver.IntVar(0, 30, 'ConstantValue__57_CAST_mul16_fixbits')
-ConstantValue__57_CAST_mul16_fixp = solver.IntVar(0, 1, 'ConstantValue__57_CAST_mul16_fixp')
-ConstantValue__57_CAST_mul16_float = solver.IntVar(0, 1, 'ConstantValue__57_CAST_mul16_float')
-ConstantValue__57_CAST_mul16_double = solver.IntVar(0, 1, 'ConstantValue__57_CAST_mul16_double')
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_fixp + (1)*ConstantValue__57_CAST_mul16_float + (1)*ConstantValue__57_CAST_mul16_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_fixbits + (-10000)*ConstantValue__57_CAST_mul16_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C1_ConstantValue__57_CAST_mul16')
-C2_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C2_ConstantValue__57_CAST_mul16')
-solver.Add( + (1)*ConstantValue__57_fixbits + (-1)*ConstantValue__57_CAST_mul16_fixbits + (-10000)*C1_ConstantValue__57_CAST_mul16<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__57_fixbits + (1)*ConstantValue__57_CAST_mul16_fixbits + (-10000)*C2_ConstantValue__57_CAST_mul16<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__57_CAST_mul16
-castCostObj +=  + (1.13006)*C2_ConstantValue__57_CAST_mul16
-C3_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C3_ConstantValue__57_CAST_mul16')
-C4_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C4_ConstantValue__57_CAST_mul16')
-C5_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C5_ConstantValue__57_CAST_mul16')
-C6_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C6_ConstantValue__57_CAST_mul16')
-C7_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C7_ConstantValue__57_CAST_mul16')
-C8_ConstantValue__57_CAST_mul16 = solver.IntVar(0, 1, 'C8_ConstantValue__57_CAST_mul16')
-solver.Add( + (1)*ConstantValue__57_fixp + (1)*ConstantValue__57_CAST_mul16_float + (-1)*C3_ConstantValue__57_CAST_mul16<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__57_CAST_mul16
-solver.Add( + (1)*ConstantValue__57_float + (1)*ConstantValue__57_CAST_mul16_fixp + (-1)*C4_ConstantValue__57_CAST_mul16<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__57_CAST_mul16
-solver.Add( + (1)*ConstantValue__57_fixp + (1)*ConstantValue__57_CAST_mul16_double + (-1)*C5_ConstantValue__57_CAST_mul16<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__57_CAST_mul16
-solver.Add( + (1)*ConstantValue__57_double + (1)*ConstantValue__57_CAST_mul16_fixp + (-1)*C6_ConstantValue__57_CAST_mul16<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__57_CAST_mul16
-solver.Add( + (1)*ConstantValue__57_float + (1)*ConstantValue__57_CAST_mul16_double + (-1)*C7_ConstantValue__57_CAST_mul16<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__57_CAST_mul16
-solver.Add( + (1)*ConstantValue__57_double + (1)*ConstantValue__57_CAST_mul16_float + (-1)*C8_ConstantValue__57_CAST_mul16<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__57_CAST_mul16
+#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !43, !taffo.initweight !30, !taffo.constinfo !45
+ConstantValue__54_CAST_mul16_fixbits = solver.IntVar(0, 30, 'ConstantValue__54_CAST_mul16_fixbits')
+ConstantValue__54_CAST_mul16_fixp = solver.IntVar(0, 1, 'ConstantValue__54_CAST_mul16_fixp')
+ConstantValue__54_CAST_mul16_float = solver.IntVar(0, 1, 'ConstantValue__54_CAST_mul16_float')
+ConstantValue__54_CAST_mul16_double = solver.IntVar(0, 1, 'ConstantValue__54_CAST_mul16_double')
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_fixp + (1)*ConstantValue__54_CAST_mul16_float + (1)*ConstantValue__54_CAST_mul16_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_fixbits + (-10000)*ConstantValue__54_CAST_mul16_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C1_ConstantValue__54_CAST_mul16')
+C2_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C2_ConstantValue__54_CAST_mul16')
+solver.Add( + (1)*ConstantValue__54_fixbits + (-1)*ConstantValue__54_CAST_mul16_fixbits + (-10000)*C1_ConstantValue__54_CAST_mul16<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__54_fixbits + (1)*ConstantValue__54_CAST_mul16_fixbits + (-10000)*C2_ConstantValue__54_CAST_mul16<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__54_CAST_mul16
+castCostObj +=  + (1.13006)*C2_ConstantValue__54_CAST_mul16
+C3_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C3_ConstantValue__54_CAST_mul16')
+C4_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C4_ConstantValue__54_CAST_mul16')
+C5_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C5_ConstantValue__54_CAST_mul16')
+C6_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C6_ConstantValue__54_CAST_mul16')
+C7_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C7_ConstantValue__54_CAST_mul16')
+C8_ConstantValue__54_CAST_mul16 = solver.IntVar(0, 1, 'C8_ConstantValue__54_CAST_mul16')
+solver.Add( + (1)*ConstantValue__54_fixp + (1)*ConstantValue__54_CAST_mul16_float + (-1)*C3_ConstantValue__54_CAST_mul16<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__54_CAST_mul16
+solver.Add( + (1)*ConstantValue__54_float + (1)*ConstantValue__54_CAST_mul16_fixp + (-1)*C4_ConstantValue__54_CAST_mul16<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__54_CAST_mul16
+solver.Add( + (1)*ConstantValue__54_fixp + (1)*ConstantValue__54_CAST_mul16_double + (-1)*C5_ConstantValue__54_CAST_mul16<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__54_CAST_mul16
+solver.Add( + (1)*ConstantValue__54_double + (1)*ConstantValue__54_CAST_mul16_fixp + (-1)*C6_ConstantValue__54_CAST_mul16<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__54_CAST_mul16
+solver.Add( + (1)*ConstantValue__54_float + (1)*ConstantValue__54_CAST_mul16_double + (-1)*C7_ConstantValue__54_CAST_mul16<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__54_CAST_mul16
+solver.Add( + (1)*ConstantValue__54_double + (1)*ConstantValue__54_CAST_mul16_float + (-1)*C8_ConstantValue__54_CAST_mul16<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__54_CAST_mul16
 
 
 
-#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !45, !taffo.initweight !32, !taffo.constinfo !47
+#Constraint for cast for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !43, !taffo.initweight !30, !taffo.constinfo !45
 _Z4CNDFf_3_14_mul_CAST_mul16_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_3_14_mul_CAST_mul16_fixbits')
 _Z4CNDFf_3_14_mul_CAST_mul16_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul_CAST_mul16_fixp')
 _Z4CNDFf_3_14_mul_CAST_mul16_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul_CAST_mul16_float')
@@ -5332,7 +5071,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul_CAST_mul16
 
 
 
-#Stuff for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !45, !taffo.initweight !32, !taffo.constinfo !47
+#Stuff for   %mul16 = fmul float -5.000000e-01, %mul, !taffo.info !43, !taffo.initweight !30, !taffo.constinfo !45
 _Z4CNDFf_3_14_mul16_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_3_14_mul16_fixbits')
 _Z4CNDFf_3_14_mul16_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul16_fixp')
 _Z4CNDFf_3_14_mul16_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul16_float')
@@ -5345,24 +5084,24 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul16_fixbits + (-10000)*_Z4CNDFf_3_14_mul16_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul16_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul16_fixp + (1)*_Z4CNDFf_3_14_mul16_float + (1)*_Z4CNDFf_3_14_mul16_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul16_fixbits + (-10000)*_Z4CNDFf_3_14_mul16_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_fixp + (-1)*_Z4CNDFf_3_14_mul_CAST_mul16_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_float + (-1)*_Z4CNDFf_3_14_mul_CAST_mul16_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_double + (-1)*_Z4CNDFf_3_14_mul_CAST_mul16_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_fixp + (-1)*_Z4CNDFf_3_14_mul16_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_float + (-1)*_Z4CNDFf_3_14_mul16_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__57_CAST_mul16_double + (-1)*_Z4CNDFf_3_14_mul16_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_fixp + (-1)*_Z4CNDFf_3_14_mul_CAST_mul16_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_float + (-1)*_Z4CNDFf_3_14_mul_CAST_mul16_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_double + (-1)*_Z4CNDFf_3_14_mul_CAST_mul16_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_fixp + (-1)*_Z4CNDFf_3_14_mul16_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_float + (-1)*_Z4CNDFf_3_14_mul16_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__54_CAST_mul16_double + (-1)*_Z4CNDFf_3_14_mul16_double==0)    #double equality
 mathCostObj +=  + (2.04123)*_Z4CNDFf_3_14_mul16_fixp
 mathCostObj +=  + (3.34669)*_Z4CNDFf_3_14_mul16_float
 mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul16_double
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_1')
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_14_mul16_enob + (-1)*_Z4CNDFf_3_14_mul_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_1<=-2.14748e+09)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_3_14_mul16_enob + (-1)*ConstantValue__55_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_2<=1024)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_3_14_mul16_enob + (-1)*_Z4CNDFf_3_14_mul_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_1<=1)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_3_14_mul16_enob + (-1)*ConstantValue__52_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul16_enob_2<=1024)    #Enob: propagation in product 2
 
 
 
-#Stuff for   %call = call float @_ZSt3expf.9.16(float %mul16), !taffo.info !50, !taffo.initweight !34, !taffo.constinfo !52, !taffo.originalCall !53
+#Stuff for   %call = call float @_ZSt3expf.9.16(float %mul16), !taffo.info !48, !taffo.initweight !32, !taffo.constinfo !50, !taffo.originalCall !51
 _Z4CNDFf_3_14_call_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_14_call_fixbits')
 _Z4CNDFf_3_14_call_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_call_fixp')
 _Z4CNDFf_3_14_call_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_call_float')
@@ -5378,7 +5117,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_call_fixbits + (-10000)*_Z4CNDFf_3_14_call_fixp<
 
 
 
-#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _ZSt3expf_9_16_call_fixbits = solver.IntVar(0, 31, '_ZSt3expf_9_16_call_fixbits')
 _ZSt3expf_9_16_call_fixp = solver.IntVar(0, 1, '_ZSt3expf_9_16_call_fixp')
 _ZSt3expf_9_16_call_float = solver.IntVar(0, 1, '_ZSt3expf_9_16_call_float')
@@ -5395,7 +5134,7 @@ solver.Add( + (1)*_ZSt3expf_9_16_call_float==1)    #Type constraint for return v
 
 
 
-#Constraint for cast for   %call = call float @expf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Constraint for cast for   %call = call float @expf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _Z4CNDFf_3_14_mul16_CAST_call_fixbits = solver.IntVar(0, 18, '_Z4CNDFf_3_14_mul16_CAST_call_fixbits')
 _Z4CNDFf_3_14_mul16_CAST_call_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul16_CAST_call_fixp')
 _Z4CNDFf_3_14_mul16_CAST_call_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul16_CAST_call_float')
@@ -5430,7 +5169,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul16_CAST_call_float==1)    #Type constraint fo
 
 
 
-#Constraint for cast for   ret float %call, !taffo.info !34, !taffo.initweight !36
+#Constraint for cast for   ret float %call, !taffo.info !32, !taffo.initweight !34
 _ZSt3expf_9_16_call_CAST_ret_fixbits = solver.IntVar(0, 31, '_ZSt3expf_9_16_call_CAST_ret_fixbits')
 _ZSt3expf_9_16_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt3expf_9_16_call_CAST_ret_fixp')
 _ZSt3expf_9_16_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt3expf_9_16_call_CAST_ret_float')
@@ -5469,36 +5208,36 @@ solver.Add( + (1)*_Z4CNDFf_3_14_call_fixbits + (-1)*_ZSt3expf_9_16_call_CAST_ret
 
 
 #Stuff for double 0x3FD9884533D43651
-ConstantValue__58_fixbits = solver.IntVar(0, 31, 'ConstantValue__58_fixbits')
-ConstantValue__58_fixp = solver.IntVar(0, 1, 'ConstantValue__58_fixp')
-ConstantValue__58_float = solver.IntVar(0, 1, 'ConstantValue__58_float')
-ConstantValue__58_double = solver.IntVar(0, 1, 'ConstantValue__58_double')
-ConstantValue__58_enob = solver.IntVar(-10000, 10000, 'ConstantValue__58_enob')
-solver.Add( + (1)*ConstantValue__58_enob + (-1)*ConstantValue__58_fixbits + (10000)*ConstantValue__58_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__58_enob + (10000)*ConstantValue__58_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__58_enob + (10000)*ConstantValue__58_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__58_fixbits + (-10000)*ConstantValue__58_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__58_fixp + (1)*ConstantValue__58_float + (1)*ConstantValue__58_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__58_fixbits + (-10000)*ConstantValue__58_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__55_fixbits = solver.IntVar(0, 31, 'ConstantValue__55_fixbits')
+ConstantValue__55_fixp = solver.IntVar(0, 1, 'ConstantValue__55_fixp')
+ConstantValue__55_float = solver.IntVar(0, 1, 'ConstantValue__55_float')
+ConstantValue__55_double = solver.IntVar(0, 1, 'ConstantValue__55_double')
+ConstantValue__55_enob = solver.IntVar(-10000, 10000, 'ConstantValue__55_enob')
+solver.Add( + (1)*ConstantValue__55_enob + (-1)*ConstantValue__55_fixbits + (10000)*ConstantValue__55_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__55_enob + (10000)*ConstantValue__55_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__55_enob + (10000)*ConstantValue__55_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__55_fixbits + (-10000)*ConstantValue__55_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__55_fixp + (1)*ConstantValue__55_float + (1)*ConstantValue__55_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__55_fixbits + (-10000)*ConstantValue__55_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0x3FD9884533D43651
-ConstantValue__59_fixbits = solver.IntVar(0, 31, 'ConstantValue__59_fixbits')
-ConstantValue__59_fixp = solver.IntVar(0, 1, 'ConstantValue__59_fixp')
-ConstantValue__59_float = solver.IntVar(0, 1, 'ConstantValue__59_float')
-ConstantValue__59_double = solver.IntVar(0, 1, 'ConstantValue__59_double')
-ConstantValue__59_enob = solver.IntVar(-10000, 10000, 'ConstantValue__59_enob')
-solver.Add( + (1)*ConstantValue__59_enob + (-1)*ConstantValue__59_fixbits + (10000)*ConstantValue__59_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__59_enob + (10000)*ConstantValue__59_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__59_enob + (10000)*ConstantValue__59_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__59_fixbits + (-10000)*ConstantValue__59_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__59_fixp + (1)*ConstantValue__59_float + (1)*ConstantValue__59_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__59_fixbits + (-10000)*ConstantValue__59_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__56_fixbits = solver.IntVar(0, 31, 'ConstantValue__56_fixbits')
+ConstantValue__56_fixp = solver.IntVar(0, 1, 'ConstantValue__56_fixp')
+ConstantValue__56_float = solver.IntVar(0, 1, 'ConstantValue__56_float')
+ConstantValue__56_double = solver.IntVar(0, 1, 'ConstantValue__56_double')
+ConstantValue__56_enob = solver.IntVar(-10000, 10000, 'ConstantValue__56_enob')
+solver.Add( + (1)*ConstantValue__56_enob + (-1)*ConstantValue__56_fixbits + (10000)*ConstantValue__56_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__56_enob + (10000)*ConstantValue__56_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__56_enob + (10000)*ConstantValue__56_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__56_fixbits + (-10000)*ConstantValue__56_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__56_fixp + (1)*ConstantValue__56_float + (1)*ConstantValue__56_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__56_fixbits + (-10000)*ConstantValue__56_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !55, !taffo.initweight !32, !taffo.constinfo !57
+#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !53, !taffo.initweight !30, !taffo.constinfo !55
 _Z4CNDFf_3_14_call_CAST_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_14_call_CAST_mul18_fixbits')
 _Z4CNDFf_3_14_call_CAST_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_call_CAST_mul18_fixp')
 _Z4CNDFf_3_14_call_CAST_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_call_CAST_mul18_float')
@@ -5533,55 +5272,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_call_CAST_mul18
 
 
 #Stuff for double 0x3FD9884533D43651
-ConstantValue__60_fixbits = solver.IntVar(0, 31, 'ConstantValue__60_fixbits')
-ConstantValue__60_fixp = solver.IntVar(0, 1, 'ConstantValue__60_fixp')
-ConstantValue__60_float = solver.IntVar(0, 1, 'ConstantValue__60_float')
-ConstantValue__60_double = solver.IntVar(0, 1, 'ConstantValue__60_double')
-ConstantValue__60_enob = solver.IntVar(-10000, 10000, 'ConstantValue__60_enob')
-solver.Add( + (1)*ConstantValue__60_enob + (-1)*ConstantValue__60_fixbits + (10000)*ConstantValue__60_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__60_enob + (10000)*ConstantValue__60_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__60_enob + (10000)*ConstantValue__60_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__60_fixbits + (-10000)*ConstantValue__60_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__60_fixp + (1)*ConstantValue__60_float + (1)*ConstantValue__60_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__60_fixbits + (-10000)*ConstantValue__60_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__57_fixbits = solver.IntVar(0, 31, 'ConstantValue__57_fixbits')
+ConstantValue__57_fixp = solver.IntVar(0, 1, 'ConstantValue__57_fixp')
+ConstantValue__57_float = solver.IntVar(0, 1, 'ConstantValue__57_float')
+ConstantValue__57_double = solver.IntVar(0, 1, 'ConstantValue__57_double')
+ConstantValue__57_enob = solver.IntVar(-10000, 10000, 'ConstantValue__57_enob')
+solver.Add( + (1)*ConstantValue__57_enob + (-1)*ConstantValue__57_fixbits + (10000)*ConstantValue__57_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__57_enob + (10000)*ConstantValue__57_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__57_enob + (10000)*ConstantValue__57_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__57_fixbits + (-10000)*ConstantValue__57_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__57_fixp + (1)*ConstantValue__57_float + (1)*ConstantValue__57_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__57_fixbits + (-10000)*ConstantValue__57_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !55, !taffo.initweight !32, !taffo.constinfo !57
-ConstantValue__60_CAST_mul18_fixbits = solver.IntVar(0, 31, 'ConstantValue__60_CAST_mul18_fixbits')
-ConstantValue__60_CAST_mul18_fixp = solver.IntVar(0, 1, 'ConstantValue__60_CAST_mul18_fixp')
-ConstantValue__60_CAST_mul18_float = solver.IntVar(0, 1, 'ConstantValue__60_CAST_mul18_float')
-ConstantValue__60_CAST_mul18_double = solver.IntVar(0, 1, 'ConstantValue__60_CAST_mul18_double')
-solver.Add( + (1)*ConstantValue__60_CAST_mul18_fixp + (1)*ConstantValue__60_CAST_mul18_float + (1)*ConstantValue__60_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__60_CAST_mul18_fixbits + (-10000)*ConstantValue__60_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C1_ConstantValue__60_CAST_mul18')
-C2_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C2_ConstantValue__60_CAST_mul18')
-solver.Add( + (1)*ConstantValue__60_fixbits + (-1)*ConstantValue__60_CAST_mul18_fixbits + (-10000)*C1_ConstantValue__60_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__60_fixbits + (1)*ConstantValue__60_CAST_mul18_fixbits + (-10000)*C2_ConstantValue__60_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__60_CAST_mul18
-castCostObj +=  + (1.13006)*C2_ConstantValue__60_CAST_mul18
-C3_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C3_ConstantValue__60_CAST_mul18')
-C4_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C4_ConstantValue__60_CAST_mul18')
-C5_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C5_ConstantValue__60_CAST_mul18')
-C6_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C6_ConstantValue__60_CAST_mul18')
-C7_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C7_ConstantValue__60_CAST_mul18')
-C8_ConstantValue__60_CAST_mul18 = solver.IntVar(0, 1, 'C8_ConstantValue__60_CAST_mul18')
-solver.Add( + (1)*ConstantValue__60_fixp + (1)*ConstantValue__60_CAST_mul18_float + (-1)*C3_ConstantValue__60_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__60_CAST_mul18
-solver.Add( + (1)*ConstantValue__60_float + (1)*ConstantValue__60_CAST_mul18_fixp + (-1)*C4_ConstantValue__60_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__60_CAST_mul18
-solver.Add( + (1)*ConstantValue__60_fixp + (1)*ConstantValue__60_CAST_mul18_double + (-1)*C5_ConstantValue__60_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__60_CAST_mul18
-solver.Add( + (1)*ConstantValue__60_double + (1)*ConstantValue__60_CAST_mul18_fixp + (-1)*C6_ConstantValue__60_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__60_CAST_mul18
-solver.Add( + (1)*ConstantValue__60_float + (1)*ConstantValue__60_CAST_mul18_double + (-1)*C7_ConstantValue__60_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__60_CAST_mul18
-solver.Add( + (1)*ConstantValue__60_double + (1)*ConstantValue__60_CAST_mul18_float + (-1)*C8_ConstantValue__60_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__60_CAST_mul18
+#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !53, !taffo.initweight !30, !taffo.constinfo !55
+ConstantValue__57_CAST_mul18_fixbits = solver.IntVar(0, 31, 'ConstantValue__57_CAST_mul18_fixbits')
+ConstantValue__57_CAST_mul18_fixp = solver.IntVar(0, 1, 'ConstantValue__57_CAST_mul18_fixp')
+ConstantValue__57_CAST_mul18_float = solver.IntVar(0, 1, 'ConstantValue__57_CAST_mul18_float')
+ConstantValue__57_CAST_mul18_double = solver.IntVar(0, 1, 'ConstantValue__57_CAST_mul18_double')
+solver.Add( + (1)*ConstantValue__57_CAST_mul18_fixp + (1)*ConstantValue__57_CAST_mul18_float + (1)*ConstantValue__57_CAST_mul18_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__57_CAST_mul18_fixbits + (-10000)*ConstantValue__57_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C1_ConstantValue__57_CAST_mul18')
+C2_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C2_ConstantValue__57_CAST_mul18')
+solver.Add( + (1)*ConstantValue__57_fixbits + (-1)*ConstantValue__57_CAST_mul18_fixbits + (-10000)*C1_ConstantValue__57_CAST_mul18<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__57_fixbits + (1)*ConstantValue__57_CAST_mul18_fixbits + (-10000)*C2_ConstantValue__57_CAST_mul18<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__57_CAST_mul18
+castCostObj +=  + (1.13006)*C2_ConstantValue__57_CAST_mul18
+C3_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C3_ConstantValue__57_CAST_mul18')
+C4_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C4_ConstantValue__57_CAST_mul18')
+C5_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C5_ConstantValue__57_CAST_mul18')
+C6_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C6_ConstantValue__57_CAST_mul18')
+C7_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C7_ConstantValue__57_CAST_mul18')
+C8_ConstantValue__57_CAST_mul18 = solver.IntVar(0, 1, 'C8_ConstantValue__57_CAST_mul18')
+solver.Add( + (1)*ConstantValue__57_fixp + (1)*ConstantValue__57_CAST_mul18_float + (-1)*C3_ConstantValue__57_CAST_mul18<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__57_CAST_mul18
+solver.Add( + (1)*ConstantValue__57_float + (1)*ConstantValue__57_CAST_mul18_fixp + (-1)*C4_ConstantValue__57_CAST_mul18<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__57_CAST_mul18
+solver.Add( + (1)*ConstantValue__57_fixp + (1)*ConstantValue__57_CAST_mul18_double + (-1)*C5_ConstantValue__57_CAST_mul18<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__57_CAST_mul18
+solver.Add( + (1)*ConstantValue__57_double + (1)*ConstantValue__57_CAST_mul18_fixp + (-1)*C6_ConstantValue__57_CAST_mul18<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__57_CAST_mul18
+solver.Add( + (1)*ConstantValue__57_float + (1)*ConstantValue__57_CAST_mul18_double + (-1)*C7_ConstantValue__57_CAST_mul18<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__57_CAST_mul18
+solver.Add( + (1)*ConstantValue__57_double + (1)*ConstantValue__57_CAST_mul18_float + (-1)*C8_ConstantValue__57_CAST_mul18<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__57_CAST_mul18
 
 
 
-#Stuff for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !55, !taffo.initweight !32, !taffo.constinfo !57
+#Stuff for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !53, !taffo.initweight !30, !taffo.constinfo !55
 _Z4CNDFf_3_14_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_14_mul18_fixbits')
 _Z4CNDFf_3_14_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul18_fixp')
 _Z4CNDFf_3_14_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul18_float')
@@ -5594,9 +5333,9 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul18_fixbits + (-10000)*_Z4CNDFf_3_14_mul18_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul18_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul18_fixp + (1)*_Z4CNDFf_3_14_mul18_float + (1)*_Z4CNDFf_3_14_mul18_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul18_fixbits + (-10000)*_Z4CNDFf_3_14_mul18_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_fixp + (-1)*ConstantValue__60_CAST_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_float + (-1)*ConstantValue__60_CAST_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_double + (-1)*ConstantValue__60_CAST_mul18_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_fixp + (-1)*ConstantValue__57_CAST_mul18_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_float + (-1)*ConstantValue__57_CAST_mul18_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_double + (-1)*ConstantValue__57_CAST_mul18_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_fixp + (-1)*_Z4CNDFf_3_14_mul18_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_float + (-1)*_Z4CNDFf_3_14_mul18_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_3_14_call_CAST_mul18_double + (-1)*_Z4CNDFf_3_14_mul18_double==0)    #double equality
@@ -5606,91 +5345,91 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul18_double
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_1')
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_14_mul18_enob + (-1)*ConstantValue__58_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_3_14_mul18_enob + (-1)*ConstantValue__55_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_3_14_mul18_enob + (-1)*_Z4CNDFf_3_14_call_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul18_enob_2<=1)    #Enob: propagation in product 2
 
 
 
 #Stuff for double 0x3FCDA6711871100E
-ConstantValue__61_fixbits = solver.IntVar(0, 31, 'ConstantValue__61_fixbits')
-ConstantValue__61_fixp = solver.IntVar(0, 1, 'ConstantValue__61_fixp')
-ConstantValue__61_float = solver.IntVar(0, 1, 'ConstantValue__61_float')
-ConstantValue__61_double = solver.IntVar(0, 1, 'ConstantValue__61_double')
-ConstantValue__61_enob = solver.IntVar(-10000, 10000, 'ConstantValue__61_enob')
-solver.Add( + (1)*ConstantValue__61_enob + (-1)*ConstantValue__61_fixbits + (10000)*ConstantValue__61_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__61_enob + (10000)*ConstantValue__61_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__61_enob + (10000)*ConstantValue__61_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__61_fixbits + (-10000)*ConstantValue__61_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__61_fixp + (1)*ConstantValue__61_float + (1)*ConstantValue__61_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__61_fixbits + (-10000)*ConstantValue__61_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__58_fixbits = solver.IntVar(0, 31, 'ConstantValue__58_fixbits')
+ConstantValue__58_fixp = solver.IntVar(0, 1, 'ConstantValue__58_fixp')
+ConstantValue__58_float = solver.IntVar(0, 1, 'ConstantValue__58_float')
+ConstantValue__58_double = solver.IntVar(0, 1, 'ConstantValue__58_double')
+ConstantValue__58_enob = solver.IntVar(-10000, 10000, 'ConstantValue__58_enob')
+solver.Add( + (1)*ConstantValue__58_enob + (-1)*ConstantValue__58_fixbits + (10000)*ConstantValue__58_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__58_enob + (10000)*ConstantValue__58_float<=10026)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__58_enob + (10000)*ConstantValue__58_double<=10055)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__58_fixbits + (-10000)*ConstantValue__58_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__58_fixp + (1)*ConstantValue__58_float + (1)*ConstantValue__58_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__58_fixbits + (-10000)*ConstantValue__58_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0x3FCDA6711871100E
-ConstantValue__62_fixbits = solver.IntVar(0, 31, 'ConstantValue__62_fixbits')
-ConstantValue__62_fixp = solver.IntVar(0, 1, 'ConstantValue__62_fixp')
-ConstantValue__62_float = solver.IntVar(0, 1, 'ConstantValue__62_float')
-ConstantValue__62_double = solver.IntVar(0, 1, 'ConstantValue__62_double')
-ConstantValue__62_enob = solver.IntVar(-10000, 10000, 'ConstantValue__62_enob')
-solver.Add( + (1)*ConstantValue__62_enob + (-1)*ConstantValue__62_fixbits + (10000)*ConstantValue__62_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__62_enob + (10000)*ConstantValue__62_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__62_enob + (10000)*ConstantValue__62_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__62_fixbits + (-10000)*ConstantValue__62_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__62_fixp + (1)*ConstantValue__62_float + (1)*ConstantValue__62_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__62_fixbits + (-10000)*ConstantValue__62_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__59_fixbits = solver.IntVar(0, 31, 'ConstantValue__59_fixbits')
+ConstantValue__59_fixp = solver.IntVar(0, 1, 'ConstantValue__59_fixp')
+ConstantValue__59_float = solver.IntVar(0, 1, 'ConstantValue__59_float')
+ConstantValue__59_double = solver.IntVar(0, 1, 'ConstantValue__59_double')
+ConstantValue__59_enob = solver.IntVar(-10000, 10000, 'ConstantValue__59_enob')
+solver.Add( + (1)*ConstantValue__59_enob + (-1)*ConstantValue__59_fixbits + (10000)*ConstantValue__59_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__59_enob + (10000)*ConstantValue__59_float<=10026)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__59_enob + (10000)*ConstantValue__59_double<=10055)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__59_fixbits + (-10000)*ConstantValue__59_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__59_fixp + (1)*ConstantValue__59_float + (1)*ConstantValue__59_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__59_fixbits + (-10000)*ConstantValue__59_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0x3FCDA6711871100E
-ConstantValue__63_fixbits = solver.IntVar(0, 31, 'ConstantValue__63_fixbits')
-ConstantValue__63_fixp = solver.IntVar(0, 1, 'ConstantValue__63_fixp')
-ConstantValue__63_float = solver.IntVar(0, 1, 'ConstantValue__63_float')
-ConstantValue__63_double = solver.IntVar(0, 1, 'ConstantValue__63_double')
-ConstantValue__63_enob = solver.IntVar(-10000, 10000, 'ConstantValue__63_enob')
-solver.Add( + (1)*ConstantValue__63_enob + (-1)*ConstantValue__63_fixbits + (10000)*ConstantValue__63_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__63_enob + (10000)*ConstantValue__63_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__63_enob + (10000)*ConstantValue__63_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__63_fixbits + (-10000)*ConstantValue__63_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__63_fixp + (1)*ConstantValue__63_float + (1)*ConstantValue__63_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__63_fixbits + (-10000)*ConstantValue__63_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__60_fixbits = solver.IntVar(0, 31, 'ConstantValue__60_fixbits')
+ConstantValue__60_fixp = solver.IntVar(0, 1, 'ConstantValue__60_fixp')
+ConstantValue__60_float = solver.IntVar(0, 1, 'ConstantValue__60_float')
+ConstantValue__60_double = solver.IntVar(0, 1, 'ConstantValue__60_double')
+ConstantValue__60_enob = solver.IntVar(-10000, 10000, 'ConstantValue__60_enob')
+solver.Add( + (1)*ConstantValue__60_enob + (-1)*ConstantValue__60_fixbits + (10000)*ConstantValue__60_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__60_enob + (10000)*ConstantValue__60_float<=10026)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__60_enob + (10000)*ConstantValue__60_double<=10055)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__60_fixbits + (-10000)*ConstantValue__60_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__60_fixp + (1)*ConstantValue__60_float + (1)*ConstantValue__60_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__60_fixbits + (-10000)*ConstantValue__60_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !63, !taffo.initweight !32, !taffo.constinfo !65
-ConstantValue__63_CAST_mul21_fixbits = solver.IntVar(0, 31, 'ConstantValue__63_CAST_mul21_fixbits')
-ConstantValue__63_CAST_mul21_fixp = solver.IntVar(0, 1, 'ConstantValue__63_CAST_mul21_fixp')
-ConstantValue__63_CAST_mul21_float = solver.IntVar(0, 1, 'ConstantValue__63_CAST_mul21_float')
-ConstantValue__63_CAST_mul21_double = solver.IntVar(0, 1, 'ConstantValue__63_CAST_mul21_double')
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_fixp + (1)*ConstantValue__63_CAST_mul21_float + (1)*ConstantValue__63_CAST_mul21_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_fixbits + (-10000)*ConstantValue__63_CAST_mul21_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C1_ConstantValue__63_CAST_mul21')
-C2_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C2_ConstantValue__63_CAST_mul21')
-solver.Add( + (1)*ConstantValue__63_fixbits + (-1)*ConstantValue__63_CAST_mul21_fixbits + (-10000)*C1_ConstantValue__63_CAST_mul21<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__63_fixbits + (1)*ConstantValue__63_CAST_mul21_fixbits + (-10000)*C2_ConstantValue__63_CAST_mul21<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__63_CAST_mul21
-castCostObj +=  + (1.13006)*C2_ConstantValue__63_CAST_mul21
-C3_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C3_ConstantValue__63_CAST_mul21')
-C4_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C4_ConstantValue__63_CAST_mul21')
-C5_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C5_ConstantValue__63_CAST_mul21')
-C6_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C6_ConstantValue__63_CAST_mul21')
-C7_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C7_ConstantValue__63_CAST_mul21')
-C8_ConstantValue__63_CAST_mul21 = solver.IntVar(0, 1, 'C8_ConstantValue__63_CAST_mul21')
-solver.Add( + (1)*ConstantValue__63_fixp + (1)*ConstantValue__63_CAST_mul21_float + (-1)*C3_ConstantValue__63_CAST_mul21<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__63_CAST_mul21
-solver.Add( + (1)*ConstantValue__63_float + (1)*ConstantValue__63_CAST_mul21_fixp + (-1)*C4_ConstantValue__63_CAST_mul21<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__63_CAST_mul21
-solver.Add( + (1)*ConstantValue__63_fixp + (1)*ConstantValue__63_CAST_mul21_double + (-1)*C5_ConstantValue__63_CAST_mul21<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__63_CAST_mul21
-solver.Add( + (1)*ConstantValue__63_double + (1)*ConstantValue__63_CAST_mul21_fixp + (-1)*C6_ConstantValue__63_CAST_mul21<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__63_CAST_mul21
-solver.Add( + (1)*ConstantValue__63_float + (1)*ConstantValue__63_CAST_mul21_double + (-1)*C7_ConstantValue__63_CAST_mul21<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__63_CAST_mul21
-solver.Add( + (1)*ConstantValue__63_double + (1)*ConstantValue__63_CAST_mul21_float + (-1)*C8_ConstantValue__63_CAST_mul21<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__63_CAST_mul21
+#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !61, !taffo.initweight !30, !taffo.constinfo !63
+ConstantValue__60_CAST_mul21_fixbits = solver.IntVar(0, 31, 'ConstantValue__60_CAST_mul21_fixbits')
+ConstantValue__60_CAST_mul21_fixp = solver.IntVar(0, 1, 'ConstantValue__60_CAST_mul21_fixp')
+ConstantValue__60_CAST_mul21_float = solver.IntVar(0, 1, 'ConstantValue__60_CAST_mul21_float')
+ConstantValue__60_CAST_mul21_double = solver.IntVar(0, 1, 'ConstantValue__60_CAST_mul21_double')
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_fixp + (1)*ConstantValue__60_CAST_mul21_float + (1)*ConstantValue__60_CAST_mul21_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_fixbits + (-10000)*ConstantValue__60_CAST_mul21_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C1_ConstantValue__60_CAST_mul21')
+C2_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C2_ConstantValue__60_CAST_mul21')
+solver.Add( + (1)*ConstantValue__60_fixbits + (-1)*ConstantValue__60_CAST_mul21_fixbits + (-10000)*C1_ConstantValue__60_CAST_mul21<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__60_fixbits + (1)*ConstantValue__60_CAST_mul21_fixbits + (-10000)*C2_ConstantValue__60_CAST_mul21<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__60_CAST_mul21
+castCostObj +=  + (1.13006)*C2_ConstantValue__60_CAST_mul21
+C3_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C3_ConstantValue__60_CAST_mul21')
+C4_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C4_ConstantValue__60_CAST_mul21')
+C5_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C5_ConstantValue__60_CAST_mul21')
+C6_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C6_ConstantValue__60_CAST_mul21')
+C7_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C7_ConstantValue__60_CAST_mul21')
+C8_ConstantValue__60_CAST_mul21 = solver.IntVar(0, 1, 'C8_ConstantValue__60_CAST_mul21')
+solver.Add( + (1)*ConstantValue__60_fixp + (1)*ConstantValue__60_CAST_mul21_float + (-1)*C3_ConstantValue__60_CAST_mul21<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__60_CAST_mul21
+solver.Add( + (1)*ConstantValue__60_float + (1)*ConstantValue__60_CAST_mul21_fixp + (-1)*C4_ConstantValue__60_CAST_mul21<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__60_CAST_mul21
+solver.Add( + (1)*ConstantValue__60_fixp + (1)*ConstantValue__60_CAST_mul21_double + (-1)*C5_ConstantValue__60_CAST_mul21<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__60_CAST_mul21
+solver.Add( + (1)*ConstantValue__60_double + (1)*ConstantValue__60_CAST_mul21_fixp + (-1)*C6_ConstantValue__60_CAST_mul21<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__60_CAST_mul21
+solver.Add( + (1)*ConstantValue__60_float + (1)*ConstantValue__60_CAST_mul21_double + (-1)*C7_ConstantValue__60_CAST_mul21<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__60_CAST_mul21
+solver.Add( + (1)*ConstantValue__60_double + (1)*ConstantValue__60_CAST_mul21_float + (-1)*C8_ConstantValue__60_CAST_mul21<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__60_CAST_mul21
 
 
 
-#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !63, !taffo.initweight !32, !taffo.constinfo !65
+#Constraint for cast for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !61, !taffo.initweight !30, !taffo.constinfo !63
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_fixbits = solver.IntVar(0, 24, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_fixbits')
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_fixp')
 _Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_float')
@@ -5724,7 +5463,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_InputX_addr_0_CAST_mul21
 
 
 
-#Stuff for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !63, !taffo.initweight !32, !taffo.constinfo !65
+#Stuff for   %mul21 = fmul double 0x3FCDA6711871100E, %conv20, !taffo.info !61, !taffo.initweight !30, !taffo.constinfo !63
 _Z4CNDFf_3_14_mul21_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_3_14_mul21_fixbits')
 _Z4CNDFf_3_14_mul21_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_fixp')
 _Z4CNDFf_3_14_mul21_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_float')
@@ -5737,12 +5476,12 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixbits + (-10000)*_Z4CNDFf_3_14_mul21_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul21_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixp + (1)*_Z4CNDFf_3_14_mul21_float + (1)*_Z4CNDFf_3_14_mul21_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixbits + (-10000)*_Z4CNDFf_3_14_mul21_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_fixp + (-1)*_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_float + (-1)*_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_double + (-1)*_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_fixp + (-1)*_Z4CNDFf_3_14_mul21_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_float + (-1)*_Z4CNDFf_3_14_mul21_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__63_CAST_mul21_double + (-1)*_Z4CNDFf_3_14_mul21_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_fixp + (-1)*_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_float + (-1)*_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_double + (-1)*_Z4CNDFf_3_14_InputX_addr_0_CAST_mul21_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_fixp + (-1)*_Z4CNDFf_3_14_mul21_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_float + (-1)*_Z4CNDFf_3_14_mul21_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__60_CAST_mul21_double + (-1)*_Z4CNDFf_3_14_mul21_double==0)    #double equality
 mathCostObj +=  + (2.04123)*_Z4CNDFf_3_14_mul21_fixp
 mathCostObj +=  + (3.34669)*_Z4CNDFf_3_14_mul21_float
 mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul21_double
@@ -5750,7 +5489,149 @@ _Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*_Z4CNDFf_3_14_mul21_enob + (-1)*_Z4CNDFf_3_14_InputX_addr_0_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_1<=2)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_enob + (-1)*ConstantValue__61_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_2<=1024)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_enob + (-1)*ConstantValue__58_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul21_enob_2<=1024)    #Enob: propagation in product 2
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__61_fixbits = solver.IntVar(0, 31, 'ConstantValue__61_fixbits')
+ConstantValue__61_fixp = solver.IntVar(0, 1, 'ConstantValue__61_fixp')
+ConstantValue__61_float = solver.IntVar(0, 1, 'ConstantValue__61_float')
+ConstantValue__61_double = solver.IntVar(0, 1, 'ConstantValue__61_double')
+ConstantValue__61_enob = solver.IntVar(-10000, 10000, 'ConstantValue__61_enob')
+solver.Add( + (1)*ConstantValue__61_enob + (-1)*ConstantValue__61_fixbits + (10000)*ConstantValue__61_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__61_enob + (10000)*ConstantValue__61_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__61_enob + (10000)*ConstantValue__61_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__61_fixbits + (-10000)*ConstantValue__61_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__61_fixp + (1)*ConstantValue__61_float + (1)*ConstantValue__61_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__61_fixbits + (-10000)*ConstantValue__61_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__62_fixbits = solver.IntVar(0, 31, 'ConstantValue__62_fixbits')
+ConstantValue__62_fixp = solver.IntVar(0, 1, 'ConstantValue__62_fixp')
+ConstantValue__62_float = solver.IntVar(0, 1, 'ConstantValue__62_float')
+ConstantValue__62_double = solver.IntVar(0, 1, 'ConstantValue__62_double')
+ConstantValue__62_enob = solver.IntVar(-10000, 10000, 'ConstantValue__62_enob')
+solver.Add( + (1)*ConstantValue__62_enob + (-1)*ConstantValue__62_fixbits + (10000)*ConstantValue__62_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__62_enob + (10000)*ConstantValue__62_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__62_enob + (10000)*ConstantValue__62_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__62_fixbits + (-10000)*ConstantValue__62_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__62_fixp + (1)*ConstantValue__62_float + (1)*ConstantValue__62_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__62_fixbits + (-10000)*ConstantValue__62_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__63_fixbits = solver.IntVar(0, 31, 'ConstantValue__63_fixbits')
+ConstantValue__63_fixp = solver.IntVar(0, 1, 'ConstantValue__63_fixp')
+ConstantValue__63_float = solver.IntVar(0, 1, 'ConstantValue__63_float')
+ConstantValue__63_double = solver.IntVar(0, 1, 'ConstantValue__63_double')
+ConstantValue__63_enob = solver.IntVar(-10000, 10000, 'ConstantValue__63_enob')
+solver.Add( + (1)*ConstantValue__63_enob + (-1)*ConstantValue__63_fixbits + (10000)*ConstantValue__63_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__63_enob + (10000)*ConstantValue__63_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__63_enob + (10000)*ConstantValue__63_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__63_fixbits + (-10000)*ConstantValue__63_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__63_fixp + (1)*ConstantValue__63_float + (1)*ConstantValue__63_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__63_fixbits + (-10000)*ConstantValue__63_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !68, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__63_CAST_add_fixbits = solver.IntVar(0, 31, 'ConstantValue__63_CAST_add_fixbits')
+ConstantValue__63_CAST_add_fixp = solver.IntVar(0, 1, 'ConstantValue__63_CAST_add_fixp')
+ConstantValue__63_CAST_add_float = solver.IntVar(0, 1, 'ConstantValue__63_CAST_add_float')
+ConstantValue__63_CAST_add_double = solver.IntVar(0, 1, 'ConstantValue__63_CAST_add_double')
+solver.Add( + (1)*ConstantValue__63_CAST_add_fixp + (1)*ConstantValue__63_CAST_add_float + (1)*ConstantValue__63_CAST_add_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__63_CAST_add_fixbits + (-10000)*ConstantValue__63_CAST_add_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C1_ConstantValue__63_CAST_add')
+C2_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C2_ConstantValue__63_CAST_add')
+solver.Add( + (1)*ConstantValue__63_fixbits + (-1)*ConstantValue__63_CAST_add_fixbits + (-10000)*C1_ConstantValue__63_CAST_add<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__63_fixbits + (1)*ConstantValue__63_CAST_add_fixbits + (-10000)*C2_ConstantValue__63_CAST_add<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__63_CAST_add
+castCostObj +=  + (1.13006)*C2_ConstantValue__63_CAST_add
+C3_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C3_ConstantValue__63_CAST_add')
+C4_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C4_ConstantValue__63_CAST_add')
+C5_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C5_ConstantValue__63_CAST_add')
+C6_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C6_ConstantValue__63_CAST_add')
+C7_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C7_ConstantValue__63_CAST_add')
+C8_ConstantValue__63_CAST_add = solver.IntVar(0, 1, 'C8_ConstantValue__63_CAST_add')
+solver.Add( + (1)*ConstantValue__63_fixp + (1)*ConstantValue__63_CAST_add_float + (-1)*C3_ConstantValue__63_CAST_add<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__63_CAST_add
+solver.Add( + (1)*ConstantValue__63_float + (1)*ConstantValue__63_CAST_add_fixp + (-1)*C4_ConstantValue__63_CAST_add<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__63_CAST_add
+solver.Add( + (1)*ConstantValue__63_fixp + (1)*ConstantValue__63_CAST_add_double + (-1)*C5_ConstantValue__63_CAST_add<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__63_CAST_add
+solver.Add( + (1)*ConstantValue__63_double + (1)*ConstantValue__63_CAST_add_fixp + (-1)*C6_ConstantValue__63_CAST_add<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__63_CAST_add
+solver.Add( + (1)*ConstantValue__63_float + (1)*ConstantValue__63_CAST_add_double + (-1)*C7_ConstantValue__63_CAST_add<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__63_CAST_add
+solver.Add( + (1)*ConstantValue__63_double + (1)*ConstantValue__63_CAST_add_float + (-1)*C8_ConstantValue__63_CAST_add<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__63_CAST_add
+
+
+
+#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !68, !taffo.initweight !30, !taffo.constinfo !70
+_Z4CNDFf_3_14_mul21_CAST_add_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_3_14_mul21_CAST_add_fixbits')
+_Z4CNDFf_3_14_mul21_CAST_add_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_CAST_add_fixp')
+_Z4CNDFf_3_14_mul21_CAST_add_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_CAST_add_float')
+_Z4CNDFf_3_14_mul21_CAST_add_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_CAST_add_double')
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp + (1)*_Z4CNDFf_3_14_mul21_CAST_add_float + (1)*_Z4CNDFf_3_14_mul21_CAST_add_double==1)    #exactly 1 type
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits + (-10000)*_Z4CNDFf_3_14_mul21_CAST_add_fixp<=0)    #If no fix, fix frac part = 0
+C1__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C1__Z4CNDFf_3_14_mul21_CAST_add')
+C2__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C2__Z4CNDFf_3_14_mul21_CAST_add')
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixbits + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits + (-10000)*C1__Z4CNDFf_3_14_mul21_CAST_add<=0)    #Shift cost 1
+solver.Add( + (-1)*_Z4CNDFf_3_14_mul21_fixbits + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits + (-10000)*C2__Z4CNDFf_3_14_mul21_CAST_add<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1__Z4CNDFf_3_14_mul21_CAST_add
+castCostObj +=  + (1.13006)*C2__Z4CNDFf_3_14_mul21_CAST_add
+C3__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C3__Z4CNDFf_3_14_mul21_CAST_add')
+C4__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C4__Z4CNDFf_3_14_mul21_CAST_add')
+C5__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C5__Z4CNDFf_3_14_mul21_CAST_add')
+C6__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C6__Z4CNDFf_3_14_mul21_CAST_add')
+C7__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C7__Z4CNDFf_3_14_mul21_CAST_add')
+C8__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C8__Z4CNDFf_3_14_mul21_CAST_add')
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixp + (1)*_Z4CNDFf_3_14_mul21_CAST_add_float + (-1)*C3__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3__Z4CNDFf_3_14_mul21_CAST_add
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_float + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp + (-1)*C4__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4__Z4CNDFf_3_14_mul21_CAST_add
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixp + (1)*_Z4CNDFf_3_14_mul21_CAST_add_double + (-1)*C5__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5__Z4CNDFf_3_14_mul21_CAST_add
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_double + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp + (-1)*C6__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6__Z4CNDFf_3_14_mul21_CAST_add
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_float + (1)*_Z4CNDFf_3_14_mul21_CAST_add_double + (-1)*C7__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Float to double
+castCostObj +=  + (1)*C7__Z4CNDFf_3_14_mul21_CAST_add
+solver.Add( + (1)*_Z4CNDFf_3_14_mul21_double + (1)*_Z4CNDFf_3_14_mul21_CAST_add_float + (-1)*C8__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul21_CAST_add
+
+
+
+#Stuff for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !68, !taffo.initweight !30, !taffo.constinfo !70
+_Z4CNDFf_3_14_add_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_3_14_add_fixbits')
+_Z4CNDFf_3_14_add_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_fixp')
+_Z4CNDFf_3_14_add_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_float')
+_Z4CNDFf_3_14_add_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_double')
+_Z4CNDFf_3_14_add_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_3_14_add_enob')
+solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (-1)*_Z4CNDFf_3_14_add_fixbits + (10000)*_Z4CNDFf_3_14_add_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (10000)*_Z4CNDFf_3_14_add_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (10000)*_Z4CNDFf_3_14_add_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*_Z4CNDFf_3_14_add_fixbits + (-10000)*_Z4CNDFf_3_14_add_fixp>=-9975)    #Limit the lower number of frac bits26
+enobCostObj +=  + (-1)*_Z4CNDFf_3_14_add_enob
+solver.Add( + (1)*_Z4CNDFf_3_14_add_fixp + (1)*_Z4CNDFf_3_14_add_float + (1)*_Z4CNDFf_3_14_add_double==1)    #Exactly one selected type
+solver.Add( + (1)*_Z4CNDFf_3_14_add_fixbits + (-10000)*_Z4CNDFf_3_14_add_fixp<=0)    #If not fix, frac part to zero
+solver.Add( + (1)*ConstantValue__63_CAST_add_fixp + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__63_CAST_add_float + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__63_CAST_add_double + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__63_CAST_add_fixbits + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__63_CAST_add_fixp + (-1)*_Z4CNDFf_3_14_add_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__63_CAST_add_float + (-1)*_Z4CNDFf_3_14_add_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__63_CAST_add_double + (-1)*_Z4CNDFf_3_14_add_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__63_CAST_add_fixbits + (-1)*_Z4CNDFf_3_14_add_fixbits==0)    #same fractional bit
+mathCostObj +=  + (1.30379)*_Z4CNDFf_3_14_add_fixp
+mathCostObj +=  + (1.80596)*_Z4CNDFf_3_14_add_float
+mathCostObj +=  + (2.15411)*_Z4CNDFf_3_14_add_double
+solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (-1)*ConstantValue__61_enob<=0)    #Enob propagation in sum first addend
+solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (-1)*_Z4CNDFf_3_14_mul21_enob<=0)    #Enob propagation in sum second addend
 
 
 
@@ -5799,183 +5680,41 @@ solver.Add( + (1)*ConstantValue__66_fixbits + (-10000)*ConstantValue__66_fixp<=0
 
 
 
-#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !70, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__66_CAST_add_fixbits = solver.IntVar(0, 31, 'ConstantValue__66_CAST_add_fixbits')
-ConstantValue__66_CAST_add_fixp = solver.IntVar(0, 1, 'ConstantValue__66_CAST_add_fixp')
-ConstantValue__66_CAST_add_float = solver.IntVar(0, 1, 'ConstantValue__66_CAST_add_float')
-ConstantValue__66_CAST_add_double = solver.IntVar(0, 1, 'ConstantValue__66_CAST_add_double')
-solver.Add( + (1)*ConstantValue__66_CAST_add_fixp + (1)*ConstantValue__66_CAST_add_float + (1)*ConstantValue__66_CAST_add_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__66_CAST_add_fixbits + (-10000)*ConstantValue__66_CAST_add_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C1_ConstantValue__66_CAST_add')
-C2_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C2_ConstantValue__66_CAST_add')
-solver.Add( + (1)*ConstantValue__66_fixbits + (-1)*ConstantValue__66_CAST_add_fixbits + (-10000)*C1_ConstantValue__66_CAST_add<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__66_fixbits + (1)*ConstantValue__66_CAST_add_fixbits + (-10000)*C2_ConstantValue__66_CAST_add<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__66_CAST_add
-castCostObj +=  + (1.13006)*C2_ConstantValue__66_CAST_add
-C3_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C3_ConstantValue__66_CAST_add')
-C4_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C4_ConstantValue__66_CAST_add')
-C5_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C5_ConstantValue__66_CAST_add')
-C6_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C6_ConstantValue__66_CAST_add')
-C7_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C7_ConstantValue__66_CAST_add')
-C8_ConstantValue__66_CAST_add = solver.IntVar(0, 1, 'C8_ConstantValue__66_CAST_add')
-solver.Add( + (1)*ConstantValue__66_fixp + (1)*ConstantValue__66_CAST_add_float + (-1)*C3_ConstantValue__66_CAST_add<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__66_CAST_add
-solver.Add( + (1)*ConstantValue__66_float + (1)*ConstantValue__66_CAST_add_fixp + (-1)*C4_ConstantValue__66_CAST_add<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__66_CAST_add
-solver.Add( + (1)*ConstantValue__66_fixp + (1)*ConstantValue__66_CAST_add_double + (-1)*C5_ConstantValue__66_CAST_add<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__66_CAST_add
-solver.Add( + (1)*ConstantValue__66_double + (1)*ConstantValue__66_CAST_add_fixp + (-1)*C6_ConstantValue__66_CAST_add<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__66_CAST_add
-solver.Add( + (1)*ConstantValue__66_float + (1)*ConstantValue__66_CAST_add_double + (-1)*C7_ConstantValue__66_CAST_add<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__66_CAST_add
-solver.Add( + (1)*ConstantValue__66_double + (1)*ConstantValue__66_CAST_add_float + (-1)*C8_ConstantValue__66_CAST_add<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__66_CAST_add
+#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !73, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__66_CAST_div_fixbits = solver.IntVar(0, 31, 'ConstantValue__66_CAST_div_fixbits')
+ConstantValue__66_CAST_div_fixp = solver.IntVar(0, 1, 'ConstantValue__66_CAST_div_fixp')
+ConstantValue__66_CAST_div_float = solver.IntVar(0, 1, 'ConstantValue__66_CAST_div_float')
+ConstantValue__66_CAST_div_double = solver.IntVar(0, 1, 'ConstantValue__66_CAST_div_double')
+solver.Add( + (1)*ConstantValue__66_CAST_div_fixp + (1)*ConstantValue__66_CAST_div_float + (1)*ConstantValue__66_CAST_div_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__66_CAST_div_fixbits + (-10000)*ConstantValue__66_CAST_div_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C1_ConstantValue__66_CAST_div')
+C2_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C2_ConstantValue__66_CAST_div')
+solver.Add( + (1)*ConstantValue__66_fixbits + (-1)*ConstantValue__66_CAST_div_fixbits + (-10000)*C1_ConstantValue__66_CAST_div<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__66_fixbits + (1)*ConstantValue__66_CAST_div_fixbits + (-10000)*C2_ConstantValue__66_CAST_div<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__66_CAST_div
+castCostObj +=  + (1.13006)*C2_ConstantValue__66_CAST_div
+C3_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C3_ConstantValue__66_CAST_div')
+C4_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C4_ConstantValue__66_CAST_div')
+C5_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C5_ConstantValue__66_CAST_div')
+C6_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C6_ConstantValue__66_CAST_div')
+C7_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C7_ConstantValue__66_CAST_div')
+C8_ConstantValue__66_CAST_div = solver.IntVar(0, 1, 'C8_ConstantValue__66_CAST_div')
+solver.Add( + (1)*ConstantValue__66_fixp + (1)*ConstantValue__66_CAST_div_float + (-1)*C3_ConstantValue__66_CAST_div<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__66_CAST_div
+solver.Add( + (1)*ConstantValue__66_float + (1)*ConstantValue__66_CAST_div_fixp + (-1)*C4_ConstantValue__66_CAST_div<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__66_CAST_div
+solver.Add( + (1)*ConstantValue__66_fixp + (1)*ConstantValue__66_CAST_div_double + (-1)*C5_ConstantValue__66_CAST_div<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__66_CAST_div
+solver.Add( + (1)*ConstantValue__66_double + (1)*ConstantValue__66_CAST_div_fixp + (-1)*C6_ConstantValue__66_CAST_div<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__66_CAST_div
+solver.Add( + (1)*ConstantValue__66_float + (1)*ConstantValue__66_CAST_div_double + (-1)*C7_ConstantValue__66_CAST_div<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__66_CAST_div
+solver.Add( + (1)*ConstantValue__66_double + (1)*ConstantValue__66_CAST_div_float + (-1)*C8_ConstantValue__66_CAST_div<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__66_CAST_div
 
 
 
-#Constraint for cast for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !70, !taffo.initweight !32, !taffo.constinfo !72
-_Z4CNDFf_3_14_mul21_CAST_add_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_3_14_mul21_CAST_add_fixbits')
-_Z4CNDFf_3_14_mul21_CAST_add_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_CAST_add_fixp')
-_Z4CNDFf_3_14_mul21_CAST_add_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_CAST_add_float')
-_Z4CNDFf_3_14_mul21_CAST_add_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul21_CAST_add_double')
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp + (1)*_Z4CNDFf_3_14_mul21_CAST_add_float + (1)*_Z4CNDFf_3_14_mul21_CAST_add_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits + (-10000)*_Z4CNDFf_3_14_mul21_CAST_add_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C1__Z4CNDFf_3_14_mul21_CAST_add')
-C2__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C2__Z4CNDFf_3_14_mul21_CAST_add')
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixbits + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits + (-10000)*C1__Z4CNDFf_3_14_mul21_CAST_add<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z4CNDFf_3_14_mul21_fixbits + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits + (-10000)*C2__Z4CNDFf_3_14_mul21_CAST_add<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z4CNDFf_3_14_mul21_CAST_add
-castCostObj +=  + (1.13006)*C2__Z4CNDFf_3_14_mul21_CAST_add
-C3__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C3__Z4CNDFf_3_14_mul21_CAST_add')
-C4__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C4__Z4CNDFf_3_14_mul21_CAST_add')
-C5__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C5__Z4CNDFf_3_14_mul21_CAST_add')
-C6__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C6__Z4CNDFf_3_14_mul21_CAST_add')
-C7__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C7__Z4CNDFf_3_14_mul21_CAST_add')
-C8__Z4CNDFf_3_14_mul21_CAST_add = solver.IntVar(0, 1, 'C8__Z4CNDFf_3_14_mul21_CAST_add')
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixp + (1)*_Z4CNDFf_3_14_mul21_CAST_add_float + (-1)*C3__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z4CNDFf_3_14_mul21_CAST_add
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_float + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp + (-1)*C4__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z4CNDFf_3_14_mul21_CAST_add
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_fixp + (1)*_Z4CNDFf_3_14_mul21_CAST_add_double + (-1)*C5__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z4CNDFf_3_14_mul21_CAST_add
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_double + (1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp + (-1)*C6__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z4CNDFf_3_14_mul21_CAST_add
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_float + (1)*_Z4CNDFf_3_14_mul21_CAST_add_double + (-1)*C7__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z4CNDFf_3_14_mul21_CAST_add
-solver.Add( + (1)*_Z4CNDFf_3_14_mul21_double + (1)*_Z4CNDFf_3_14_mul21_CAST_add_float + (-1)*C8__Z4CNDFf_3_14_mul21_CAST_add<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul21_CAST_add
-
-
-
-#Stuff for   %add = fadd double 1.000000e+00, %conv23, !taffo.info !70, !taffo.initweight !32, !taffo.constinfo !72
-_Z4CNDFf_3_14_add_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_3_14_add_fixbits')
-_Z4CNDFf_3_14_add_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_fixp')
-_Z4CNDFf_3_14_add_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_float')
-_Z4CNDFf_3_14_add_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_double')
-_Z4CNDFf_3_14_add_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_3_14_add_enob')
-solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (-1)*_Z4CNDFf_3_14_add_fixbits + (10000)*_Z4CNDFf_3_14_add_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (10000)*_Z4CNDFf_3_14_add_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (10000)*_Z4CNDFf_3_14_add_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_3_14_add_fixbits + (-10000)*_Z4CNDFf_3_14_add_fixp>=-9975)    #Limit the lower number of frac bits26
-enobCostObj +=  + (-1)*_Z4CNDFf_3_14_add_enob
-solver.Add( + (1)*_Z4CNDFf_3_14_add_fixp + (1)*_Z4CNDFf_3_14_add_float + (1)*_Z4CNDFf_3_14_add_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_3_14_add_fixbits + (-10000)*_Z4CNDFf_3_14_add_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__66_CAST_add_fixp + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__66_CAST_add_float + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__66_CAST_add_double + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__66_CAST_add_fixbits + (-1)*_Z4CNDFf_3_14_mul21_CAST_add_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__66_CAST_add_fixp + (-1)*_Z4CNDFf_3_14_add_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__66_CAST_add_float + (-1)*_Z4CNDFf_3_14_add_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__66_CAST_add_double + (-1)*_Z4CNDFf_3_14_add_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__66_CAST_add_fixbits + (-1)*_Z4CNDFf_3_14_add_fixbits==0)    #same fractional bit
-mathCostObj +=  + (1.30379)*_Z4CNDFf_3_14_add_fixp
-mathCostObj +=  + (1.80596)*_Z4CNDFf_3_14_add_float
-mathCostObj +=  + (2.15411)*_Z4CNDFf_3_14_add_double
-solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (-1)*ConstantValue__64_enob<=0)    #Enob propagation in sum first addend
-solver.Add( + (1)*_Z4CNDFf_3_14_add_enob + (-1)*_Z4CNDFf_3_14_mul21_enob<=0)    #Enob propagation in sum second addend
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__67_fixbits = solver.IntVar(0, 31, 'ConstantValue__67_fixbits')
-ConstantValue__67_fixp = solver.IntVar(0, 1, 'ConstantValue__67_fixp')
-ConstantValue__67_float = solver.IntVar(0, 1, 'ConstantValue__67_float')
-ConstantValue__67_double = solver.IntVar(0, 1, 'ConstantValue__67_double')
-ConstantValue__67_enob = solver.IntVar(-10000, 10000, 'ConstantValue__67_enob')
-solver.Add( + (1)*ConstantValue__67_enob + (-1)*ConstantValue__67_fixbits + (10000)*ConstantValue__67_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__67_enob + (10000)*ConstantValue__67_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__67_enob + (10000)*ConstantValue__67_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__67_fixbits + (-10000)*ConstantValue__67_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__67_fixp + (1)*ConstantValue__67_float + (1)*ConstantValue__67_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__67_fixbits + (-10000)*ConstantValue__67_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__68_fixbits = solver.IntVar(0, 31, 'ConstantValue__68_fixbits')
-ConstantValue__68_fixp = solver.IntVar(0, 1, 'ConstantValue__68_fixp')
-ConstantValue__68_float = solver.IntVar(0, 1, 'ConstantValue__68_float')
-ConstantValue__68_double = solver.IntVar(0, 1, 'ConstantValue__68_double')
-ConstantValue__68_enob = solver.IntVar(-10000, 10000, 'ConstantValue__68_enob')
-solver.Add( + (1)*ConstantValue__68_enob + (-1)*ConstantValue__68_fixbits + (10000)*ConstantValue__68_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__68_enob + (10000)*ConstantValue__68_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__68_enob + (10000)*ConstantValue__68_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__68_fixbits + (-10000)*ConstantValue__68_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__68_fixp + (1)*ConstantValue__68_float + (1)*ConstantValue__68_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__68_fixbits + (-10000)*ConstantValue__68_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__69_fixbits = solver.IntVar(0, 31, 'ConstantValue__69_fixbits')
-ConstantValue__69_fixp = solver.IntVar(0, 1, 'ConstantValue__69_fixp')
-ConstantValue__69_float = solver.IntVar(0, 1, 'ConstantValue__69_float')
-ConstantValue__69_double = solver.IntVar(0, 1, 'ConstantValue__69_double')
-ConstantValue__69_enob = solver.IntVar(-10000, 10000, 'ConstantValue__69_enob')
-solver.Add( + (1)*ConstantValue__69_enob + (-1)*ConstantValue__69_fixbits + (10000)*ConstantValue__69_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__69_enob + (10000)*ConstantValue__69_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__69_enob + (10000)*ConstantValue__69_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__69_fixbits + (-10000)*ConstantValue__69_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__69_fixp + (1)*ConstantValue__69_float + (1)*ConstantValue__69_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__69_fixbits + (-10000)*ConstantValue__69_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !75, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__69_CAST_div_fixbits = solver.IntVar(0, 31, 'ConstantValue__69_CAST_div_fixbits')
-ConstantValue__69_CAST_div_fixp = solver.IntVar(0, 1, 'ConstantValue__69_CAST_div_fixp')
-ConstantValue__69_CAST_div_float = solver.IntVar(0, 1, 'ConstantValue__69_CAST_div_float')
-ConstantValue__69_CAST_div_double = solver.IntVar(0, 1, 'ConstantValue__69_CAST_div_double')
-solver.Add( + (1)*ConstantValue__69_CAST_div_fixp + (1)*ConstantValue__69_CAST_div_float + (1)*ConstantValue__69_CAST_div_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__69_CAST_div_fixbits + (-10000)*ConstantValue__69_CAST_div_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C1_ConstantValue__69_CAST_div')
-C2_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C2_ConstantValue__69_CAST_div')
-solver.Add( + (1)*ConstantValue__69_fixbits + (-1)*ConstantValue__69_CAST_div_fixbits + (-10000)*C1_ConstantValue__69_CAST_div<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__69_fixbits + (1)*ConstantValue__69_CAST_div_fixbits + (-10000)*C2_ConstantValue__69_CAST_div<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__69_CAST_div
-castCostObj +=  + (1.13006)*C2_ConstantValue__69_CAST_div
-C3_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C3_ConstantValue__69_CAST_div')
-C4_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C4_ConstantValue__69_CAST_div')
-C5_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C5_ConstantValue__69_CAST_div')
-C6_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C6_ConstantValue__69_CAST_div')
-C7_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C7_ConstantValue__69_CAST_div')
-C8_ConstantValue__69_CAST_div = solver.IntVar(0, 1, 'C8_ConstantValue__69_CAST_div')
-solver.Add( + (1)*ConstantValue__69_fixp + (1)*ConstantValue__69_CAST_div_float + (-1)*C3_ConstantValue__69_CAST_div<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__69_CAST_div
-solver.Add( + (1)*ConstantValue__69_float + (1)*ConstantValue__69_CAST_div_fixp + (-1)*C4_ConstantValue__69_CAST_div<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__69_CAST_div
-solver.Add( + (1)*ConstantValue__69_fixp + (1)*ConstantValue__69_CAST_div_double + (-1)*C5_ConstantValue__69_CAST_div<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__69_CAST_div
-solver.Add( + (1)*ConstantValue__69_double + (1)*ConstantValue__69_CAST_div_fixp + (-1)*C6_ConstantValue__69_CAST_div<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__69_CAST_div
-solver.Add( + (1)*ConstantValue__69_float + (1)*ConstantValue__69_CAST_div_double + (-1)*C7_ConstantValue__69_CAST_div<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__69_CAST_div
-solver.Add( + (1)*ConstantValue__69_double + (1)*ConstantValue__69_CAST_div_float + (-1)*C8_ConstantValue__69_CAST_div<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__69_CAST_div
-
-
-
-#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !75, !taffo.initweight !32, !taffo.constinfo !72
+#Constraint for cast for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !73, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_3_14_add_CAST_div_fixbits = solver.IntVar(0, 26, '_Z4CNDFf_3_14_add_CAST_div_fixbits')
 _Z4CNDFf_3_14_add_CAST_div_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_CAST_div_fixp')
 _Z4CNDFf_3_14_add_CAST_div_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add_CAST_div_float')
@@ -6009,7 +5748,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_add_CAST_div
 
 
 
-#Stuff for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !75, !taffo.initweight !32, !taffo.constinfo !72
+#Stuff for   %div = fdiv double 1.000000e+00, %conv25, !taffo.info !73, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_3_14_div_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_div_fixbits')
 _Z4CNDFf_3_14_div_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_fixp')
 _Z4CNDFf_3_14_div_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_float')
@@ -6022,12 +5761,12 @@ solver.Add( + (1)*_Z4CNDFf_3_14_div_fixbits + (-10000)*_Z4CNDFf_3_14_div_fixp>=-
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_div_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_div_fixp + (1)*_Z4CNDFf_3_14_div_float + (1)*_Z4CNDFf_3_14_div_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_div_fixbits + (-10000)*_Z4CNDFf_3_14_div_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__69_CAST_div_fixp + (-1)*_Z4CNDFf_3_14_add_CAST_div_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__69_CAST_div_float + (-1)*_Z4CNDFf_3_14_add_CAST_div_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__69_CAST_div_double + (-1)*_Z4CNDFf_3_14_add_CAST_div_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__69_CAST_div_fixp + (-1)*_Z4CNDFf_3_14_div_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__69_CAST_div_float + (-1)*_Z4CNDFf_3_14_div_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__69_CAST_div_double + (-1)*_Z4CNDFf_3_14_div_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__66_CAST_div_fixp + (-1)*_Z4CNDFf_3_14_add_CAST_div_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__66_CAST_div_float + (-1)*_Z4CNDFf_3_14_add_CAST_div_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__66_CAST_div_double + (-1)*_Z4CNDFf_3_14_add_CAST_div_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__66_CAST_div_fixp + (-1)*_Z4CNDFf_3_14_div_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__66_CAST_div_float + (-1)*_Z4CNDFf_3_14_div_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__66_CAST_div_double + (-1)*_Z4CNDFf_3_14_div_double==0)    #double equality
 mathCostObj +=  + (3.45438)*_Z4CNDFf_3_14_div_fixp
 mathCostObj +=  + (4.13283)*_Z4CNDFf_3_14_div_float
 mathCostObj +=  + (5.68177)*_Z4CNDFf_3_14_div_double
@@ -6035,11 +5774,11 @@ _Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4C
 _Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*_Z4CNDFf_3_14_div_enob + (-1)*_Z4CNDFf_3_14_add_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_1<=10)    #Enob: propagation in division 1
-solver.Add( + (1)*_Z4CNDFf_3_14_div_enob + (-1)*ConstantValue__67_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_2<=1034)    #Enob: propagation in division 2
+solver.Add( + (1)*_Z4CNDFf_3_14_div_enob + (-1)*ConstantValue__64_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_div_enob_2<=1034)    #Enob: propagation in division 2
 
 
 
-#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !79, !taffo.initweight !25
+#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !77, !taffo.initweight !23
 _Z4CNDFf_3_14_div_CAST_mul27_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_div_CAST_mul27_fixbits')
 _Z4CNDFf_3_14_div_CAST_mul27_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul27_fixp')
 _Z4CNDFf_3_14_div_CAST_mul27_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul27_float')
@@ -6073,7 +5812,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_div_CAST_mul27
 
 
 
-#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !79, !taffo.initweight !25
+#Constraint for cast for   %mul27 = fmul float %conv26, %conv26, !taffo.info !77, !taffo.initweight !23
 _Z4CNDFf_3_14_div_CAST_mul27_0_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_div_CAST_mul27_0_fixbits')
 _Z4CNDFf_3_14_div_CAST_mul27_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul27_0_fixp')
 _Z4CNDFf_3_14_div_CAST_mul27_0_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul27_0_float')
@@ -6107,7 +5846,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_div_CAST_mul27_0
 
 
 
-#Stuff for   %mul27 = fmul float %conv26, %conv26, !taffo.info !79, !taffo.initweight !25
+#Stuff for   %mul27 = fmul float %conv26, %conv26, !taffo.info !77, !taffo.initweight !23
 _Z4CNDFf_3_14_mul27_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_14_mul27_fixbits')
 _Z4CNDFf_3_14_mul27_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul27_fixp')
 _Z4CNDFf_3_14_mul27_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul27_float')
@@ -6137,7 +5876,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul27_enob + (-1)*_Z4CNDFf_3_14_div_enob + (-100
 
 
 
-#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !81, !taffo.initweight !25
+#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !79, !taffo.initweight !23
 _Z4CNDFf_3_14_mul27_CAST_mul28_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_14_mul27_CAST_mul28_fixbits')
 _Z4CNDFf_3_14_mul27_CAST_mul28_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul27_CAST_mul28_fixp')
 _Z4CNDFf_3_14_mul27_CAST_mul28_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul27_CAST_mul28_float')
@@ -6171,7 +5910,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul27_CAST_mul28
 
 
 
-#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !81, !taffo.initweight !25
+#Constraint for cast for   %mul28 = fmul float %mul27, %conv26, !taffo.info !79, !taffo.initweight !23
 _Z4CNDFf_3_14_div_CAST_mul28_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_div_CAST_mul28_fixbits')
 _Z4CNDFf_3_14_div_CAST_mul28_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul28_fixp')
 _Z4CNDFf_3_14_div_CAST_mul28_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul28_float')
@@ -6205,7 +5944,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_div_CAST_mul28
 
 
 
-#Stuff for   %mul28 = fmul float %mul27, %conv26, !taffo.info !81, !taffo.initweight !25
+#Stuff for   %mul28 = fmul float %mul27, %conv26, !taffo.info !79, !taffo.initweight !23
 _Z4CNDFf_3_14_mul28_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul28_fixbits')
 _Z4CNDFf_3_14_mul28_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul28_fixp')
 _Z4CNDFf_3_14_mul28_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul28_float')
@@ -6235,7 +5974,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul28_enob + (-1)*_Z4CNDFf_3_14_mul27_enob + (-1
 
 
 
-#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !83, !taffo.initweight !25
+#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !81, !taffo.initweight !23
 _Z4CNDFf_3_14_mul28_CAST_mul29_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul28_CAST_mul29_fixbits')
 _Z4CNDFf_3_14_mul28_CAST_mul29_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul28_CAST_mul29_fixp')
 _Z4CNDFf_3_14_mul28_CAST_mul29_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul28_CAST_mul29_float')
@@ -6269,7 +6008,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul28_CAST_mul29
 
 
 
-#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !83, !taffo.initweight !25
+#Constraint for cast for   %mul29 = fmul float %mul28, %conv26, !taffo.info !81, !taffo.initweight !23
 _Z4CNDFf_3_14_div_CAST_mul29_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_div_CAST_mul29_fixbits')
 _Z4CNDFf_3_14_div_CAST_mul29_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul29_fixp')
 _Z4CNDFf_3_14_div_CAST_mul29_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul29_float')
@@ -6303,7 +6042,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_div_CAST_mul29
 
 
 
-#Stuff for   %mul29 = fmul float %mul28, %conv26, !taffo.info !83, !taffo.initweight !25
+#Stuff for   %mul29 = fmul float %mul28, %conv26, !taffo.info !81, !taffo.initweight !23
 _Z4CNDFf_3_14_mul29_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul29_fixbits')
 _Z4CNDFf_3_14_mul29_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul29_fixp')
 _Z4CNDFf_3_14_mul29_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul29_float')
@@ -6333,7 +6072,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul29_enob + (-1)*_Z4CNDFf_3_14_mul28_enob + (-1
 
 
 
-#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !85, !taffo.initweight !25
+#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !83, !taffo.initweight !23
 _Z4CNDFf_3_14_mul29_CAST_mul30_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul29_CAST_mul30_fixbits')
 _Z4CNDFf_3_14_mul29_CAST_mul30_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul29_CAST_mul30_fixp')
 _Z4CNDFf_3_14_mul29_CAST_mul30_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul29_CAST_mul30_float')
@@ -6367,7 +6106,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul29_CAST_mul30
 
 
 
-#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !85, !taffo.initweight !25
+#Constraint for cast for   %mul30 = fmul float %mul29, %conv26, !taffo.info !83, !taffo.initweight !23
 _Z4CNDFf_3_14_div_CAST_mul30_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_div_CAST_mul30_fixbits')
 _Z4CNDFf_3_14_div_CAST_mul30_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul30_fixp')
 _Z4CNDFf_3_14_div_CAST_mul30_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul30_float')
@@ -6401,7 +6140,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_div_CAST_mul30
 
 
 
-#Stuff for   %mul30 = fmul float %mul29, %conv26, !taffo.info !85, !taffo.initweight !25
+#Stuff for   %mul30 = fmul float %mul29, %conv26, !taffo.info !83, !taffo.initweight !23
 _Z4CNDFf_3_14_mul30_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul30_fixbits')
 _Z4CNDFf_3_14_mul30_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul30_fixp')
 _Z4CNDFf_3_14_mul30_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul30_float')
@@ -6432,36 +6171,36 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul30_enob + (-1)*_Z4CNDFf_3_14_mul29_enob + (-1
 
 
 #Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__70_fixbits = solver.IntVar(0, 31, 'ConstantValue__70_fixbits')
-ConstantValue__70_fixp = solver.IntVar(0, 1, 'ConstantValue__70_fixp')
-ConstantValue__70_float = solver.IntVar(0, 1, 'ConstantValue__70_float')
-ConstantValue__70_double = solver.IntVar(0, 1, 'ConstantValue__70_double')
-ConstantValue__70_enob = solver.IntVar(-10000, 10000, 'ConstantValue__70_enob')
-solver.Add( + (1)*ConstantValue__70_enob + (-1)*ConstantValue__70_fixbits + (10000)*ConstantValue__70_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__70_enob + (10000)*ConstantValue__70_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__70_enob + (10000)*ConstantValue__70_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__70_fixbits + (-10000)*ConstantValue__70_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__70_fixp + (1)*ConstantValue__70_float + (1)*ConstantValue__70_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__70_fixbits + (-10000)*ConstantValue__70_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__67_fixbits = solver.IntVar(0, 31, 'ConstantValue__67_fixbits')
+ConstantValue__67_fixp = solver.IntVar(0, 1, 'ConstantValue__67_fixp')
+ConstantValue__67_float = solver.IntVar(0, 1, 'ConstantValue__67_float')
+ConstantValue__67_double = solver.IntVar(0, 1, 'ConstantValue__67_double')
+ConstantValue__67_enob = solver.IntVar(-10000, 10000, 'ConstantValue__67_enob')
+solver.Add( + (1)*ConstantValue__67_enob + (-1)*ConstantValue__67_fixbits + (10000)*ConstantValue__67_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__67_enob + (10000)*ConstantValue__67_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__67_enob + (10000)*ConstantValue__67_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__67_fixbits + (-10000)*ConstantValue__67_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__67_fixp + (1)*ConstantValue__67_float + (1)*ConstantValue__67_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__67_fixbits + (-10000)*ConstantValue__67_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__71_fixbits = solver.IntVar(0, 31, 'ConstantValue__71_fixbits')
-ConstantValue__71_fixp = solver.IntVar(0, 1, 'ConstantValue__71_fixp')
-ConstantValue__71_float = solver.IntVar(0, 1, 'ConstantValue__71_float')
-ConstantValue__71_double = solver.IntVar(0, 1, 'ConstantValue__71_double')
-ConstantValue__71_enob = solver.IntVar(-10000, 10000, 'ConstantValue__71_enob')
-solver.Add( + (1)*ConstantValue__71_enob + (-1)*ConstantValue__71_fixbits + (10000)*ConstantValue__71_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__71_enob + (10000)*ConstantValue__71_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__71_enob + (10000)*ConstantValue__71_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__71_fixbits + (-10000)*ConstantValue__71_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__71_fixp + (1)*ConstantValue__71_float + (1)*ConstantValue__71_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__71_fixbits + (-10000)*ConstantValue__71_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__68_fixbits = solver.IntVar(0, 31, 'ConstantValue__68_fixbits')
+ConstantValue__68_fixp = solver.IntVar(0, 1, 'ConstantValue__68_fixp')
+ConstantValue__68_float = solver.IntVar(0, 1, 'ConstantValue__68_float')
+ConstantValue__68_double = solver.IntVar(0, 1, 'ConstantValue__68_double')
+ConstantValue__68_enob = solver.IntVar(-10000, 10000, 'ConstantValue__68_enob')
+solver.Add( + (1)*ConstantValue__68_enob + (-1)*ConstantValue__68_fixbits + (10000)*ConstantValue__68_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__68_enob + (10000)*ConstantValue__68_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__68_enob + (10000)*ConstantValue__68_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__68_fixbits + (-10000)*ConstantValue__68_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__68_fixp + (1)*ConstantValue__68_float + (1)*ConstantValue__68_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__68_fixbits + (-10000)*ConstantValue__68_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !87, !taffo.initweight !32, !taffo.constinfo !89
+#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !85, !taffo.initweight !30, !taffo.constinfo !87
 _Z4CNDFf_3_14_div_CAST_mul32_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_div_CAST_mul32_fixbits')
 _Z4CNDFf_3_14_div_CAST_mul32_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul32_fixp')
 _Z4CNDFf_3_14_div_CAST_mul32_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_div_CAST_mul32_float')
@@ -6496,55 +6235,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_div_CAST_mul32
 
 
 #Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__72_fixbits = solver.IntVar(0, 31, 'ConstantValue__72_fixbits')
-ConstantValue__72_fixp = solver.IntVar(0, 1, 'ConstantValue__72_fixp')
-ConstantValue__72_float = solver.IntVar(0, 1, 'ConstantValue__72_float')
-ConstantValue__72_double = solver.IntVar(0, 1, 'ConstantValue__72_double')
-ConstantValue__72_enob = solver.IntVar(-10000, 10000, 'ConstantValue__72_enob')
-solver.Add( + (1)*ConstantValue__72_enob + (-1)*ConstantValue__72_fixbits + (10000)*ConstantValue__72_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__72_enob + (10000)*ConstantValue__72_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__72_enob + (10000)*ConstantValue__72_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__72_fixbits + (-10000)*ConstantValue__72_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__72_fixp + (1)*ConstantValue__72_float + (1)*ConstantValue__72_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__72_fixbits + (-10000)*ConstantValue__72_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__69_fixbits = solver.IntVar(0, 31, 'ConstantValue__69_fixbits')
+ConstantValue__69_fixp = solver.IntVar(0, 1, 'ConstantValue__69_fixp')
+ConstantValue__69_float = solver.IntVar(0, 1, 'ConstantValue__69_float')
+ConstantValue__69_double = solver.IntVar(0, 1, 'ConstantValue__69_double')
+ConstantValue__69_enob = solver.IntVar(-10000, 10000, 'ConstantValue__69_enob')
+solver.Add( + (1)*ConstantValue__69_enob + (-1)*ConstantValue__69_fixbits + (10000)*ConstantValue__69_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__69_enob + (10000)*ConstantValue__69_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__69_enob + (10000)*ConstantValue__69_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__69_fixbits + (-10000)*ConstantValue__69_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__69_fixp + (1)*ConstantValue__69_float + (1)*ConstantValue__69_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__69_fixbits + (-10000)*ConstantValue__69_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !87, !taffo.initweight !32, !taffo.constinfo !89
-ConstantValue__72_CAST_mul32_fixbits = solver.IntVar(0, 31, 'ConstantValue__72_CAST_mul32_fixbits')
-ConstantValue__72_CAST_mul32_fixp = solver.IntVar(0, 1, 'ConstantValue__72_CAST_mul32_fixp')
-ConstantValue__72_CAST_mul32_float = solver.IntVar(0, 1, 'ConstantValue__72_CAST_mul32_float')
-ConstantValue__72_CAST_mul32_double = solver.IntVar(0, 1, 'ConstantValue__72_CAST_mul32_double')
-solver.Add( + (1)*ConstantValue__72_CAST_mul32_fixp + (1)*ConstantValue__72_CAST_mul32_float + (1)*ConstantValue__72_CAST_mul32_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__72_CAST_mul32_fixbits + (-10000)*ConstantValue__72_CAST_mul32_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C1_ConstantValue__72_CAST_mul32')
-C2_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C2_ConstantValue__72_CAST_mul32')
-solver.Add( + (1)*ConstantValue__72_fixbits + (-1)*ConstantValue__72_CAST_mul32_fixbits + (-10000)*C1_ConstantValue__72_CAST_mul32<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__72_fixbits + (1)*ConstantValue__72_CAST_mul32_fixbits + (-10000)*C2_ConstantValue__72_CAST_mul32<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__72_CAST_mul32
-castCostObj +=  + (1.13006)*C2_ConstantValue__72_CAST_mul32
-C3_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C3_ConstantValue__72_CAST_mul32')
-C4_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C4_ConstantValue__72_CAST_mul32')
-C5_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C5_ConstantValue__72_CAST_mul32')
-C6_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C6_ConstantValue__72_CAST_mul32')
-C7_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C7_ConstantValue__72_CAST_mul32')
-C8_ConstantValue__72_CAST_mul32 = solver.IntVar(0, 1, 'C8_ConstantValue__72_CAST_mul32')
-solver.Add( + (1)*ConstantValue__72_fixp + (1)*ConstantValue__72_CAST_mul32_float + (-1)*C3_ConstantValue__72_CAST_mul32<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__72_CAST_mul32
-solver.Add( + (1)*ConstantValue__72_float + (1)*ConstantValue__72_CAST_mul32_fixp + (-1)*C4_ConstantValue__72_CAST_mul32<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__72_CAST_mul32
-solver.Add( + (1)*ConstantValue__72_fixp + (1)*ConstantValue__72_CAST_mul32_double + (-1)*C5_ConstantValue__72_CAST_mul32<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__72_CAST_mul32
-solver.Add( + (1)*ConstantValue__72_double + (1)*ConstantValue__72_CAST_mul32_fixp + (-1)*C6_ConstantValue__72_CAST_mul32<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__72_CAST_mul32
-solver.Add( + (1)*ConstantValue__72_float + (1)*ConstantValue__72_CAST_mul32_double + (-1)*C7_ConstantValue__72_CAST_mul32<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__72_CAST_mul32
-solver.Add( + (1)*ConstantValue__72_double + (1)*ConstantValue__72_CAST_mul32_float + (-1)*C8_ConstantValue__72_CAST_mul32<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__72_CAST_mul32
+#Constraint for cast for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !85, !taffo.initweight !30, !taffo.constinfo !87
+ConstantValue__69_CAST_mul32_fixbits = solver.IntVar(0, 31, 'ConstantValue__69_CAST_mul32_fixbits')
+ConstantValue__69_CAST_mul32_fixp = solver.IntVar(0, 1, 'ConstantValue__69_CAST_mul32_fixp')
+ConstantValue__69_CAST_mul32_float = solver.IntVar(0, 1, 'ConstantValue__69_CAST_mul32_float')
+ConstantValue__69_CAST_mul32_double = solver.IntVar(0, 1, 'ConstantValue__69_CAST_mul32_double')
+solver.Add( + (1)*ConstantValue__69_CAST_mul32_fixp + (1)*ConstantValue__69_CAST_mul32_float + (1)*ConstantValue__69_CAST_mul32_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__69_CAST_mul32_fixbits + (-10000)*ConstantValue__69_CAST_mul32_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C1_ConstantValue__69_CAST_mul32')
+C2_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C2_ConstantValue__69_CAST_mul32')
+solver.Add( + (1)*ConstantValue__69_fixbits + (-1)*ConstantValue__69_CAST_mul32_fixbits + (-10000)*C1_ConstantValue__69_CAST_mul32<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__69_fixbits + (1)*ConstantValue__69_CAST_mul32_fixbits + (-10000)*C2_ConstantValue__69_CAST_mul32<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__69_CAST_mul32
+castCostObj +=  + (1.13006)*C2_ConstantValue__69_CAST_mul32
+C3_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C3_ConstantValue__69_CAST_mul32')
+C4_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C4_ConstantValue__69_CAST_mul32')
+C5_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C5_ConstantValue__69_CAST_mul32')
+C6_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C6_ConstantValue__69_CAST_mul32')
+C7_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C7_ConstantValue__69_CAST_mul32')
+C8_ConstantValue__69_CAST_mul32 = solver.IntVar(0, 1, 'C8_ConstantValue__69_CAST_mul32')
+solver.Add( + (1)*ConstantValue__69_fixp + (1)*ConstantValue__69_CAST_mul32_float + (-1)*C3_ConstantValue__69_CAST_mul32<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__69_CAST_mul32
+solver.Add( + (1)*ConstantValue__69_float + (1)*ConstantValue__69_CAST_mul32_fixp + (-1)*C4_ConstantValue__69_CAST_mul32<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__69_CAST_mul32
+solver.Add( + (1)*ConstantValue__69_fixp + (1)*ConstantValue__69_CAST_mul32_double + (-1)*C5_ConstantValue__69_CAST_mul32<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__69_CAST_mul32
+solver.Add( + (1)*ConstantValue__69_double + (1)*ConstantValue__69_CAST_mul32_fixp + (-1)*C6_ConstantValue__69_CAST_mul32<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__69_CAST_mul32
+solver.Add( + (1)*ConstantValue__69_float + (1)*ConstantValue__69_CAST_mul32_double + (-1)*C7_ConstantValue__69_CAST_mul32<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__69_CAST_mul32
+solver.Add( + (1)*ConstantValue__69_double + (1)*ConstantValue__69_CAST_mul32_float + (-1)*C8_ConstantValue__69_CAST_mul32<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__69_CAST_mul32
 
 
 
-#Stuff for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !87, !taffo.initweight !32, !taffo.constinfo !89
+#Stuff for   %mul32 = fmul double %conv31, 0x3FD470BF3A92F8EC, !taffo.info !85, !taffo.initweight !30, !taffo.constinfo !87
 _Z4CNDFf_3_14_mul32_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul32_fixbits')
 _Z4CNDFf_3_14_mul32_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul32_fixp')
 _Z4CNDFf_3_14_mul32_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul32_float')
@@ -6557,9 +6296,9 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul32_fixbits + (-10000)*_Z4CNDFf_3_14_mul32_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul32_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul32_fixp + (1)*_Z4CNDFf_3_14_mul32_float + (1)*_Z4CNDFf_3_14_mul32_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul32_fixbits + (-10000)*_Z4CNDFf_3_14_mul32_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_fixp + (-1)*ConstantValue__72_CAST_mul32_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_float + (-1)*ConstantValue__72_CAST_mul32_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_double + (-1)*ConstantValue__72_CAST_mul32_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_fixp + (-1)*ConstantValue__69_CAST_mul32_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_float + (-1)*ConstantValue__69_CAST_mul32_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_double + (-1)*ConstantValue__69_CAST_mul32_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_fixp + (-1)*_Z4CNDFf_3_14_mul32_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_float + (-1)*_Z4CNDFf_3_14_mul32_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_3_14_div_CAST_mul32_double + (-1)*_Z4CNDFf_3_14_mul32_double==0)    #double equality
@@ -6569,42 +6308,42 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul32_double
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_1')
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_14_mul32_enob + (-1)*ConstantValue__70_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_3_14_mul32_enob + (-1)*ConstantValue__67_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_3_14_mul32_enob + (-1)*_Z4CNDFf_3_14_div_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul32_enob_2<=2)    #Enob: propagation in product 2
 
 
 
 #Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__73_fixbits = solver.IntVar(0, 30, 'ConstantValue__73_fixbits')
-ConstantValue__73_fixp = solver.IntVar(0, 1, 'ConstantValue__73_fixp')
-ConstantValue__73_float = solver.IntVar(0, 1, 'ConstantValue__73_float')
-ConstantValue__73_double = solver.IntVar(0, 1, 'ConstantValue__73_double')
-ConstantValue__73_enob = solver.IntVar(-10000, 10000, 'ConstantValue__73_enob')
-solver.Add( + (1)*ConstantValue__73_enob + (-1)*ConstantValue__73_fixbits + (10000)*ConstantValue__73_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__73_enob + (10000)*ConstantValue__73_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__73_enob + (10000)*ConstantValue__73_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__73_fixbits + (-10000)*ConstantValue__73_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__73_fixp + (1)*ConstantValue__73_float + (1)*ConstantValue__73_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__73_fixbits + (-10000)*ConstantValue__73_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__70_fixbits = solver.IntVar(0, 30, 'ConstantValue__70_fixbits')
+ConstantValue__70_fixp = solver.IntVar(0, 1, 'ConstantValue__70_fixp')
+ConstantValue__70_float = solver.IntVar(0, 1, 'ConstantValue__70_float')
+ConstantValue__70_double = solver.IntVar(0, 1, 'ConstantValue__70_double')
+ConstantValue__70_enob = solver.IntVar(-10000, 10000, 'ConstantValue__70_enob')
+solver.Add( + (1)*ConstantValue__70_enob + (-1)*ConstantValue__70_fixbits + (10000)*ConstantValue__70_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__70_enob + (10000)*ConstantValue__70_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__70_enob + (10000)*ConstantValue__70_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__70_fixbits + (-10000)*ConstantValue__70_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__70_fixp + (1)*ConstantValue__70_float + (1)*ConstantValue__70_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__70_fixbits + (-10000)*ConstantValue__70_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__74_fixbits = solver.IntVar(0, 30, 'ConstantValue__74_fixbits')
-ConstantValue__74_fixp = solver.IntVar(0, 1, 'ConstantValue__74_fixp')
-ConstantValue__74_float = solver.IntVar(0, 1, 'ConstantValue__74_float')
-ConstantValue__74_double = solver.IntVar(0, 1, 'ConstantValue__74_double')
-ConstantValue__74_enob = solver.IntVar(-10000, 10000, 'ConstantValue__74_enob')
-solver.Add( + (1)*ConstantValue__74_enob + (-1)*ConstantValue__74_fixbits + (10000)*ConstantValue__74_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__74_enob + (10000)*ConstantValue__74_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__74_enob + (10000)*ConstantValue__74_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__74_fixbits + (-10000)*ConstantValue__74_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__74_fixp + (1)*ConstantValue__74_float + (1)*ConstantValue__74_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__74_fixbits + (-10000)*ConstantValue__74_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__71_fixbits = solver.IntVar(0, 30, 'ConstantValue__71_fixbits')
+ConstantValue__71_fixp = solver.IntVar(0, 1, 'ConstantValue__71_fixp')
+ConstantValue__71_float = solver.IntVar(0, 1, 'ConstantValue__71_float')
+ConstantValue__71_double = solver.IntVar(0, 1, 'ConstantValue__71_double')
+ConstantValue__71_enob = solver.IntVar(-10000, 10000, 'ConstantValue__71_enob')
+solver.Add( + (1)*ConstantValue__71_enob + (-1)*ConstantValue__71_fixbits + (10000)*ConstantValue__71_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__71_enob + (10000)*ConstantValue__71_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__71_enob + (10000)*ConstantValue__71_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__71_fixbits + (-10000)*ConstantValue__71_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__71_fixp + (1)*ConstantValue__71_float + (1)*ConstantValue__71_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__71_fixbits + (-10000)*ConstantValue__71_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !94, !taffo.initweight !32, !taffo.constinfo !96
+#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !92, !taffo.initweight !30, !taffo.constinfo !94
 _Z4CNDFf_3_14_mul27_CAST_mul35_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_14_mul27_CAST_mul35_fixbits')
 _Z4CNDFf_3_14_mul27_CAST_mul35_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul27_CAST_mul35_fixp')
 _Z4CNDFf_3_14_mul27_CAST_mul35_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul27_CAST_mul35_float')
@@ -6639,55 +6378,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul27_CAST_mul35
 
 
 #Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__75_fixbits = solver.IntVar(0, 30, 'ConstantValue__75_fixbits')
-ConstantValue__75_fixp = solver.IntVar(0, 1, 'ConstantValue__75_fixp')
-ConstantValue__75_float = solver.IntVar(0, 1, 'ConstantValue__75_float')
-ConstantValue__75_double = solver.IntVar(0, 1, 'ConstantValue__75_double')
-ConstantValue__75_enob = solver.IntVar(-10000, 10000, 'ConstantValue__75_enob')
-solver.Add( + (1)*ConstantValue__75_enob + (-1)*ConstantValue__75_fixbits + (10000)*ConstantValue__75_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__75_enob + (10000)*ConstantValue__75_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__75_enob + (10000)*ConstantValue__75_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__75_fixbits + (-10000)*ConstantValue__75_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__75_fixp + (1)*ConstantValue__75_float + (1)*ConstantValue__75_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__75_fixbits + (-10000)*ConstantValue__75_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__72_fixbits = solver.IntVar(0, 30, 'ConstantValue__72_fixbits')
+ConstantValue__72_fixp = solver.IntVar(0, 1, 'ConstantValue__72_fixp')
+ConstantValue__72_float = solver.IntVar(0, 1, 'ConstantValue__72_float')
+ConstantValue__72_double = solver.IntVar(0, 1, 'ConstantValue__72_double')
+ConstantValue__72_enob = solver.IntVar(-10000, 10000, 'ConstantValue__72_enob')
+solver.Add( + (1)*ConstantValue__72_enob + (-1)*ConstantValue__72_fixbits + (10000)*ConstantValue__72_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__72_enob + (10000)*ConstantValue__72_float<=10025)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__72_enob + (10000)*ConstantValue__72_double<=10054)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__72_fixbits + (-10000)*ConstantValue__72_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__72_fixp + (1)*ConstantValue__72_float + (1)*ConstantValue__72_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__72_fixbits + (-10000)*ConstantValue__72_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !94, !taffo.initweight !32, !taffo.constinfo !96
-ConstantValue__75_CAST_mul35_fixbits = solver.IntVar(0, 30, 'ConstantValue__75_CAST_mul35_fixbits')
-ConstantValue__75_CAST_mul35_fixp = solver.IntVar(0, 1, 'ConstantValue__75_CAST_mul35_fixp')
-ConstantValue__75_CAST_mul35_float = solver.IntVar(0, 1, 'ConstantValue__75_CAST_mul35_float')
-ConstantValue__75_CAST_mul35_double = solver.IntVar(0, 1, 'ConstantValue__75_CAST_mul35_double')
-solver.Add( + (1)*ConstantValue__75_CAST_mul35_fixp + (1)*ConstantValue__75_CAST_mul35_float + (1)*ConstantValue__75_CAST_mul35_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__75_CAST_mul35_fixbits + (-10000)*ConstantValue__75_CAST_mul35_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C1_ConstantValue__75_CAST_mul35')
-C2_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C2_ConstantValue__75_CAST_mul35')
-solver.Add( + (1)*ConstantValue__75_fixbits + (-1)*ConstantValue__75_CAST_mul35_fixbits + (-10000)*C1_ConstantValue__75_CAST_mul35<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__75_fixbits + (1)*ConstantValue__75_CAST_mul35_fixbits + (-10000)*C2_ConstantValue__75_CAST_mul35<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__75_CAST_mul35
-castCostObj +=  + (1.13006)*C2_ConstantValue__75_CAST_mul35
-C3_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C3_ConstantValue__75_CAST_mul35')
-C4_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C4_ConstantValue__75_CAST_mul35')
-C5_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C5_ConstantValue__75_CAST_mul35')
-C6_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C6_ConstantValue__75_CAST_mul35')
-C7_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C7_ConstantValue__75_CAST_mul35')
-C8_ConstantValue__75_CAST_mul35 = solver.IntVar(0, 1, 'C8_ConstantValue__75_CAST_mul35')
-solver.Add( + (1)*ConstantValue__75_fixp + (1)*ConstantValue__75_CAST_mul35_float + (-1)*C3_ConstantValue__75_CAST_mul35<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__75_CAST_mul35
-solver.Add( + (1)*ConstantValue__75_float + (1)*ConstantValue__75_CAST_mul35_fixp + (-1)*C4_ConstantValue__75_CAST_mul35<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__75_CAST_mul35
-solver.Add( + (1)*ConstantValue__75_fixp + (1)*ConstantValue__75_CAST_mul35_double + (-1)*C5_ConstantValue__75_CAST_mul35<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__75_CAST_mul35
-solver.Add( + (1)*ConstantValue__75_double + (1)*ConstantValue__75_CAST_mul35_fixp + (-1)*C6_ConstantValue__75_CAST_mul35<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__75_CAST_mul35
-solver.Add( + (1)*ConstantValue__75_float + (1)*ConstantValue__75_CAST_mul35_double + (-1)*C7_ConstantValue__75_CAST_mul35<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__75_CAST_mul35
-solver.Add( + (1)*ConstantValue__75_double + (1)*ConstantValue__75_CAST_mul35_float + (-1)*C8_ConstantValue__75_CAST_mul35<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__75_CAST_mul35
+#Constraint for cast for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !92, !taffo.initweight !30, !taffo.constinfo !94
+ConstantValue__72_CAST_mul35_fixbits = solver.IntVar(0, 30, 'ConstantValue__72_CAST_mul35_fixbits')
+ConstantValue__72_CAST_mul35_fixp = solver.IntVar(0, 1, 'ConstantValue__72_CAST_mul35_fixp')
+ConstantValue__72_CAST_mul35_float = solver.IntVar(0, 1, 'ConstantValue__72_CAST_mul35_float')
+ConstantValue__72_CAST_mul35_double = solver.IntVar(0, 1, 'ConstantValue__72_CAST_mul35_double')
+solver.Add( + (1)*ConstantValue__72_CAST_mul35_fixp + (1)*ConstantValue__72_CAST_mul35_float + (1)*ConstantValue__72_CAST_mul35_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__72_CAST_mul35_fixbits + (-10000)*ConstantValue__72_CAST_mul35_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C1_ConstantValue__72_CAST_mul35')
+C2_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C2_ConstantValue__72_CAST_mul35')
+solver.Add( + (1)*ConstantValue__72_fixbits + (-1)*ConstantValue__72_CAST_mul35_fixbits + (-10000)*C1_ConstantValue__72_CAST_mul35<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__72_fixbits + (1)*ConstantValue__72_CAST_mul35_fixbits + (-10000)*C2_ConstantValue__72_CAST_mul35<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__72_CAST_mul35
+castCostObj +=  + (1.13006)*C2_ConstantValue__72_CAST_mul35
+C3_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C3_ConstantValue__72_CAST_mul35')
+C4_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C4_ConstantValue__72_CAST_mul35')
+C5_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C5_ConstantValue__72_CAST_mul35')
+C6_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C6_ConstantValue__72_CAST_mul35')
+C7_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C7_ConstantValue__72_CAST_mul35')
+C8_ConstantValue__72_CAST_mul35 = solver.IntVar(0, 1, 'C8_ConstantValue__72_CAST_mul35')
+solver.Add( + (1)*ConstantValue__72_fixp + (1)*ConstantValue__72_CAST_mul35_float + (-1)*C3_ConstantValue__72_CAST_mul35<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__72_CAST_mul35
+solver.Add( + (1)*ConstantValue__72_float + (1)*ConstantValue__72_CAST_mul35_fixp + (-1)*C4_ConstantValue__72_CAST_mul35<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__72_CAST_mul35
+solver.Add( + (1)*ConstantValue__72_fixp + (1)*ConstantValue__72_CAST_mul35_double + (-1)*C5_ConstantValue__72_CAST_mul35<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__72_CAST_mul35
+solver.Add( + (1)*ConstantValue__72_double + (1)*ConstantValue__72_CAST_mul35_fixp + (-1)*C6_ConstantValue__72_CAST_mul35<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__72_CAST_mul35
+solver.Add( + (1)*ConstantValue__72_float + (1)*ConstantValue__72_CAST_mul35_double + (-1)*C7_ConstantValue__72_CAST_mul35<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__72_CAST_mul35
+solver.Add( + (1)*ConstantValue__72_double + (1)*ConstantValue__72_CAST_mul35_float + (-1)*C8_ConstantValue__72_CAST_mul35<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__72_CAST_mul35
 
 
 
-#Stuff for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !94, !taffo.initweight !32, !taffo.constinfo !96
+#Stuff for   %mul35 = fmul double %conv34, 0xBFD6D1F0E5A8325B, !taffo.info !92, !taffo.initweight !30, !taffo.constinfo !94
 _Z4CNDFf_3_14_mul35_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul35_fixbits')
 _Z4CNDFf_3_14_mul35_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul35_fixp')
 _Z4CNDFf_3_14_mul35_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul35_float')
@@ -6700,9 +6439,9 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul35_fixbits + (-10000)*_Z4CNDFf_3_14_mul35_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul35_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul35_fixp + (1)*_Z4CNDFf_3_14_mul35_float + (1)*_Z4CNDFf_3_14_mul35_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul35_fixbits + (-10000)*_Z4CNDFf_3_14_mul35_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_fixp + (-1)*ConstantValue__75_CAST_mul35_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_float + (-1)*ConstantValue__75_CAST_mul35_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_double + (-1)*ConstantValue__75_CAST_mul35_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_fixp + (-1)*ConstantValue__72_CAST_mul35_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_float + (-1)*ConstantValue__72_CAST_mul35_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_double + (-1)*ConstantValue__72_CAST_mul35_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_fixp + (-1)*_Z4CNDFf_3_14_mul35_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_float + (-1)*_Z4CNDFf_3_14_mul35_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul27_CAST_mul35_double + (-1)*_Z4CNDFf_3_14_mul35_double==0)    #double equality
@@ -6712,42 +6451,42 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul35_double
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_1')
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_14_mul35_enob + (-1)*ConstantValue__73_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_1<=1024)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_3_14_mul35_enob + (-1)*_Z4CNDFf_3_14_mul27_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_2<=-2.14748e+09)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_3_14_mul35_enob + (-1)*ConstantValue__70_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_3_14_mul35_enob + (-1)*_Z4CNDFf_3_14_mul27_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul35_enob_2<=1)    #Enob: propagation in product 2
 
 
 
 #Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__76_fixbits = solver.IntVar(0, 30, 'ConstantValue__76_fixbits')
-ConstantValue__76_fixp = solver.IntVar(0, 1, 'ConstantValue__76_fixp')
-ConstantValue__76_float = solver.IntVar(0, 1, 'ConstantValue__76_float')
-ConstantValue__76_double = solver.IntVar(0, 1, 'ConstantValue__76_double')
-ConstantValue__76_enob = solver.IntVar(-10000, 10000, 'ConstantValue__76_enob')
-solver.Add( + (1)*ConstantValue__76_enob + (-1)*ConstantValue__76_fixbits + (10000)*ConstantValue__76_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__76_enob + (10000)*ConstantValue__76_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__76_enob + (10000)*ConstantValue__76_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__76_fixbits + (-10000)*ConstantValue__76_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__76_fixp + (1)*ConstantValue__76_float + (1)*ConstantValue__76_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__76_fixbits + (-10000)*ConstantValue__76_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__73_fixbits = solver.IntVar(0, 30, 'ConstantValue__73_fixbits')
+ConstantValue__73_fixp = solver.IntVar(0, 1, 'ConstantValue__73_fixp')
+ConstantValue__73_float = solver.IntVar(0, 1, 'ConstantValue__73_float')
+ConstantValue__73_double = solver.IntVar(0, 1, 'ConstantValue__73_double')
+ConstantValue__73_enob = solver.IntVar(-10000, 10000, 'ConstantValue__73_enob')
+solver.Add( + (1)*ConstantValue__73_enob + (-1)*ConstantValue__73_fixbits + (10000)*ConstantValue__73_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__73_enob + (10000)*ConstantValue__73_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__73_enob + (10000)*ConstantValue__73_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__73_fixbits + (-10000)*ConstantValue__73_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__73_fixp + (1)*ConstantValue__73_float + (1)*ConstantValue__73_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__73_fixbits + (-10000)*ConstantValue__73_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__77_fixbits = solver.IntVar(0, 30, 'ConstantValue__77_fixbits')
-ConstantValue__77_fixp = solver.IntVar(0, 1, 'ConstantValue__77_fixp')
-ConstantValue__77_float = solver.IntVar(0, 1, 'ConstantValue__77_float')
-ConstantValue__77_double = solver.IntVar(0, 1, 'ConstantValue__77_double')
-ConstantValue__77_enob = solver.IntVar(-10000, 10000, 'ConstantValue__77_enob')
-solver.Add( + (1)*ConstantValue__77_enob + (-1)*ConstantValue__77_fixbits + (10000)*ConstantValue__77_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__77_enob + (10000)*ConstantValue__77_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__77_enob + (10000)*ConstantValue__77_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__77_fixbits + (-10000)*ConstantValue__77_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__77_fixp + (1)*ConstantValue__77_float + (1)*ConstantValue__77_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__77_fixbits + (-10000)*ConstantValue__77_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__74_fixbits = solver.IntVar(0, 30, 'ConstantValue__74_fixbits')
+ConstantValue__74_fixp = solver.IntVar(0, 1, 'ConstantValue__74_fixp')
+ConstantValue__74_float = solver.IntVar(0, 1, 'ConstantValue__74_float')
+ConstantValue__74_double = solver.IntVar(0, 1, 'ConstantValue__74_double')
+ConstantValue__74_enob = solver.IntVar(-10000, 10000, 'ConstantValue__74_enob')
+solver.Add( + (1)*ConstantValue__74_enob + (-1)*ConstantValue__74_fixbits + (10000)*ConstantValue__74_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__74_enob + (10000)*ConstantValue__74_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__74_enob + (10000)*ConstantValue__74_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__74_fixbits + (-10000)*ConstantValue__74_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__74_fixp + (1)*ConstantValue__74_float + (1)*ConstantValue__74_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__74_fixbits + (-10000)*ConstantValue__74_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !101, !taffo.initweight !32, !taffo.constinfo !103
+#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !99, !taffo.initweight !30, !taffo.constinfo !101
 _Z4CNDFf_3_14_mul28_CAST_mul38_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul28_CAST_mul38_fixbits')
 _Z4CNDFf_3_14_mul28_CAST_mul38_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul28_CAST_mul38_fixp')
 _Z4CNDFf_3_14_mul28_CAST_mul38_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul28_CAST_mul38_float')
@@ -6782,55 +6521,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul28_CAST_mul38
 
 
 #Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__78_fixbits = solver.IntVar(0, 30, 'ConstantValue__78_fixbits')
-ConstantValue__78_fixp = solver.IntVar(0, 1, 'ConstantValue__78_fixp')
-ConstantValue__78_float = solver.IntVar(0, 1, 'ConstantValue__78_float')
-ConstantValue__78_double = solver.IntVar(0, 1, 'ConstantValue__78_double')
-ConstantValue__78_enob = solver.IntVar(-10000, 10000, 'ConstantValue__78_enob')
-solver.Add( + (1)*ConstantValue__78_enob + (-1)*ConstantValue__78_fixbits + (10000)*ConstantValue__78_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__78_enob + (10000)*ConstantValue__78_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__78_enob + (10000)*ConstantValue__78_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__78_fixbits + (-10000)*ConstantValue__78_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__78_fixp + (1)*ConstantValue__78_float + (1)*ConstantValue__78_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__78_fixbits + (-10000)*ConstantValue__78_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__75_fixbits = solver.IntVar(0, 30, 'ConstantValue__75_fixbits')
+ConstantValue__75_fixp = solver.IntVar(0, 1, 'ConstantValue__75_fixp')
+ConstantValue__75_float = solver.IntVar(0, 1, 'ConstantValue__75_float')
+ConstantValue__75_double = solver.IntVar(0, 1, 'ConstantValue__75_double')
+ConstantValue__75_enob = solver.IntVar(-10000, 10000, 'ConstantValue__75_enob')
+solver.Add( + (1)*ConstantValue__75_enob + (-1)*ConstantValue__75_fixbits + (10000)*ConstantValue__75_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__75_enob + (10000)*ConstantValue__75_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__75_enob + (10000)*ConstantValue__75_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__75_fixbits + (-10000)*ConstantValue__75_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__75_fixp + (1)*ConstantValue__75_float + (1)*ConstantValue__75_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__75_fixbits + (-10000)*ConstantValue__75_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !101, !taffo.initweight !32, !taffo.constinfo !103
-ConstantValue__78_CAST_mul38_fixbits = solver.IntVar(0, 30, 'ConstantValue__78_CAST_mul38_fixbits')
-ConstantValue__78_CAST_mul38_fixp = solver.IntVar(0, 1, 'ConstantValue__78_CAST_mul38_fixp')
-ConstantValue__78_CAST_mul38_float = solver.IntVar(0, 1, 'ConstantValue__78_CAST_mul38_float')
-ConstantValue__78_CAST_mul38_double = solver.IntVar(0, 1, 'ConstantValue__78_CAST_mul38_double')
-solver.Add( + (1)*ConstantValue__78_CAST_mul38_fixp + (1)*ConstantValue__78_CAST_mul38_float + (1)*ConstantValue__78_CAST_mul38_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__78_CAST_mul38_fixbits + (-10000)*ConstantValue__78_CAST_mul38_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C1_ConstantValue__78_CAST_mul38')
-C2_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C2_ConstantValue__78_CAST_mul38')
-solver.Add( + (1)*ConstantValue__78_fixbits + (-1)*ConstantValue__78_CAST_mul38_fixbits + (-10000)*C1_ConstantValue__78_CAST_mul38<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__78_fixbits + (1)*ConstantValue__78_CAST_mul38_fixbits + (-10000)*C2_ConstantValue__78_CAST_mul38<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__78_CAST_mul38
-castCostObj +=  + (1.13006)*C2_ConstantValue__78_CAST_mul38
-C3_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C3_ConstantValue__78_CAST_mul38')
-C4_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C4_ConstantValue__78_CAST_mul38')
-C5_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C5_ConstantValue__78_CAST_mul38')
-C6_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C6_ConstantValue__78_CAST_mul38')
-C7_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C7_ConstantValue__78_CAST_mul38')
-C8_ConstantValue__78_CAST_mul38 = solver.IntVar(0, 1, 'C8_ConstantValue__78_CAST_mul38')
-solver.Add( + (1)*ConstantValue__78_fixp + (1)*ConstantValue__78_CAST_mul38_float + (-1)*C3_ConstantValue__78_CAST_mul38<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__78_CAST_mul38
-solver.Add( + (1)*ConstantValue__78_float + (1)*ConstantValue__78_CAST_mul38_fixp + (-1)*C4_ConstantValue__78_CAST_mul38<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__78_CAST_mul38
-solver.Add( + (1)*ConstantValue__78_fixp + (1)*ConstantValue__78_CAST_mul38_double + (-1)*C5_ConstantValue__78_CAST_mul38<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__78_CAST_mul38
-solver.Add( + (1)*ConstantValue__78_double + (1)*ConstantValue__78_CAST_mul38_fixp + (-1)*C6_ConstantValue__78_CAST_mul38<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__78_CAST_mul38
-solver.Add( + (1)*ConstantValue__78_float + (1)*ConstantValue__78_CAST_mul38_double + (-1)*C7_ConstantValue__78_CAST_mul38<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__78_CAST_mul38
-solver.Add( + (1)*ConstantValue__78_double + (1)*ConstantValue__78_CAST_mul38_float + (-1)*C8_ConstantValue__78_CAST_mul38<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__78_CAST_mul38
+#Constraint for cast for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !99, !taffo.initweight !30, !taffo.constinfo !101
+ConstantValue__75_CAST_mul38_fixbits = solver.IntVar(0, 30, 'ConstantValue__75_CAST_mul38_fixbits')
+ConstantValue__75_CAST_mul38_fixp = solver.IntVar(0, 1, 'ConstantValue__75_CAST_mul38_fixp')
+ConstantValue__75_CAST_mul38_float = solver.IntVar(0, 1, 'ConstantValue__75_CAST_mul38_float')
+ConstantValue__75_CAST_mul38_double = solver.IntVar(0, 1, 'ConstantValue__75_CAST_mul38_double')
+solver.Add( + (1)*ConstantValue__75_CAST_mul38_fixp + (1)*ConstantValue__75_CAST_mul38_float + (1)*ConstantValue__75_CAST_mul38_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__75_CAST_mul38_fixbits + (-10000)*ConstantValue__75_CAST_mul38_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C1_ConstantValue__75_CAST_mul38')
+C2_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C2_ConstantValue__75_CAST_mul38')
+solver.Add( + (1)*ConstantValue__75_fixbits + (-1)*ConstantValue__75_CAST_mul38_fixbits + (-10000)*C1_ConstantValue__75_CAST_mul38<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__75_fixbits + (1)*ConstantValue__75_CAST_mul38_fixbits + (-10000)*C2_ConstantValue__75_CAST_mul38<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__75_CAST_mul38
+castCostObj +=  + (1.13006)*C2_ConstantValue__75_CAST_mul38
+C3_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C3_ConstantValue__75_CAST_mul38')
+C4_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C4_ConstantValue__75_CAST_mul38')
+C5_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C5_ConstantValue__75_CAST_mul38')
+C6_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C6_ConstantValue__75_CAST_mul38')
+C7_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C7_ConstantValue__75_CAST_mul38')
+C8_ConstantValue__75_CAST_mul38 = solver.IntVar(0, 1, 'C8_ConstantValue__75_CAST_mul38')
+solver.Add( + (1)*ConstantValue__75_fixp + (1)*ConstantValue__75_CAST_mul38_float + (-1)*C3_ConstantValue__75_CAST_mul38<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__75_CAST_mul38
+solver.Add( + (1)*ConstantValue__75_float + (1)*ConstantValue__75_CAST_mul38_fixp + (-1)*C4_ConstantValue__75_CAST_mul38<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__75_CAST_mul38
+solver.Add( + (1)*ConstantValue__75_fixp + (1)*ConstantValue__75_CAST_mul38_double + (-1)*C5_ConstantValue__75_CAST_mul38<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__75_CAST_mul38
+solver.Add( + (1)*ConstantValue__75_double + (1)*ConstantValue__75_CAST_mul38_fixp + (-1)*C6_ConstantValue__75_CAST_mul38<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__75_CAST_mul38
+solver.Add( + (1)*ConstantValue__75_float + (1)*ConstantValue__75_CAST_mul38_double + (-1)*C7_ConstantValue__75_CAST_mul38<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__75_CAST_mul38
+solver.Add( + (1)*ConstantValue__75_double + (1)*ConstantValue__75_CAST_mul38_float + (-1)*C8_ConstantValue__75_CAST_mul38<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__75_CAST_mul38
 
 
 
-#Stuff for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !101, !taffo.initweight !32, !taffo.constinfo !103
+#Stuff for   %mul38 = fmul double %conv37, 0x3FFC80EF025F5E68, !taffo.info !99, !taffo.initweight !30, !taffo.constinfo !101
 _Z4CNDFf_3_14_mul38_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul38_fixbits')
 _Z4CNDFf_3_14_mul38_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul38_fixp')
 _Z4CNDFf_3_14_mul38_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul38_float')
@@ -6843,9 +6582,9 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul38_fixbits + (-10000)*_Z4CNDFf_3_14_mul38_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul38_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul38_fixp + (1)*_Z4CNDFf_3_14_mul38_float + (1)*_Z4CNDFf_3_14_mul38_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul38_fixbits + (-10000)*_Z4CNDFf_3_14_mul38_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_fixp + (-1)*ConstantValue__78_CAST_mul38_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_float + (-1)*ConstantValue__78_CAST_mul38_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_double + (-1)*ConstantValue__78_CAST_mul38_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_fixp + (-1)*ConstantValue__75_CAST_mul38_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_float + (-1)*ConstantValue__75_CAST_mul38_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_double + (-1)*ConstantValue__75_CAST_mul38_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_fixp + (-1)*_Z4CNDFf_3_14_mul38_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_float + (-1)*_Z4CNDFf_3_14_mul38_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul28_CAST_mul38_double + (-1)*_Z4CNDFf_3_14_mul38_double==0)    #double equality
@@ -6855,12 +6594,12 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul38_double
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_1')
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_14_mul38_enob + (-1)*ConstantValue__76_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_3_14_mul38_enob + (-1)*ConstantValue__73_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_3_14_mul38_enob + (-1)*_Z4CNDFf_3_14_mul28_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul38_enob_2<=-1)    #Enob: propagation in product 2
 
 
 
-#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !108, !taffo.initweight !25
+#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !106, !taffo.initweight !23
 _Z4CNDFf_3_14_mul35_CAST_add40_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul35_CAST_add40_fixbits')
 _Z4CNDFf_3_14_mul35_CAST_add40_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul35_CAST_add40_fixp')
 _Z4CNDFf_3_14_mul35_CAST_add40_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul35_CAST_add40_float')
@@ -6894,7 +6633,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul35_CAST_add40
 
 
 
-#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !108, !taffo.initweight !25
+#Constraint for cast for   %add40 = fadd float %conv36, %conv39, !taffo.info !106, !taffo.initweight !23
 _Z4CNDFf_3_14_mul38_CAST_add40_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul38_CAST_add40_fixbits')
 _Z4CNDFf_3_14_mul38_CAST_add40_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul38_CAST_add40_fixp')
 _Z4CNDFf_3_14_mul38_CAST_add40_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul38_CAST_add40_float')
@@ -6928,7 +6667,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul38_CAST_add40
 
 
 
-#Stuff for   %add40 = fadd float %conv36, %conv39, !taffo.info !108, !taffo.initweight !25
+#Stuff for   %add40 = fadd float %conv36, %conv39, !taffo.info !106, !taffo.initweight !23
 _Z4CNDFf_3_14_add40_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add40_fixbits')
 _Z4CNDFf_3_14_add40_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add40_fixp')
 _Z4CNDFf_3_14_add40_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add40_float')
@@ -6958,36 +6697,36 @@ solver.Add( + (1)*_Z4CNDFf_3_14_add40_enob + (-1)*_Z4CNDFf_3_14_mul38_enob<=0)  
 
 
 #Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__79_fixbits = solver.IntVar(0, 29, 'ConstantValue__79_fixbits')
-ConstantValue__79_fixp = solver.IntVar(0, 1, 'ConstantValue__79_fixp')
-ConstantValue__79_float = solver.IntVar(0, 1, 'ConstantValue__79_float')
-ConstantValue__79_double = solver.IntVar(0, 1, 'ConstantValue__79_double')
-ConstantValue__79_enob = solver.IntVar(-10000, 10000, 'ConstantValue__79_enob')
-solver.Add( + (1)*ConstantValue__79_enob + (-1)*ConstantValue__79_fixbits + (10000)*ConstantValue__79_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__79_enob + (10000)*ConstantValue__79_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__79_enob + (10000)*ConstantValue__79_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__79_fixbits + (-10000)*ConstantValue__79_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__79_fixp + (1)*ConstantValue__79_float + (1)*ConstantValue__79_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__79_fixbits + (-10000)*ConstantValue__79_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__76_fixbits = solver.IntVar(0, 29, 'ConstantValue__76_fixbits')
+ConstantValue__76_fixp = solver.IntVar(0, 1, 'ConstantValue__76_fixp')
+ConstantValue__76_float = solver.IntVar(0, 1, 'ConstantValue__76_float')
+ConstantValue__76_double = solver.IntVar(0, 1, 'ConstantValue__76_double')
+ConstantValue__76_enob = solver.IntVar(-10000, 10000, 'ConstantValue__76_enob')
+solver.Add( + (1)*ConstantValue__76_enob + (-1)*ConstantValue__76_fixbits + (10000)*ConstantValue__76_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__76_enob + (10000)*ConstantValue__76_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__76_enob + (10000)*ConstantValue__76_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__76_fixbits + (-10000)*ConstantValue__76_fixp>=-9972)    #Limit the lower number of frac bits29
+solver.Add( + (1)*ConstantValue__76_fixp + (1)*ConstantValue__76_float + (1)*ConstantValue__76_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__76_fixbits + (-10000)*ConstantValue__76_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__80_fixbits = solver.IntVar(0, 29, 'ConstantValue__80_fixbits')
-ConstantValue__80_fixp = solver.IntVar(0, 1, 'ConstantValue__80_fixp')
-ConstantValue__80_float = solver.IntVar(0, 1, 'ConstantValue__80_float')
-ConstantValue__80_double = solver.IntVar(0, 1, 'ConstantValue__80_double')
-ConstantValue__80_enob = solver.IntVar(-10000, 10000, 'ConstantValue__80_enob')
-solver.Add( + (1)*ConstantValue__80_enob + (-1)*ConstantValue__80_fixbits + (10000)*ConstantValue__80_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__80_enob + (10000)*ConstantValue__80_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__80_enob + (10000)*ConstantValue__80_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__80_fixbits + (-10000)*ConstantValue__80_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__80_fixp + (1)*ConstantValue__80_float + (1)*ConstantValue__80_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__80_fixbits + (-10000)*ConstantValue__80_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__77_fixbits = solver.IntVar(0, 29, 'ConstantValue__77_fixbits')
+ConstantValue__77_fixp = solver.IntVar(0, 1, 'ConstantValue__77_fixp')
+ConstantValue__77_float = solver.IntVar(0, 1, 'ConstantValue__77_float')
+ConstantValue__77_double = solver.IntVar(0, 1, 'ConstantValue__77_double')
+ConstantValue__77_enob = solver.IntVar(-10000, 10000, 'ConstantValue__77_enob')
+solver.Add( + (1)*ConstantValue__77_enob + (-1)*ConstantValue__77_fixbits + (10000)*ConstantValue__77_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__77_enob + (10000)*ConstantValue__77_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__77_enob + (10000)*ConstantValue__77_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__77_fixbits + (-10000)*ConstantValue__77_fixp>=-9972)    #Limit the lower number of frac bits29
+solver.Add( + (1)*ConstantValue__77_fixp + (1)*ConstantValue__77_float + (1)*ConstantValue__77_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__77_fixbits + (-10000)*ConstantValue__77_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !110, !taffo.initweight !32, !taffo.constinfo !112
+#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !108, !taffo.initweight !30, !taffo.constinfo !110
 _Z4CNDFf_3_14_mul29_CAST_mul42_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul29_CAST_mul42_fixbits')
 _Z4CNDFf_3_14_mul29_CAST_mul42_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul29_CAST_mul42_fixp')
 _Z4CNDFf_3_14_mul29_CAST_mul42_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul29_CAST_mul42_float')
@@ -7022,55 +6761,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul29_CAST_mul42
 
 
 #Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__81_fixbits = solver.IntVar(0, 29, 'ConstantValue__81_fixbits')
-ConstantValue__81_fixp = solver.IntVar(0, 1, 'ConstantValue__81_fixp')
-ConstantValue__81_float = solver.IntVar(0, 1, 'ConstantValue__81_float')
-ConstantValue__81_double = solver.IntVar(0, 1, 'ConstantValue__81_double')
-ConstantValue__81_enob = solver.IntVar(-10000, 10000, 'ConstantValue__81_enob')
-solver.Add( + (1)*ConstantValue__81_enob + (-1)*ConstantValue__81_fixbits + (10000)*ConstantValue__81_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__81_enob + (10000)*ConstantValue__81_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__81_enob + (10000)*ConstantValue__81_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__81_fixbits + (-10000)*ConstantValue__81_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__81_fixp + (1)*ConstantValue__81_float + (1)*ConstantValue__81_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__81_fixbits + (-10000)*ConstantValue__81_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__78_fixbits = solver.IntVar(0, 29, 'ConstantValue__78_fixbits')
+ConstantValue__78_fixp = solver.IntVar(0, 1, 'ConstantValue__78_fixp')
+ConstantValue__78_float = solver.IntVar(0, 1, 'ConstantValue__78_float')
+ConstantValue__78_double = solver.IntVar(0, 1, 'ConstantValue__78_double')
+ConstantValue__78_enob = solver.IntVar(-10000, 10000, 'ConstantValue__78_enob')
+solver.Add( + (1)*ConstantValue__78_enob + (-1)*ConstantValue__78_fixbits + (10000)*ConstantValue__78_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__78_enob + (10000)*ConstantValue__78_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__78_enob + (10000)*ConstantValue__78_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__78_fixbits + (-10000)*ConstantValue__78_fixp>=-9972)    #Limit the lower number of frac bits29
+solver.Add( + (1)*ConstantValue__78_fixp + (1)*ConstantValue__78_float + (1)*ConstantValue__78_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__78_fixbits + (-10000)*ConstantValue__78_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !110, !taffo.initweight !32, !taffo.constinfo !112
-ConstantValue__81_CAST_mul42_fixbits = solver.IntVar(0, 29, 'ConstantValue__81_CAST_mul42_fixbits')
-ConstantValue__81_CAST_mul42_fixp = solver.IntVar(0, 1, 'ConstantValue__81_CAST_mul42_fixp')
-ConstantValue__81_CAST_mul42_float = solver.IntVar(0, 1, 'ConstantValue__81_CAST_mul42_float')
-ConstantValue__81_CAST_mul42_double = solver.IntVar(0, 1, 'ConstantValue__81_CAST_mul42_double')
-solver.Add( + (1)*ConstantValue__81_CAST_mul42_fixp + (1)*ConstantValue__81_CAST_mul42_float + (1)*ConstantValue__81_CAST_mul42_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__81_CAST_mul42_fixbits + (-10000)*ConstantValue__81_CAST_mul42_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C1_ConstantValue__81_CAST_mul42')
-C2_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C2_ConstantValue__81_CAST_mul42')
-solver.Add( + (1)*ConstantValue__81_fixbits + (-1)*ConstantValue__81_CAST_mul42_fixbits + (-10000)*C1_ConstantValue__81_CAST_mul42<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__81_fixbits + (1)*ConstantValue__81_CAST_mul42_fixbits + (-10000)*C2_ConstantValue__81_CAST_mul42<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__81_CAST_mul42
-castCostObj +=  + (1.13006)*C2_ConstantValue__81_CAST_mul42
-C3_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C3_ConstantValue__81_CAST_mul42')
-C4_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C4_ConstantValue__81_CAST_mul42')
-C5_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C5_ConstantValue__81_CAST_mul42')
-C6_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C6_ConstantValue__81_CAST_mul42')
-C7_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C7_ConstantValue__81_CAST_mul42')
-C8_ConstantValue__81_CAST_mul42 = solver.IntVar(0, 1, 'C8_ConstantValue__81_CAST_mul42')
-solver.Add( + (1)*ConstantValue__81_fixp + (1)*ConstantValue__81_CAST_mul42_float + (-1)*C3_ConstantValue__81_CAST_mul42<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__81_CAST_mul42
-solver.Add( + (1)*ConstantValue__81_float + (1)*ConstantValue__81_CAST_mul42_fixp + (-1)*C4_ConstantValue__81_CAST_mul42<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__81_CAST_mul42
-solver.Add( + (1)*ConstantValue__81_fixp + (1)*ConstantValue__81_CAST_mul42_double + (-1)*C5_ConstantValue__81_CAST_mul42<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__81_CAST_mul42
-solver.Add( + (1)*ConstantValue__81_double + (1)*ConstantValue__81_CAST_mul42_fixp + (-1)*C6_ConstantValue__81_CAST_mul42<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__81_CAST_mul42
-solver.Add( + (1)*ConstantValue__81_float + (1)*ConstantValue__81_CAST_mul42_double + (-1)*C7_ConstantValue__81_CAST_mul42<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__81_CAST_mul42
-solver.Add( + (1)*ConstantValue__81_double + (1)*ConstantValue__81_CAST_mul42_float + (-1)*C8_ConstantValue__81_CAST_mul42<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__81_CAST_mul42
+#Constraint for cast for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !108, !taffo.initweight !30, !taffo.constinfo !110
+ConstantValue__78_CAST_mul42_fixbits = solver.IntVar(0, 29, 'ConstantValue__78_CAST_mul42_fixbits')
+ConstantValue__78_CAST_mul42_fixp = solver.IntVar(0, 1, 'ConstantValue__78_CAST_mul42_fixp')
+ConstantValue__78_CAST_mul42_float = solver.IntVar(0, 1, 'ConstantValue__78_CAST_mul42_float')
+ConstantValue__78_CAST_mul42_double = solver.IntVar(0, 1, 'ConstantValue__78_CAST_mul42_double')
+solver.Add( + (1)*ConstantValue__78_CAST_mul42_fixp + (1)*ConstantValue__78_CAST_mul42_float + (1)*ConstantValue__78_CAST_mul42_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__78_CAST_mul42_fixbits + (-10000)*ConstantValue__78_CAST_mul42_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C1_ConstantValue__78_CAST_mul42')
+C2_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C2_ConstantValue__78_CAST_mul42')
+solver.Add( + (1)*ConstantValue__78_fixbits + (-1)*ConstantValue__78_CAST_mul42_fixbits + (-10000)*C1_ConstantValue__78_CAST_mul42<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__78_fixbits + (1)*ConstantValue__78_CAST_mul42_fixbits + (-10000)*C2_ConstantValue__78_CAST_mul42<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__78_CAST_mul42
+castCostObj +=  + (1.13006)*C2_ConstantValue__78_CAST_mul42
+C3_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C3_ConstantValue__78_CAST_mul42')
+C4_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C4_ConstantValue__78_CAST_mul42')
+C5_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C5_ConstantValue__78_CAST_mul42')
+C6_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C6_ConstantValue__78_CAST_mul42')
+C7_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C7_ConstantValue__78_CAST_mul42')
+C8_ConstantValue__78_CAST_mul42 = solver.IntVar(0, 1, 'C8_ConstantValue__78_CAST_mul42')
+solver.Add( + (1)*ConstantValue__78_fixp + (1)*ConstantValue__78_CAST_mul42_float + (-1)*C3_ConstantValue__78_CAST_mul42<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__78_CAST_mul42
+solver.Add( + (1)*ConstantValue__78_float + (1)*ConstantValue__78_CAST_mul42_fixp + (-1)*C4_ConstantValue__78_CAST_mul42<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__78_CAST_mul42
+solver.Add( + (1)*ConstantValue__78_fixp + (1)*ConstantValue__78_CAST_mul42_double + (-1)*C5_ConstantValue__78_CAST_mul42<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__78_CAST_mul42
+solver.Add( + (1)*ConstantValue__78_double + (1)*ConstantValue__78_CAST_mul42_fixp + (-1)*C6_ConstantValue__78_CAST_mul42<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__78_CAST_mul42
+solver.Add( + (1)*ConstantValue__78_float + (1)*ConstantValue__78_CAST_mul42_double + (-1)*C7_ConstantValue__78_CAST_mul42<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__78_CAST_mul42
+solver.Add( + (1)*ConstantValue__78_double + (1)*ConstantValue__78_CAST_mul42_float + (-1)*C8_ConstantValue__78_CAST_mul42<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__78_CAST_mul42
 
 
 
-#Stuff for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !110, !taffo.initweight !32, !taffo.constinfo !112
+#Stuff for   %mul42 = fmul double %conv41, 0xBFFD23DD4EF278D0, !taffo.info !108, !taffo.initweight !30, !taffo.constinfo !110
 _Z4CNDFf_3_14_mul42_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul42_fixbits')
 _Z4CNDFf_3_14_mul42_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul42_fixp')
 _Z4CNDFf_3_14_mul42_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul42_float')
@@ -7083,9 +6822,9 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul42_fixbits + (-10000)*_Z4CNDFf_3_14_mul42_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul42_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul42_fixp + (1)*_Z4CNDFf_3_14_mul42_float + (1)*_Z4CNDFf_3_14_mul42_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul42_fixbits + (-10000)*_Z4CNDFf_3_14_mul42_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_fixp + (-1)*ConstantValue__81_CAST_mul42_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_float + (-1)*ConstantValue__81_CAST_mul42_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_double + (-1)*ConstantValue__81_CAST_mul42_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_fixp + (-1)*ConstantValue__78_CAST_mul42_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_float + (-1)*ConstantValue__78_CAST_mul42_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_double + (-1)*ConstantValue__78_CAST_mul42_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_fixp + (-1)*_Z4CNDFf_3_14_mul42_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_float + (-1)*_Z4CNDFf_3_14_mul42_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul29_CAST_mul42_double + (-1)*_Z4CNDFf_3_14_mul42_double==0)    #double equality
@@ -7095,12 +6834,12 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul42_double
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_1')
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_14_mul42_enob + (-1)*ConstantValue__79_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_1<=1024)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_3_14_mul42_enob + (-1)*_Z4CNDFf_3_14_mul29_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_2<=-2.14748e+09)    #Enob: propagation in product 2
+solver.Add( + (1)*_Z4CNDFf_3_14_mul42_enob + (-1)*ConstantValue__76_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_3_14_mul42_enob + (-1)*_Z4CNDFf_3_14_mul29_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul42_enob_2<=-1)    #Enob: propagation in product 2
 
 
 
-#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !117, !taffo.initweight !25
+#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !115, !taffo.initweight !23
 _Z4CNDFf_3_14_add40_CAST_add44_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add40_CAST_add44_fixbits')
 _Z4CNDFf_3_14_add40_CAST_add44_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add40_CAST_add44_fixp')
 _Z4CNDFf_3_14_add40_CAST_add44_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add40_CAST_add44_float')
@@ -7134,7 +6873,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_add40_CAST_add44
 
 
 
-#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !117, !taffo.initweight !25
+#Constraint for cast for   %add44 = fadd float %add40, %conv43, !taffo.info !115, !taffo.initweight !23
 _Z4CNDFf_3_14_mul42_CAST_add44_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul42_CAST_add44_fixbits')
 _Z4CNDFf_3_14_mul42_CAST_add44_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul42_CAST_add44_fixp')
 _Z4CNDFf_3_14_mul42_CAST_add44_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul42_CAST_add44_float')
@@ -7168,7 +6907,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul42_CAST_add44
 
 
 
-#Stuff for   %add44 = fadd float %add40, %conv43, !taffo.info !117, !taffo.initweight !25
+#Stuff for   %add44 = fadd float %add40, %conv43, !taffo.info !115, !taffo.initweight !23
 _Z4CNDFf_3_14_add44_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add44_fixbits')
 _Z4CNDFf_3_14_add44_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add44_fixp')
 _Z4CNDFf_3_14_add44_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add44_float')
@@ -7198,36 +6937,36 @@ solver.Add( + (1)*_Z4CNDFf_3_14_add44_enob + (-1)*_Z4CNDFf_3_14_mul42_enob<=0)  
 
 
 #Stuff for double 0x3FF548CDD6F42943
-ConstantValue__82_fixbits = solver.IntVar(0, 30, 'ConstantValue__82_fixbits')
-ConstantValue__82_fixp = solver.IntVar(0, 1, 'ConstantValue__82_fixp')
-ConstantValue__82_float = solver.IntVar(0, 1, 'ConstantValue__82_float')
-ConstantValue__82_double = solver.IntVar(0, 1, 'ConstantValue__82_double')
-ConstantValue__82_enob = solver.IntVar(-10000, 10000, 'ConstantValue__82_enob')
-solver.Add( + (1)*ConstantValue__82_enob + (-1)*ConstantValue__82_fixbits + (10000)*ConstantValue__82_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__82_enob + (10000)*ConstantValue__82_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__82_enob + (10000)*ConstantValue__82_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__82_fixbits + (-10000)*ConstantValue__82_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__82_fixp + (1)*ConstantValue__82_float + (1)*ConstantValue__82_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__82_fixbits + (-10000)*ConstantValue__82_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__79_fixbits = solver.IntVar(0, 30, 'ConstantValue__79_fixbits')
+ConstantValue__79_fixp = solver.IntVar(0, 1, 'ConstantValue__79_fixp')
+ConstantValue__79_float = solver.IntVar(0, 1, 'ConstantValue__79_float')
+ConstantValue__79_double = solver.IntVar(0, 1, 'ConstantValue__79_double')
+ConstantValue__79_enob = solver.IntVar(-10000, 10000, 'ConstantValue__79_enob')
+solver.Add( + (1)*ConstantValue__79_enob + (-1)*ConstantValue__79_fixbits + (10000)*ConstantValue__79_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__79_enob + (10000)*ConstantValue__79_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__79_enob + (10000)*ConstantValue__79_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__79_fixbits + (-10000)*ConstantValue__79_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__79_fixp + (1)*ConstantValue__79_float + (1)*ConstantValue__79_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__79_fixbits + (-10000)*ConstantValue__79_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 0x3FF548CDD6F42943
-ConstantValue__83_fixbits = solver.IntVar(0, 30, 'ConstantValue__83_fixbits')
-ConstantValue__83_fixp = solver.IntVar(0, 1, 'ConstantValue__83_fixp')
-ConstantValue__83_float = solver.IntVar(0, 1, 'ConstantValue__83_float')
-ConstantValue__83_double = solver.IntVar(0, 1, 'ConstantValue__83_double')
-ConstantValue__83_enob = solver.IntVar(-10000, 10000, 'ConstantValue__83_enob')
-solver.Add( + (1)*ConstantValue__83_enob + (-1)*ConstantValue__83_fixbits + (10000)*ConstantValue__83_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__83_enob + (10000)*ConstantValue__83_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__83_enob + (10000)*ConstantValue__83_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__83_fixbits + (-10000)*ConstantValue__83_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__83_fixp + (1)*ConstantValue__83_float + (1)*ConstantValue__83_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__83_fixbits + (-10000)*ConstantValue__83_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__80_fixbits = solver.IntVar(0, 30, 'ConstantValue__80_fixbits')
+ConstantValue__80_fixp = solver.IntVar(0, 1, 'ConstantValue__80_fixp')
+ConstantValue__80_float = solver.IntVar(0, 1, 'ConstantValue__80_float')
+ConstantValue__80_double = solver.IntVar(0, 1, 'ConstantValue__80_double')
+ConstantValue__80_enob = solver.IntVar(-10000, 10000, 'ConstantValue__80_enob')
+solver.Add( + (1)*ConstantValue__80_enob + (-1)*ConstantValue__80_fixbits + (10000)*ConstantValue__80_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__80_enob + (10000)*ConstantValue__80_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__80_enob + (10000)*ConstantValue__80_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__80_fixbits + (-10000)*ConstantValue__80_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__80_fixp + (1)*ConstantValue__80_float + (1)*ConstantValue__80_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__80_fixbits + (-10000)*ConstantValue__80_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !119, !taffo.initweight !32, !taffo.constinfo !121
+#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !117, !taffo.initweight !30, !taffo.constinfo !119
 _Z4CNDFf_3_14_mul30_CAST_mul46_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul30_CAST_mul46_fixbits')
 _Z4CNDFf_3_14_mul30_CAST_mul46_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul30_CAST_mul46_fixp')
 _Z4CNDFf_3_14_mul30_CAST_mul46_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul30_CAST_mul46_float')
@@ -7262,55 +7001,55 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul30_CAST_mul46
 
 
 #Stuff for double 0x3FF548CDD6F42943
-ConstantValue__84_fixbits = solver.IntVar(0, 30, 'ConstantValue__84_fixbits')
-ConstantValue__84_fixp = solver.IntVar(0, 1, 'ConstantValue__84_fixp')
-ConstantValue__84_float = solver.IntVar(0, 1, 'ConstantValue__84_float')
-ConstantValue__84_double = solver.IntVar(0, 1, 'ConstantValue__84_double')
-ConstantValue__84_enob = solver.IntVar(-10000, 10000, 'ConstantValue__84_enob')
-solver.Add( + (1)*ConstantValue__84_enob + (-1)*ConstantValue__84_fixbits + (10000)*ConstantValue__84_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__84_enob + (10000)*ConstantValue__84_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__84_enob + (10000)*ConstantValue__84_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__84_fixbits + (-10000)*ConstantValue__84_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__84_fixp + (1)*ConstantValue__84_float + (1)*ConstantValue__84_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__84_fixbits + (-10000)*ConstantValue__84_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__81_fixbits = solver.IntVar(0, 30, 'ConstantValue__81_fixbits')
+ConstantValue__81_fixp = solver.IntVar(0, 1, 'ConstantValue__81_fixp')
+ConstantValue__81_float = solver.IntVar(0, 1, 'ConstantValue__81_float')
+ConstantValue__81_double = solver.IntVar(0, 1, 'ConstantValue__81_double')
+ConstantValue__81_enob = solver.IntVar(-10000, 10000, 'ConstantValue__81_enob')
+solver.Add( + (1)*ConstantValue__81_enob + (-1)*ConstantValue__81_fixbits + (10000)*ConstantValue__81_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__81_enob + (10000)*ConstantValue__81_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__81_enob + (10000)*ConstantValue__81_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__81_fixbits + (-10000)*ConstantValue__81_fixp>=-9971)    #Limit the lower number of frac bits30
+solver.Add( + (1)*ConstantValue__81_fixp + (1)*ConstantValue__81_float + (1)*ConstantValue__81_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__81_fixbits + (-10000)*ConstantValue__81_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !119, !taffo.initweight !32, !taffo.constinfo !121
-ConstantValue__84_CAST_mul46_fixbits = solver.IntVar(0, 30, 'ConstantValue__84_CAST_mul46_fixbits')
-ConstantValue__84_CAST_mul46_fixp = solver.IntVar(0, 1, 'ConstantValue__84_CAST_mul46_fixp')
-ConstantValue__84_CAST_mul46_float = solver.IntVar(0, 1, 'ConstantValue__84_CAST_mul46_float')
-ConstantValue__84_CAST_mul46_double = solver.IntVar(0, 1, 'ConstantValue__84_CAST_mul46_double')
-solver.Add( + (1)*ConstantValue__84_CAST_mul46_fixp + (1)*ConstantValue__84_CAST_mul46_float + (1)*ConstantValue__84_CAST_mul46_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__84_CAST_mul46_fixbits + (-10000)*ConstantValue__84_CAST_mul46_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C1_ConstantValue__84_CAST_mul46')
-C2_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C2_ConstantValue__84_CAST_mul46')
-solver.Add( + (1)*ConstantValue__84_fixbits + (-1)*ConstantValue__84_CAST_mul46_fixbits + (-10000)*C1_ConstantValue__84_CAST_mul46<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__84_fixbits + (1)*ConstantValue__84_CAST_mul46_fixbits + (-10000)*C2_ConstantValue__84_CAST_mul46<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__84_CAST_mul46
-castCostObj +=  + (1.13006)*C2_ConstantValue__84_CAST_mul46
-C3_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C3_ConstantValue__84_CAST_mul46')
-C4_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C4_ConstantValue__84_CAST_mul46')
-C5_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C5_ConstantValue__84_CAST_mul46')
-C6_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C6_ConstantValue__84_CAST_mul46')
-C7_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C7_ConstantValue__84_CAST_mul46')
-C8_ConstantValue__84_CAST_mul46 = solver.IntVar(0, 1, 'C8_ConstantValue__84_CAST_mul46')
-solver.Add( + (1)*ConstantValue__84_fixp + (1)*ConstantValue__84_CAST_mul46_float + (-1)*C3_ConstantValue__84_CAST_mul46<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__84_CAST_mul46
-solver.Add( + (1)*ConstantValue__84_float + (1)*ConstantValue__84_CAST_mul46_fixp + (-1)*C4_ConstantValue__84_CAST_mul46<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__84_CAST_mul46
-solver.Add( + (1)*ConstantValue__84_fixp + (1)*ConstantValue__84_CAST_mul46_double + (-1)*C5_ConstantValue__84_CAST_mul46<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__84_CAST_mul46
-solver.Add( + (1)*ConstantValue__84_double + (1)*ConstantValue__84_CAST_mul46_fixp + (-1)*C6_ConstantValue__84_CAST_mul46<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__84_CAST_mul46
-solver.Add( + (1)*ConstantValue__84_float + (1)*ConstantValue__84_CAST_mul46_double + (-1)*C7_ConstantValue__84_CAST_mul46<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__84_CAST_mul46
-solver.Add( + (1)*ConstantValue__84_double + (1)*ConstantValue__84_CAST_mul46_float + (-1)*C8_ConstantValue__84_CAST_mul46<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__84_CAST_mul46
+#Constraint for cast for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !117, !taffo.initweight !30, !taffo.constinfo !119
+ConstantValue__81_CAST_mul46_fixbits = solver.IntVar(0, 30, 'ConstantValue__81_CAST_mul46_fixbits')
+ConstantValue__81_CAST_mul46_fixp = solver.IntVar(0, 1, 'ConstantValue__81_CAST_mul46_fixp')
+ConstantValue__81_CAST_mul46_float = solver.IntVar(0, 1, 'ConstantValue__81_CAST_mul46_float')
+ConstantValue__81_CAST_mul46_double = solver.IntVar(0, 1, 'ConstantValue__81_CAST_mul46_double')
+solver.Add( + (1)*ConstantValue__81_CAST_mul46_fixp + (1)*ConstantValue__81_CAST_mul46_float + (1)*ConstantValue__81_CAST_mul46_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__81_CAST_mul46_fixbits + (-10000)*ConstantValue__81_CAST_mul46_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C1_ConstantValue__81_CAST_mul46')
+C2_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C2_ConstantValue__81_CAST_mul46')
+solver.Add( + (1)*ConstantValue__81_fixbits + (-1)*ConstantValue__81_CAST_mul46_fixbits + (-10000)*C1_ConstantValue__81_CAST_mul46<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__81_fixbits + (1)*ConstantValue__81_CAST_mul46_fixbits + (-10000)*C2_ConstantValue__81_CAST_mul46<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__81_CAST_mul46
+castCostObj +=  + (1.13006)*C2_ConstantValue__81_CAST_mul46
+C3_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C3_ConstantValue__81_CAST_mul46')
+C4_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C4_ConstantValue__81_CAST_mul46')
+C5_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C5_ConstantValue__81_CAST_mul46')
+C6_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C6_ConstantValue__81_CAST_mul46')
+C7_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C7_ConstantValue__81_CAST_mul46')
+C8_ConstantValue__81_CAST_mul46 = solver.IntVar(0, 1, 'C8_ConstantValue__81_CAST_mul46')
+solver.Add( + (1)*ConstantValue__81_fixp + (1)*ConstantValue__81_CAST_mul46_float + (-1)*C3_ConstantValue__81_CAST_mul46<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__81_CAST_mul46
+solver.Add( + (1)*ConstantValue__81_float + (1)*ConstantValue__81_CAST_mul46_fixp + (-1)*C4_ConstantValue__81_CAST_mul46<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__81_CAST_mul46
+solver.Add( + (1)*ConstantValue__81_fixp + (1)*ConstantValue__81_CAST_mul46_double + (-1)*C5_ConstantValue__81_CAST_mul46<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__81_CAST_mul46
+solver.Add( + (1)*ConstantValue__81_double + (1)*ConstantValue__81_CAST_mul46_fixp + (-1)*C6_ConstantValue__81_CAST_mul46<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__81_CAST_mul46
+solver.Add( + (1)*ConstantValue__81_float + (1)*ConstantValue__81_CAST_mul46_double + (-1)*C7_ConstantValue__81_CAST_mul46<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__81_CAST_mul46
+solver.Add( + (1)*ConstantValue__81_double + (1)*ConstantValue__81_CAST_mul46_float + (-1)*C8_ConstantValue__81_CAST_mul46<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__81_CAST_mul46
 
 
 
-#Stuff for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !119, !taffo.initweight !32, !taffo.constinfo !121
+#Stuff for   %mul46 = fmul double %conv45, 0x3FF548CDD6F42943, !taffo.info !117, !taffo.initweight !30, !taffo.constinfo !119
 _Z4CNDFf_3_14_mul46_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul46_fixbits')
 _Z4CNDFf_3_14_mul46_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul46_fixp')
 _Z4CNDFf_3_14_mul46_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul46_float')
@@ -7323,9 +7062,9 @@ solver.Add( + (1)*_Z4CNDFf_3_14_mul46_fixbits + (-10000)*_Z4CNDFf_3_14_mul46_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_mul46_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_mul46_fixp + (1)*_Z4CNDFf_3_14_mul46_float + (1)*_Z4CNDFf_3_14_mul46_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_mul46_fixbits + (-10000)*_Z4CNDFf_3_14_mul46_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_fixp + (-1)*ConstantValue__84_CAST_mul46_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_float + (-1)*ConstantValue__84_CAST_mul46_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_double + (-1)*ConstantValue__84_CAST_mul46_double==0)    #double equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_fixp + (-1)*ConstantValue__81_CAST_mul46_fixp==0)    #fix equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_float + (-1)*ConstantValue__81_CAST_mul46_float==0)    #float equality
+solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_double + (-1)*ConstantValue__81_CAST_mul46_double==0)    #double equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_fixp + (-1)*_Z4CNDFf_3_14_mul46_fixp==0)    #fix equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_float + (-1)*_Z4CNDFf_3_14_mul46_float==0)    #float equality
 solver.Add( + (1)*_Z4CNDFf_3_14_mul30_CAST_mul46_double + (-1)*_Z4CNDFf_3_14_mul46_double==0)    #double equality
@@ -7335,12 +7074,12 @@ mathCostObj +=  + (4.14035)*_Z4CNDFf_3_14_mul46_double
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_1')
 _Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_2')
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_14_mul46_enob + (-1)*ConstantValue__82_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_1<=1024)    #Enob: propagation in product 1
+solver.Add( + (1)*_Z4CNDFf_3_14_mul46_enob + (-1)*ConstantValue__79_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_3_14_mul46_enob + (-1)*_Z4CNDFf_3_14_mul30_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul46_enob_2<=0)    #Enob: propagation in product 2
 
 
 
-#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !126, !taffo.initweight !25
+#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !124, !taffo.initweight !23
 _Z4CNDFf_3_14_add44_CAST_add48_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add44_CAST_add48_fixbits')
 _Z4CNDFf_3_14_add44_CAST_add48_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add44_CAST_add48_fixp')
 _Z4CNDFf_3_14_add44_CAST_add48_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add44_CAST_add48_float')
@@ -7374,7 +7113,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_add44_CAST_add48
 
 
 
-#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !126, !taffo.initweight !25
+#Constraint for cast for   %add48 = fadd float %add44, %conv47, !taffo.info !124, !taffo.initweight !23
 _Z4CNDFf_3_14_mul46_CAST_add48_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul46_CAST_add48_fixbits')
 _Z4CNDFf_3_14_mul46_CAST_add48_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul46_CAST_add48_fixp')
 _Z4CNDFf_3_14_mul46_CAST_add48_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul46_CAST_add48_float')
@@ -7408,7 +7147,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul46_CAST_add48
 
 
 
-#Stuff for   %add48 = fadd float %add44, %conv47, !taffo.info !126, !taffo.initweight !25
+#Stuff for   %add48 = fadd float %add44, %conv47, !taffo.info !124, !taffo.initweight !23
 _Z4CNDFf_3_14_add48_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add48_fixbits')
 _Z4CNDFf_3_14_add48_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add48_fixp')
 _Z4CNDFf_3_14_add48_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add48_float')
@@ -7437,7 +7176,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_add48_enob + (-1)*_Z4CNDFf_3_14_mul46_enob<=0)  
 
 
 
-#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !128, !taffo.initweight !25
+#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !126, !taffo.initweight !23
 _Z4CNDFf_3_14_add48_CAST_add49_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add48_CAST_add49_fixbits')
 _Z4CNDFf_3_14_add48_CAST_add49_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add48_CAST_add49_fixp')
 _Z4CNDFf_3_14_add48_CAST_add49_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add48_CAST_add49_float')
@@ -7471,7 +7210,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_add48_CAST_add49
 
 
 
-#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !128, !taffo.initweight !25
+#Constraint for cast for   %add49 = fadd float %add48, %conv33, !taffo.info !126, !taffo.initweight !23
 _Z4CNDFf_3_14_mul32_CAST_add49_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul32_CAST_add49_fixbits')
 _Z4CNDFf_3_14_mul32_CAST_add49_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul32_CAST_add49_fixp')
 _Z4CNDFf_3_14_mul32_CAST_add49_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul32_CAST_add49_float')
@@ -7505,7 +7244,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul32_CAST_add49
 
 
 
-#Stuff for   %add49 = fadd float %add48, %conv33, !taffo.info !128, !taffo.initweight !25
+#Stuff for   %add49 = fadd float %add48, %conv33, !taffo.info !126, !taffo.initweight !23
 _Z4CNDFf_3_14_add49_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add49_fixbits')
 _Z4CNDFf_3_14_add49_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add49_fixp')
 _Z4CNDFf_3_14_add49_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add49_float')
@@ -7534,7 +7273,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_add49_enob + (-1)*_Z4CNDFf_3_14_mul32_enob<=0)  
 
 
 
-#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !130, !taffo.initweight !25
+#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !128, !taffo.initweight !23
 _Z4CNDFf_3_14_add49_CAST_mul50_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_add49_CAST_mul50_fixbits')
 _Z4CNDFf_3_14_add49_CAST_mul50_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add49_CAST_mul50_fixp')
 _Z4CNDFf_3_14_add49_CAST_mul50_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_add49_CAST_mul50_float')
@@ -7568,7 +7307,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_add49_CAST_mul50
 
 
 
-#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !130, !taffo.initweight !25
+#Constraint for cast for   %mul50 = fmul float %add49, %conv19, !taffo.info !128, !taffo.initweight !23
 _Z4CNDFf_3_14_mul18_CAST_mul50_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_14_mul18_CAST_mul50_fixbits')
 _Z4CNDFf_3_14_mul18_CAST_mul50_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul18_CAST_mul50_fixp')
 _Z4CNDFf_3_14_mul18_CAST_mul50_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul18_CAST_mul50_float')
@@ -7602,7 +7341,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul18_CAST_mul50
 
 
 
-#Stuff for   %mul50 = fmul float %add49, %conv19, !taffo.info !130, !taffo.initweight !25
+#Stuff for   %mul50 = fmul float %add49, %conv19, !taffo.info !128, !taffo.initweight !23
 _Z4CNDFf_3_14_mul50_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul50_fixbits')
 _Z4CNDFf_3_14_mul50_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_fixp')
 _Z4CNDFf_3_14_mul50_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_float')
@@ -7629,6 +7368,148 @@ _Z4CNDFf_3_14__Z4CNDFf_3_14_mul50_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3_14__Z
 solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul50_enob_1 + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul50_enob_2==1)    #Enob: one selected constraint
 solver.Add( + (1)*_Z4CNDFf_3_14_mul50_enob + (-1)*_Z4CNDFf_3_14_mul18_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul50_enob_1<=1024)    #Enob: propagation in product 1
 solver.Add( + (1)*_Z4CNDFf_3_14_mul50_enob + (-1)*_Z4CNDFf_3_14_add49_enob + (-10000)*_Z4CNDFf_3_14__Z4CNDFf_3_14_mul50_enob_2<=1024)    #Enob: propagation in product 2
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__82_fixbits = solver.IntVar(0, 31, 'ConstantValue__82_fixbits')
+ConstantValue__82_fixp = solver.IntVar(0, 1, 'ConstantValue__82_fixp')
+ConstantValue__82_float = solver.IntVar(0, 1, 'ConstantValue__82_float')
+ConstantValue__82_double = solver.IntVar(0, 1, 'ConstantValue__82_double')
+ConstantValue__82_enob = solver.IntVar(-10000, 10000, 'ConstantValue__82_enob')
+solver.Add( + (1)*ConstantValue__82_enob + (-1)*ConstantValue__82_fixbits + (10000)*ConstantValue__82_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__82_enob + (10000)*ConstantValue__82_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__82_enob + (10000)*ConstantValue__82_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__82_fixbits + (-10000)*ConstantValue__82_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__82_fixp + (1)*ConstantValue__82_float + (1)*ConstantValue__82_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__82_fixbits + (-10000)*ConstantValue__82_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__83_fixbits = solver.IntVar(0, 31, 'ConstantValue__83_fixbits')
+ConstantValue__83_fixp = solver.IntVar(0, 1, 'ConstantValue__83_fixp')
+ConstantValue__83_float = solver.IntVar(0, 1, 'ConstantValue__83_float')
+ConstantValue__83_double = solver.IntVar(0, 1, 'ConstantValue__83_double')
+ConstantValue__83_enob = solver.IntVar(-10000, 10000, 'ConstantValue__83_enob')
+solver.Add( + (1)*ConstantValue__83_enob + (-1)*ConstantValue__83_fixbits + (10000)*ConstantValue__83_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__83_enob + (10000)*ConstantValue__83_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__83_enob + (10000)*ConstantValue__83_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__83_fixbits + (-10000)*ConstantValue__83_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__83_fixp + (1)*ConstantValue__83_float + (1)*ConstantValue__83_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__83_fixbits + (-10000)*ConstantValue__83_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Stuff for double 1.000000e+00
+ConstantValue__84_fixbits = solver.IntVar(0, 31, 'ConstantValue__84_fixbits')
+ConstantValue__84_fixp = solver.IntVar(0, 1, 'ConstantValue__84_fixp')
+ConstantValue__84_float = solver.IntVar(0, 1, 'ConstantValue__84_float')
+ConstantValue__84_double = solver.IntVar(0, 1, 'ConstantValue__84_double')
+ConstantValue__84_enob = solver.IntVar(-10000, 10000, 'ConstantValue__84_enob')
+solver.Add( + (1)*ConstantValue__84_enob + (-1)*ConstantValue__84_fixbits + (10000)*ConstantValue__84_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__84_enob + (10000)*ConstantValue__84_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__84_enob + (10000)*ConstantValue__84_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__84_fixbits + (-10000)*ConstantValue__84_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__84_fixp + (1)*ConstantValue__84_float + (1)*ConstantValue__84_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__84_fixbits + (-10000)*ConstantValue__84_fixp<=0)    #If not fix, frac part to zero
+
+
+
+#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !130, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__84_CAST_sub52_fixbits = solver.IntVar(0, 31, 'ConstantValue__84_CAST_sub52_fixbits')
+ConstantValue__84_CAST_sub52_fixp = solver.IntVar(0, 1, 'ConstantValue__84_CAST_sub52_fixp')
+ConstantValue__84_CAST_sub52_float = solver.IntVar(0, 1, 'ConstantValue__84_CAST_sub52_float')
+ConstantValue__84_CAST_sub52_double = solver.IntVar(0, 1, 'ConstantValue__84_CAST_sub52_double')
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_fixp + (1)*ConstantValue__84_CAST_sub52_float + (1)*ConstantValue__84_CAST_sub52_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_fixbits + (-10000)*ConstantValue__84_CAST_sub52_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C1_ConstantValue__84_CAST_sub52')
+C2_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C2_ConstantValue__84_CAST_sub52')
+solver.Add( + (1)*ConstantValue__84_fixbits + (-1)*ConstantValue__84_CAST_sub52_fixbits + (-10000)*C1_ConstantValue__84_CAST_sub52<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__84_fixbits + (1)*ConstantValue__84_CAST_sub52_fixbits + (-10000)*C2_ConstantValue__84_CAST_sub52<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__84_CAST_sub52
+castCostObj +=  + (1.13006)*C2_ConstantValue__84_CAST_sub52
+C3_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C3_ConstantValue__84_CAST_sub52')
+C4_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C4_ConstantValue__84_CAST_sub52')
+C5_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C5_ConstantValue__84_CAST_sub52')
+C6_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C6_ConstantValue__84_CAST_sub52')
+C7_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C7_ConstantValue__84_CAST_sub52')
+C8_ConstantValue__84_CAST_sub52 = solver.IntVar(0, 1, 'C8_ConstantValue__84_CAST_sub52')
+solver.Add( + (1)*ConstantValue__84_fixp + (1)*ConstantValue__84_CAST_sub52_float + (-1)*C3_ConstantValue__84_CAST_sub52<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__84_CAST_sub52
+solver.Add( + (1)*ConstantValue__84_float + (1)*ConstantValue__84_CAST_sub52_fixp + (-1)*C4_ConstantValue__84_CAST_sub52<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__84_CAST_sub52
+solver.Add( + (1)*ConstantValue__84_fixp + (1)*ConstantValue__84_CAST_sub52_double + (-1)*C5_ConstantValue__84_CAST_sub52<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__84_CAST_sub52
+solver.Add( + (1)*ConstantValue__84_double + (1)*ConstantValue__84_CAST_sub52_fixp + (-1)*C6_ConstantValue__84_CAST_sub52<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__84_CAST_sub52
+solver.Add( + (1)*ConstantValue__84_float + (1)*ConstantValue__84_CAST_sub52_double + (-1)*C7_ConstantValue__84_CAST_sub52<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__84_CAST_sub52
+solver.Add( + (1)*ConstantValue__84_double + (1)*ConstantValue__84_CAST_sub52_float + (-1)*C8_ConstantValue__84_CAST_sub52<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__84_CAST_sub52
+
+
+
+#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !130, !taffo.initweight !30, !taffo.constinfo !70
+_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits')
+_Z4CNDFf_3_14_mul50_CAST_sub52_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_CAST_sub52_fixp')
+_Z4CNDFf_3_14_mul50_CAST_sub52_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_CAST_sub52_float')
+_Z4CNDFf_3_14_mul50_CAST_sub52_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_CAST_sub52_double')
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double==1)    #exactly 1 type
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits + (-10000)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp<=0)    #If no fix, fix frac part = 0
+C1__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C1__Z4CNDFf_3_14_mul50_CAST_sub52')
+C2__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C2__Z4CNDFf_3_14_mul50_CAST_sub52')
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_fixbits + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits + (-10000)*C1__Z4CNDFf_3_14_mul50_CAST_sub52<=0)    #Shift cost 1
+solver.Add( + (-1)*_Z4CNDFf_3_14_mul50_fixbits + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits + (-10000)*C2__Z4CNDFf_3_14_mul50_CAST_sub52<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1__Z4CNDFf_3_14_mul50_CAST_sub52
+castCostObj +=  + (1.13006)*C2__Z4CNDFf_3_14_mul50_CAST_sub52
+C3__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C3__Z4CNDFf_3_14_mul50_CAST_sub52')
+C4__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C4__Z4CNDFf_3_14_mul50_CAST_sub52')
+C5__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C5__Z4CNDFf_3_14_mul50_CAST_sub52')
+C6__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C6__Z4CNDFf_3_14_mul50_CAST_sub52')
+C7__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C7__Z4CNDFf_3_14_mul50_CAST_sub52')
+C8__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C8__Z4CNDFf_3_14_mul50_CAST_sub52')
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_fixp + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float + (-1)*C3__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3__Z4CNDFf_3_14_mul50_CAST_sub52
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_float + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp + (-1)*C4__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4__Z4CNDFf_3_14_mul50_CAST_sub52
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_fixp + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double + (-1)*C5__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5__Z4CNDFf_3_14_mul50_CAST_sub52
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_double + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp + (-1)*C6__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6__Z4CNDFf_3_14_mul50_CAST_sub52
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_float + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double + (-1)*C7__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Float to double
+castCostObj +=  + (1)*C7__Z4CNDFf_3_14_mul50_CAST_sub52
+solver.Add( + (1)*_Z4CNDFf_3_14_mul50_double + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float + (-1)*C8__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul50_CAST_sub52
+
+
+
+#Stuff for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !130, !taffo.initweight !30, !taffo.constinfo !70
+_Z4CNDFf_3_14_sub52_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_sub52_fixbits')
+_Z4CNDFf_3_14_sub52_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_fixp')
+_Z4CNDFf_3_14_sub52_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_float')
+_Z4CNDFf_3_14_sub52_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_double')
+_Z4CNDFf_3_14_sub52_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_3_14_sub52_enob')
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (-1)*_Z4CNDFf_3_14_sub52_fixbits + (10000)*_Z4CNDFf_3_14_sub52_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (10000)*_Z4CNDFf_3_14_sub52_float<=10024)    #Enob constraint for float
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (10000)*_Z4CNDFf_3_14_sub52_double<=10053)    #Enob constraint for double
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_fixbits + (-10000)*_Z4CNDFf_3_14_sub52_fixp>=-9971)    #Limit the lower number of frac bits30
+enobCostObj +=  + (-1)*_Z4CNDFf_3_14_sub52_enob
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_fixp + (1)*_Z4CNDFf_3_14_sub52_float + (1)*_Z4CNDFf_3_14_sub52_double==1)    #Exactly one selected type
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_fixbits + (-10000)*_Z4CNDFf_3_14_sub52_fixp<=0)    #If not fix, frac part to zero
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_fixp + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_float + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_double + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_fixbits + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_fixp + (-1)*_Z4CNDFf_3_14_sub52_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_float + (-1)*_Z4CNDFf_3_14_sub52_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_double + (-1)*_Z4CNDFf_3_14_sub52_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__84_CAST_sub52_fixbits + (-1)*_Z4CNDFf_3_14_sub52_fixbits==0)    #same fractional bit
+mathCostObj +=  + (1.30379)*_Z4CNDFf_3_14_sub52_fixp
+mathCostObj +=  + (1.80596)*_Z4CNDFf_3_14_sub52_float
+mathCostObj +=  + (2.15411)*_Z4CNDFf_3_14_sub52_double
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (-1)*ConstantValue__82_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (-1)*_Z4CNDFf_3_14_mul50_enob<=0)    #Enob propagation in sub second addend
 
 
 
@@ -7677,183 +7558,41 @@ solver.Add( + (1)*ConstantValue__87_fixbits + (-10000)*ConstantValue__87_fixp<=0
 
 
 
-#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !132, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__87_CAST_sub52_fixbits = solver.IntVar(0, 31, 'ConstantValue__87_CAST_sub52_fixbits')
-ConstantValue__87_CAST_sub52_fixp = solver.IntVar(0, 1, 'ConstantValue__87_CAST_sub52_fixp')
-ConstantValue__87_CAST_sub52_float = solver.IntVar(0, 1, 'ConstantValue__87_CAST_sub52_float')
-ConstantValue__87_CAST_sub52_double = solver.IntVar(0, 1, 'ConstantValue__87_CAST_sub52_double')
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_fixp + (1)*ConstantValue__87_CAST_sub52_float + (1)*ConstantValue__87_CAST_sub52_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_fixbits + (-10000)*ConstantValue__87_CAST_sub52_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C1_ConstantValue__87_CAST_sub52')
-C2_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C2_ConstantValue__87_CAST_sub52')
-solver.Add( + (1)*ConstantValue__87_fixbits + (-1)*ConstantValue__87_CAST_sub52_fixbits + (-10000)*C1_ConstantValue__87_CAST_sub52<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__87_fixbits + (1)*ConstantValue__87_CAST_sub52_fixbits + (-10000)*C2_ConstantValue__87_CAST_sub52<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__87_CAST_sub52
-castCostObj +=  + (1.13006)*C2_ConstantValue__87_CAST_sub52
-C3_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C3_ConstantValue__87_CAST_sub52')
-C4_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C4_ConstantValue__87_CAST_sub52')
-C5_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C5_ConstantValue__87_CAST_sub52')
-C6_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C6_ConstantValue__87_CAST_sub52')
-C7_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C7_ConstantValue__87_CAST_sub52')
-C8_ConstantValue__87_CAST_sub52 = solver.IntVar(0, 1, 'C8_ConstantValue__87_CAST_sub52')
-solver.Add( + (1)*ConstantValue__87_fixp + (1)*ConstantValue__87_CAST_sub52_float + (-1)*C3_ConstantValue__87_CAST_sub52<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__87_CAST_sub52
-solver.Add( + (1)*ConstantValue__87_float + (1)*ConstantValue__87_CAST_sub52_fixp + (-1)*C4_ConstantValue__87_CAST_sub52<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__87_CAST_sub52
-solver.Add( + (1)*ConstantValue__87_fixp + (1)*ConstantValue__87_CAST_sub52_double + (-1)*C5_ConstantValue__87_CAST_sub52<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__87_CAST_sub52
-solver.Add( + (1)*ConstantValue__87_double + (1)*ConstantValue__87_CAST_sub52_fixp + (-1)*C6_ConstantValue__87_CAST_sub52<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__87_CAST_sub52
-solver.Add( + (1)*ConstantValue__87_float + (1)*ConstantValue__87_CAST_sub52_double + (-1)*C7_ConstantValue__87_CAST_sub52<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__87_CAST_sub52
-solver.Add( + (1)*ConstantValue__87_double + (1)*ConstantValue__87_CAST_sub52_float + (-1)*C8_ConstantValue__87_CAST_sub52<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__87_CAST_sub52
+#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !134, !taffo.initweight !30, !taffo.constinfo !70
+ConstantValue__87_CAST_sub56_fixbits = solver.IntVar(0, 31, 'ConstantValue__87_CAST_sub56_fixbits')
+ConstantValue__87_CAST_sub56_fixp = solver.IntVar(0, 1, 'ConstantValue__87_CAST_sub56_fixp')
+ConstantValue__87_CAST_sub56_float = solver.IntVar(0, 1, 'ConstantValue__87_CAST_sub56_float')
+ConstantValue__87_CAST_sub56_double = solver.IntVar(0, 1, 'ConstantValue__87_CAST_sub56_double')
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_fixp + (1)*ConstantValue__87_CAST_sub56_float + (1)*ConstantValue__87_CAST_sub56_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_fixbits + (-10000)*ConstantValue__87_CAST_sub56_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C1_ConstantValue__87_CAST_sub56')
+C2_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C2_ConstantValue__87_CAST_sub56')
+solver.Add( + (1)*ConstantValue__87_fixbits + (-1)*ConstantValue__87_CAST_sub56_fixbits + (-10000)*C1_ConstantValue__87_CAST_sub56<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__87_fixbits + (1)*ConstantValue__87_CAST_sub56_fixbits + (-10000)*C2_ConstantValue__87_CAST_sub56<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__87_CAST_sub56
+castCostObj +=  + (1.13006)*C2_ConstantValue__87_CAST_sub56
+C3_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C3_ConstantValue__87_CAST_sub56')
+C4_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C4_ConstantValue__87_CAST_sub56')
+C5_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C5_ConstantValue__87_CAST_sub56')
+C6_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C6_ConstantValue__87_CAST_sub56')
+C7_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C7_ConstantValue__87_CAST_sub56')
+C8_ConstantValue__87_CAST_sub56 = solver.IntVar(0, 1, 'C8_ConstantValue__87_CAST_sub56')
+solver.Add( + (1)*ConstantValue__87_fixp + (1)*ConstantValue__87_CAST_sub56_float + (-1)*C3_ConstantValue__87_CAST_sub56<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__87_CAST_sub56
+solver.Add( + (1)*ConstantValue__87_float + (1)*ConstantValue__87_CAST_sub56_fixp + (-1)*C4_ConstantValue__87_CAST_sub56<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__87_CAST_sub56
+solver.Add( + (1)*ConstantValue__87_fixp + (1)*ConstantValue__87_CAST_sub56_double + (-1)*C5_ConstantValue__87_CAST_sub56<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__87_CAST_sub56
+solver.Add( + (1)*ConstantValue__87_double + (1)*ConstantValue__87_CAST_sub56_fixp + (-1)*C6_ConstantValue__87_CAST_sub56<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__87_CAST_sub56
+solver.Add( + (1)*ConstantValue__87_float + (1)*ConstantValue__87_CAST_sub56_double + (-1)*C7_ConstantValue__87_CAST_sub56<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__87_CAST_sub56
+solver.Add( + (1)*ConstantValue__87_double + (1)*ConstantValue__87_CAST_sub56_float + (-1)*C8_ConstantValue__87_CAST_sub56<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__87_CAST_sub56
 
 
 
-#Constraint for cast for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !132, !taffo.initweight !32, !taffo.constinfo !72
-_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits')
-_Z4CNDFf_3_14_mul50_CAST_sub52_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_CAST_sub52_fixp')
-_Z4CNDFf_3_14_mul50_CAST_sub52_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_CAST_sub52_float')
-_Z4CNDFf_3_14_mul50_CAST_sub52_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_mul50_CAST_sub52_double')
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits + (-10000)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C1__Z4CNDFf_3_14_mul50_CAST_sub52')
-C2__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C2__Z4CNDFf_3_14_mul50_CAST_sub52')
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_fixbits + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits + (-10000)*C1__Z4CNDFf_3_14_mul50_CAST_sub52<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z4CNDFf_3_14_mul50_fixbits + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits + (-10000)*C2__Z4CNDFf_3_14_mul50_CAST_sub52<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z4CNDFf_3_14_mul50_CAST_sub52
-castCostObj +=  + (1.13006)*C2__Z4CNDFf_3_14_mul50_CAST_sub52
-C3__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C3__Z4CNDFf_3_14_mul50_CAST_sub52')
-C4__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C4__Z4CNDFf_3_14_mul50_CAST_sub52')
-C5__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C5__Z4CNDFf_3_14_mul50_CAST_sub52')
-C6__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C6__Z4CNDFf_3_14_mul50_CAST_sub52')
-C7__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C7__Z4CNDFf_3_14_mul50_CAST_sub52')
-C8__Z4CNDFf_3_14_mul50_CAST_sub52 = solver.IntVar(0, 1, 'C8__Z4CNDFf_3_14_mul50_CAST_sub52')
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_fixp + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float + (-1)*C3__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z4CNDFf_3_14_mul50_CAST_sub52
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_float + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp + (-1)*C4__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z4CNDFf_3_14_mul50_CAST_sub52
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_fixp + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double + (-1)*C5__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z4CNDFf_3_14_mul50_CAST_sub52
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_double + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp + (-1)*C6__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z4CNDFf_3_14_mul50_CAST_sub52
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_float + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double + (-1)*C7__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z4CNDFf_3_14_mul50_CAST_sub52
-solver.Add( + (1)*_Z4CNDFf_3_14_mul50_double + (1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float + (-1)*C8__Z4CNDFf_3_14_mul50_CAST_sub52<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_mul50_CAST_sub52
-
-
-
-#Stuff for   %sub52 = fsub double 1.000000e+00, %conv51, !taffo.info !132, !taffo.initweight !32, !taffo.constinfo !72
-_Z4CNDFf_3_14_sub52_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_sub52_fixbits')
-_Z4CNDFf_3_14_sub52_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_fixp')
-_Z4CNDFf_3_14_sub52_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_float')
-_Z4CNDFf_3_14_sub52_double = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_double')
-_Z4CNDFf_3_14_sub52_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_3_14_sub52_enob')
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (-1)*_Z4CNDFf_3_14_sub52_fixbits + (10000)*_Z4CNDFf_3_14_sub52_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (10000)*_Z4CNDFf_3_14_sub52_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (10000)*_Z4CNDFf_3_14_sub52_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_fixbits + (-10000)*_Z4CNDFf_3_14_sub52_fixp>=-9971)    #Limit the lower number of frac bits30
-enobCostObj +=  + (-1)*_Z4CNDFf_3_14_sub52_enob
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_fixp + (1)*_Z4CNDFf_3_14_sub52_float + (1)*_Z4CNDFf_3_14_sub52_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_fixbits + (-10000)*_Z4CNDFf_3_14_sub52_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_fixp + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_float + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_double + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_fixbits + (-1)*_Z4CNDFf_3_14_mul50_CAST_sub52_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_fixp + (-1)*_Z4CNDFf_3_14_sub52_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_float + (-1)*_Z4CNDFf_3_14_sub52_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_double + (-1)*_Z4CNDFf_3_14_sub52_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__87_CAST_sub52_fixbits + (-1)*_Z4CNDFf_3_14_sub52_fixbits==0)    #same fractional bit
-mathCostObj +=  + (1.30379)*_Z4CNDFf_3_14_sub52_fixp
-mathCostObj +=  + (1.80596)*_Z4CNDFf_3_14_sub52_float
-mathCostObj +=  + (2.15411)*_Z4CNDFf_3_14_sub52_double
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (-1)*ConstantValue__85_enob<=0)    #Enob propagation in sub first addend
-solver.Add( + (1)*_Z4CNDFf_3_14_sub52_enob + (-1)*_Z4CNDFf_3_14_mul50_enob<=0)    #Enob propagation in sub second addend
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__88_fixbits = solver.IntVar(0, 31, 'ConstantValue__88_fixbits')
-ConstantValue__88_fixp = solver.IntVar(0, 1, 'ConstantValue__88_fixp')
-ConstantValue__88_float = solver.IntVar(0, 1, 'ConstantValue__88_float')
-ConstantValue__88_double = solver.IntVar(0, 1, 'ConstantValue__88_double')
-ConstantValue__88_enob = solver.IntVar(-10000, 10000, 'ConstantValue__88_enob')
-solver.Add( + (1)*ConstantValue__88_enob + (-1)*ConstantValue__88_fixbits + (10000)*ConstantValue__88_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__88_enob + (10000)*ConstantValue__88_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__88_enob + (10000)*ConstantValue__88_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__88_fixbits + (-10000)*ConstantValue__88_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__88_fixp + (1)*ConstantValue__88_float + (1)*ConstantValue__88_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__88_fixbits + (-10000)*ConstantValue__88_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__89_fixbits = solver.IntVar(0, 31, 'ConstantValue__89_fixbits')
-ConstantValue__89_fixp = solver.IntVar(0, 1, 'ConstantValue__89_fixp')
-ConstantValue__89_float = solver.IntVar(0, 1, 'ConstantValue__89_float')
-ConstantValue__89_double = solver.IntVar(0, 1, 'ConstantValue__89_double')
-ConstantValue__89_enob = solver.IntVar(-10000, 10000, 'ConstantValue__89_enob')
-solver.Add( + (1)*ConstantValue__89_enob + (-1)*ConstantValue__89_fixbits + (10000)*ConstantValue__89_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__89_enob + (10000)*ConstantValue__89_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__89_enob + (10000)*ConstantValue__89_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__89_fixbits + (-10000)*ConstantValue__89_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__89_fixp + (1)*ConstantValue__89_float + (1)*ConstantValue__89_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__89_fixbits + (-10000)*ConstantValue__89_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__90_fixbits = solver.IntVar(0, 31, 'ConstantValue__90_fixbits')
-ConstantValue__90_fixp = solver.IntVar(0, 1, 'ConstantValue__90_fixp')
-ConstantValue__90_float = solver.IntVar(0, 1, 'ConstantValue__90_float')
-ConstantValue__90_double = solver.IntVar(0, 1, 'ConstantValue__90_double')
-ConstantValue__90_enob = solver.IntVar(-10000, 10000, 'ConstantValue__90_enob')
-solver.Add( + (1)*ConstantValue__90_enob + (-1)*ConstantValue__90_fixbits + (10000)*ConstantValue__90_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__90_enob + (10000)*ConstantValue__90_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__90_enob + (10000)*ConstantValue__90_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__90_fixbits + (-10000)*ConstantValue__90_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__90_fixp + (1)*ConstantValue__90_float + (1)*ConstantValue__90_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__90_fixbits + (-10000)*ConstantValue__90_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !136, !taffo.initweight !32, !taffo.constinfo !72
-ConstantValue__90_CAST_sub56_fixbits = solver.IntVar(0, 31, 'ConstantValue__90_CAST_sub56_fixbits')
-ConstantValue__90_CAST_sub56_fixp = solver.IntVar(0, 1, 'ConstantValue__90_CAST_sub56_fixp')
-ConstantValue__90_CAST_sub56_float = solver.IntVar(0, 1, 'ConstantValue__90_CAST_sub56_float')
-ConstantValue__90_CAST_sub56_double = solver.IntVar(0, 1, 'ConstantValue__90_CAST_sub56_double')
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_fixp + (1)*ConstantValue__90_CAST_sub56_float + (1)*ConstantValue__90_CAST_sub56_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_fixbits + (-10000)*ConstantValue__90_CAST_sub56_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C1_ConstantValue__90_CAST_sub56')
-C2_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C2_ConstantValue__90_CAST_sub56')
-solver.Add( + (1)*ConstantValue__90_fixbits + (-1)*ConstantValue__90_CAST_sub56_fixbits + (-10000)*C1_ConstantValue__90_CAST_sub56<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__90_fixbits + (1)*ConstantValue__90_CAST_sub56_fixbits + (-10000)*C2_ConstantValue__90_CAST_sub56<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__90_CAST_sub56
-castCostObj +=  + (1.13006)*C2_ConstantValue__90_CAST_sub56
-C3_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C3_ConstantValue__90_CAST_sub56')
-C4_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C4_ConstantValue__90_CAST_sub56')
-C5_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C5_ConstantValue__90_CAST_sub56')
-C6_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C6_ConstantValue__90_CAST_sub56')
-C7_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C7_ConstantValue__90_CAST_sub56')
-C8_ConstantValue__90_CAST_sub56 = solver.IntVar(0, 1, 'C8_ConstantValue__90_CAST_sub56')
-solver.Add( + (1)*ConstantValue__90_fixp + (1)*ConstantValue__90_CAST_sub56_float + (-1)*C3_ConstantValue__90_CAST_sub56<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__90_CAST_sub56
-solver.Add( + (1)*ConstantValue__90_float + (1)*ConstantValue__90_CAST_sub56_fixp + (-1)*C4_ConstantValue__90_CAST_sub56<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__90_CAST_sub56
-solver.Add( + (1)*ConstantValue__90_fixp + (1)*ConstantValue__90_CAST_sub56_double + (-1)*C5_ConstantValue__90_CAST_sub56<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__90_CAST_sub56
-solver.Add( + (1)*ConstantValue__90_double + (1)*ConstantValue__90_CAST_sub56_fixp + (-1)*C6_ConstantValue__90_CAST_sub56<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__90_CAST_sub56
-solver.Add( + (1)*ConstantValue__90_float + (1)*ConstantValue__90_CAST_sub56_double + (-1)*C7_ConstantValue__90_CAST_sub56<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__90_CAST_sub56
-solver.Add( + (1)*ConstantValue__90_double + (1)*ConstantValue__90_CAST_sub56_float + (-1)*C8_ConstantValue__90_CAST_sub56<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__90_CAST_sub56
-
-
-
-#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !136, !taffo.initweight !32, !taffo.constinfo !72
+#Constraint for cast for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !134, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_3_14_sub52_CAST_sub56_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_sub52_CAST_sub56_fixbits')
 _Z4CNDFf_3_14_sub52_CAST_sub56_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_CAST_sub56_fixp')
 _Z4CNDFf_3_14_sub52_CAST_sub56_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_CAST_sub56_float')
@@ -7887,7 +7626,7 @@ castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_14_sub52_CAST_sub56
 
 
 
-#Stuff for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !136, !taffo.initweight !32, !taffo.constinfo !72
+#Stuff for   %sub56 = fsub double 1.000000e+00, %conv55, !taffo.info !134, !taffo.initweight !30, !taffo.constinfo !70
 _Z4CNDFf_3_14_sub56_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_sub56_fixbits')
 _Z4CNDFf_3_14_sub56_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub56_fixp')
 _Z4CNDFf_3_14_sub56_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub56_float')
@@ -7900,23 +7639,23 @@ solver.Add( + (1)*_Z4CNDFf_3_14_sub56_fixbits + (-10000)*_Z4CNDFf_3_14_sub56_fix
 enobCostObj +=  + (-1)*_Z4CNDFf_3_14_sub56_enob
 solver.Add( + (1)*_Z4CNDFf_3_14_sub56_fixp + (1)*_Z4CNDFf_3_14_sub56_float + (1)*_Z4CNDFf_3_14_sub56_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z4CNDFf_3_14_sub56_fixbits + (-10000)*_Z4CNDFf_3_14_sub56_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_fixp + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_float + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_double + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_fixbits + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_fixp + (-1)*_Z4CNDFf_3_14_sub56_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_float + (-1)*_Z4CNDFf_3_14_sub56_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_double + (-1)*_Z4CNDFf_3_14_sub56_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__90_CAST_sub56_fixbits + (-1)*_Z4CNDFf_3_14_sub56_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_fixp + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_float + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_double + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_fixbits + (-1)*_Z4CNDFf_3_14_sub52_CAST_sub56_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_fixp + (-1)*_Z4CNDFf_3_14_sub56_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_float + (-1)*_Z4CNDFf_3_14_sub56_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_double + (-1)*_Z4CNDFf_3_14_sub56_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__87_CAST_sub56_fixbits + (-1)*_Z4CNDFf_3_14_sub56_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z4CNDFf_3_14_sub56_fixp
 mathCostObj +=  + (1.80596)*_Z4CNDFf_3_14_sub56_float
 mathCostObj +=  + (2.15411)*_Z4CNDFf_3_14_sub56_double
-solver.Add( + (1)*_Z4CNDFf_3_14_sub56_enob + (-1)*ConstantValue__88_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z4CNDFf_3_14_sub56_enob + (-1)*ConstantValue__85_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z4CNDFf_3_14_sub56_enob + (-1)*_Z4CNDFf_3_14_sub52_enob<=0)    #Enob propagation in sub second addend
 
 
 
-#Stuff for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !138
+#Stuff for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !136
 _Z4CNDFf_3_14_OutputX_0_fixbits = solver.IntVar(0, 29, '_Z4CNDFf_3_14_OutputX_0_fixbits')
 _Z4CNDFf_3_14_OutputX_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_OutputX_0_fixp')
 _Z4CNDFf_3_14_OutputX_0_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_OutputX_0_float')
@@ -7935,7 +7674,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14__Z4CNDFf_3_14_OutputX_0_enob_0 + (1)*_Z4CNDFf_3_
 
 
 
-#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !138
+#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !136
 _Z4CNDFf_3_14_sub56_CAST_OutputX_0_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_sub56_CAST_OutputX_0_fixbits')
 _Z4CNDFf_3_14_sub56_CAST_OutputX_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub56_CAST_OutputX_0_fixp')
 _Z4CNDFf_3_14_sub56_CAST_OutputX_0_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub56_CAST_OutputX_0_float')
@@ -7974,7 +7713,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_OutputX_0_enob + (-1)*_Z4CNDFf_3_14_sub56_enob +
 
 
 
-#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !138
+#Constraint for cast for   %OutputX.0 = phi float [ %conv57, %if.then54 ], [ %conv53, %if.end ], !taffo.info !136
 _Z4CNDFf_3_14_sub52_CAST_OutputX_0_fixbits = solver.IntVar(0, 30, '_Z4CNDFf_3_14_sub52_CAST_OutputX_0_fixbits')
 _Z4CNDFf_3_14_sub52_CAST_OutputX_0_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_CAST_OutputX_0_fixp')
 _Z4CNDFf_3_14_sub52_CAST_OutputX_0_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_sub52_CAST_OutputX_0_float')
@@ -8013,7 +7752,7 @@ solver.Add( + (1)*_Z4CNDFf_3_14_OutputX_0_enob + (-1)*_Z4CNDFf_3_14_sub52_enob +
 
 
 
-#Constraint for cast for   ret float %OutputX.0, !taffo.info !33, !taffo.initweight !25
+#Constraint for cast for   ret float %OutputX.0, !taffo.info !31, !taffo.initweight !23
 _Z4CNDFf_3_14_OutputX_0_CAST_ret_fixbits = solver.IntVar(0, 29, '_Z4CNDFf_3_14_OutputX_0_CAST_ret_fixbits')
 _Z4CNDFf_3_14_OutputX_0_CAST_ret_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_14_OutputX_0_CAST_ret_fixp')
 _Z4CNDFf_3_14_OutputX_0_CAST_ret_float = solver.IntVar(0, 1, '_Z4CNDFf_3_14_OutputX_0_CAST_ret_float')
@@ -8052,108 +7791,21 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixbits + (-1)*_Z4
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__91_fixbits = solver.IntVar(0, 31, 'ConstantValue__91_fixbits')
-ConstantValue__91_fixp = solver.IntVar(0, 1, 'ConstantValue__91_fixp')
-ConstantValue__91_float = solver.IntVar(0, 1, 'ConstantValue__91_float')
-ConstantValue__91_double = solver.IntVar(0, 1, 'ConstantValue__91_double')
-ConstantValue__91_enob = solver.IntVar(-10000, 10000, 'ConstantValue__91_enob')
-solver.Add( + (1)*ConstantValue__91_enob + (-1)*ConstantValue__91_fixbits + (10000)*ConstantValue__91_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__91_enob + (10000)*ConstantValue__91_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__91_enob + (10000)*ConstantValue__91_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__91_fixbits + (-10000)*ConstantValue__91_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__91_fixp + (1)*ConstantValue__91_float + (1)*ConstantValue__91_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__91_fixbits + (-10000)*ConstantValue__91_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__88_fixbits = solver.IntVar(0, 31, 'ConstantValue__88_fixbits')
+ConstantValue__88_fixp = solver.IntVar(0, 1, 'ConstantValue__88_fixp')
+ConstantValue__88_float = solver.IntVar(0, 1, 'ConstantValue__88_float')
+ConstantValue__88_double = solver.IntVar(0, 1, 'ConstantValue__88_double')
+ConstantValue__88_enob = solver.IntVar(-10000, 10000, 'ConstantValue__88_enob')
+solver.Add( + (1)*ConstantValue__88_enob + (-1)*ConstantValue__88_fixbits + (10000)*ConstantValue__88_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__88_enob + (10000)*ConstantValue__88_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__88_enob + (10000)*ConstantValue__88_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__88_fixbits + (-10000)*ConstantValue__88_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__88_fixp + (1)*ConstantValue__88_float + (1)*ConstantValue__88_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__88_fixbits + (-10000)*ConstantValue__88_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %cmp38 = fcmp ogt double %conv37, 1.000000e+00, !taffo.info !73, !taffo.initweight !48
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixbits')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixp')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_float')
-_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_double = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_double')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixbits + (-10000)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixbits + (-10000)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixbits + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixbits + (-10000)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-castCostObj +=  + (1.13006)*C2__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38 = solver.IntVar(0, 1, 'C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38')
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_float + (-1)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixp + (-1)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_double + (-1)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixp + (-1)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_double + (-1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_double + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_float + (-1)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__92_fixbits = solver.IntVar(0, 31, 'ConstantValue__92_fixbits')
-ConstantValue__92_fixp = solver.IntVar(0, 1, 'ConstantValue__92_fixp')
-ConstantValue__92_float = solver.IntVar(0, 1, 'ConstantValue__92_float')
-ConstantValue__92_double = solver.IntVar(0, 1, 'ConstantValue__92_double')
-ConstantValue__92_enob = solver.IntVar(-10000, 10000, 'ConstantValue__92_enob')
-solver.Add( + (1)*ConstantValue__92_enob + (-1)*ConstantValue__92_fixbits + (10000)*ConstantValue__92_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__92_enob + (10000)*ConstantValue__92_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__92_enob + (10000)*ConstantValue__92_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__92_fixbits + (-10000)*ConstantValue__92_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__92_fixp + (1)*ConstantValue__92_float + (1)*ConstantValue__92_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__92_fixbits + (-10000)*ConstantValue__92_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %cmp38 = fcmp ogt double %conv37, 1.000000e+00, !taffo.info !73, !taffo.initweight !48
-ConstantValue__92_CAST_cmp38_fixbits = solver.IntVar(0, 31, 'ConstantValue__92_CAST_cmp38_fixbits')
-ConstantValue__92_CAST_cmp38_fixp = solver.IntVar(0, 1, 'ConstantValue__92_CAST_cmp38_fixp')
-ConstantValue__92_CAST_cmp38_float = solver.IntVar(0, 1, 'ConstantValue__92_CAST_cmp38_float')
-ConstantValue__92_CAST_cmp38_double = solver.IntVar(0, 1, 'ConstantValue__92_CAST_cmp38_double')
-solver.Add( + (1)*ConstantValue__92_CAST_cmp38_fixp + (1)*ConstantValue__92_CAST_cmp38_float + (1)*ConstantValue__92_CAST_cmp38_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__92_CAST_cmp38_fixbits + (-10000)*ConstantValue__92_CAST_cmp38_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C1_ConstantValue__92_CAST_cmp38')
-C2_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C2_ConstantValue__92_CAST_cmp38')
-solver.Add( + (1)*ConstantValue__92_fixbits + (-1)*ConstantValue__92_CAST_cmp38_fixbits + (-10000)*C1_ConstantValue__92_CAST_cmp38<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__92_fixbits + (1)*ConstantValue__92_CAST_cmp38_fixbits + (-10000)*C2_ConstantValue__92_CAST_cmp38<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__92_CAST_cmp38
-castCostObj +=  + (1.13006)*C2_ConstantValue__92_CAST_cmp38
-C3_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C3_ConstantValue__92_CAST_cmp38')
-C4_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C4_ConstantValue__92_CAST_cmp38')
-C5_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C5_ConstantValue__92_CAST_cmp38')
-C6_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C6_ConstantValue__92_CAST_cmp38')
-C7_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C7_ConstantValue__92_CAST_cmp38')
-C8_ConstantValue__92_CAST_cmp38 = solver.IntVar(0, 1, 'C8_ConstantValue__92_CAST_cmp38')
-solver.Add( + (1)*ConstantValue__92_fixp + (1)*ConstantValue__92_CAST_cmp38_float + (-1)*C3_ConstantValue__92_CAST_cmp38<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__92_CAST_cmp38
-solver.Add( + (1)*ConstantValue__92_float + (1)*ConstantValue__92_CAST_cmp38_fixp + (-1)*C4_ConstantValue__92_CAST_cmp38<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__92_CAST_cmp38
-solver.Add( + (1)*ConstantValue__92_fixp + (1)*ConstantValue__92_CAST_cmp38_double + (-1)*C5_ConstantValue__92_CAST_cmp38<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__92_CAST_cmp38
-solver.Add( + (1)*ConstantValue__92_double + (1)*ConstantValue__92_CAST_cmp38_fixp + (-1)*C6_ConstantValue__92_CAST_cmp38<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__92_CAST_cmp38
-solver.Add( + (1)*ConstantValue__92_float + (1)*ConstantValue__92_CAST_cmp38_double + (-1)*C7_ConstantValue__92_CAST_cmp38<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__92_CAST_cmp38
-solver.Add( + (1)*ConstantValue__92_double + (1)*ConstantValue__92_CAST_cmp38_float + (-1)*C8_ConstantValue__92_CAST_cmp38<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__92_CAST_cmp38
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixp + (-1)*ConstantValue__92_CAST_cmp38_fixp==0)    #fix equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_float + (-1)*ConstantValue__92_CAST_cmp38_float==0)    #float equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_double + (-1)*ConstantValue__92_CAST_cmp38_double==0)    #double equality
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_cmp38_fixbits + (-1)*ConstantValue__92_CAST_cmp38_fixbits==0)    #same fractional bit
-
-
-
-#Constraint for cast for   store float %call34, float* %N1, align 4, !taffo.info !75, !taffo.initweight !41
+#Constraint for cast for   store float %call34, float* %N1, align 4, !taffo.info !73, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_store_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_store_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_store_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_store_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_store_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_store_float')
@@ -8199,7 +7851,7 @@ solver.Add( + (1)*_Z9bs_threadPv_N1_enob_storeENOB + (-1)*_Z19BlkSchlsEqEuroNoDi
 
 
 
-#Constraint for cast for   store float %call36, float* %N2, align 4, !taffo.info !75, !taffo.initweight !41
+#Constraint for cast for   store float %call36, float* %N2, align 4, !taffo.info !73, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_store_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_store_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_store_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_store_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_store_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_store_float')
@@ -8246,85 +7898,85 @@ solver.Add( + (1)*_Z9bs_threadPv_N2_enob_storeENOB + (-1)*_Z19BlkSchlsEqEuroNoDi
 
 
 #Stuff for float -0.000000e+00
-ConstantValue__93_fixbits = solver.IntVar(0, 32, 'ConstantValue__93_fixbits')
-ConstantValue__93_fixp = solver.IntVar(0, 1, 'ConstantValue__93_fixp')
-ConstantValue__93_float = solver.IntVar(0, 1, 'ConstantValue__93_float')
-ConstantValue__93_double = solver.IntVar(0, 1, 'ConstantValue__93_double')
-ConstantValue__93_enob = solver.IntVar(-10000, 10000, 'ConstantValue__93_enob')
-solver.Add( + (1)*ConstantValue__93_enob + (-1)*ConstantValue__93_fixbits + (10000)*ConstantValue__93_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__93_enob + (10000)*ConstantValue__93_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__93_enob + (10000)*ConstantValue__93_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__93_fixbits + (-10000)*ConstantValue__93_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__93_fixp + (1)*ConstantValue__93_float + (1)*ConstantValue__93_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__93_fixbits + (-10000)*ConstantValue__93_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__89_fixbits = solver.IntVar(0, 32, 'ConstantValue__89_fixbits')
+ConstantValue__89_fixp = solver.IntVar(0, 1, 'ConstantValue__89_fixp')
+ConstantValue__89_float = solver.IntVar(0, 1, 'ConstantValue__89_float')
+ConstantValue__89_double = solver.IntVar(0, 1, 'ConstantValue__89_double')
+ConstantValue__89_enob = solver.IntVar(-10000, 10000, 'ConstantValue__89_enob')
+solver.Add( + (1)*ConstantValue__89_enob + (-1)*ConstantValue__89_fixbits + (10000)*ConstantValue__89_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__89_enob + (10000)*ConstantValue__89_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__89_enob + (10000)*ConstantValue__89_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__89_fixbits + (-10000)*ConstantValue__89_fixp>=-9969)    #Limit the lower number of frac bits32
+solver.Add( + (1)*ConstantValue__89_fixp + (1)*ConstantValue__89_float + (1)*ConstantValue__89_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__89_fixbits + (-10000)*ConstantValue__89_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for float -0.000000e+00
-ConstantValue__94_fixbits = solver.IntVar(0, 32, 'ConstantValue__94_fixbits')
-ConstantValue__94_fixp = solver.IntVar(0, 1, 'ConstantValue__94_fixp')
-ConstantValue__94_float = solver.IntVar(0, 1, 'ConstantValue__94_float')
-ConstantValue__94_double = solver.IntVar(0, 1, 'ConstantValue__94_double')
-ConstantValue__94_enob = solver.IntVar(-10000, 10000, 'ConstantValue__94_enob')
-solver.Add( + (1)*ConstantValue__94_enob + (-1)*ConstantValue__94_fixbits + (10000)*ConstantValue__94_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__94_enob + (10000)*ConstantValue__94_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__94_enob + (10000)*ConstantValue__94_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__94_fixbits + (-10000)*ConstantValue__94_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__94_fixp + (1)*ConstantValue__94_float + (1)*ConstantValue__94_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__94_fixbits + (-10000)*ConstantValue__94_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__90_fixbits = solver.IntVar(0, 32, 'ConstantValue__90_fixbits')
+ConstantValue__90_fixp = solver.IntVar(0, 1, 'ConstantValue__90_fixp')
+ConstantValue__90_float = solver.IntVar(0, 1, 'ConstantValue__90_float')
+ConstantValue__90_double = solver.IntVar(0, 1, 'ConstantValue__90_double')
+ConstantValue__90_enob = solver.IntVar(-10000, 10000, 'ConstantValue__90_enob')
+solver.Add( + (1)*ConstantValue__90_enob + (-1)*ConstantValue__90_fixbits + (10000)*ConstantValue__90_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__90_enob + (10000)*ConstantValue__90_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__90_enob + (10000)*ConstantValue__90_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__90_fixbits + (-10000)*ConstantValue__90_fixp>=-9969)    #Limit the lower number of frac bits32
+solver.Add( + (1)*ConstantValue__90_fixp + (1)*ConstantValue__90_float + (1)*ConstantValue__90_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__90_fixbits + (-10000)*ConstantValue__90_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for float -0.000000e+00
-ConstantValue__95_fixbits = solver.IntVar(0, 32, 'ConstantValue__95_fixbits')
-ConstantValue__95_fixp = solver.IntVar(0, 1, 'ConstantValue__95_fixp')
-ConstantValue__95_float = solver.IntVar(0, 1, 'ConstantValue__95_float')
-ConstantValue__95_double = solver.IntVar(0, 1, 'ConstantValue__95_double')
-ConstantValue__95_enob = solver.IntVar(-10000, 10000, 'ConstantValue__95_enob')
-solver.Add( + (1)*ConstantValue__95_enob + (-1)*ConstantValue__95_fixbits + (10000)*ConstantValue__95_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__95_enob + (10000)*ConstantValue__95_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__95_enob + (10000)*ConstantValue__95_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__95_fixbits + (-10000)*ConstantValue__95_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__95_fixp + (1)*ConstantValue__95_float + (1)*ConstantValue__95_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__95_fixbits + (-10000)*ConstantValue__95_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__91_fixbits = solver.IntVar(0, 32, 'ConstantValue__91_fixbits')
+ConstantValue__91_fixp = solver.IntVar(0, 1, 'ConstantValue__91_fixp')
+ConstantValue__91_float = solver.IntVar(0, 1, 'ConstantValue__91_float')
+ConstantValue__91_double = solver.IntVar(0, 1, 'ConstantValue__91_double')
+ConstantValue__91_enob = solver.IntVar(-10000, 10000, 'ConstantValue__91_enob')
+solver.Add( + (1)*ConstantValue__91_enob + (-1)*ConstantValue__91_fixbits + (10000)*ConstantValue__91_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__91_enob + (10000)*ConstantValue__91_float<=10149)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__91_enob + (10000)*ConstantValue__91_double<=11074)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__91_fixbits + (-10000)*ConstantValue__91_fixp>=-9969)    #Limit the lower number of frac bits32
+solver.Add( + (1)*ConstantValue__91_fixp + (1)*ConstantValue__91_float + (1)*ConstantValue__91_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__91_fixbits + (-10000)*ConstantValue__91_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %sub41 = fsub float -0.000000e+00, %rate, !taffo.info !77, !taffo.initweight !41, !taffo.constinfo !79
-ConstantValue__95_CAST_sub41_fixbits = solver.IntVar(0, 32, 'ConstantValue__95_CAST_sub41_fixbits')
-ConstantValue__95_CAST_sub41_fixp = solver.IntVar(0, 1, 'ConstantValue__95_CAST_sub41_fixp')
-ConstantValue__95_CAST_sub41_float = solver.IntVar(0, 1, 'ConstantValue__95_CAST_sub41_float')
-ConstantValue__95_CAST_sub41_double = solver.IntVar(0, 1, 'ConstantValue__95_CAST_sub41_double')
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_fixp + (1)*ConstantValue__95_CAST_sub41_float + (1)*ConstantValue__95_CAST_sub41_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_fixbits + (-10000)*ConstantValue__95_CAST_sub41_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C1_ConstantValue__95_CAST_sub41')
-C2_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C2_ConstantValue__95_CAST_sub41')
-solver.Add( + (1)*ConstantValue__95_fixbits + (-1)*ConstantValue__95_CAST_sub41_fixbits + (-10000)*C1_ConstantValue__95_CAST_sub41<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__95_fixbits + (1)*ConstantValue__95_CAST_sub41_fixbits + (-10000)*C2_ConstantValue__95_CAST_sub41<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__95_CAST_sub41
-castCostObj +=  + (1.13006)*C2_ConstantValue__95_CAST_sub41
-C3_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C3_ConstantValue__95_CAST_sub41')
-C4_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C4_ConstantValue__95_CAST_sub41')
-C5_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C5_ConstantValue__95_CAST_sub41')
-C6_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C6_ConstantValue__95_CAST_sub41')
-C7_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C7_ConstantValue__95_CAST_sub41')
-C8_ConstantValue__95_CAST_sub41 = solver.IntVar(0, 1, 'C8_ConstantValue__95_CAST_sub41')
-solver.Add( + (1)*ConstantValue__95_fixp + (1)*ConstantValue__95_CAST_sub41_float + (-1)*C3_ConstantValue__95_CAST_sub41<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__95_CAST_sub41
-solver.Add( + (1)*ConstantValue__95_float + (1)*ConstantValue__95_CAST_sub41_fixp + (-1)*C4_ConstantValue__95_CAST_sub41<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__95_CAST_sub41
-solver.Add( + (1)*ConstantValue__95_fixp + (1)*ConstantValue__95_CAST_sub41_double + (-1)*C5_ConstantValue__95_CAST_sub41<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__95_CAST_sub41
-solver.Add( + (1)*ConstantValue__95_double + (1)*ConstantValue__95_CAST_sub41_fixp + (-1)*C6_ConstantValue__95_CAST_sub41<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__95_CAST_sub41
-solver.Add( + (1)*ConstantValue__95_float + (1)*ConstantValue__95_CAST_sub41_double + (-1)*C7_ConstantValue__95_CAST_sub41<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__95_CAST_sub41
-solver.Add( + (1)*ConstantValue__95_double + (1)*ConstantValue__95_CAST_sub41_float + (-1)*C8_ConstantValue__95_CAST_sub41<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__95_CAST_sub41
+#Constraint for cast for   %sub41 = fsub float -0.000000e+00, %rate, !taffo.info !75, !taffo.initweight !39, !taffo.constinfo !77
+ConstantValue__91_CAST_sub41_fixbits = solver.IntVar(0, 32, 'ConstantValue__91_CAST_sub41_fixbits')
+ConstantValue__91_CAST_sub41_fixp = solver.IntVar(0, 1, 'ConstantValue__91_CAST_sub41_fixp')
+ConstantValue__91_CAST_sub41_float = solver.IntVar(0, 1, 'ConstantValue__91_CAST_sub41_float')
+ConstantValue__91_CAST_sub41_double = solver.IntVar(0, 1, 'ConstantValue__91_CAST_sub41_double')
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_fixp + (1)*ConstantValue__91_CAST_sub41_float + (1)*ConstantValue__91_CAST_sub41_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_fixbits + (-10000)*ConstantValue__91_CAST_sub41_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C1_ConstantValue__91_CAST_sub41')
+C2_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C2_ConstantValue__91_CAST_sub41')
+solver.Add( + (1)*ConstantValue__91_fixbits + (-1)*ConstantValue__91_CAST_sub41_fixbits + (-10000)*C1_ConstantValue__91_CAST_sub41<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__91_fixbits + (1)*ConstantValue__91_CAST_sub41_fixbits + (-10000)*C2_ConstantValue__91_CAST_sub41<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__91_CAST_sub41
+castCostObj +=  + (1.13006)*C2_ConstantValue__91_CAST_sub41
+C3_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C3_ConstantValue__91_CAST_sub41')
+C4_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C4_ConstantValue__91_CAST_sub41')
+C5_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C5_ConstantValue__91_CAST_sub41')
+C6_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C6_ConstantValue__91_CAST_sub41')
+C7_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C7_ConstantValue__91_CAST_sub41')
+C8_ConstantValue__91_CAST_sub41 = solver.IntVar(0, 1, 'C8_ConstantValue__91_CAST_sub41')
+solver.Add( + (1)*ConstantValue__91_fixp + (1)*ConstantValue__91_CAST_sub41_float + (-1)*C3_ConstantValue__91_CAST_sub41<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__91_CAST_sub41
+solver.Add( + (1)*ConstantValue__91_float + (1)*ConstantValue__91_CAST_sub41_fixp + (-1)*C4_ConstantValue__91_CAST_sub41<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__91_CAST_sub41
+solver.Add( + (1)*ConstantValue__91_fixp + (1)*ConstantValue__91_CAST_sub41_double + (-1)*C5_ConstantValue__91_CAST_sub41<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__91_CAST_sub41
+solver.Add( + (1)*ConstantValue__91_double + (1)*ConstantValue__91_CAST_sub41_fixp + (-1)*C6_ConstantValue__91_CAST_sub41<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__91_CAST_sub41
+solver.Add( + (1)*ConstantValue__91_float + (1)*ConstantValue__91_CAST_sub41_double + (-1)*C7_ConstantValue__91_CAST_sub41<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__91_CAST_sub41
+solver.Add( + (1)*ConstantValue__91_double + (1)*ConstantValue__91_CAST_sub41_float + (-1)*C8_ConstantValue__91_CAST_sub41<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__91_CAST_sub41
 
 
 
-#Constraint for cast for   %sub41 = fsub float -0.000000e+00, %rate, !taffo.info !77, !taffo.initweight !41, !taffo.constinfo !79
+#Constraint for cast for   %sub41 = fsub float -0.000000e+00, %rate, !taffo.info !75, !taffo.initweight !39, !taffo.constinfo !77
 sptprice_CAST_sub41_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_sub41_fixbits')
 sptprice_CAST_sub41_fixp = solver.IntVar(0, 1, 'sptprice_CAST_sub41_fixp')
 sptprice_CAST_sub41_float = solver.IntVar(0, 1, 'sptprice_CAST_sub41_float')
@@ -8358,7 +8010,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_sub41
 
 
 
-#Stuff for   %sub41 = fsub float -0.000000e+00, %rate, !taffo.info !77, !taffo.initweight !41, !taffo.constinfo !79
+#Stuff for   %sub41 = fsub float -0.000000e+00, %rate, !taffo.info !75, !taffo.initweight !39, !taffo.constinfo !77
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_float')
@@ -8371,23 +8023,23 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixbits + (-10000)*
 enobCostObj +=  + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_enob
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixbits + (-10000)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_fixp + (-1)*sptprice_CAST_sub41_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_float + (-1)*sptprice_CAST_sub41_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_double + (-1)*sptprice_CAST_sub41_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_fixbits + (-1)*sptprice_CAST_sub41_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__95_CAST_sub41_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_fixp + (-1)*sptprice_CAST_sub41_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_float + (-1)*sptprice_CAST_sub41_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_double + (-1)*sptprice_CAST_sub41_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_fixbits + (-1)*sptprice_CAST_sub41_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__91_CAST_sub41_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_fixp
 mathCostObj +=  + (1.80596)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_float
 mathCostObj +=  + (2.15411)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_double
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_enob + (-1)*ConstantValue__93_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_enob + (-1)*ConstantValue__89_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_enob + (-1)*sptprice_enob_memphi__Z9bs_threadPv_tmp9<=0)    #Enob propagation in sub second addend
 
 
 
-#Constraint for cast for   %mul42 = fmul float %sub41, %time, !taffo.info !82, !taffo.initweight !41
+#Constraint for cast for   %mul42 = fmul float %sub41, %time, !taffo.info !80, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_CAST_mul42_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_CAST_mul42_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_CAST_mul42_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_CAST_mul42_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_CAST_mul42_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_CAST_mul42_float')
@@ -8421,7 +8073,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub41_CAST_m
 
 
 
-#Constraint for cast for   %mul42 = fmul float %sub41, %time, !taffo.info !82, !taffo.initweight !41
+#Constraint for cast for   %mul42 = fmul float %sub41, %time, !taffo.info !80, !taffo.initweight !39
 sptprice_CAST_mul42_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul42_fixbits')
 sptprice_CAST_mul42_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul42_fixp')
 sptprice_CAST_mul42_float = solver.IntVar(0, 1, 'sptprice_CAST_mul42_float')
@@ -8455,7 +8107,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul42
 
 
 
-#Stuff for   %mul42 = fmul float %sub41, %time, !taffo.info !82, !taffo.initweight !41
+#Stuff for   %mul42 = fmul float %sub41, %time, !taffo.info !80, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_float')
@@ -8485,7 +8137,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_enob + (-1)*_Z19Blk
 
 
 
-#Stuff for   %call43 = call float @_ZSt3expf.11(float %mul42), !taffo.info !84, !taffo.initweight !48, !taffo.constinfo !42, !taffo.originalCall !86
+#Stuff for   %call43 = call float @_ZSt3expf.11(float %mul42), !taffo.info !82, !taffo.initweight !46, !taffo.constinfo !40, !taffo.originalCall !84
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_float')
@@ -8501,7 +8153,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_fixbits + (-10000)
 
 
 
-#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _ZSt3expf_11_call_fixbits = solver.IntVar(0, 31, '_ZSt3expf_11_call_fixbits')
 _ZSt3expf_11_call_fixp = solver.IntVar(0, 1, '_ZSt3expf_11_call_fixp')
 _ZSt3expf_11_call_float = solver.IntVar(0, 1, '_ZSt3expf_11_call_float')
@@ -8518,7 +8170,7 @@ solver.Add( + (1)*_ZSt3expf_11_call_float==1)    #Type constraint for return val
 
 
 
-#Constraint for cast for   %call = call float @expf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
+#Constraint for cast for   %call = call float @expf(float %__x) #3, !taffo.info !28, !taffo.initweight !30, !taffo.constinfo !31
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_CAST_call_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_CAST_call_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_CAST_call_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_CAST_call_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_CAST_call_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_CAST_call_float')
@@ -8553,7 +8205,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul42_CAST_call_float==1)
 
 
 
-#Constraint for cast for   ret float %call, !taffo.info !34, !taffo.initweight !35
+#Constraint for cast for   ret float %call, !taffo.info !32, !taffo.initweight !33
 _ZSt3expf_11_call_CAST_ret_fixbits = solver.IntVar(0, 31, '_ZSt3expf_11_call_CAST_ret_fixbits')
 _ZSt3expf_11_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt3expf_11_call_CAST_ret_fixp')
 _ZSt3expf_11_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt3expf_11_call_CAST_ret_float')
@@ -8591,7 +8243,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_fixbits + (-1)*_ZS
 
 
 
-#Constraint for cast for   %mul44 = fmul float %strike, %call43, !taffo.info !87, !taffo.initweight !41
+#Constraint for cast for   %mul44 = fmul float %strike, %call43, !taffo.info !85, !taffo.initweight !39
 sptprice_CAST_mul44_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul44_fixbits')
 sptprice_CAST_mul44_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul44_fixp')
 sptprice_CAST_mul44_float = solver.IntVar(0, 1, 'sptprice_CAST_mul44_float')
@@ -8625,7 +8277,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul44
 
 
 
-#Constraint for cast for   %mul44 = fmul float %strike, %call43, !taffo.info !87, !taffo.initweight !41
+#Constraint for cast for   %mul44 = fmul float %strike, %call43, !taffo.info !85, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_CAST_mul44_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_CAST_mul44_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_CAST_mul44_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_CAST_mul44_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_CAST_mul44_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_CAST_mul44_float')
@@ -8659,7 +8311,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call43_CAST_
 
 
 
-#Stuff for   %mul44 = fmul float %strike, %call43, !taffo.info !87, !taffo.initweight !41
+#Stuff for   %mul44 = fmul float %strike, %call43, !taffo.info !85, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_float')
@@ -8689,7 +8341,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_enob + (-1)*sptpric
 
 
 
-#Constraint for cast for   %mul47 = fmul float %sptprice, %call34, !taffo.info !90, !taffo.initweight !41
+#Constraint for cast for   %mul47 = fmul float %sptprice, %call34, !taffo.info !88, !taffo.initweight !39
 sptprice_CAST_mul47_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul47_fixbits')
 sptprice_CAST_mul47_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul47_fixp')
 sptprice_CAST_mul47_float = solver.IntVar(0, 1, 'sptprice_CAST_mul47_float')
@@ -8723,7 +8375,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul47
 
 
 
-#Constraint for cast for   %mul47 = fmul float %sptprice, %call34, !taffo.info !90, !taffo.initweight !41
+#Constraint for cast for   %mul47 = fmul float %sptprice, %call34, !taffo.info !88, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_mul47_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_mul47_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_mul47_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_mul47_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_mul47_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_mul47_float')
@@ -8757,7 +8409,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_
 
 
 
-#Stuff for   %mul47 = fmul float %sptprice, %call34, !taffo.info !90, !taffo.initweight !41
+#Stuff for   %mul47 = fmul float %sptprice, %call34, !taffo.info !88, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_float')
@@ -8787,7 +8439,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_enob + (-1)*sptpric
 
 
 
-#Constraint for cast for   %mul48 = fmul float %mul44, %call36, !taffo.info !92, !taffo.initweight !41
+#Constraint for cast for   %mul48 = fmul float %mul44, %call36, !taffo.info !90, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul48_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul48_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul48_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul48_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul48_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul48_float')
@@ -8821,7 +8473,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_m
 
 
 
-#Constraint for cast for   %mul48 = fmul float %mul44, %call36, !taffo.info !92, !taffo.initweight !41
+#Constraint for cast for   %mul48 = fmul float %mul44, %call36, !taffo.info !90, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_mul48_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_mul48_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_mul48_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_mul48_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_mul48_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_mul48_float')
@@ -8855,7 +8507,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_
 
 
 
-#Stuff for   %mul48 = fmul float %mul44, %call36, !taffo.info !92, !taffo.initweight !41
+#Stuff for   %mul48 = fmul float %mul44, %call36, !taffo.info !90, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_float')
@@ -8885,7 +8537,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_enob + (-1)*_Z19Blk
 
 
 
-#Constraint for cast for   %sub49 = fsub float %mul47, %mul48, !taffo.info !94, !taffo.initweight !48
+#Constraint for cast for   %sub49 = fsub float %mul47, %mul48, !taffo.info !92, !taffo.initweight !46
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_CAST_sub49_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_CAST_sub49_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_CAST_sub49_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_CAST_sub49_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_CAST_sub49_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_CAST_sub49_float')
@@ -8919,7 +8571,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul47_CAST_s
 
 
 
-#Constraint for cast for   %sub49 = fsub float %mul47, %mul48, !taffo.info !94, !taffo.initweight !48
+#Constraint for cast for   %sub49 = fsub float %mul47, %mul48, !taffo.info !92, !taffo.initweight !46
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_CAST_sub49_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_CAST_sub49_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_CAST_sub49_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_CAST_sub49_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_CAST_sub49_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_CAST_sub49_float')
@@ -8953,7 +8605,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul48_CAST_s
 
 
 
-#Stuff for   %sub49 = fsub float %mul47, %mul48, !taffo.info !94, !taffo.initweight !48
+#Stuff for   %sub49 = fsub float %mul47, %mul48, !taffo.info !92, !taffo.initweight !46
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_float')
@@ -8983,85 +8635,85 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_enob + (-1)*_Z19Blk
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__96_fixbits = solver.IntVar(0, 31, 'ConstantValue__96_fixbits')
-ConstantValue__96_fixp = solver.IntVar(0, 1, 'ConstantValue__96_fixp')
-ConstantValue__96_float = solver.IntVar(0, 1, 'ConstantValue__96_float')
-ConstantValue__96_double = solver.IntVar(0, 1, 'ConstantValue__96_double')
-ConstantValue__96_enob = solver.IntVar(-10000, 10000, 'ConstantValue__96_enob')
-solver.Add( + (1)*ConstantValue__96_enob + (-1)*ConstantValue__96_fixbits + (10000)*ConstantValue__96_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__96_enob + (10000)*ConstantValue__96_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__96_enob + (10000)*ConstantValue__96_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__96_fixbits + (-10000)*ConstantValue__96_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__96_fixp + (1)*ConstantValue__96_float + (1)*ConstantValue__96_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__96_fixbits + (-10000)*ConstantValue__96_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__92_fixbits = solver.IntVar(0, 31, 'ConstantValue__92_fixbits')
+ConstantValue__92_fixp = solver.IntVar(0, 1, 'ConstantValue__92_fixp')
+ConstantValue__92_float = solver.IntVar(0, 1, 'ConstantValue__92_float')
+ConstantValue__92_double = solver.IntVar(0, 1, 'ConstantValue__92_double')
+ConstantValue__92_enob = solver.IntVar(-10000, 10000, 'ConstantValue__92_enob')
+solver.Add( + (1)*ConstantValue__92_enob + (-1)*ConstantValue__92_fixbits + (10000)*ConstantValue__92_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__92_enob + (10000)*ConstantValue__92_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__92_enob + (10000)*ConstantValue__92_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__92_fixbits + (-10000)*ConstantValue__92_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__92_fixp + (1)*ConstantValue__92_float + (1)*ConstantValue__92_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__92_fixbits + (-10000)*ConstantValue__92_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__97_fixbits = solver.IntVar(0, 31, 'ConstantValue__97_fixbits')
-ConstantValue__97_fixp = solver.IntVar(0, 1, 'ConstantValue__97_fixp')
-ConstantValue__97_float = solver.IntVar(0, 1, 'ConstantValue__97_float')
-ConstantValue__97_double = solver.IntVar(0, 1, 'ConstantValue__97_double')
-ConstantValue__97_enob = solver.IntVar(-10000, 10000, 'ConstantValue__97_enob')
-solver.Add( + (1)*ConstantValue__97_enob + (-1)*ConstantValue__97_fixbits + (10000)*ConstantValue__97_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__97_enob + (10000)*ConstantValue__97_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__97_enob + (10000)*ConstantValue__97_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__97_fixbits + (-10000)*ConstantValue__97_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__97_fixp + (1)*ConstantValue__97_float + (1)*ConstantValue__97_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__97_fixbits + (-10000)*ConstantValue__97_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__93_fixbits = solver.IntVar(0, 31, 'ConstantValue__93_fixbits')
+ConstantValue__93_fixp = solver.IntVar(0, 1, 'ConstantValue__93_fixp')
+ConstantValue__93_float = solver.IntVar(0, 1, 'ConstantValue__93_float')
+ConstantValue__93_double = solver.IntVar(0, 1, 'ConstantValue__93_double')
+ConstantValue__93_enob = solver.IntVar(-10000, 10000, 'ConstantValue__93_enob')
+solver.Add( + (1)*ConstantValue__93_enob + (-1)*ConstantValue__93_fixbits + (10000)*ConstantValue__93_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__93_enob + (10000)*ConstantValue__93_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__93_enob + (10000)*ConstantValue__93_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__93_fixbits + (-10000)*ConstantValue__93_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__93_fixp + (1)*ConstantValue__93_float + (1)*ConstantValue__93_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__93_fixbits + (-10000)*ConstantValue__93_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__98_fixbits = solver.IntVar(0, 31, 'ConstantValue__98_fixbits')
-ConstantValue__98_fixp = solver.IntVar(0, 1, 'ConstantValue__98_fixp')
-ConstantValue__98_float = solver.IntVar(0, 1, 'ConstantValue__98_float')
-ConstantValue__98_double = solver.IntVar(0, 1, 'ConstantValue__98_double')
-ConstantValue__98_enob = solver.IntVar(-10000, 10000, 'ConstantValue__98_enob')
-solver.Add( + (1)*ConstantValue__98_enob + (-1)*ConstantValue__98_fixbits + (10000)*ConstantValue__98_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__98_enob + (10000)*ConstantValue__98_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__98_enob + (10000)*ConstantValue__98_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__98_fixbits + (-10000)*ConstantValue__98_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__98_fixp + (1)*ConstantValue__98_float + (1)*ConstantValue__98_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__98_fixbits + (-10000)*ConstantValue__98_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__94_fixbits = solver.IntVar(0, 31, 'ConstantValue__94_fixbits')
+ConstantValue__94_fixp = solver.IntVar(0, 1, 'ConstantValue__94_fixp')
+ConstantValue__94_float = solver.IntVar(0, 1, 'ConstantValue__94_float')
+ConstantValue__94_double = solver.IntVar(0, 1, 'ConstantValue__94_double')
+ConstantValue__94_enob = solver.IntVar(-10000, 10000, 'ConstantValue__94_enob')
+solver.Add( + (1)*ConstantValue__94_enob + (-1)*ConstantValue__94_fixbits + (10000)*ConstantValue__94_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__94_enob + (10000)*ConstantValue__94_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__94_enob + (10000)*ConstantValue__94_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__94_fixbits + (-10000)*ConstantValue__94_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__94_fixp + (1)*ConstantValue__94_float + (1)*ConstantValue__94_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__94_fixbits + (-10000)*ConstantValue__94_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %sub51 = fsub double 1.000000e+00, %conv50, !taffo.info !36, !taffo.initweight !48, !taffo.constinfo !96
-ConstantValue__98_CAST_sub51_fixbits = solver.IntVar(0, 31, 'ConstantValue__98_CAST_sub51_fixbits')
-ConstantValue__98_CAST_sub51_fixp = solver.IntVar(0, 1, 'ConstantValue__98_CAST_sub51_fixp')
-ConstantValue__98_CAST_sub51_float = solver.IntVar(0, 1, 'ConstantValue__98_CAST_sub51_float')
-ConstantValue__98_CAST_sub51_double = solver.IntVar(0, 1, 'ConstantValue__98_CAST_sub51_double')
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_fixp + (1)*ConstantValue__98_CAST_sub51_float + (1)*ConstantValue__98_CAST_sub51_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_fixbits + (-10000)*ConstantValue__98_CAST_sub51_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C1_ConstantValue__98_CAST_sub51')
-C2_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C2_ConstantValue__98_CAST_sub51')
-solver.Add( + (1)*ConstantValue__98_fixbits + (-1)*ConstantValue__98_CAST_sub51_fixbits + (-10000)*C1_ConstantValue__98_CAST_sub51<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__98_fixbits + (1)*ConstantValue__98_CAST_sub51_fixbits + (-10000)*C2_ConstantValue__98_CAST_sub51<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__98_CAST_sub51
-castCostObj +=  + (1.13006)*C2_ConstantValue__98_CAST_sub51
-C3_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C3_ConstantValue__98_CAST_sub51')
-C4_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C4_ConstantValue__98_CAST_sub51')
-C5_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C5_ConstantValue__98_CAST_sub51')
-C6_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C6_ConstantValue__98_CAST_sub51')
-C7_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C7_ConstantValue__98_CAST_sub51')
-C8_ConstantValue__98_CAST_sub51 = solver.IntVar(0, 1, 'C8_ConstantValue__98_CAST_sub51')
-solver.Add( + (1)*ConstantValue__98_fixp + (1)*ConstantValue__98_CAST_sub51_float + (-1)*C3_ConstantValue__98_CAST_sub51<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__98_CAST_sub51
-solver.Add( + (1)*ConstantValue__98_float + (1)*ConstantValue__98_CAST_sub51_fixp + (-1)*C4_ConstantValue__98_CAST_sub51<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__98_CAST_sub51
-solver.Add( + (1)*ConstantValue__98_fixp + (1)*ConstantValue__98_CAST_sub51_double + (-1)*C5_ConstantValue__98_CAST_sub51<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__98_CAST_sub51
-solver.Add( + (1)*ConstantValue__98_double + (1)*ConstantValue__98_CAST_sub51_fixp + (-1)*C6_ConstantValue__98_CAST_sub51<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__98_CAST_sub51
-solver.Add( + (1)*ConstantValue__98_float + (1)*ConstantValue__98_CAST_sub51_double + (-1)*C7_ConstantValue__98_CAST_sub51<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__98_CAST_sub51
-solver.Add( + (1)*ConstantValue__98_double + (1)*ConstantValue__98_CAST_sub51_float + (-1)*C8_ConstantValue__98_CAST_sub51<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__98_CAST_sub51
+#Constraint for cast for   %sub51 = fsub double 1.000000e+00, %conv50, !taffo.info !34, !taffo.initweight !46, !taffo.constinfo !94
+ConstantValue__94_CAST_sub51_fixbits = solver.IntVar(0, 31, 'ConstantValue__94_CAST_sub51_fixbits')
+ConstantValue__94_CAST_sub51_fixp = solver.IntVar(0, 1, 'ConstantValue__94_CAST_sub51_fixp')
+ConstantValue__94_CAST_sub51_float = solver.IntVar(0, 1, 'ConstantValue__94_CAST_sub51_float')
+ConstantValue__94_CAST_sub51_double = solver.IntVar(0, 1, 'ConstantValue__94_CAST_sub51_double')
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_fixp + (1)*ConstantValue__94_CAST_sub51_float + (1)*ConstantValue__94_CAST_sub51_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_fixbits + (-10000)*ConstantValue__94_CAST_sub51_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C1_ConstantValue__94_CAST_sub51')
+C2_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C2_ConstantValue__94_CAST_sub51')
+solver.Add( + (1)*ConstantValue__94_fixbits + (-1)*ConstantValue__94_CAST_sub51_fixbits + (-10000)*C1_ConstantValue__94_CAST_sub51<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__94_fixbits + (1)*ConstantValue__94_CAST_sub51_fixbits + (-10000)*C2_ConstantValue__94_CAST_sub51<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__94_CAST_sub51
+castCostObj +=  + (1.13006)*C2_ConstantValue__94_CAST_sub51
+C3_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C3_ConstantValue__94_CAST_sub51')
+C4_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C4_ConstantValue__94_CAST_sub51')
+C5_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C5_ConstantValue__94_CAST_sub51')
+C6_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C6_ConstantValue__94_CAST_sub51')
+C7_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C7_ConstantValue__94_CAST_sub51')
+C8_ConstantValue__94_CAST_sub51 = solver.IntVar(0, 1, 'C8_ConstantValue__94_CAST_sub51')
+solver.Add( + (1)*ConstantValue__94_fixp + (1)*ConstantValue__94_CAST_sub51_float + (-1)*C3_ConstantValue__94_CAST_sub51<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__94_CAST_sub51
+solver.Add( + (1)*ConstantValue__94_float + (1)*ConstantValue__94_CAST_sub51_fixp + (-1)*C4_ConstantValue__94_CAST_sub51<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__94_CAST_sub51
+solver.Add( + (1)*ConstantValue__94_fixp + (1)*ConstantValue__94_CAST_sub51_double + (-1)*C5_ConstantValue__94_CAST_sub51<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__94_CAST_sub51
+solver.Add( + (1)*ConstantValue__94_double + (1)*ConstantValue__94_CAST_sub51_fixp + (-1)*C6_ConstantValue__94_CAST_sub51<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__94_CAST_sub51
+solver.Add( + (1)*ConstantValue__94_float + (1)*ConstantValue__94_CAST_sub51_double + (-1)*C7_ConstantValue__94_CAST_sub51<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__94_CAST_sub51
+solver.Add( + (1)*ConstantValue__94_double + (1)*ConstantValue__94_CAST_sub51_float + (-1)*C8_ConstantValue__94_CAST_sub51<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__94_CAST_sub51
 
 
 
-#Constraint for cast for   %sub51 = fsub double 1.000000e+00, %conv50, !taffo.info !36, !taffo.initweight !48, !taffo.constinfo !96
+#Constraint for cast for   %sub51 = fsub double 1.000000e+00, %conv50, !taffo.info !34, !taffo.initweight !46, !taffo.constinfo !94
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_float')
@@ -9095,7 +8747,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_
 
 
 
-#Stuff for   %sub51 = fsub double 1.000000e+00, %conv50, !taffo.info !36, !taffo.initweight !48, !taffo.constinfo !96
+#Stuff for   %sub51 = fsub double 1.000000e+00, %conv50, !taffo.info !34, !taffo.initweight !46, !taffo.constinfo !94
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_float')
@@ -9108,102 +8760,102 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixbits + (-10000)*
 enobCostObj +=  + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_enob
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixbits + (-10000)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__98_CAST_sub51_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_CAST_sub51_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__94_CAST_sub51_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_fixp
 mathCostObj +=  + (1.80596)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_float
 mathCostObj +=  + (2.15411)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_double
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_enob + (-1)*ConstantValue__96_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_enob + (-1)*ConstantValue__92_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_enob + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call34_enob<=0)    #Enob propagation in sub second addend
 
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__99_fixbits = solver.IntVar(0, 31, 'ConstantValue__99_fixbits')
-ConstantValue__99_fixp = solver.IntVar(0, 1, 'ConstantValue__99_fixp')
-ConstantValue__99_float = solver.IntVar(0, 1, 'ConstantValue__99_float')
-ConstantValue__99_double = solver.IntVar(0, 1, 'ConstantValue__99_double')
-ConstantValue__99_enob = solver.IntVar(-10000, 10000, 'ConstantValue__99_enob')
-solver.Add( + (1)*ConstantValue__99_enob + (-1)*ConstantValue__99_fixbits + (10000)*ConstantValue__99_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__99_enob + (10000)*ConstantValue__99_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__99_enob + (10000)*ConstantValue__99_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__99_fixbits + (-10000)*ConstantValue__99_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__99_fixp + (1)*ConstantValue__99_float + (1)*ConstantValue__99_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__99_fixbits + (-10000)*ConstantValue__99_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__95_fixbits = solver.IntVar(0, 31, 'ConstantValue__95_fixbits')
+ConstantValue__95_fixp = solver.IntVar(0, 1, 'ConstantValue__95_fixp')
+ConstantValue__95_float = solver.IntVar(0, 1, 'ConstantValue__95_float')
+ConstantValue__95_double = solver.IntVar(0, 1, 'ConstantValue__95_double')
+ConstantValue__95_enob = solver.IntVar(-10000, 10000, 'ConstantValue__95_enob')
+solver.Add( + (1)*ConstantValue__95_enob + (-1)*ConstantValue__95_fixbits + (10000)*ConstantValue__95_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__95_enob + (10000)*ConstantValue__95_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__95_enob + (10000)*ConstantValue__95_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__95_fixbits + (-10000)*ConstantValue__95_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__95_fixp + (1)*ConstantValue__95_float + (1)*ConstantValue__95_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__95_fixbits + (-10000)*ConstantValue__95_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__100_fixbits = solver.IntVar(0, 31, 'ConstantValue__100_fixbits')
-ConstantValue__100_fixp = solver.IntVar(0, 1, 'ConstantValue__100_fixp')
-ConstantValue__100_float = solver.IntVar(0, 1, 'ConstantValue__100_float')
-ConstantValue__100_double = solver.IntVar(0, 1, 'ConstantValue__100_double')
-ConstantValue__100_enob = solver.IntVar(-10000, 10000, 'ConstantValue__100_enob')
-solver.Add( + (1)*ConstantValue__100_enob + (-1)*ConstantValue__100_fixbits + (10000)*ConstantValue__100_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__100_enob + (10000)*ConstantValue__100_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__100_enob + (10000)*ConstantValue__100_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__100_fixbits + (-10000)*ConstantValue__100_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__100_fixp + (1)*ConstantValue__100_float + (1)*ConstantValue__100_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__100_fixbits + (-10000)*ConstantValue__100_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__96_fixbits = solver.IntVar(0, 31, 'ConstantValue__96_fixbits')
+ConstantValue__96_fixp = solver.IntVar(0, 1, 'ConstantValue__96_fixp')
+ConstantValue__96_float = solver.IntVar(0, 1, 'ConstantValue__96_float')
+ConstantValue__96_double = solver.IntVar(0, 1, 'ConstantValue__96_double')
+ConstantValue__96_enob = solver.IntVar(-10000, 10000, 'ConstantValue__96_enob')
+solver.Add( + (1)*ConstantValue__96_enob + (-1)*ConstantValue__96_fixbits + (10000)*ConstantValue__96_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__96_enob + (10000)*ConstantValue__96_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__96_enob + (10000)*ConstantValue__96_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__96_fixbits + (-10000)*ConstantValue__96_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__96_fixp + (1)*ConstantValue__96_float + (1)*ConstantValue__96_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__96_fixbits + (-10000)*ConstantValue__96_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 1.000000e+00
-ConstantValue__101_fixbits = solver.IntVar(0, 31, 'ConstantValue__101_fixbits')
-ConstantValue__101_fixp = solver.IntVar(0, 1, 'ConstantValue__101_fixp')
-ConstantValue__101_float = solver.IntVar(0, 1, 'ConstantValue__101_float')
-ConstantValue__101_double = solver.IntVar(0, 1, 'ConstantValue__101_double')
-ConstantValue__101_enob = solver.IntVar(-10000, 10000, 'ConstantValue__101_enob')
-solver.Add( + (1)*ConstantValue__101_enob + (-1)*ConstantValue__101_fixbits + (10000)*ConstantValue__101_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__101_enob + (10000)*ConstantValue__101_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__101_enob + (10000)*ConstantValue__101_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__101_fixbits + (-10000)*ConstantValue__101_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__101_fixp + (1)*ConstantValue__101_float + (1)*ConstantValue__101_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__101_fixbits + (-10000)*ConstantValue__101_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__97_fixbits = solver.IntVar(0, 31, 'ConstantValue__97_fixbits')
+ConstantValue__97_fixp = solver.IntVar(0, 1, 'ConstantValue__97_fixp')
+ConstantValue__97_float = solver.IntVar(0, 1, 'ConstantValue__97_float')
+ConstantValue__97_double = solver.IntVar(0, 1, 'ConstantValue__97_double')
+ConstantValue__97_enob = solver.IntVar(-10000, 10000, 'ConstantValue__97_enob')
+solver.Add( + (1)*ConstantValue__97_enob + (-1)*ConstantValue__97_fixbits + (10000)*ConstantValue__97_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__97_enob + (10000)*ConstantValue__97_float<=10023)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__97_enob + (10000)*ConstantValue__97_double<=10052)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__97_fixbits + (-10000)*ConstantValue__97_fixp>=-9970)    #Limit the lower number of frac bits31
+solver.Add( + (1)*ConstantValue__97_fixp + (1)*ConstantValue__97_float + (1)*ConstantValue__97_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__97_fixbits + (-10000)*ConstantValue__97_fixp<=0)    #If not fix, frac part to zero
 
 
 
-#Constraint for cast for   %sub54 = fsub double 1.000000e+00, %conv53, !taffo.info !36, !taffo.initweight !48, !taffo.constinfo !96
-ConstantValue__101_CAST_sub54_fixbits = solver.IntVar(0, 31, 'ConstantValue__101_CAST_sub54_fixbits')
-ConstantValue__101_CAST_sub54_fixp = solver.IntVar(0, 1, 'ConstantValue__101_CAST_sub54_fixp')
-ConstantValue__101_CAST_sub54_float = solver.IntVar(0, 1, 'ConstantValue__101_CAST_sub54_float')
-ConstantValue__101_CAST_sub54_double = solver.IntVar(0, 1, 'ConstantValue__101_CAST_sub54_double')
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_fixp + (1)*ConstantValue__101_CAST_sub54_float + (1)*ConstantValue__101_CAST_sub54_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_fixbits + (-10000)*ConstantValue__101_CAST_sub54_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C1_ConstantValue__101_CAST_sub54')
-C2_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C2_ConstantValue__101_CAST_sub54')
-solver.Add( + (1)*ConstantValue__101_fixbits + (-1)*ConstantValue__101_CAST_sub54_fixbits + (-10000)*C1_ConstantValue__101_CAST_sub54<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__101_fixbits + (1)*ConstantValue__101_CAST_sub54_fixbits + (-10000)*C2_ConstantValue__101_CAST_sub54<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__101_CAST_sub54
-castCostObj +=  + (1.13006)*C2_ConstantValue__101_CAST_sub54
-C3_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C3_ConstantValue__101_CAST_sub54')
-C4_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C4_ConstantValue__101_CAST_sub54')
-C5_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C5_ConstantValue__101_CAST_sub54')
-C6_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C6_ConstantValue__101_CAST_sub54')
-C7_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C7_ConstantValue__101_CAST_sub54')
-C8_ConstantValue__101_CAST_sub54 = solver.IntVar(0, 1, 'C8_ConstantValue__101_CAST_sub54')
-solver.Add( + (1)*ConstantValue__101_fixp + (1)*ConstantValue__101_CAST_sub54_float + (-1)*C3_ConstantValue__101_CAST_sub54<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__101_CAST_sub54
-solver.Add( + (1)*ConstantValue__101_float + (1)*ConstantValue__101_CAST_sub54_fixp + (-1)*C4_ConstantValue__101_CAST_sub54<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__101_CAST_sub54
-solver.Add( + (1)*ConstantValue__101_fixp + (1)*ConstantValue__101_CAST_sub54_double + (-1)*C5_ConstantValue__101_CAST_sub54<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__101_CAST_sub54
-solver.Add( + (1)*ConstantValue__101_double + (1)*ConstantValue__101_CAST_sub54_fixp + (-1)*C6_ConstantValue__101_CAST_sub54<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__101_CAST_sub54
-solver.Add( + (1)*ConstantValue__101_float + (1)*ConstantValue__101_CAST_sub54_double + (-1)*C7_ConstantValue__101_CAST_sub54<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__101_CAST_sub54
-solver.Add( + (1)*ConstantValue__101_double + (1)*ConstantValue__101_CAST_sub54_float + (-1)*C8_ConstantValue__101_CAST_sub54<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__101_CAST_sub54
+#Constraint for cast for   %sub54 = fsub double 1.000000e+00, %conv53, !taffo.info !34, !taffo.initweight !46, !taffo.constinfo !94
+ConstantValue__97_CAST_sub54_fixbits = solver.IntVar(0, 31, 'ConstantValue__97_CAST_sub54_fixbits')
+ConstantValue__97_CAST_sub54_fixp = solver.IntVar(0, 1, 'ConstantValue__97_CAST_sub54_fixp')
+ConstantValue__97_CAST_sub54_float = solver.IntVar(0, 1, 'ConstantValue__97_CAST_sub54_float')
+ConstantValue__97_CAST_sub54_double = solver.IntVar(0, 1, 'ConstantValue__97_CAST_sub54_double')
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_fixp + (1)*ConstantValue__97_CAST_sub54_float + (1)*ConstantValue__97_CAST_sub54_double==1)    #exactly 1 type
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_fixbits + (-10000)*ConstantValue__97_CAST_sub54_fixp<=0)    #If no fix, fix frac part = 0
+C1_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C1_ConstantValue__97_CAST_sub54')
+C2_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C2_ConstantValue__97_CAST_sub54')
+solver.Add( + (1)*ConstantValue__97_fixbits + (-1)*ConstantValue__97_CAST_sub54_fixbits + (-10000)*C1_ConstantValue__97_CAST_sub54<=0)    #Shift cost 1
+solver.Add( + (-1)*ConstantValue__97_fixbits + (1)*ConstantValue__97_CAST_sub54_fixbits + (-10000)*C2_ConstantValue__97_CAST_sub54<=0)    #Shift cost 2
+castCostObj +=  + (1.13006)*C1_ConstantValue__97_CAST_sub54
+castCostObj +=  + (1.13006)*C2_ConstantValue__97_CAST_sub54
+C3_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C3_ConstantValue__97_CAST_sub54')
+C4_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C4_ConstantValue__97_CAST_sub54')
+C5_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C5_ConstantValue__97_CAST_sub54')
+C6_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C6_ConstantValue__97_CAST_sub54')
+C7_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C7_ConstantValue__97_CAST_sub54')
+C8_ConstantValue__97_CAST_sub54 = solver.IntVar(0, 1, 'C8_ConstantValue__97_CAST_sub54')
+solver.Add( + (1)*ConstantValue__97_fixp + (1)*ConstantValue__97_CAST_sub54_float + (-1)*C3_ConstantValue__97_CAST_sub54<=1)    #Fix to float
+castCostObj +=  + (4.12075)*C3_ConstantValue__97_CAST_sub54
+solver.Add( + (1)*ConstantValue__97_float + (1)*ConstantValue__97_CAST_sub54_fixp + (-1)*C4_ConstantValue__97_CAST_sub54<=1)    #Float to fix
+castCostObj +=  + (3.33505)*C4_ConstantValue__97_CAST_sub54
+solver.Add( + (1)*ConstantValue__97_fixp + (1)*ConstantValue__97_CAST_sub54_double + (-1)*C5_ConstantValue__97_CAST_sub54<=1)    #Fix to double
+castCostObj +=  + (5.63733)*C5_ConstantValue__97_CAST_sub54
+solver.Add( + (1)*ConstantValue__97_double + (1)*ConstantValue__97_CAST_sub54_fixp + (-1)*C6_ConstantValue__97_CAST_sub54<=1)    #Double to fix
+castCostObj +=  + (4.40388)*C6_ConstantValue__97_CAST_sub54
+solver.Add( + (1)*ConstantValue__97_float + (1)*ConstantValue__97_CAST_sub54_double + (-1)*C7_ConstantValue__97_CAST_sub54<=1)    #Float to double
+castCostObj +=  + (1)*C7_ConstantValue__97_CAST_sub54
+solver.Add( + (1)*ConstantValue__97_double + (1)*ConstantValue__97_CAST_sub54_float + (-1)*C8_ConstantValue__97_CAST_sub54<=1)    #Double to float
+castCostObj +=  + (5.90592)*C8_ConstantValue__97_CAST_sub54
 
 
 
-#Constraint for cast for   %sub54 = fsub double 1.000000e+00, %conv53, !taffo.info !36, !taffo.initweight !48, !taffo.constinfo !96
+#Constraint for cast for   %sub54 = fsub double 1.000000e+00, %conv53, !taffo.info !34, !taffo.initweight !46, !taffo.constinfo !94
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_float')
@@ -9237,7 +8889,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_
 
 
 
-#Stuff for   %sub54 = fsub double 1.000000e+00, %conv53, !taffo.info !36, !taffo.initweight !48, !taffo.constinfo !96
+#Stuff for   %sub54 = fsub double 1.000000e+00, %conv53, !taffo.info !34, !taffo.initweight !46, !taffo.constinfo !94
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_float')
@@ -9250,23 +8902,23 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixbits + (-10000)*
 enobCostObj +=  + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_enob
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixp + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_float + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_double==1)    #Exactly one selected type
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixbits + (-10000)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixbits==0)    #same fractional bit
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixp==0)    #fix equality
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_float==0)    #float equality
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_double==0)    #double equality
-solver.Add( + (1)*ConstantValue__101_CAST_sub54_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_CAST_sub54_fixbits==0)    #same fractional bit
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_fixp + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixp==0)    #fix equality
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_float + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_float==0)    #float equality
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_double + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_double==0)    #double equality
+solver.Add( + (1)*ConstantValue__97_CAST_sub54_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixbits==0)    #same fractional bit
 mathCostObj +=  + (1.30379)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_fixp
 mathCostObj +=  + (1.80596)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_float
 mathCostObj +=  + (2.15411)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_double
-solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_enob + (-1)*ConstantValue__99_enob<=0)    #Enob propagation in sub first addend
+solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_enob + (-1)*ConstantValue__95_enob<=0)    #Enob propagation in sub first addend
 solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_enob + (-1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_call36_enob<=0)    #Enob propagation in sub second addend
 
 
 
-#Constraint for cast for   %mul56 = fmul float %mul44, %conv55, !taffo.info !92, !taffo.initweight !41
+#Constraint for cast for   %mul56 = fmul float %mul44, %conv55, !taffo.info !90, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul56_fixbits = solver.IntVar(0, 31, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul56_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul56_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul56_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul56_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_mul56_float')
@@ -9300,7 +8952,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul44_CAST_m
 
 
 
-#Constraint for cast for   %mul56 = fmul float %mul44, %conv55, !taffo.info !92, !taffo.initweight !41
+#Constraint for cast for   %mul56 = fmul float %mul44, %conv55, !taffo.info !90, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_CAST_mul56_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_CAST_mul56_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_CAST_mul56_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_CAST_mul56_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_CAST_mul56_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_CAST_mul56_float')
@@ -9334,7 +8986,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub54_CAST_m
 
 
 
-#Stuff for   %mul56 = fmul float %mul44, %conv55, !taffo.info !92, !taffo.initweight !41
+#Stuff for   %mul56 = fmul float %mul44, %conv55, !taffo.info !90, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_float')
@@ -9364,7 +9016,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_enob + (-1)*_Z19Blk
 
 
 
-#Constraint for cast for   %mul57 = fmul float %sptprice, %conv52, !taffo.info !90, !taffo.initweight !41
+#Constraint for cast for   %mul57 = fmul float %sptprice, %conv52, !taffo.info !88, !taffo.initweight !39
 sptprice_CAST_mul57_fixbits = solver.IntVar(0, 31, 'sptprice_CAST_mul57_fixbits')
 sptprice_CAST_mul57_fixp = solver.IntVar(0, 1, 'sptprice_CAST_mul57_fixp')
 sptprice_CAST_mul57_float = solver.IntVar(0, 1, 'sptprice_CAST_mul57_float')
@@ -9398,7 +9050,7 @@ castCostObj +=  + (5.90592)*C8_sptprice_CAST_mul57
 
 
 
-#Constraint for cast for   %mul57 = fmul float %sptprice, %conv52, !taffo.info !90, !taffo.initweight !41
+#Constraint for cast for   %mul57 = fmul float %sptprice, %conv52, !taffo.info !88, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_CAST_mul57_fixbits = solver.IntVar(0, 29, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_CAST_mul57_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_CAST_mul57_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_CAST_mul57_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_CAST_mul57_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_CAST_mul57_float')
@@ -9432,7 +9084,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub51_CAST_m
 
 
 
-#Stuff for   %mul57 = fmul float %sptprice, %conv52, !taffo.info !90, !taffo.initweight !41
+#Stuff for   %mul57 = fmul float %sptprice, %conv52, !taffo.info !88, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_float')
@@ -9462,7 +9114,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_enob + (-1)*sptpric
 
 
 
-#Constraint for cast for   %sub58 = fsub float %mul56, %mul57, !taffo.info !99, !taffo.initweight !48
+#Constraint for cast for   %sub58 = fsub float %mul56, %mul57, !taffo.info !97, !taffo.initweight !46
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_CAST_sub58_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_CAST_sub58_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_CAST_sub58_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_CAST_sub58_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_CAST_sub58_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_CAST_sub58_float')
@@ -9496,7 +9148,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul56_CAST_s
 
 
 
-#Constraint for cast for   %sub58 = fsub float %mul56, %mul57, !taffo.info !99, !taffo.initweight !48
+#Constraint for cast for   %sub58 = fsub float %mul56, %mul57, !taffo.info !97, !taffo.initweight !46
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_CAST_sub58_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_CAST_sub58_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_CAST_sub58_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_CAST_sub58_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_CAST_sub58_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_CAST_sub58_float')
@@ -9530,7 +9182,7 @@ castCostObj +=  + (5.90592)*C8__Z19BlkSchlsEqEuroNoDivfffffifPfS__5_mul57_CAST_s
 
 
 
-#Stuff for   %sub58 = fsub float %mul56, %mul57, !taffo.info !99, !taffo.initweight !48
+#Stuff for   %sub58 = fsub float %mul56, %mul57, !taffo.info !97, !taffo.initweight !46
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_float')
@@ -9559,7 +9211,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_enob + (-1)*_Z19Blk
 
 
 
-#Stuff for   %OptionPrice.0 = phi float [ %sub49, %if.then46 ], [ %sub58, %if.else ], !taffo.info !101
+#Stuff for   %OptionPrice.0 = phi float [ %sub49, %if.then46 ], [ %sub58, %if.else ], !taffo.info !99
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_float')
@@ -9578,7 +9230,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5__Z19BlkSchlsEqEuroNoDivff
 
 
 
-#Constraint for cast for   %OptionPrice.0 = phi float [ %sub49, %if.then46 ], [ %sub58, %if.else ], !taffo.info !101
+#Constraint for cast for   %OptionPrice.0 = phi float [ %sub49, %if.then46 ], [ %sub58, %if.else ], !taffo.info !99
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_CAST_OptionPrice_0_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_CAST_OptionPrice_0_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_CAST_OptionPrice_0_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_CAST_OptionPrice_0_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_CAST_OptionPrice_0_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub49_CAST_OptionPrice_0_float')
@@ -9617,7 +9269,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_enob + (-1)
 
 
 
-#Constraint for cast for   %OptionPrice.0 = phi float [ %sub49, %if.then46 ], [ %sub58, %if.else ], !taffo.info !101
+#Constraint for cast for   %OptionPrice.0 = phi float [ %sub49, %if.then46 ], [ %sub58, %if.else ], !taffo.info !99
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_CAST_OptionPrice_0_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_CAST_OptionPrice_0_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_CAST_OptionPrice_0_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_CAST_OptionPrice_0_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_CAST_OptionPrice_0_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_sub58_CAST_OptionPrice_0_float')
@@ -9656,7 +9308,7 @@ solver.Add( + (1)*_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_enob + (-1)
 
 
 
-#Constraint for cast for   ret float %OptionPrice.0, !taffo.info !75, !taffo.initweight !41
+#Constraint for cast for   ret float %OptionPrice.0, !taffo.info !73, !taffo.initweight !39
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_CAST_ret_fixbits = solver.IntVar(0, 30, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_CAST_ret_fixbits')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_CAST_ret_fixp = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_CAST_ret_fixp')
 _Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_CAST_ret_float = solver.IntVar(0, 1, '_Z19BlkSchlsEqEuroNoDivfffffifPfS__5_OptionPrice_0_CAST_ret_float')
@@ -9695,1955 +9347,38 @@ solver.Add( + (1)*_Z9bs_threadPv_call_fixbits + (-1)*_Z19BlkSchlsEqEuroNoDivffff
 
 
 #Stuff for double 1.000000e+09
-ConstantValue__102_fixbits = solver.IntVar(0, 34, 'ConstantValue__102_fixbits')
-ConstantValue__102_fixp = solver.IntVar(0, 1, 'ConstantValue__102_fixp')
-ConstantValue__102_float = solver.IntVar(0, 1, 'ConstantValue__102_float')
-ConstantValue__102_double = solver.IntVar(0, 1, 'ConstantValue__102_double')
-ConstantValue__102_enob = solver.IntVar(-10000, 10000, 'ConstantValue__102_enob')
-solver.Add( + (1)*ConstantValue__102_enob + (-1)*ConstantValue__102_fixbits + (10000)*ConstantValue__102_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__102_enob + (10000)*ConstantValue__102_float<=9994)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__102_enob + (10000)*ConstantValue__102_double<=10023)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__102_fixbits + (-10000)*ConstantValue__102_fixp>=-9967)    #Limit the lower number of frac bits34
-solver.Add( + (1)*ConstantValue__102_fixp + (1)*ConstantValue__102_float + (1)*ConstantValue__102_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__102_fixbits + (-10000)*ConstantValue__102_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__98_fixbits = solver.IntVar(0, 34, 'ConstantValue__98_fixbits')
+ConstantValue__98_fixp = solver.IntVar(0, 1, 'ConstantValue__98_fixp')
+ConstantValue__98_float = solver.IntVar(0, 1, 'ConstantValue__98_float')
+ConstantValue__98_double = solver.IntVar(0, 1, 'ConstantValue__98_double')
+ConstantValue__98_enob = solver.IntVar(-10000, 10000, 'ConstantValue__98_enob')
+solver.Add( + (1)*ConstantValue__98_enob + (-1)*ConstantValue__98_fixbits + (10000)*ConstantValue__98_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__98_enob + (10000)*ConstantValue__98_float<=9994)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__98_enob + (10000)*ConstantValue__98_double<=10023)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__98_fixbits + (-10000)*ConstantValue__98_fixp>=-9967)    #Limit the lower number of frac bits34
+solver.Add( + (1)*ConstantValue__98_fixp + (1)*ConstantValue__98_float + (1)*ConstantValue__98_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__98_fixbits + (-10000)*ConstantValue__98_fixp<=0)    #If not fix, frac part to zero
 
 
 
 #Stuff for double 1.000000e+09
-ConstantValue__103_fixbits = solver.IntVar(0, 34, 'ConstantValue__103_fixbits')
-ConstantValue__103_fixp = solver.IntVar(0, 1, 'ConstantValue__103_fixp')
-ConstantValue__103_float = solver.IntVar(0, 1, 'ConstantValue__103_float')
-ConstantValue__103_double = solver.IntVar(0, 1, 'ConstantValue__103_double')
-ConstantValue__103_enob = solver.IntVar(-10000, 10000, 'ConstantValue__103_enob')
-solver.Add( + (1)*ConstantValue__103_enob + (-1)*ConstantValue__103_fixbits + (10000)*ConstantValue__103_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__103_enob + (10000)*ConstantValue__103_float<=9994)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__103_enob + (10000)*ConstantValue__103_double<=10023)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__103_fixbits + (-10000)*ConstantValue__103_fixp>=-9967)    #Limit the lower number of frac bits34
-solver.Add( + (1)*ConstantValue__103_fixp + (1)*ConstantValue__103_float + (1)*ConstantValue__103_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__103_fixbits + (-10000)*ConstantValue__103_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0.000000e+00
-ConstantValue__104_fixbits = solver.IntVar(0, 32, 'ConstantValue__104_fixbits')
-ConstantValue__104_fixp = solver.IntVar(0, 1, 'ConstantValue__104_fixp')
-ConstantValue__104_float = solver.IntVar(0, 1, 'ConstantValue__104_float')
-ConstantValue__104_double = solver.IntVar(0, 1, 'ConstantValue__104_double')
-ConstantValue__104_enob = solver.IntVar(-10000, 10000, 'ConstantValue__104_enob')
-solver.Add( + (1)*ConstantValue__104_enob + (-1)*ConstantValue__104_fixbits + (10000)*ConstantValue__104_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__104_enob + (10000)*ConstantValue__104_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__104_enob + (10000)*ConstantValue__104_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__104_fixbits + (-10000)*ConstantValue__104_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__104_fixp + (1)*ConstantValue__104_float + (1)*ConstantValue__104_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__104_fixbits + (-10000)*ConstantValue__104_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__105_fixbits = solver.IntVar(0, 32, 'ConstantValue__105_fixbits')
-ConstantValue__105_fixp = solver.IntVar(0, 1, 'ConstantValue__105_fixp')
-ConstantValue__105_float = solver.IntVar(0, 1, 'ConstantValue__105_float')
-ConstantValue__105_double = solver.IntVar(0, 1, 'ConstantValue__105_double')
-ConstantValue__105_enob = solver.IntVar(-10000, 10000, 'ConstantValue__105_enob')
-solver.Add( + (1)*ConstantValue__105_enob + (-1)*ConstantValue__105_fixbits + (10000)*ConstantValue__105_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__105_enob + (10000)*ConstantValue__105_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__105_enob + (10000)*ConstantValue__105_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__105_fixbits + (-10000)*ConstantValue__105_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__105_fixp + (1)*ConstantValue__105_float + (1)*ConstantValue__105_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__105_fixbits + (-10000)*ConstantValue__105_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__106_fixbits = solver.IntVar(0, 32, 'ConstantValue__106_fixbits')
-ConstantValue__106_fixp = solver.IntVar(0, 1, 'ConstantValue__106_fixp')
-ConstantValue__106_float = solver.IntVar(0, 1, 'ConstantValue__106_float')
-ConstantValue__106_double = solver.IntVar(0, 1, 'ConstantValue__106_double')
-ConstantValue__106_enob = solver.IntVar(-10000, 10000, 'ConstantValue__106_enob')
-solver.Add( + (1)*ConstantValue__106_enob + (-1)*ConstantValue__106_fixbits + (10000)*ConstantValue__106_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__106_enob + (10000)*ConstantValue__106_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__106_enob + (10000)*ConstantValue__106_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__106_fixbits + (-10000)*ConstantValue__106_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__106_fixp + (1)*ConstantValue__106_float + (1)*ConstantValue__106_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__106_fixbits + (-10000)*ConstantValue__106_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -5.000000e-01
-ConstantValue__107_fixbits = solver.IntVar(0, 30, 'ConstantValue__107_fixbits')
-ConstantValue__107_fixp = solver.IntVar(0, 1, 'ConstantValue__107_fixp')
-ConstantValue__107_float = solver.IntVar(0, 1, 'ConstantValue__107_float')
-ConstantValue__107_double = solver.IntVar(0, 1, 'ConstantValue__107_double')
-ConstantValue__107_enob = solver.IntVar(-10000, 10000, 'ConstantValue__107_enob')
-solver.Add( + (1)*ConstantValue__107_enob + (-1)*ConstantValue__107_fixbits + (10000)*ConstantValue__107_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__107_enob + (10000)*ConstantValue__107_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__107_enob + (10000)*ConstantValue__107_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__107_fixbits + (-10000)*ConstantValue__107_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__107_fixp + (1)*ConstantValue__107_float + (1)*ConstantValue__107_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__107_fixbits + (-10000)*ConstantValue__107_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -5.000000e-01
-ConstantValue__108_fixbits = solver.IntVar(0, 30, 'ConstantValue__108_fixbits')
-ConstantValue__108_fixp = solver.IntVar(0, 1, 'ConstantValue__108_fixp')
-ConstantValue__108_float = solver.IntVar(0, 1, 'ConstantValue__108_float')
-ConstantValue__108_double = solver.IntVar(0, 1, 'ConstantValue__108_double')
-ConstantValue__108_enob = solver.IntVar(-10000, 10000, 'ConstantValue__108_enob')
-solver.Add( + (1)*ConstantValue__108_enob + (-1)*ConstantValue__108_fixbits + (10000)*ConstantValue__108_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__108_enob + (10000)*ConstantValue__108_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__108_enob + (10000)*ConstantValue__108_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__108_fixbits + (-10000)*ConstantValue__108_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__108_fixp + (1)*ConstantValue__108_float + (1)*ConstantValue__108_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__108_fixbits + (-10000)*ConstantValue__108_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for   %call = call float @_ZSt3expf.6(float %mul16), !taffo.info !45, !taffo.initweight !33, !taffo.constinfo !47, !taffo.originalCall !48
-_Z4CNDFf_call_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_call_fixbits')
-_Z4CNDFf_call_fixp = solver.IntVar(0, 1, '_Z4CNDFf_call_fixp')
-_Z4CNDFf_call_float = solver.IntVar(0, 1, '_Z4CNDFf_call_float')
-_Z4CNDFf_call_double = solver.IntVar(0, 1, '_Z4CNDFf_call_double')
-_Z4CNDFf_call_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_call_enob')
-solver.Add( + (1)*_Z4CNDFf_call_enob + (-1)*_Z4CNDFf_call_fixbits + (10000)*_Z4CNDFf_call_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_call_enob + (10000)*_Z4CNDFf_call_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_call_enob + (10000)*_Z4CNDFf_call_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_call_fixbits + (-10000)*_Z4CNDFf_call_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_Z4CNDFf_call_enob
-solver.Add( + (1)*_Z4CNDFf_call_fixp + (1)*_Z4CNDFf_call_float + (1)*_Z4CNDFf_call_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_call_fixbits + (-10000)*_Z4CNDFf_call_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !30, !taffo.initweight !32, !taffo.constinfo !33
-_ZSt3expf_6_call_fixbits = solver.IntVar(0, 31, '_ZSt3expf_6_call_fixbits')
-_ZSt3expf_6_call_fixp = solver.IntVar(0, 1, '_ZSt3expf_6_call_fixp')
-_ZSt3expf_6_call_float = solver.IntVar(0, 1, '_ZSt3expf_6_call_float')
-_ZSt3expf_6_call_double = solver.IntVar(0, 1, '_ZSt3expf_6_call_double')
-_ZSt3expf_6_call_enob = solver.IntVar(-10000, 10000, '_ZSt3expf_6_call_enob')
-solver.Add( + (1)*_ZSt3expf_6_call_enob + (-1)*_ZSt3expf_6_call_fixbits + (10000)*_ZSt3expf_6_call_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_ZSt3expf_6_call_enob + (10000)*_ZSt3expf_6_call_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_ZSt3expf_6_call_enob + (10000)*_ZSt3expf_6_call_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_ZSt3expf_6_call_fixbits + (-10000)*_ZSt3expf_6_call_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_ZSt3expf_6_call_enob
-solver.Add( + (1)*_ZSt3expf_6_call_fixp + (1)*_ZSt3expf_6_call_float + (1)*_ZSt3expf_6_call_double==1)    #Exactly one selected type
-solver.Add( + (1)*_ZSt3expf_6_call_fixbits + (-10000)*_ZSt3expf_6_call_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_ZSt3expf_6_call_float==1)    #Type constraint for return value
-
-
-
-#Constraint for cast for   ret float %call, !taffo.info !34, !taffo.initweight !36
-_ZSt3expf_6_call_CAST_ret_fixbits = solver.IntVar(0, 31, '_ZSt3expf_6_call_CAST_ret_fixbits')
-_ZSt3expf_6_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt3expf_6_call_CAST_ret_fixp')
-_ZSt3expf_6_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt3expf_6_call_CAST_ret_float')
-_ZSt3expf_6_call_CAST_ret_double = solver.IntVar(0, 1, '_ZSt3expf_6_call_CAST_ret_double')
-solver.Add( + (1)*_ZSt3expf_6_call_CAST_ret_fixp + (1)*_ZSt3expf_6_call_CAST_ret_float + (1)*_ZSt3expf_6_call_CAST_ret_double==1)    #exactly 1 type
-solver.Add( + (1)*_ZSt3expf_6_call_CAST_ret_fixbits + (-10000)*_ZSt3expf_6_call_CAST_ret_fixp<=0)    #If no fix, fix frac part = 0
-C1__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C1__ZSt3expf_6_call_CAST_ret')
-C2__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C2__ZSt3expf_6_call_CAST_ret')
-solver.Add( + (1)*_ZSt3expf_6_call_fixbits + (-1)*_ZSt3expf_6_call_CAST_ret_fixbits + (-10000)*C1__ZSt3expf_6_call_CAST_ret<=0)    #Shift cost 1
-solver.Add( + (-1)*_ZSt3expf_6_call_fixbits + (1)*_ZSt3expf_6_call_CAST_ret_fixbits + (-10000)*C2__ZSt3expf_6_call_CAST_ret<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__ZSt3expf_6_call_CAST_ret
-castCostObj +=  + (1.13006)*C2__ZSt3expf_6_call_CAST_ret
-C3__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C3__ZSt3expf_6_call_CAST_ret')
-C4__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C4__ZSt3expf_6_call_CAST_ret')
-C5__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C5__ZSt3expf_6_call_CAST_ret')
-C6__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C6__ZSt3expf_6_call_CAST_ret')
-C7__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C7__ZSt3expf_6_call_CAST_ret')
-C8__ZSt3expf_6_call_CAST_ret = solver.IntVar(0, 1, 'C8__ZSt3expf_6_call_CAST_ret')
-solver.Add( + (1)*_ZSt3expf_6_call_fixp + (1)*_ZSt3expf_6_call_CAST_ret_float + (-1)*C3__ZSt3expf_6_call_CAST_ret<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__ZSt3expf_6_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_6_call_float + (1)*_ZSt3expf_6_call_CAST_ret_fixp + (-1)*C4__ZSt3expf_6_call_CAST_ret<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__ZSt3expf_6_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_6_call_fixp + (1)*_ZSt3expf_6_call_CAST_ret_double + (-1)*C5__ZSt3expf_6_call_CAST_ret<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__ZSt3expf_6_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_6_call_double + (1)*_ZSt3expf_6_call_CAST_ret_fixp + (-1)*C6__ZSt3expf_6_call_CAST_ret<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__ZSt3expf_6_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_6_call_float + (1)*_ZSt3expf_6_call_CAST_ret_double + (-1)*C7__ZSt3expf_6_call_CAST_ret<=1)    #Float to double
-castCostObj +=  + (1)*C7__ZSt3expf_6_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_6_call_double + (1)*_ZSt3expf_6_call_CAST_ret_float + (-1)*C8__ZSt3expf_6_call_CAST_ret<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__ZSt3expf_6_call_CAST_ret
-solver.Add( + (1)*_Z4CNDFf_call_fixp + (-1)*_ZSt3expf_6_call_CAST_ret_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_call_float + (-1)*_ZSt3expf_6_call_CAST_ret_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_call_double + (-1)*_ZSt3expf_6_call_CAST_ret_double==0)    #double equality
-solver.Add( + (1)*_Z4CNDFf_call_fixbits + (-1)*_ZSt3expf_6_call_CAST_ret_fixbits==0)    #same fractional bit
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__109_fixbits = solver.IntVar(0, 31, 'ConstantValue__109_fixbits')
-ConstantValue__109_fixp = solver.IntVar(0, 1, 'ConstantValue__109_fixp')
-ConstantValue__109_float = solver.IntVar(0, 1, 'ConstantValue__109_float')
-ConstantValue__109_double = solver.IntVar(0, 1, 'ConstantValue__109_double')
-ConstantValue__109_enob = solver.IntVar(-10000, 10000, 'ConstantValue__109_enob')
-solver.Add( + (1)*ConstantValue__109_enob + (-1)*ConstantValue__109_fixbits + (10000)*ConstantValue__109_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__109_enob + (10000)*ConstantValue__109_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__109_enob + (10000)*ConstantValue__109_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__109_fixbits + (-10000)*ConstantValue__109_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__109_fixp + (1)*ConstantValue__109_float + (1)*ConstantValue__109_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__109_fixbits + (-10000)*ConstantValue__109_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__110_fixbits = solver.IntVar(0, 31, 'ConstantValue__110_fixbits')
-ConstantValue__110_fixp = solver.IntVar(0, 1, 'ConstantValue__110_fixp')
-ConstantValue__110_float = solver.IntVar(0, 1, 'ConstantValue__110_float')
-ConstantValue__110_double = solver.IntVar(0, 1, 'ConstantValue__110_double')
-ConstantValue__110_enob = solver.IntVar(-10000, 10000, 'ConstantValue__110_enob')
-solver.Add( + (1)*ConstantValue__110_enob + (-1)*ConstantValue__110_fixbits + (10000)*ConstantValue__110_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__110_enob + (10000)*ConstantValue__110_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__110_enob + (10000)*ConstantValue__110_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__110_fixbits + (-10000)*ConstantValue__110_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__110_fixp + (1)*ConstantValue__110_float + (1)*ConstantValue__110_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__110_fixbits + (-10000)*ConstantValue__110_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-_Z4CNDFf_call_CAST_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_call_CAST_mul18_fixbits')
-_Z4CNDFf_call_CAST_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_call_CAST_mul18_fixp')
-_Z4CNDFf_call_CAST_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_call_CAST_mul18_float')
-_Z4CNDFf_call_CAST_mul18_double = solver.IntVar(0, 1, '_Z4CNDFf_call_CAST_mul18_double')
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_fixp + (1)*_Z4CNDFf_call_CAST_mul18_float + (1)*_Z4CNDFf_call_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_fixbits + (-10000)*_Z4CNDFf_call_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C1__Z4CNDFf_call_CAST_mul18')
-C2__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C2__Z4CNDFf_call_CAST_mul18')
-solver.Add( + (1)*_Z4CNDFf_call_fixbits + (-1)*_Z4CNDFf_call_CAST_mul18_fixbits + (-10000)*C1__Z4CNDFf_call_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z4CNDFf_call_fixbits + (1)*_Z4CNDFf_call_CAST_mul18_fixbits + (-10000)*C2__Z4CNDFf_call_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z4CNDFf_call_CAST_mul18
-castCostObj +=  + (1.13006)*C2__Z4CNDFf_call_CAST_mul18
-C3__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C3__Z4CNDFf_call_CAST_mul18')
-C4__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C4__Z4CNDFf_call_CAST_mul18')
-C5__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C5__Z4CNDFf_call_CAST_mul18')
-C6__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C6__Z4CNDFf_call_CAST_mul18')
-C7__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C7__Z4CNDFf_call_CAST_mul18')
-C8__Z4CNDFf_call_CAST_mul18 = solver.IntVar(0, 1, 'C8__Z4CNDFf_call_CAST_mul18')
-solver.Add( + (1)*_Z4CNDFf_call_fixp + (1)*_Z4CNDFf_call_CAST_mul18_float + (-1)*C3__Z4CNDFf_call_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z4CNDFf_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_call_float + (1)*_Z4CNDFf_call_CAST_mul18_fixp + (-1)*C4__Z4CNDFf_call_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z4CNDFf_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_call_fixp + (1)*_Z4CNDFf_call_CAST_mul18_double + (-1)*C5__Z4CNDFf_call_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z4CNDFf_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_call_double + (1)*_Z4CNDFf_call_CAST_mul18_fixp + (-1)*C6__Z4CNDFf_call_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z4CNDFf_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_call_float + (1)*_Z4CNDFf_call_CAST_mul18_double + (-1)*C7__Z4CNDFf_call_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z4CNDFf_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_call_double + (1)*_Z4CNDFf_call_CAST_mul18_float + (-1)*C8__Z4CNDFf_call_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z4CNDFf_call_CAST_mul18
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__111_fixbits = solver.IntVar(0, 31, 'ConstantValue__111_fixbits')
-ConstantValue__111_fixp = solver.IntVar(0, 1, 'ConstantValue__111_fixp')
-ConstantValue__111_float = solver.IntVar(0, 1, 'ConstantValue__111_float')
-ConstantValue__111_double = solver.IntVar(0, 1, 'ConstantValue__111_double')
-ConstantValue__111_enob = solver.IntVar(-10000, 10000, 'ConstantValue__111_enob')
-solver.Add( + (1)*ConstantValue__111_enob + (-1)*ConstantValue__111_fixbits + (10000)*ConstantValue__111_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__111_enob + (10000)*ConstantValue__111_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__111_enob + (10000)*ConstantValue__111_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__111_fixbits + (-10000)*ConstantValue__111_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__111_fixp + (1)*ConstantValue__111_float + (1)*ConstantValue__111_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__111_fixbits + (-10000)*ConstantValue__111_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-ConstantValue__111_CAST_mul18_fixbits = solver.IntVar(0, 31, 'ConstantValue__111_CAST_mul18_fixbits')
-ConstantValue__111_CAST_mul18_fixp = solver.IntVar(0, 1, 'ConstantValue__111_CAST_mul18_fixp')
-ConstantValue__111_CAST_mul18_float = solver.IntVar(0, 1, 'ConstantValue__111_CAST_mul18_float')
-ConstantValue__111_CAST_mul18_double = solver.IntVar(0, 1, 'ConstantValue__111_CAST_mul18_double')
-solver.Add( + (1)*ConstantValue__111_CAST_mul18_fixp + (1)*ConstantValue__111_CAST_mul18_float + (1)*ConstantValue__111_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__111_CAST_mul18_fixbits + (-10000)*ConstantValue__111_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C1_ConstantValue__111_CAST_mul18')
-C2_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C2_ConstantValue__111_CAST_mul18')
-solver.Add( + (1)*ConstantValue__111_fixbits + (-1)*ConstantValue__111_CAST_mul18_fixbits + (-10000)*C1_ConstantValue__111_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__111_fixbits + (1)*ConstantValue__111_CAST_mul18_fixbits + (-10000)*C2_ConstantValue__111_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__111_CAST_mul18
-castCostObj +=  + (1.13006)*C2_ConstantValue__111_CAST_mul18
-C3_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C3_ConstantValue__111_CAST_mul18')
-C4_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C4_ConstantValue__111_CAST_mul18')
-C5_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C5_ConstantValue__111_CAST_mul18')
-C6_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C6_ConstantValue__111_CAST_mul18')
-C7_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C7_ConstantValue__111_CAST_mul18')
-C8_ConstantValue__111_CAST_mul18 = solver.IntVar(0, 1, 'C8_ConstantValue__111_CAST_mul18')
-solver.Add( + (1)*ConstantValue__111_fixp + (1)*ConstantValue__111_CAST_mul18_float + (-1)*C3_ConstantValue__111_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__111_CAST_mul18
-solver.Add( + (1)*ConstantValue__111_float + (1)*ConstantValue__111_CAST_mul18_fixp + (-1)*C4_ConstantValue__111_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__111_CAST_mul18
-solver.Add( + (1)*ConstantValue__111_fixp + (1)*ConstantValue__111_CAST_mul18_double + (-1)*C5_ConstantValue__111_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__111_CAST_mul18
-solver.Add( + (1)*ConstantValue__111_double + (1)*ConstantValue__111_CAST_mul18_fixp + (-1)*C6_ConstantValue__111_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__111_CAST_mul18
-solver.Add( + (1)*ConstantValue__111_float + (1)*ConstantValue__111_CAST_mul18_double + (-1)*C7_ConstantValue__111_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__111_CAST_mul18
-solver.Add( + (1)*ConstantValue__111_double + (1)*ConstantValue__111_CAST_mul18_float + (-1)*C8_ConstantValue__111_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__111_CAST_mul18
-
-
-
-#Stuff for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-_Z4CNDFf_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_mul18_fixbits')
-_Z4CNDFf_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_mul18_fixp')
-_Z4CNDFf_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_mul18_float')
-_Z4CNDFf_mul18_double = solver.IntVar(0, 1, '_Z4CNDFf_mul18_double')
-_Z4CNDFf_mul18_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_mul18_enob')
-solver.Add( + (1)*_Z4CNDFf_mul18_enob + (-1)*_Z4CNDFf_mul18_fixbits + (10000)*_Z4CNDFf_mul18_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_mul18_enob + (10000)*_Z4CNDFf_mul18_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_mul18_enob + (10000)*_Z4CNDFf_mul18_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_mul18_fixbits + (-10000)*_Z4CNDFf_mul18_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_Z4CNDFf_mul18_enob
-solver.Add( + (1)*_Z4CNDFf_mul18_fixp + (1)*_Z4CNDFf_mul18_float + (1)*_Z4CNDFf_mul18_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_mul18_fixbits + (-10000)*_Z4CNDFf_mul18_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_fixp + (-1)*ConstantValue__111_CAST_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_float + (-1)*ConstantValue__111_CAST_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_double + (-1)*ConstantValue__111_CAST_mul18_double==0)    #double equality
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_fixp + (-1)*_Z4CNDFf_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_float + (-1)*_Z4CNDFf_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_call_CAST_mul18_double + (-1)*_Z4CNDFf_mul18_double==0)    #double equality
-mathCostObj +=  + (2.04123)*_Z4CNDFf_mul18_fixp
-mathCostObj +=  + (3.34669)*_Z4CNDFf_mul18_float
-mathCostObj +=  + (4.14035)*_Z4CNDFf_mul18_double
-_Z4CNDFf__Z4CNDFf_mul18_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf__Z4CNDFf_mul18_enob_1')
-_Z4CNDFf__Z4CNDFf_mul18_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf__Z4CNDFf_mul18_enob_2')
-solver.Add( + (1)*_Z4CNDFf__Z4CNDFf_mul18_enob_1 + (1)*_Z4CNDFf__Z4CNDFf_mul18_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_mul18_enob + (-1)*ConstantValue__109_enob + (-10000)*_Z4CNDFf__Z4CNDFf_mul18_enob_1<=1024)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_mul18_enob + (-1)*_Z4CNDFf_call_enob + (-10000)*_Z4CNDFf__Z4CNDFf_mul18_enob_2<=1)    #Enob: propagation in product 2
-
-
-
-#Stuff for double 0x3FCDA6711871100E
-ConstantValue__112_fixbits = solver.IntVar(0, 31, 'ConstantValue__112_fixbits')
-ConstantValue__112_fixp = solver.IntVar(0, 1, 'ConstantValue__112_fixp')
-ConstantValue__112_float = solver.IntVar(0, 1, 'ConstantValue__112_float')
-ConstantValue__112_double = solver.IntVar(0, 1, 'ConstantValue__112_double')
-ConstantValue__112_enob = solver.IntVar(-10000, 10000, 'ConstantValue__112_enob')
-solver.Add( + (1)*ConstantValue__112_enob + (-1)*ConstantValue__112_fixbits + (10000)*ConstantValue__112_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__112_enob + (10000)*ConstantValue__112_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__112_enob + (10000)*ConstantValue__112_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__112_fixbits + (-10000)*ConstantValue__112_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__112_fixp + (1)*ConstantValue__112_float + (1)*ConstantValue__112_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__112_fixbits + (-10000)*ConstantValue__112_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FCDA6711871100E
-ConstantValue__113_fixbits = solver.IntVar(0, 31, 'ConstantValue__113_fixbits')
-ConstantValue__113_fixp = solver.IntVar(0, 1, 'ConstantValue__113_fixp')
-ConstantValue__113_float = solver.IntVar(0, 1, 'ConstantValue__113_float')
-ConstantValue__113_double = solver.IntVar(0, 1, 'ConstantValue__113_double')
-ConstantValue__113_enob = solver.IntVar(-10000, 10000, 'ConstantValue__113_enob')
-solver.Add( + (1)*ConstantValue__113_enob + (-1)*ConstantValue__113_fixbits + (10000)*ConstantValue__113_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__113_enob + (10000)*ConstantValue__113_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__113_enob + (10000)*ConstantValue__113_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__113_fixbits + (-10000)*ConstantValue__113_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__113_fixp + (1)*ConstantValue__113_float + (1)*ConstantValue__113_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__113_fixbits + (-10000)*ConstantValue__113_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__114_fixbits = solver.IntVar(0, 31, 'ConstantValue__114_fixbits')
-ConstantValue__114_fixp = solver.IntVar(0, 1, 'ConstantValue__114_fixp')
-ConstantValue__114_float = solver.IntVar(0, 1, 'ConstantValue__114_float')
-ConstantValue__114_double = solver.IntVar(0, 1, 'ConstantValue__114_double')
-ConstantValue__114_enob = solver.IntVar(-10000, 10000, 'ConstantValue__114_enob')
-solver.Add( + (1)*ConstantValue__114_enob + (-1)*ConstantValue__114_fixbits + (10000)*ConstantValue__114_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__114_enob + (10000)*ConstantValue__114_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__114_enob + (10000)*ConstantValue__114_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__114_fixbits + (-10000)*ConstantValue__114_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__114_fixp + (1)*ConstantValue__114_float + (1)*ConstantValue__114_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__114_fixbits + (-10000)*ConstantValue__114_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__115_fixbits = solver.IntVar(0, 31, 'ConstantValue__115_fixbits')
-ConstantValue__115_fixp = solver.IntVar(0, 1, 'ConstantValue__115_fixp')
-ConstantValue__115_float = solver.IntVar(0, 1, 'ConstantValue__115_float')
-ConstantValue__115_double = solver.IntVar(0, 1, 'ConstantValue__115_double')
-ConstantValue__115_enob = solver.IntVar(-10000, 10000, 'ConstantValue__115_enob')
-solver.Add( + (1)*ConstantValue__115_enob + (-1)*ConstantValue__115_fixbits + (10000)*ConstantValue__115_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__115_enob + (10000)*ConstantValue__115_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__115_enob + (10000)*ConstantValue__115_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__115_fixbits + (-10000)*ConstantValue__115_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__115_fixp + (1)*ConstantValue__115_float + (1)*ConstantValue__115_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__115_fixbits + (-10000)*ConstantValue__115_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__116_fixbits = solver.IntVar(0, 31, 'ConstantValue__116_fixbits')
-ConstantValue__116_fixp = solver.IntVar(0, 1, 'ConstantValue__116_fixp')
-ConstantValue__116_float = solver.IntVar(0, 1, 'ConstantValue__116_float')
-ConstantValue__116_double = solver.IntVar(0, 1, 'ConstantValue__116_double')
-ConstantValue__116_enob = solver.IntVar(-10000, 10000, 'ConstantValue__116_enob')
-solver.Add( + (1)*ConstantValue__116_enob + (-1)*ConstantValue__116_fixbits + (10000)*ConstantValue__116_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__116_enob + (10000)*ConstantValue__116_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__116_enob + (10000)*ConstantValue__116_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__116_fixbits + (-10000)*ConstantValue__116_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__116_fixp + (1)*ConstantValue__116_float + (1)*ConstantValue__116_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__116_fixbits + (-10000)*ConstantValue__116_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__117_fixbits = solver.IntVar(0, 31, 'ConstantValue__117_fixbits')
-ConstantValue__117_fixp = solver.IntVar(0, 1, 'ConstantValue__117_fixp')
-ConstantValue__117_float = solver.IntVar(0, 1, 'ConstantValue__117_float')
-ConstantValue__117_double = solver.IntVar(0, 1, 'ConstantValue__117_double')
-ConstantValue__117_enob = solver.IntVar(-10000, 10000, 'ConstantValue__117_enob')
-solver.Add( + (1)*ConstantValue__117_enob + (-1)*ConstantValue__117_fixbits + (10000)*ConstantValue__117_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__117_enob + (10000)*ConstantValue__117_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__117_enob + (10000)*ConstantValue__117_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__117_fixbits + (-10000)*ConstantValue__117_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__117_fixp + (1)*ConstantValue__117_float + (1)*ConstantValue__117_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__117_fixbits + (-10000)*ConstantValue__117_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__118_fixbits = solver.IntVar(0, 31, 'ConstantValue__118_fixbits')
-ConstantValue__118_fixp = solver.IntVar(0, 1, 'ConstantValue__118_fixp')
-ConstantValue__118_float = solver.IntVar(0, 1, 'ConstantValue__118_float')
-ConstantValue__118_double = solver.IntVar(0, 1, 'ConstantValue__118_double')
-ConstantValue__118_enob = solver.IntVar(-10000, 10000, 'ConstantValue__118_enob')
-solver.Add( + (1)*ConstantValue__118_enob + (-1)*ConstantValue__118_fixbits + (10000)*ConstantValue__118_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__118_enob + (10000)*ConstantValue__118_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__118_enob + (10000)*ConstantValue__118_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__118_fixbits + (-10000)*ConstantValue__118_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__118_fixp + (1)*ConstantValue__118_float + (1)*ConstantValue__118_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__118_fixbits + (-10000)*ConstantValue__118_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__119_fixbits = solver.IntVar(0, 31, 'ConstantValue__119_fixbits')
-ConstantValue__119_fixp = solver.IntVar(0, 1, 'ConstantValue__119_fixp')
-ConstantValue__119_float = solver.IntVar(0, 1, 'ConstantValue__119_float')
-ConstantValue__119_double = solver.IntVar(0, 1, 'ConstantValue__119_double')
-ConstantValue__119_enob = solver.IntVar(-10000, 10000, 'ConstantValue__119_enob')
-solver.Add( + (1)*ConstantValue__119_enob + (-1)*ConstantValue__119_fixbits + (10000)*ConstantValue__119_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__119_enob + (10000)*ConstantValue__119_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__119_enob + (10000)*ConstantValue__119_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__119_fixbits + (-10000)*ConstantValue__119_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__119_fixp + (1)*ConstantValue__119_float + (1)*ConstantValue__119_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__119_fixbits + (-10000)*ConstantValue__119_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__120_fixbits = solver.IntVar(0, 30, 'ConstantValue__120_fixbits')
-ConstantValue__120_fixp = solver.IntVar(0, 1, 'ConstantValue__120_fixp')
-ConstantValue__120_float = solver.IntVar(0, 1, 'ConstantValue__120_float')
-ConstantValue__120_double = solver.IntVar(0, 1, 'ConstantValue__120_double')
-ConstantValue__120_enob = solver.IntVar(-10000, 10000, 'ConstantValue__120_enob')
-solver.Add( + (1)*ConstantValue__120_enob + (-1)*ConstantValue__120_fixbits + (10000)*ConstantValue__120_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__120_enob + (10000)*ConstantValue__120_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__120_enob + (10000)*ConstantValue__120_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__120_fixbits + (-10000)*ConstantValue__120_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__120_fixp + (1)*ConstantValue__120_float + (1)*ConstantValue__120_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__120_fixbits + (-10000)*ConstantValue__120_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__121_fixbits = solver.IntVar(0, 30, 'ConstantValue__121_fixbits')
-ConstantValue__121_fixp = solver.IntVar(0, 1, 'ConstantValue__121_fixp')
-ConstantValue__121_float = solver.IntVar(0, 1, 'ConstantValue__121_float')
-ConstantValue__121_double = solver.IntVar(0, 1, 'ConstantValue__121_double')
-ConstantValue__121_enob = solver.IntVar(-10000, 10000, 'ConstantValue__121_enob')
-solver.Add( + (1)*ConstantValue__121_enob + (-1)*ConstantValue__121_fixbits + (10000)*ConstantValue__121_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__121_enob + (10000)*ConstantValue__121_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__121_enob + (10000)*ConstantValue__121_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__121_fixbits + (-10000)*ConstantValue__121_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__121_fixp + (1)*ConstantValue__121_float + (1)*ConstantValue__121_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__121_fixbits + (-10000)*ConstantValue__121_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__122_fixbits = solver.IntVar(0, 30, 'ConstantValue__122_fixbits')
-ConstantValue__122_fixp = solver.IntVar(0, 1, 'ConstantValue__122_fixp')
-ConstantValue__122_float = solver.IntVar(0, 1, 'ConstantValue__122_float')
-ConstantValue__122_double = solver.IntVar(0, 1, 'ConstantValue__122_double')
-ConstantValue__122_enob = solver.IntVar(-10000, 10000, 'ConstantValue__122_enob')
-solver.Add( + (1)*ConstantValue__122_enob + (-1)*ConstantValue__122_fixbits + (10000)*ConstantValue__122_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__122_enob + (10000)*ConstantValue__122_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__122_enob + (10000)*ConstantValue__122_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__122_fixbits + (-10000)*ConstantValue__122_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__122_fixp + (1)*ConstantValue__122_float + (1)*ConstantValue__122_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__122_fixbits + (-10000)*ConstantValue__122_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__123_fixbits = solver.IntVar(0, 30, 'ConstantValue__123_fixbits')
-ConstantValue__123_fixp = solver.IntVar(0, 1, 'ConstantValue__123_fixp')
-ConstantValue__123_float = solver.IntVar(0, 1, 'ConstantValue__123_float')
-ConstantValue__123_double = solver.IntVar(0, 1, 'ConstantValue__123_double')
-ConstantValue__123_enob = solver.IntVar(-10000, 10000, 'ConstantValue__123_enob')
-solver.Add( + (1)*ConstantValue__123_enob + (-1)*ConstantValue__123_fixbits + (10000)*ConstantValue__123_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__123_enob + (10000)*ConstantValue__123_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__123_enob + (10000)*ConstantValue__123_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__123_fixbits + (-10000)*ConstantValue__123_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__123_fixp + (1)*ConstantValue__123_float + (1)*ConstantValue__123_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__123_fixbits + (-10000)*ConstantValue__123_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__124_fixbits = solver.IntVar(0, 29, 'ConstantValue__124_fixbits')
-ConstantValue__124_fixp = solver.IntVar(0, 1, 'ConstantValue__124_fixp')
-ConstantValue__124_float = solver.IntVar(0, 1, 'ConstantValue__124_float')
-ConstantValue__124_double = solver.IntVar(0, 1, 'ConstantValue__124_double')
-ConstantValue__124_enob = solver.IntVar(-10000, 10000, 'ConstantValue__124_enob')
-solver.Add( + (1)*ConstantValue__124_enob + (-1)*ConstantValue__124_fixbits + (10000)*ConstantValue__124_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__124_enob + (10000)*ConstantValue__124_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__124_enob + (10000)*ConstantValue__124_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__124_fixbits + (-10000)*ConstantValue__124_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__124_fixp + (1)*ConstantValue__124_float + (1)*ConstantValue__124_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__124_fixbits + (-10000)*ConstantValue__124_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__125_fixbits = solver.IntVar(0, 29, 'ConstantValue__125_fixbits')
-ConstantValue__125_fixp = solver.IntVar(0, 1, 'ConstantValue__125_fixp')
-ConstantValue__125_float = solver.IntVar(0, 1, 'ConstantValue__125_float')
-ConstantValue__125_double = solver.IntVar(0, 1, 'ConstantValue__125_double')
-ConstantValue__125_enob = solver.IntVar(-10000, 10000, 'ConstantValue__125_enob')
-solver.Add( + (1)*ConstantValue__125_enob + (-1)*ConstantValue__125_fixbits + (10000)*ConstantValue__125_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__125_enob + (10000)*ConstantValue__125_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__125_enob + (10000)*ConstantValue__125_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__125_fixbits + (-10000)*ConstantValue__125_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__125_fixp + (1)*ConstantValue__125_float + (1)*ConstantValue__125_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__125_fixbits + (-10000)*ConstantValue__125_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FF548CDD6F42943
-ConstantValue__126_fixbits = solver.IntVar(0, 30, 'ConstantValue__126_fixbits')
-ConstantValue__126_fixp = solver.IntVar(0, 1, 'ConstantValue__126_fixp')
-ConstantValue__126_float = solver.IntVar(0, 1, 'ConstantValue__126_float')
-ConstantValue__126_double = solver.IntVar(0, 1, 'ConstantValue__126_double')
-ConstantValue__126_enob = solver.IntVar(-10000, 10000, 'ConstantValue__126_enob')
-solver.Add( + (1)*ConstantValue__126_enob + (-1)*ConstantValue__126_fixbits + (10000)*ConstantValue__126_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__126_enob + (10000)*ConstantValue__126_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__126_enob + (10000)*ConstantValue__126_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__126_fixbits + (-10000)*ConstantValue__126_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__126_fixp + (1)*ConstantValue__126_float + (1)*ConstantValue__126_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__126_fixbits + (-10000)*ConstantValue__126_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FF548CDD6F42943
-ConstantValue__127_fixbits = solver.IntVar(0, 30, 'ConstantValue__127_fixbits')
-ConstantValue__127_fixp = solver.IntVar(0, 1, 'ConstantValue__127_fixp')
-ConstantValue__127_float = solver.IntVar(0, 1, 'ConstantValue__127_float')
-ConstantValue__127_double = solver.IntVar(0, 1, 'ConstantValue__127_double')
-ConstantValue__127_enob = solver.IntVar(-10000, 10000, 'ConstantValue__127_enob')
-solver.Add( + (1)*ConstantValue__127_enob + (-1)*ConstantValue__127_fixbits + (10000)*ConstantValue__127_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__127_enob + (10000)*ConstantValue__127_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__127_enob + (10000)*ConstantValue__127_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__127_fixbits + (-10000)*ConstantValue__127_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__127_fixp + (1)*ConstantValue__127_float + (1)*ConstantValue__127_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__127_fixbits + (-10000)*ConstantValue__127_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__128_fixbits = solver.IntVar(0, 31, 'ConstantValue__128_fixbits')
-ConstantValue__128_fixp = solver.IntVar(0, 1, 'ConstantValue__128_fixp')
-ConstantValue__128_float = solver.IntVar(0, 1, 'ConstantValue__128_float')
-ConstantValue__128_double = solver.IntVar(0, 1, 'ConstantValue__128_double')
-ConstantValue__128_enob = solver.IntVar(-10000, 10000, 'ConstantValue__128_enob')
-solver.Add( + (1)*ConstantValue__128_enob + (-1)*ConstantValue__128_fixbits + (10000)*ConstantValue__128_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__128_enob + (10000)*ConstantValue__128_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__128_enob + (10000)*ConstantValue__128_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__128_fixbits + (-10000)*ConstantValue__128_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__128_fixp + (1)*ConstantValue__128_float + (1)*ConstantValue__128_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__128_fixbits + (-10000)*ConstantValue__128_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__129_fixbits = solver.IntVar(0, 31, 'ConstantValue__129_fixbits')
-ConstantValue__129_fixp = solver.IntVar(0, 1, 'ConstantValue__129_fixp')
-ConstantValue__129_float = solver.IntVar(0, 1, 'ConstantValue__129_float')
-ConstantValue__129_double = solver.IntVar(0, 1, 'ConstantValue__129_double')
-ConstantValue__129_enob = solver.IntVar(-10000, 10000, 'ConstantValue__129_enob')
-solver.Add( + (1)*ConstantValue__129_enob + (-1)*ConstantValue__129_fixbits + (10000)*ConstantValue__129_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__129_enob + (10000)*ConstantValue__129_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__129_enob + (10000)*ConstantValue__129_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__129_fixbits + (-10000)*ConstantValue__129_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__129_fixp + (1)*ConstantValue__129_float + (1)*ConstantValue__129_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__129_fixbits + (-10000)*ConstantValue__129_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__130_fixbits = solver.IntVar(0, 31, 'ConstantValue__130_fixbits')
-ConstantValue__130_fixp = solver.IntVar(0, 1, 'ConstantValue__130_fixp')
-ConstantValue__130_float = solver.IntVar(0, 1, 'ConstantValue__130_float')
-ConstantValue__130_double = solver.IntVar(0, 1, 'ConstantValue__130_double')
-ConstantValue__130_enob = solver.IntVar(-10000, 10000, 'ConstantValue__130_enob')
-solver.Add( + (1)*ConstantValue__130_enob + (-1)*ConstantValue__130_fixbits + (10000)*ConstantValue__130_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__130_enob + (10000)*ConstantValue__130_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__130_enob + (10000)*ConstantValue__130_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__130_fixbits + (-10000)*ConstantValue__130_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__130_fixp + (1)*ConstantValue__130_float + (1)*ConstantValue__130_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__130_fixbits + (-10000)*ConstantValue__130_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__131_fixbits = solver.IntVar(0, 31, 'ConstantValue__131_fixbits')
-ConstantValue__131_fixp = solver.IntVar(0, 1, 'ConstantValue__131_fixp')
-ConstantValue__131_float = solver.IntVar(0, 1, 'ConstantValue__131_float')
-ConstantValue__131_double = solver.IntVar(0, 1, 'ConstantValue__131_double')
-ConstantValue__131_enob = solver.IntVar(-10000, 10000, 'ConstantValue__131_enob')
-solver.Add( + (1)*ConstantValue__131_enob + (-1)*ConstantValue__131_fixbits + (10000)*ConstantValue__131_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__131_enob + (10000)*ConstantValue__131_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__131_enob + (10000)*ConstantValue__131_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__131_fixbits + (-10000)*ConstantValue__131_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__131_fixp + (1)*ConstantValue__131_float + (1)*ConstantValue__131_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__131_fixbits + (-10000)*ConstantValue__131_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 5.000000e-01
-ConstantValue__132_fixbits = solver.IntVar(0, 31, 'ConstantValue__132_fixbits')
-ConstantValue__132_fixp = solver.IntVar(0, 1, 'ConstantValue__132_fixp')
-ConstantValue__132_float = solver.IntVar(0, 1, 'ConstantValue__132_float')
-ConstantValue__132_double = solver.IntVar(0, 1, 'ConstantValue__132_double')
-ConstantValue__132_enob = solver.IntVar(-10000, 10000, 'ConstantValue__132_enob')
-solver.Add( + (1)*ConstantValue__132_enob + (-1)*ConstantValue__132_fixbits + (10000)*ConstantValue__132_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__132_enob + (10000)*ConstantValue__132_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__132_enob + (10000)*ConstantValue__132_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__132_fixbits + (-10000)*ConstantValue__132_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__132_fixp + (1)*ConstantValue__132_float + (1)*ConstantValue__132_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__132_fixbits + (-10000)*ConstantValue__132_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 5.000000e-01
-ConstantValue__133_fixbits = solver.IntVar(0, 31, 'ConstantValue__133_fixbits')
-ConstantValue__133_fixp = solver.IntVar(0, 1, 'ConstantValue__133_fixp')
-ConstantValue__133_float = solver.IntVar(0, 1, 'ConstantValue__133_float')
-ConstantValue__133_double = solver.IntVar(0, 1, 'ConstantValue__133_double')
-ConstantValue__133_enob = solver.IntVar(-10000, 10000, 'ConstantValue__133_enob')
-solver.Add( + (1)*ConstantValue__133_enob + (-1)*ConstantValue__133_fixbits + (10000)*ConstantValue__133_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__133_enob + (10000)*ConstantValue__133_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__133_enob + (10000)*ConstantValue__133_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__133_fixbits + (-10000)*ConstantValue__133_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__133_fixp + (1)*ConstantValue__133_float + (1)*ConstantValue__133_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__133_fixbits + (-10000)*ConstantValue__133_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0.000000e+00
-ConstantValue__134_fixbits = solver.IntVar(0, 32, 'ConstantValue__134_fixbits')
-ConstantValue__134_fixp = solver.IntVar(0, 1, 'ConstantValue__134_fixp')
-ConstantValue__134_float = solver.IntVar(0, 1, 'ConstantValue__134_float')
-ConstantValue__134_double = solver.IntVar(0, 1, 'ConstantValue__134_double')
-ConstantValue__134_enob = solver.IntVar(-10000, 10000, 'ConstantValue__134_enob')
-solver.Add( + (1)*ConstantValue__134_enob + (-1)*ConstantValue__134_fixbits + (10000)*ConstantValue__134_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__134_enob + (10000)*ConstantValue__134_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__134_enob + (10000)*ConstantValue__134_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__134_fixbits + (-10000)*ConstantValue__134_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__134_fixp + (1)*ConstantValue__134_float + (1)*ConstantValue__134_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__134_fixbits + (-10000)*ConstantValue__134_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__135_fixbits = solver.IntVar(0, 32, 'ConstantValue__135_fixbits')
-ConstantValue__135_fixp = solver.IntVar(0, 1, 'ConstantValue__135_fixp')
-ConstantValue__135_float = solver.IntVar(0, 1, 'ConstantValue__135_float')
-ConstantValue__135_double = solver.IntVar(0, 1, 'ConstantValue__135_double')
-ConstantValue__135_enob = solver.IntVar(-10000, 10000, 'ConstantValue__135_enob')
-solver.Add( + (1)*ConstantValue__135_enob + (-1)*ConstantValue__135_fixbits + (10000)*ConstantValue__135_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__135_enob + (10000)*ConstantValue__135_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__135_enob + (10000)*ConstantValue__135_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__135_fixbits + (-10000)*ConstantValue__135_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__135_fixp + (1)*ConstantValue__135_float + (1)*ConstantValue__135_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__135_fixbits + (-10000)*ConstantValue__135_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__136_fixbits = solver.IntVar(0, 32, 'ConstantValue__136_fixbits')
-ConstantValue__136_fixp = solver.IntVar(0, 1, 'ConstantValue__136_fixp')
-ConstantValue__136_float = solver.IntVar(0, 1, 'ConstantValue__136_float')
-ConstantValue__136_double = solver.IntVar(0, 1, 'ConstantValue__136_double')
-ConstantValue__136_enob = solver.IntVar(-10000, 10000, 'ConstantValue__136_enob')
-solver.Add( + (1)*ConstantValue__136_enob + (-1)*ConstantValue__136_fixbits + (10000)*ConstantValue__136_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__136_enob + (10000)*ConstantValue__136_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__136_enob + (10000)*ConstantValue__136_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__136_fixbits + (-10000)*ConstantValue__136_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__136_fixp + (1)*ConstantValue__136_float + (1)*ConstantValue__136_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__136_fixbits + (-10000)*ConstantValue__136_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -5.000000e-01
-ConstantValue__137_fixbits = solver.IntVar(0, 30, 'ConstantValue__137_fixbits')
-ConstantValue__137_fixp = solver.IntVar(0, 1, 'ConstantValue__137_fixp')
-ConstantValue__137_float = solver.IntVar(0, 1, 'ConstantValue__137_float')
-ConstantValue__137_double = solver.IntVar(0, 1, 'ConstantValue__137_double')
-ConstantValue__137_enob = solver.IntVar(-10000, 10000, 'ConstantValue__137_enob')
-solver.Add( + (1)*ConstantValue__137_enob + (-1)*ConstantValue__137_fixbits + (10000)*ConstantValue__137_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__137_enob + (10000)*ConstantValue__137_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__137_enob + (10000)*ConstantValue__137_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__137_fixbits + (-10000)*ConstantValue__137_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__137_fixp + (1)*ConstantValue__137_float + (1)*ConstantValue__137_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__137_fixbits + (-10000)*ConstantValue__137_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -5.000000e-01
-ConstantValue__138_fixbits = solver.IntVar(0, 30, 'ConstantValue__138_fixbits')
-ConstantValue__138_fixp = solver.IntVar(0, 1, 'ConstantValue__138_fixp')
-ConstantValue__138_float = solver.IntVar(0, 1, 'ConstantValue__138_float')
-ConstantValue__138_double = solver.IntVar(0, 1, 'ConstantValue__138_double')
-ConstantValue__138_enob = solver.IntVar(-10000, 10000, 'ConstantValue__138_enob')
-solver.Add( + (1)*ConstantValue__138_enob + (-1)*ConstantValue__138_fixbits + (10000)*ConstantValue__138_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__138_enob + (10000)*ConstantValue__138_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__138_enob + (10000)*ConstantValue__138_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__138_fixbits + (-10000)*ConstantValue__138_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__138_fixp + (1)*ConstantValue__138_float + (1)*ConstantValue__138_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__138_fixbits + (-10000)*ConstantValue__138_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for   %call = call float @_ZSt3expf.8(float %mul16), !taffo.info !45, !taffo.initweight !33, !taffo.constinfo !47, !taffo.originalCall !48
-_Z4CNDFf_2_call_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_call_fixbits')
-_Z4CNDFf_2_call_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_call_fixp')
-_Z4CNDFf_2_call_float = solver.IntVar(0, 1, '_Z4CNDFf_2_call_float')
-_Z4CNDFf_2_call_double = solver.IntVar(0, 1, '_Z4CNDFf_2_call_double')
-_Z4CNDFf_2_call_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_2_call_enob')
-solver.Add( + (1)*_Z4CNDFf_2_call_enob + (-1)*_Z4CNDFf_2_call_fixbits + (10000)*_Z4CNDFf_2_call_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_2_call_enob + (10000)*_Z4CNDFf_2_call_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_2_call_enob + (10000)*_Z4CNDFf_2_call_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_2_call_fixbits + (-10000)*_Z4CNDFf_2_call_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_Z4CNDFf_2_call_enob
-solver.Add( + (1)*_Z4CNDFf_2_call_fixp + (1)*_Z4CNDFf_2_call_float + (1)*_Z4CNDFf_2_call_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_2_call_fixbits + (-10000)*_Z4CNDFf_2_call_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !31, !taffo.initweight !33, !taffo.constinfo !34
-_ZSt3expf_8_call_fixbits = solver.IntVar(0, 31, '_ZSt3expf_8_call_fixbits')
-_ZSt3expf_8_call_fixp = solver.IntVar(0, 1, '_ZSt3expf_8_call_fixp')
-_ZSt3expf_8_call_float = solver.IntVar(0, 1, '_ZSt3expf_8_call_float')
-_ZSt3expf_8_call_double = solver.IntVar(0, 1, '_ZSt3expf_8_call_double')
-_ZSt3expf_8_call_enob = solver.IntVar(-10000, 10000, '_ZSt3expf_8_call_enob')
-solver.Add( + (1)*_ZSt3expf_8_call_enob + (-1)*_ZSt3expf_8_call_fixbits + (10000)*_ZSt3expf_8_call_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_ZSt3expf_8_call_enob + (10000)*_ZSt3expf_8_call_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_ZSt3expf_8_call_enob + (10000)*_ZSt3expf_8_call_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_ZSt3expf_8_call_fixbits + (-10000)*_ZSt3expf_8_call_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_ZSt3expf_8_call_enob
-solver.Add( + (1)*_ZSt3expf_8_call_fixp + (1)*_ZSt3expf_8_call_float + (1)*_ZSt3expf_8_call_double==1)    #Exactly one selected type
-solver.Add( + (1)*_ZSt3expf_8_call_fixbits + (-10000)*_ZSt3expf_8_call_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_ZSt3expf_8_call_float==1)    #Type constraint for return value
-
-
-
-#Constraint for cast for   ret float %call, !taffo.info !35, !taffo.initweight !37
-_ZSt3expf_8_call_CAST_ret_fixbits = solver.IntVar(0, 31, '_ZSt3expf_8_call_CAST_ret_fixbits')
-_ZSt3expf_8_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt3expf_8_call_CAST_ret_fixp')
-_ZSt3expf_8_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt3expf_8_call_CAST_ret_float')
-_ZSt3expf_8_call_CAST_ret_double = solver.IntVar(0, 1, '_ZSt3expf_8_call_CAST_ret_double')
-solver.Add( + (1)*_ZSt3expf_8_call_CAST_ret_fixp + (1)*_ZSt3expf_8_call_CAST_ret_float + (1)*_ZSt3expf_8_call_CAST_ret_double==1)    #exactly 1 type
-solver.Add( + (1)*_ZSt3expf_8_call_CAST_ret_fixbits + (-10000)*_ZSt3expf_8_call_CAST_ret_fixp<=0)    #If no fix, fix frac part = 0
-C1__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C1__ZSt3expf_8_call_CAST_ret')
-C2__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C2__ZSt3expf_8_call_CAST_ret')
-solver.Add( + (1)*_ZSt3expf_8_call_fixbits + (-1)*_ZSt3expf_8_call_CAST_ret_fixbits + (-10000)*C1__ZSt3expf_8_call_CAST_ret<=0)    #Shift cost 1
-solver.Add( + (-1)*_ZSt3expf_8_call_fixbits + (1)*_ZSt3expf_8_call_CAST_ret_fixbits + (-10000)*C2__ZSt3expf_8_call_CAST_ret<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__ZSt3expf_8_call_CAST_ret
-castCostObj +=  + (1.13006)*C2__ZSt3expf_8_call_CAST_ret
-C3__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C3__ZSt3expf_8_call_CAST_ret')
-C4__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C4__ZSt3expf_8_call_CAST_ret')
-C5__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C5__ZSt3expf_8_call_CAST_ret')
-C6__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C6__ZSt3expf_8_call_CAST_ret')
-C7__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C7__ZSt3expf_8_call_CAST_ret')
-C8__ZSt3expf_8_call_CAST_ret = solver.IntVar(0, 1, 'C8__ZSt3expf_8_call_CAST_ret')
-solver.Add( + (1)*_ZSt3expf_8_call_fixp + (1)*_ZSt3expf_8_call_CAST_ret_float + (-1)*C3__ZSt3expf_8_call_CAST_ret<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__ZSt3expf_8_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_8_call_float + (1)*_ZSt3expf_8_call_CAST_ret_fixp + (-1)*C4__ZSt3expf_8_call_CAST_ret<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__ZSt3expf_8_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_8_call_fixp + (1)*_ZSt3expf_8_call_CAST_ret_double + (-1)*C5__ZSt3expf_8_call_CAST_ret<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__ZSt3expf_8_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_8_call_double + (1)*_ZSt3expf_8_call_CAST_ret_fixp + (-1)*C6__ZSt3expf_8_call_CAST_ret<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__ZSt3expf_8_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_8_call_float + (1)*_ZSt3expf_8_call_CAST_ret_double + (-1)*C7__ZSt3expf_8_call_CAST_ret<=1)    #Float to double
-castCostObj +=  + (1)*C7__ZSt3expf_8_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_8_call_double + (1)*_ZSt3expf_8_call_CAST_ret_float + (-1)*C8__ZSt3expf_8_call_CAST_ret<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__ZSt3expf_8_call_CAST_ret
-solver.Add( + (1)*_Z4CNDFf_2_call_fixp + (-1)*_ZSt3expf_8_call_CAST_ret_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_call_float + (-1)*_ZSt3expf_8_call_CAST_ret_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_call_double + (-1)*_ZSt3expf_8_call_CAST_ret_double==0)    #double equality
-solver.Add( + (1)*_Z4CNDFf_2_call_fixbits + (-1)*_ZSt3expf_8_call_CAST_ret_fixbits==0)    #same fractional bit
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__139_fixbits = solver.IntVar(0, 31, 'ConstantValue__139_fixbits')
-ConstantValue__139_fixp = solver.IntVar(0, 1, 'ConstantValue__139_fixp')
-ConstantValue__139_float = solver.IntVar(0, 1, 'ConstantValue__139_float')
-ConstantValue__139_double = solver.IntVar(0, 1, 'ConstantValue__139_double')
-ConstantValue__139_enob = solver.IntVar(-10000, 10000, 'ConstantValue__139_enob')
-solver.Add( + (1)*ConstantValue__139_enob + (-1)*ConstantValue__139_fixbits + (10000)*ConstantValue__139_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__139_enob + (10000)*ConstantValue__139_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__139_enob + (10000)*ConstantValue__139_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__139_fixbits + (-10000)*ConstantValue__139_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__139_fixp + (1)*ConstantValue__139_float + (1)*ConstantValue__139_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__139_fixbits + (-10000)*ConstantValue__139_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__140_fixbits = solver.IntVar(0, 31, 'ConstantValue__140_fixbits')
-ConstantValue__140_fixp = solver.IntVar(0, 1, 'ConstantValue__140_fixp')
-ConstantValue__140_float = solver.IntVar(0, 1, 'ConstantValue__140_float')
-ConstantValue__140_double = solver.IntVar(0, 1, 'ConstantValue__140_double')
-ConstantValue__140_enob = solver.IntVar(-10000, 10000, 'ConstantValue__140_enob')
-solver.Add( + (1)*ConstantValue__140_enob + (-1)*ConstantValue__140_fixbits + (10000)*ConstantValue__140_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__140_enob + (10000)*ConstantValue__140_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__140_enob + (10000)*ConstantValue__140_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__140_fixbits + (-10000)*ConstantValue__140_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__140_fixp + (1)*ConstantValue__140_float + (1)*ConstantValue__140_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__140_fixbits + (-10000)*ConstantValue__140_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-_Z4CNDFf_2_call_CAST_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_call_CAST_mul18_fixbits')
-_Z4CNDFf_2_call_CAST_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_call_CAST_mul18_fixp')
-_Z4CNDFf_2_call_CAST_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_2_call_CAST_mul18_float')
-_Z4CNDFf_2_call_CAST_mul18_double = solver.IntVar(0, 1, '_Z4CNDFf_2_call_CAST_mul18_double')
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_fixp + (1)*_Z4CNDFf_2_call_CAST_mul18_float + (1)*_Z4CNDFf_2_call_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_fixbits + (-10000)*_Z4CNDFf_2_call_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C1__Z4CNDFf_2_call_CAST_mul18')
-C2__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C2__Z4CNDFf_2_call_CAST_mul18')
-solver.Add( + (1)*_Z4CNDFf_2_call_fixbits + (-1)*_Z4CNDFf_2_call_CAST_mul18_fixbits + (-10000)*C1__Z4CNDFf_2_call_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z4CNDFf_2_call_fixbits + (1)*_Z4CNDFf_2_call_CAST_mul18_fixbits + (-10000)*C2__Z4CNDFf_2_call_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z4CNDFf_2_call_CAST_mul18
-castCostObj +=  + (1.13006)*C2__Z4CNDFf_2_call_CAST_mul18
-C3__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C3__Z4CNDFf_2_call_CAST_mul18')
-C4__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C4__Z4CNDFf_2_call_CAST_mul18')
-C5__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C5__Z4CNDFf_2_call_CAST_mul18')
-C6__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C6__Z4CNDFf_2_call_CAST_mul18')
-C7__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C7__Z4CNDFf_2_call_CAST_mul18')
-C8__Z4CNDFf_2_call_CAST_mul18 = solver.IntVar(0, 1, 'C8__Z4CNDFf_2_call_CAST_mul18')
-solver.Add( + (1)*_Z4CNDFf_2_call_fixp + (1)*_Z4CNDFf_2_call_CAST_mul18_float + (-1)*C3__Z4CNDFf_2_call_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z4CNDFf_2_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_2_call_float + (1)*_Z4CNDFf_2_call_CAST_mul18_fixp + (-1)*C4__Z4CNDFf_2_call_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z4CNDFf_2_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_2_call_fixp + (1)*_Z4CNDFf_2_call_CAST_mul18_double + (-1)*C5__Z4CNDFf_2_call_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z4CNDFf_2_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_2_call_double + (1)*_Z4CNDFf_2_call_CAST_mul18_fixp + (-1)*C6__Z4CNDFf_2_call_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z4CNDFf_2_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_2_call_float + (1)*_Z4CNDFf_2_call_CAST_mul18_double + (-1)*C7__Z4CNDFf_2_call_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z4CNDFf_2_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_2_call_double + (1)*_Z4CNDFf_2_call_CAST_mul18_float + (-1)*C8__Z4CNDFf_2_call_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z4CNDFf_2_call_CAST_mul18
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__141_fixbits = solver.IntVar(0, 31, 'ConstantValue__141_fixbits')
-ConstantValue__141_fixp = solver.IntVar(0, 1, 'ConstantValue__141_fixp')
-ConstantValue__141_float = solver.IntVar(0, 1, 'ConstantValue__141_float')
-ConstantValue__141_double = solver.IntVar(0, 1, 'ConstantValue__141_double')
-ConstantValue__141_enob = solver.IntVar(-10000, 10000, 'ConstantValue__141_enob')
-solver.Add( + (1)*ConstantValue__141_enob + (-1)*ConstantValue__141_fixbits + (10000)*ConstantValue__141_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__141_enob + (10000)*ConstantValue__141_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__141_enob + (10000)*ConstantValue__141_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__141_fixbits + (-10000)*ConstantValue__141_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__141_fixp + (1)*ConstantValue__141_float + (1)*ConstantValue__141_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__141_fixbits + (-10000)*ConstantValue__141_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-ConstantValue__141_CAST_mul18_fixbits = solver.IntVar(0, 31, 'ConstantValue__141_CAST_mul18_fixbits')
-ConstantValue__141_CAST_mul18_fixp = solver.IntVar(0, 1, 'ConstantValue__141_CAST_mul18_fixp')
-ConstantValue__141_CAST_mul18_float = solver.IntVar(0, 1, 'ConstantValue__141_CAST_mul18_float')
-ConstantValue__141_CAST_mul18_double = solver.IntVar(0, 1, 'ConstantValue__141_CAST_mul18_double')
-solver.Add( + (1)*ConstantValue__141_CAST_mul18_fixp + (1)*ConstantValue__141_CAST_mul18_float + (1)*ConstantValue__141_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__141_CAST_mul18_fixbits + (-10000)*ConstantValue__141_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C1_ConstantValue__141_CAST_mul18')
-C2_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C2_ConstantValue__141_CAST_mul18')
-solver.Add( + (1)*ConstantValue__141_fixbits + (-1)*ConstantValue__141_CAST_mul18_fixbits + (-10000)*C1_ConstantValue__141_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__141_fixbits + (1)*ConstantValue__141_CAST_mul18_fixbits + (-10000)*C2_ConstantValue__141_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__141_CAST_mul18
-castCostObj +=  + (1.13006)*C2_ConstantValue__141_CAST_mul18
-C3_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C3_ConstantValue__141_CAST_mul18')
-C4_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C4_ConstantValue__141_CAST_mul18')
-C5_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C5_ConstantValue__141_CAST_mul18')
-C6_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C6_ConstantValue__141_CAST_mul18')
-C7_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C7_ConstantValue__141_CAST_mul18')
-C8_ConstantValue__141_CAST_mul18 = solver.IntVar(0, 1, 'C8_ConstantValue__141_CAST_mul18')
-solver.Add( + (1)*ConstantValue__141_fixp + (1)*ConstantValue__141_CAST_mul18_float + (-1)*C3_ConstantValue__141_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__141_CAST_mul18
-solver.Add( + (1)*ConstantValue__141_float + (1)*ConstantValue__141_CAST_mul18_fixp + (-1)*C4_ConstantValue__141_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__141_CAST_mul18
-solver.Add( + (1)*ConstantValue__141_fixp + (1)*ConstantValue__141_CAST_mul18_double + (-1)*C5_ConstantValue__141_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__141_CAST_mul18
-solver.Add( + (1)*ConstantValue__141_double + (1)*ConstantValue__141_CAST_mul18_fixp + (-1)*C6_ConstantValue__141_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__141_CAST_mul18
-solver.Add( + (1)*ConstantValue__141_float + (1)*ConstantValue__141_CAST_mul18_double + (-1)*C7_ConstantValue__141_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__141_CAST_mul18
-solver.Add( + (1)*ConstantValue__141_double + (1)*ConstantValue__141_CAST_mul18_float + (-1)*C8_ConstantValue__141_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__141_CAST_mul18
-
-
-
-#Stuff for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-_Z4CNDFf_2_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_2_mul18_fixbits')
-_Z4CNDFf_2_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_2_mul18_fixp')
-_Z4CNDFf_2_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_2_mul18_float')
-_Z4CNDFf_2_mul18_double = solver.IntVar(0, 1, '_Z4CNDFf_2_mul18_double')
-_Z4CNDFf_2_mul18_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_2_mul18_enob')
-solver.Add( + (1)*_Z4CNDFf_2_mul18_enob + (-1)*_Z4CNDFf_2_mul18_fixbits + (10000)*_Z4CNDFf_2_mul18_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_2_mul18_enob + (10000)*_Z4CNDFf_2_mul18_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_2_mul18_enob + (10000)*_Z4CNDFf_2_mul18_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_2_mul18_fixbits + (-10000)*_Z4CNDFf_2_mul18_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_Z4CNDFf_2_mul18_enob
-solver.Add( + (1)*_Z4CNDFf_2_mul18_fixp + (1)*_Z4CNDFf_2_mul18_float + (1)*_Z4CNDFf_2_mul18_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_2_mul18_fixbits + (-10000)*_Z4CNDFf_2_mul18_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_fixp + (-1)*ConstantValue__141_CAST_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_float + (-1)*ConstantValue__141_CAST_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_double + (-1)*ConstantValue__141_CAST_mul18_double==0)    #double equality
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_fixp + (-1)*_Z4CNDFf_2_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_float + (-1)*_Z4CNDFf_2_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_2_call_CAST_mul18_double + (-1)*_Z4CNDFf_2_mul18_double==0)    #double equality
-mathCostObj +=  + (2.04123)*_Z4CNDFf_2_mul18_fixp
-mathCostObj +=  + (3.34669)*_Z4CNDFf_2_mul18_float
-mathCostObj +=  + (4.14035)*_Z4CNDFf_2_mul18_double
-_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_1')
-_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_2')
-solver.Add( + (1)*_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_1 + (1)*_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_2_mul18_enob + (-1)*ConstantValue__139_enob + (-10000)*_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_1<=1024)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_2_mul18_enob + (-1)*_Z4CNDFf_2_call_enob + (-10000)*_Z4CNDFf_2__Z4CNDFf_2_mul18_enob_2<=1)    #Enob: propagation in product 2
-
-
-
-#Stuff for double 0x3FCDA6711871100E
-ConstantValue__142_fixbits = solver.IntVar(0, 31, 'ConstantValue__142_fixbits')
-ConstantValue__142_fixp = solver.IntVar(0, 1, 'ConstantValue__142_fixp')
-ConstantValue__142_float = solver.IntVar(0, 1, 'ConstantValue__142_float')
-ConstantValue__142_double = solver.IntVar(0, 1, 'ConstantValue__142_double')
-ConstantValue__142_enob = solver.IntVar(-10000, 10000, 'ConstantValue__142_enob')
-solver.Add( + (1)*ConstantValue__142_enob + (-1)*ConstantValue__142_fixbits + (10000)*ConstantValue__142_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__142_enob + (10000)*ConstantValue__142_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__142_enob + (10000)*ConstantValue__142_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__142_fixbits + (-10000)*ConstantValue__142_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__142_fixp + (1)*ConstantValue__142_float + (1)*ConstantValue__142_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__142_fixbits + (-10000)*ConstantValue__142_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FCDA6711871100E
-ConstantValue__143_fixbits = solver.IntVar(0, 31, 'ConstantValue__143_fixbits')
-ConstantValue__143_fixp = solver.IntVar(0, 1, 'ConstantValue__143_fixp')
-ConstantValue__143_float = solver.IntVar(0, 1, 'ConstantValue__143_float')
-ConstantValue__143_double = solver.IntVar(0, 1, 'ConstantValue__143_double')
-ConstantValue__143_enob = solver.IntVar(-10000, 10000, 'ConstantValue__143_enob')
-solver.Add( + (1)*ConstantValue__143_enob + (-1)*ConstantValue__143_fixbits + (10000)*ConstantValue__143_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__143_enob + (10000)*ConstantValue__143_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__143_enob + (10000)*ConstantValue__143_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__143_fixbits + (-10000)*ConstantValue__143_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__143_fixp + (1)*ConstantValue__143_float + (1)*ConstantValue__143_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__143_fixbits + (-10000)*ConstantValue__143_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__144_fixbits = solver.IntVar(0, 31, 'ConstantValue__144_fixbits')
-ConstantValue__144_fixp = solver.IntVar(0, 1, 'ConstantValue__144_fixp')
-ConstantValue__144_float = solver.IntVar(0, 1, 'ConstantValue__144_float')
-ConstantValue__144_double = solver.IntVar(0, 1, 'ConstantValue__144_double')
-ConstantValue__144_enob = solver.IntVar(-10000, 10000, 'ConstantValue__144_enob')
-solver.Add( + (1)*ConstantValue__144_enob + (-1)*ConstantValue__144_fixbits + (10000)*ConstantValue__144_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__144_enob + (10000)*ConstantValue__144_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__144_enob + (10000)*ConstantValue__144_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__144_fixbits + (-10000)*ConstantValue__144_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__144_fixp + (1)*ConstantValue__144_float + (1)*ConstantValue__144_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__144_fixbits + (-10000)*ConstantValue__144_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__145_fixbits = solver.IntVar(0, 31, 'ConstantValue__145_fixbits')
-ConstantValue__145_fixp = solver.IntVar(0, 1, 'ConstantValue__145_fixp')
-ConstantValue__145_float = solver.IntVar(0, 1, 'ConstantValue__145_float')
-ConstantValue__145_double = solver.IntVar(0, 1, 'ConstantValue__145_double')
-ConstantValue__145_enob = solver.IntVar(-10000, 10000, 'ConstantValue__145_enob')
-solver.Add( + (1)*ConstantValue__145_enob + (-1)*ConstantValue__145_fixbits + (10000)*ConstantValue__145_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__145_enob + (10000)*ConstantValue__145_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__145_enob + (10000)*ConstantValue__145_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__145_fixbits + (-10000)*ConstantValue__145_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__145_fixp + (1)*ConstantValue__145_float + (1)*ConstantValue__145_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__145_fixbits + (-10000)*ConstantValue__145_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__146_fixbits = solver.IntVar(0, 31, 'ConstantValue__146_fixbits')
-ConstantValue__146_fixp = solver.IntVar(0, 1, 'ConstantValue__146_fixp')
-ConstantValue__146_float = solver.IntVar(0, 1, 'ConstantValue__146_float')
-ConstantValue__146_double = solver.IntVar(0, 1, 'ConstantValue__146_double')
-ConstantValue__146_enob = solver.IntVar(-10000, 10000, 'ConstantValue__146_enob')
-solver.Add( + (1)*ConstantValue__146_enob + (-1)*ConstantValue__146_fixbits + (10000)*ConstantValue__146_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__146_enob + (10000)*ConstantValue__146_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__146_enob + (10000)*ConstantValue__146_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__146_fixbits + (-10000)*ConstantValue__146_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__146_fixp + (1)*ConstantValue__146_float + (1)*ConstantValue__146_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__146_fixbits + (-10000)*ConstantValue__146_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__147_fixbits = solver.IntVar(0, 31, 'ConstantValue__147_fixbits')
-ConstantValue__147_fixp = solver.IntVar(0, 1, 'ConstantValue__147_fixp')
-ConstantValue__147_float = solver.IntVar(0, 1, 'ConstantValue__147_float')
-ConstantValue__147_double = solver.IntVar(0, 1, 'ConstantValue__147_double')
-ConstantValue__147_enob = solver.IntVar(-10000, 10000, 'ConstantValue__147_enob')
-solver.Add( + (1)*ConstantValue__147_enob + (-1)*ConstantValue__147_fixbits + (10000)*ConstantValue__147_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__147_enob + (10000)*ConstantValue__147_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__147_enob + (10000)*ConstantValue__147_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__147_fixbits + (-10000)*ConstantValue__147_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__147_fixp + (1)*ConstantValue__147_float + (1)*ConstantValue__147_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__147_fixbits + (-10000)*ConstantValue__147_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__148_fixbits = solver.IntVar(0, 31, 'ConstantValue__148_fixbits')
-ConstantValue__148_fixp = solver.IntVar(0, 1, 'ConstantValue__148_fixp')
-ConstantValue__148_float = solver.IntVar(0, 1, 'ConstantValue__148_float')
-ConstantValue__148_double = solver.IntVar(0, 1, 'ConstantValue__148_double')
-ConstantValue__148_enob = solver.IntVar(-10000, 10000, 'ConstantValue__148_enob')
-solver.Add( + (1)*ConstantValue__148_enob + (-1)*ConstantValue__148_fixbits + (10000)*ConstantValue__148_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__148_enob + (10000)*ConstantValue__148_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__148_enob + (10000)*ConstantValue__148_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__148_fixbits + (-10000)*ConstantValue__148_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__148_fixp + (1)*ConstantValue__148_float + (1)*ConstantValue__148_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__148_fixbits + (-10000)*ConstantValue__148_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__149_fixbits = solver.IntVar(0, 31, 'ConstantValue__149_fixbits')
-ConstantValue__149_fixp = solver.IntVar(0, 1, 'ConstantValue__149_fixp')
-ConstantValue__149_float = solver.IntVar(0, 1, 'ConstantValue__149_float')
-ConstantValue__149_double = solver.IntVar(0, 1, 'ConstantValue__149_double')
-ConstantValue__149_enob = solver.IntVar(-10000, 10000, 'ConstantValue__149_enob')
-solver.Add( + (1)*ConstantValue__149_enob + (-1)*ConstantValue__149_fixbits + (10000)*ConstantValue__149_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__149_enob + (10000)*ConstantValue__149_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__149_enob + (10000)*ConstantValue__149_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__149_fixbits + (-10000)*ConstantValue__149_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__149_fixp + (1)*ConstantValue__149_float + (1)*ConstantValue__149_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__149_fixbits + (-10000)*ConstantValue__149_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__150_fixbits = solver.IntVar(0, 30, 'ConstantValue__150_fixbits')
-ConstantValue__150_fixp = solver.IntVar(0, 1, 'ConstantValue__150_fixp')
-ConstantValue__150_float = solver.IntVar(0, 1, 'ConstantValue__150_float')
-ConstantValue__150_double = solver.IntVar(0, 1, 'ConstantValue__150_double')
-ConstantValue__150_enob = solver.IntVar(-10000, 10000, 'ConstantValue__150_enob')
-solver.Add( + (1)*ConstantValue__150_enob + (-1)*ConstantValue__150_fixbits + (10000)*ConstantValue__150_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__150_enob + (10000)*ConstantValue__150_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__150_enob + (10000)*ConstantValue__150_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__150_fixbits + (-10000)*ConstantValue__150_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__150_fixp + (1)*ConstantValue__150_float + (1)*ConstantValue__150_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__150_fixbits + (-10000)*ConstantValue__150_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__151_fixbits = solver.IntVar(0, 30, 'ConstantValue__151_fixbits')
-ConstantValue__151_fixp = solver.IntVar(0, 1, 'ConstantValue__151_fixp')
-ConstantValue__151_float = solver.IntVar(0, 1, 'ConstantValue__151_float')
-ConstantValue__151_double = solver.IntVar(0, 1, 'ConstantValue__151_double')
-ConstantValue__151_enob = solver.IntVar(-10000, 10000, 'ConstantValue__151_enob')
-solver.Add( + (1)*ConstantValue__151_enob + (-1)*ConstantValue__151_fixbits + (10000)*ConstantValue__151_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__151_enob + (10000)*ConstantValue__151_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__151_enob + (10000)*ConstantValue__151_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__151_fixbits + (-10000)*ConstantValue__151_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__151_fixp + (1)*ConstantValue__151_float + (1)*ConstantValue__151_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__151_fixbits + (-10000)*ConstantValue__151_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__152_fixbits = solver.IntVar(0, 30, 'ConstantValue__152_fixbits')
-ConstantValue__152_fixp = solver.IntVar(0, 1, 'ConstantValue__152_fixp')
-ConstantValue__152_float = solver.IntVar(0, 1, 'ConstantValue__152_float')
-ConstantValue__152_double = solver.IntVar(0, 1, 'ConstantValue__152_double')
-ConstantValue__152_enob = solver.IntVar(-10000, 10000, 'ConstantValue__152_enob')
-solver.Add( + (1)*ConstantValue__152_enob + (-1)*ConstantValue__152_fixbits + (10000)*ConstantValue__152_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__152_enob + (10000)*ConstantValue__152_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__152_enob + (10000)*ConstantValue__152_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__152_fixbits + (-10000)*ConstantValue__152_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__152_fixp + (1)*ConstantValue__152_float + (1)*ConstantValue__152_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__152_fixbits + (-10000)*ConstantValue__152_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__153_fixbits = solver.IntVar(0, 30, 'ConstantValue__153_fixbits')
-ConstantValue__153_fixp = solver.IntVar(0, 1, 'ConstantValue__153_fixp')
-ConstantValue__153_float = solver.IntVar(0, 1, 'ConstantValue__153_float')
-ConstantValue__153_double = solver.IntVar(0, 1, 'ConstantValue__153_double')
-ConstantValue__153_enob = solver.IntVar(-10000, 10000, 'ConstantValue__153_enob')
-solver.Add( + (1)*ConstantValue__153_enob + (-1)*ConstantValue__153_fixbits + (10000)*ConstantValue__153_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__153_enob + (10000)*ConstantValue__153_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__153_enob + (10000)*ConstantValue__153_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__153_fixbits + (-10000)*ConstantValue__153_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__153_fixp + (1)*ConstantValue__153_float + (1)*ConstantValue__153_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__153_fixbits + (-10000)*ConstantValue__153_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__154_fixbits = solver.IntVar(0, 29, 'ConstantValue__154_fixbits')
-ConstantValue__154_fixp = solver.IntVar(0, 1, 'ConstantValue__154_fixp')
-ConstantValue__154_float = solver.IntVar(0, 1, 'ConstantValue__154_float')
-ConstantValue__154_double = solver.IntVar(0, 1, 'ConstantValue__154_double')
-ConstantValue__154_enob = solver.IntVar(-10000, 10000, 'ConstantValue__154_enob')
-solver.Add( + (1)*ConstantValue__154_enob + (-1)*ConstantValue__154_fixbits + (10000)*ConstantValue__154_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__154_enob + (10000)*ConstantValue__154_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__154_enob + (10000)*ConstantValue__154_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__154_fixbits + (-10000)*ConstantValue__154_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__154_fixp + (1)*ConstantValue__154_float + (1)*ConstantValue__154_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__154_fixbits + (-10000)*ConstantValue__154_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__155_fixbits = solver.IntVar(0, 29, 'ConstantValue__155_fixbits')
-ConstantValue__155_fixp = solver.IntVar(0, 1, 'ConstantValue__155_fixp')
-ConstantValue__155_float = solver.IntVar(0, 1, 'ConstantValue__155_float')
-ConstantValue__155_double = solver.IntVar(0, 1, 'ConstantValue__155_double')
-ConstantValue__155_enob = solver.IntVar(-10000, 10000, 'ConstantValue__155_enob')
-solver.Add( + (1)*ConstantValue__155_enob + (-1)*ConstantValue__155_fixbits + (10000)*ConstantValue__155_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__155_enob + (10000)*ConstantValue__155_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__155_enob + (10000)*ConstantValue__155_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__155_fixbits + (-10000)*ConstantValue__155_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__155_fixp + (1)*ConstantValue__155_float + (1)*ConstantValue__155_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__155_fixbits + (-10000)*ConstantValue__155_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FF548CDD6F42943
-ConstantValue__156_fixbits = solver.IntVar(0, 30, 'ConstantValue__156_fixbits')
-ConstantValue__156_fixp = solver.IntVar(0, 1, 'ConstantValue__156_fixp')
-ConstantValue__156_float = solver.IntVar(0, 1, 'ConstantValue__156_float')
-ConstantValue__156_double = solver.IntVar(0, 1, 'ConstantValue__156_double')
-ConstantValue__156_enob = solver.IntVar(-10000, 10000, 'ConstantValue__156_enob')
-solver.Add( + (1)*ConstantValue__156_enob + (-1)*ConstantValue__156_fixbits + (10000)*ConstantValue__156_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__156_enob + (10000)*ConstantValue__156_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__156_enob + (10000)*ConstantValue__156_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__156_fixbits + (-10000)*ConstantValue__156_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__156_fixp + (1)*ConstantValue__156_float + (1)*ConstantValue__156_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__156_fixbits + (-10000)*ConstantValue__156_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FF548CDD6F42943
-ConstantValue__157_fixbits = solver.IntVar(0, 30, 'ConstantValue__157_fixbits')
-ConstantValue__157_fixp = solver.IntVar(0, 1, 'ConstantValue__157_fixp')
-ConstantValue__157_float = solver.IntVar(0, 1, 'ConstantValue__157_float')
-ConstantValue__157_double = solver.IntVar(0, 1, 'ConstantValue__157_double')
-ConstantValue__157_enob = solver.IntVar(-10000, 10000, 'ConstantValue__157_enob')
-solver.Add( + (1)*ConstantValue__157_enob + (-1)*ConstantValue__157_fixbits + (10000)*ConstantValue__157_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__157_enob + (10000)*ConstantValue__157_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__157_enob + (10000)*ConstantValue__157_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__157_fixbits + (-10000)*ConstantValue__157_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__157_fixp + (1)*ConstantValue__157_float + (1)*ConstantValue__157_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__157_fixbits + (-10000)*ConstantValue__157_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__158_fixbits = solver.IntVar(0, 31, 'ConstantValue__158_fixbits')
-ConstantValue__158_fixp = solver.IntVar(0, 1, 'ConstantValue__158_fixp')
-ConstantValue__158_float = solver.IntVar(0, 1, 'ConstantValue__158_float')
-ConstantValue__158_double = solver.IntVar(0, 1, 'ConstantValue__158_double')
-ConstantValue__158_enob = solver.IntVar(-10000, 10000, 'ConstantValue__158_enob')
-solver.Add( + (1)*ConstantValue__158_enob + (-1)*ConstantValue__158_fixbits + (10000)*ConstantValue__158_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__158_enob + (10000)*ConstantValue__158_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__158_enob + (10000)*ConstantValue__158_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__158_fixbits + (-10000)*ConstantValue__158_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__158_fixp + (1)*ConstantValue__158_float + (1)*ConstantValue__158_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__158_fixbits + (-10000)*ConstantValue__158_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__159_fixbits = solver.IntVar(0, 31, 'ConstantValue__159_fixbits')
-ConstantValue__159_fixp = solver.IntVar(0, 1, 'ConstantValue__159_fixp')
-ConstantValue__159_float = solver.IntVar(0, 1, 'ConstantValue__159_float')
-ConstantValue__159_double = solver.IntVar(0, 1, 'ConstantValue__159_double')
-ConstantValue__159_enob = solver.IntVar(-10000, 10000, 'ConstantValue__159_enob')
-solver.Add( + (1)*ConstantValue__159_enob + (-1)*ConstantValue__159_fixbits + (10000)*ConstantValue__159_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__159_enob + (10000)*ConstantValue__159_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__159_enob + (10000)*ConstantValue__159_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__159_fixbits + (-10000)*ConstantValue__159_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__159_fixp + (1)*ConstantValue__159_float + (1)*ConstantValue__159_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__159_fixbits + (-10000)*ConstantValue__159_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__160_fixbits = solver.IntVar(0, 31, 'ConstantValue__160_fixbits')
-ConstantValue__160_fixp = solver.IntVar(0, 1, 'ConstantValue__160_fixp')
-ConstantValue__160_float = solver.IntVar(0, 1, 'ConstantValue__160_float')
-ConstantValue__160_double = solver.IntVar(0, 1, 'ConstantValue__160_double')
-ConstantValue__160_enob = solver.IntVar(-10000, 10000, 'ConstantValue__160_enob')
-solver.Add( + (1)*ConstantValue__160_enob + (-1)*ConstantValue__160_fixbits + (10000)*ConstantValue__160_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__160_enob + (10000)*ConstantValue__160_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__160_enob + (10000)*ConstantValue__160_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__160_fixbits + (-10000)*ConstantValue__160_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__160_fixp + (1)*ConstantValue__160_float + (1)*ConstantValue__160_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__160_fixbits + (-10000)*ConstantValue__160_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__161_fixbits = solver.IntVar(0, 31, 'ConstantValue__161_fixbits')
-ConstantValue__161_fixp = solver.IntVar(0, 1, 'ConstantValue__161_fixp')
-ConstantValue__161_float = solver.IntVar(0, 1, 'ConstantValue__161_float')
-ConstantValue__161_double = solver.IntVar(0, 1, 'ConstantValue__161_double')
-ConstantValue__161_enob = solver.IntVar(-10000, 10000, 'ConstantValue__161_enob')
-solver.Add( + (1)*ConstantValue__161_enob + (-1)*ConstantValue__161_fixbits + (10000)*ConstantValue__161_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__161_enob + (10000)*ConstantValue__161_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__161_enob + (10000)*ConstantValue__161_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__161_fixbits + (-10000)*ConstantValue__161_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__161_fixp + (1)*ConstantValue__161_float + (1)*ConstantValue__161_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__161_fixbits + (-10000)*ConstantValue__161_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__162_fixbits = solver.IntVar(0, 31, 'ConstantValue__162_fixbits')
-ConstantValue__162_fixp = solver.IntVar(0, 1, 'ConstantValue__162_fixp')
-ConstantValue__162_float = solver.IntVar(0, 1, 'ConstantValue__162_float')
-ConstantValue__162_double = solver.IntVar(0, 1, 'ConstantValue__162_double')
-ConstantValue__162_enob = solver.IntVar(-10000, 10000, 'ConstantValue__162_enob')
-solver.Add( + (1)*ConstantValue__162_enob + (-1)*ConstantValue__162_fixbits + (10000)*ConstantValue__162_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__162_enob + (10000)*ConstantValue__162_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__162_enob + (10000)*ConstantValue__162_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__162_fixbits + (-10000)*ConstantValue__162_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__162_fixp + (1)*ConstantValue__162_float + (1)*ConstantValue__162_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__162_fixbits + (-10000)*ConstantValue__162_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0.000000e+00
-ConstantValue__163_fixbits = solver.IntVar(0, 32, 'ConstantValue__163_fixbits')
-ConstantValue__163_fixp = solver.IntVar(0, 1, 'ConstantValue__163_fixp')
-ConstantValue__163_float = solver.IntVar(0, 1, 'ConstantValue__163_float')
-ConstantValue__163_double = solver.IntVar(0, 1, 'ConstantValue__163_double')
-ConstantValue__163_enob = solver.IntVar(-10000, 10000, 'ConstantValue__163_enob')
-solver.Add( + (1)*ConstantValue__163_enob + (-1)*ConstantValue__163_fixbits + (10000)*ConstantValue__163_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__163_enob + (10000)*ConstantValue__163_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__163_enob + (10000)*ConstantValue__163_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__163_fixbits + (-10000)*ConstantValue__163_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__163_fixp + (1)*ConstantValue__163_float + (1)*ConstantValue__163_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__163_fixbits + (-10000)*ConstantValue__163_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__164_fixbits = solver.IntVar(0, 32, 'ConstantValue__164_fixbits')
-ConstantValue__164_fixp = solver.IntVar(0, 1, 'ConstantValue__164_fixp')
-ConstantValue__164_float = solver.IntVar(0, 1, 'ConstantValue__164_float')
-ConstantValue__164_double = solver.IntVar(0, 1, 'ConstantValue__164_double')
-ConstantValue__164_enob = solver.IntVar(-10000, 10000, 'ConstantValue__164_enob')
-solver.Add( + (1)*ConstantValue__164_enob + (-1)*ConstantValue__164_fixbits + (10000)*ConstantValue__164_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__164_enob + (10000)*ConstantValue__164_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__164_enob + (10000)*ConstantValue__164_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__164_fixbits + (-10000)*ConstantValue__164_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__164_fixp + (1)*ConstantValue__164_float + (1)*ConstantValue__164_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__164_fixbits + (-10000)*ConstantValue__164_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__165_fixbits = solver.IntVar(0, 32, 'ConstantValue__165_fixbits')
-ConstantValue__165_fixp = solver.IntVar(0, 1, 'ConstantValue__165_fixp')
-ConstantValue__165_float = solver.IntVar(0, 1, 'ConstantValue__165_float')
-ConstantValue__165_double = solver.IntVar(0, 1, 'ConstantValue__165_double')
-ConstantValue__165_enob = solver.IntVar(-10000, 10000, 'ConstantValue__165_enob')
-solver.Add( + (1)*ConstantValue__165_enob + (-1)*ConstantValue__165_fixbits + (10000)*ConstantValue__165_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__165_enob + (10000)*ConstantValue__165_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__165_enob + (10000)*ConstantValue__165_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__165_fixbits + (-10000)*ConstantValue__165_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__165_fixp + (1)*ConstantValue__165_float + (1)*ConstantValue__165_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__165_fixbits + (-10000)*ConstantValue__165_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -5.000000e-01
-ConstantValue__166_fixbits = solver.IntVar(0, 30, 'ConstantValue__166_fixbits')
-ConstantValue__166_fixp = solver.IntVar(0, 1, 'ConstantValue__166_fixp')
-ConstantValue__166_float = solver.IntVar(0, 1, 'ConstantValue__166_float')
-ConstantValue__166_double = solver.IntVar(0, 1, 'ConstantValue__166_double')
-ConstantValue__166_enob = solver.IntVar(-10000, 10000, 'ConstantValue__166_enob')
-solver.Add( + (1)*ConstantValue__166_enob + (-1)*ConstantValue__166_fixbits + (10000)*ConstantValue__166_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__166_enob + (10000)*ConstantValue__166_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__166_enob + (10000)*ConstantValue__166_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__166_fixbits + (-10000)*ConstantValue__166_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__166_fixp + (1)*ConstantValue__166_float + (1)*ConstantValue__166_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__166_fixbits + (-10000)*ConstantValue__166_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -5.000000e-01
-ConstantValue__167_fixbits = solver.IntVar(0, 30, 'ConstantValue__167_fixbits')
-ConstantValue__167_fixp = solver.IntVar(0, 1, 'ConstantValue__167_fixp')
-ConstantValue__167_float = solver.IntVar(0, 1, 'ConstantValue__167_float')
-ConstantValue__167_double = solver.IntVar(0, 1, 'ConstantValue__167_double')
-ConstantValue__167_enob = solver.IntVar(-10000, 10000, 'ConstantValue__167_enob')
-solver.Add( + (1)*ConstantValue__167_enob + (-1)*ConstantValue__167_fixbits + (10000)*ConstantValue__167_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__167_enob + (10000)*ConstantValue__167_float<=10024)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__167_enob + (10000)*ConstantValue__167_double<=10053)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__167_fixbits + (-10000)*ConstantValue__167_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__167_fixp + (1)*ConstantValue__167_float + (1)*ConstantValue__167_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__167_fixbits + (-10000)*ConstantValue__167_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for   %call = call float @_ZSt3expf.9(float %mul16), !taffo.info !45, !taffo.initweight !33, !taffo.constinfo !47, !taffo.originalCall !48
-_Z4CNDFf_3_call_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_call_fixbits')
-_Z4CNDFf_3_call_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_call_fixp')
-_Z4CNDFf_3_call_float = solver.IntVar(0, 1, '_Z4CNDFf_3_call_float')
-_Z4CNDFf_3_call_double = solver.IntVar(0, 1, '_Z4CNDFf_3_call_double')
-_Z4CNDFf_3_call_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_3_call_enob')
-solver.Add( + (1)*_Z4CNDFf_3_call_enob + (-1)*_Z4CNDFf_3_call_fixbits + (10000)*_Z4CNDFf_3_call_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_3_call_enob + (10000)*_Z4CNDFf_3_call_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_3_call_enob + (10000)*_Z4CNDFf_3_call_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_3_call_fixbits + (-10000)*_Z4CNDFf_3_call_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_Z4CNDFf_3_call_enob
-solver.Add( + (1)*_Z4CNDFf_3_call_fixp + (1)*_Z4CNDFf_3_call_float + (1)*_Z4CNDFf_3_call_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_3_call_fixbits + (-10000)*_Z4CNDFf_3_call_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for   %call = call float @expf(float %__x) #3, !taffo.info !31, !taffo.initweight !33, !taffo.constinfo !34
-_ZSt3expf_9_call_fixbits = solver.IntVar(0, 31, '_ZSt3expf_9_call_fixbits')
-_ZSt3expf_9_call_fixp = solver.IntVar(0, 1, '_ZSt3expf_9_call_fixp')
-_ZSt3expf_9_call_float = solver.IntVar(0, 1, '_ZSt3expf_9_call_float')
-_ZSt3expf_9_call_double = solver.IntVar(0, 1, '_ZSt3expf_9_call_double')
-_ZSt3expf_9_call_enob = solver.IntVar(-10000, 10000, '_ZSt3expf_9_call_enob')
-solver.Add( + (1)*_ZSt3expf_9_call_enob + (-1)*_ZSt3expf_9_call_fixbits + (10000)*_ZSt3expf_9_call_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_ZSt3expf_9_call_enob + (10000)*_ZSt3expf_9_call_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_ZSt3expf_9_call_enob + (10000)*_ZSt3expf_9_call_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_ZSt3expf_9_call_fixbits + (-10000)*_ZSt3expf_9_call_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_ZSt3expf_9_call_enob
-solver.Add( + (1)*_ZSt3expf_9_call_fixp + (1)*_ZSt3expf_9_call_float + (1)*_ZSt3expf_9_call_double==1)    #Exactly one selected type
-solver.Add( + (1)*_ZSt3expf_9_call_fixbits + (-10000)*_ZSt3expf_9_call_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_ZSt3expf_9_call_float==1)    #Type constraint for return value
-
-
-
-#Constraint for cast for   ret float %call, !taffo.info !35, !taffo.initweight !37
-_ZSt3expf_9_call_CAST_ret_fixbits = solver.IntVar(0, 31, '_ZSt3expf_9_call_CAST_ret_fixbits')
-_ZSt3expf_9_call_CAST_ret_fixp = solver.IntVar(0, 1, '_ZSt3expf_9_call_CAST_ret_fixp')
-_ZSt3expf_9_call_CAST_ret_float = solver.IntVar(0, 1, '_ZSt3expf_9_call_CAST_ret_float')
-_ZSt3expf_9_call_CAST_ret_double = solver.IntVar(0, 1, '_ZSt3expf_9_call_CAST_ret_double')
-solver.Add( + (1)*_ZSt3expf_9_call_CAST_ret_fixp + (1)*_ZSt3expf_9_call_CAST_ret_float + (1)*_ZSt3expf_9_call_CAST_ret_double==1)    #exactly 1 type
-solver.Add( + (1)*_ZSt3expf_9_call_CAST_ret_fixbits + (-10000)*_ZSt3expf_9_call_CAST_ret_fixp<=0)    #If no fix, fix frac part = 0
-C1__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C1__ZSt3expf_9_call_CAST_ret')
-C2__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C2__ZSt3expf_9_call_CAST_ret')
-solver.Add( + (1)*_ZSt3expf_9_call_fixbits + (-1)*_ZSt3expf_9_call_CAST_ret_fixbits + (-10000)*C1__ZSt3expf_9_call_CAST_ret<=0)    #Shift cost 1
-solver.Add( + (-1)*_ZSt3expf_9_call_fixbits + (1)*_ZSt3expf_9_call_CAST_ret_fixbits + (-10000)*C2__ZSt3expf_9_call_CAST_ret<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__ZSt3expf_9_call_CAST_ret
-castCostObj +=  + (1.13006)*C2__ZSt3expf_9_call_CAST_ret
-C3__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C3__ZSt3expf_9_call_CAST_ret')
-C4__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C4__ZSt3expf_9_call_CAST_ret')
-C5__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C5__ZSt3expf_9_call_CAST_ret')
-C6__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C6__ZSt3expf_9_call_CAST_ret')
-C7__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C7__ZSt3expf_9_call_CAST_ret')
-C8__ZSt3expf_9_call_CAST_ret = solver.IntVar(0, 1, 'C8__ZSt3expf_9_call_CAST_ret')
-solver.Add( + (1)*_ZSt3expf_9_call_fixp + (1)*_ZSt3expf_9_call_CAST_ret_float + (-1)*C3__ZSt3expf_9_call_CAST_ret<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__ZSt3expf_9_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_9_call_float + (1)*_ZSt3expf_9_call_CAST_ret_fixp + (-1)*C4__ZSt3expf_9_call_CAST_ret<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__ZSt3expf_9_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_9_call_fixp + (1)*_ZSt3expf_9_call_CAST_ret_double + (-1)*C5__ZSt3expf_9_call_CAST_ret<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__ZSt3expf_9_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_9_call_double + (1)*_ZSt3expf_9_call_CAST_ret_fixp + (-1)*C6__ZSt3expf_9_call_CAST_ret<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__ZSt3expf_9_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_9_call_float + (1)*_ZSt3expf_9_call_CAST_ret_double + (-1)*C7__ZSt3expf_9_call_CAST_ret<=1)    #Float to double
-castCostObj +=  + (1)*C7__ZSt3expf_9_call_CAST_ret
-solver.Add( + (1)*_ZSt3expf_9_call_double + (1)*_ZSt3expf_9_call_CAST_ret_float + (-1)*C8__ZSt3expf_9_call_CAST_ret<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__ZSt3expf_9_call_CAST_ret
-solver.Add( + (1)*_Z4CNDFf_3_call_fixp + (-1)*_ZSt3expf_9_call_CAST_ret_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_call_float + (-1)*_ZSt3expf_9_call_CAST_ret_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_call_double + (-1)*_ZSt3expf_9_call_CAST_ret_double==0)    #double equality
-solver.Add( + (1)*_Z4CNDFf_3_call_fixbits + (-1)*_ZSt3expf_9_call_CAST_ret_fixbits==0)    #same fractional bit
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__168_fixbits = solver.IntVar(0, 31, 'ConstantValue__168_fixbits')
-ConstantValue__168_fixp = solver.IntVar(0, 1, 'ConstantValue__168_fixp')
-ConstantValue__168_float = solver.IntVar(0, 1, 'ConstantValue__168_float')
-ConstantValue__168_double = solver.IntVar(0, 1, 'ConstantValue__168_double')
-ConstantValue__168_enob = solver.IntVar(-10000, 10000, 'ConstantValue__168_enob')
-solver.Add( + (1)*ConstantValue__168_enob + (-1)*ConstantValue__168_fixbits + (10000)*ConstantValue__168_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__168_enob + (10000)*ConstantValue__168_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__168_enob + (10000)*ConstantValue__168_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__168_fixbits + (-10000)*ConstantValue__168_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__168_fixp + (1)*ConstantValue__168_float + (1)*ConstantValue__168_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__168_fixbits + (-10000)*ConstantValue__168_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__169_fixbits = solver.IntVar(0, 31, 'ConstantValue__169_fixbits')
-ConstantValue__169_fixp = solver.IntVar(0, 1, 'ConstantValue__169_fixp')
-ConstantValue__169_float = solver.IntVar(0, 1, 'ConstantValue__169_float')
-ConstantValue__169_double = solver.IntVar(0, 1, 'ConstantValue__169_double')
-ConstantValue__169_enob = solver.IntVar(-10000, 10000, 'ConstantValue__169_enob')
-solver.Add( + (1)*ConstantValue__169_enob + (-1)*ConstantValue__169_fixbits + (10000)*ConstantValue__169_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__169_enob + (10000)*ConstantValue__169_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__169_enob + (10000)*ConstantValue__169_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__169_fixbits + (-10000)*ConstantValue__169_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__169_fixp + (1)*ConstantValue__169_float + (1)*ConstantValue__169_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__169_fixbits + (-10000)*ConstantValue__169_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-_Z4CNDFf_3_call_CAST_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_call_CAST_mul18_fixbits')
-_Z4CNDFf_3_call_CAST_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_call_CAST_mul18_fixp')
-_Z4CNDFf_3_call_CAST_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_3_call_CAST_mul18_float')
-_Z4CNDFf_3_call_CAST_mul18_double = solver.IntVar(0, 1, '_Z4CNDFf_3_call_CAST_mul18_double')
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_fixp + (1)*_Z4CNDFf_3_call_CAST_mul18_float + (1)*_Z4CNDFf_3_call_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_fixbits + (-10000)*_Z4CNDFf_3_call_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C1__Z4CNDFf_3_call_CAST_mul18')
-C2__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C2__Z4CNDFf_3_call_CAST_mul18')
-solver.Add( + (1)*_Z4CNDFf_3_call_fixbits + (-1)*_Z4CNDFf_3_call_CAST_mul18_fixbits + (-10000)*C1__Z4CNDFf_3_call_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*_Z4CNDFf_3_call_fixbits + (1)*_Z4CNDFf_3_call_CAST_mul18_fixbits + (-10000)*C2__Z4CNDFf_3_call_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1__Z4CNDFf_3_call_CAST_mul18
-castCostObj +=  + (1.13006)*C2__Z4CNDFf_3_call_CAST_mul18
-C3__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C3__Z4CNDFf_3_call_CAST_mul18')
-C4__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C4__Z4CNDFf_3_call_CAST_mul18')
-C5__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C5__Z4CNDFf_3_call_CAST_mul18')
-C6__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C6__Z4CNDFf_3_call_CAST_mul18')
-C7__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C7__Z4CNDFf_3_call_CAST_mul18')
-C8__Z4CNDFf_3_call_CAST_mul18 = solver.IntVar(0, 1, 'C8__Z4CNDFf_3_call_CAST_mul18')
-solver.Add( + (1)*_Z4CNDFf_3_call_fixp + (1)*_Z4CNDFf_3_call_CAST_mul18_float + (-1)*C3__Z4CNDFf_3_call_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3__Z4CNDFf_3_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_3_call_float + (1)*_Z4CNDFf_3_call_CAST_mul18_fixp + (-1)*C4__Z4CNDFf_3_call_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4__Z4CNDFf_3_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_3_call_fixp + (1)*_Z4CNDFf_3_call_CAST_mul18_double + (-1)*C5__Z4CNDFf_3_call_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5__Z4CNDFf_3_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_3_call_double + (1)*_Z4CNDFf_3_call_CAST_mul18_fixp + (-1)*C6__Z4CNDFf_3_call_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6__Z4CNDFf_3_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_3_call_float + (1)*_Z4CNDFf_3_call_CAST_mul18_double + (-1)*C7__Z4CNDFf_3_call_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7__Z4CNDFf_3_call_CAST_mul18
-solver.Add( + (1)*_Z4CNDFf_3_call_double + (1)*_Z4CNDFf_3_call_CAST_mul18_float + (-1)*C8__Z4CNDFf_3_call_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8__Z4CNDFf_3_call_CAST_mul18
-
-
-
-#Stuff for double 0x3FD9884533D43651
-ConstantValue__170_fixbits = solver.IntVar(0, 31, 'ConstantValue__170_fixbits')
-ConstantValue__170_fixp = solver.IntVar(0, 1, 'ConstantValue__170_fixp')
-ConstantValue__170_float = solver.IntVar(0, 1, 'ConstantValue__170_float')
-ConstantValue__170_double = solver.IntVar(0, 1, 'ConstantValue__170_double')
-ConstantValue__170_enob = solver.IntVar(-10000, 10000, 'ConstantValue__170_enob')
-solver.Add( + (1)*ConstantValue__170_enob + (-1)*ConstantValue__170_fixbits + (10000)*ConstantValue__170_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__170_enob + (10000)*ConstantValue__170_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__170_enob + (10000)*ConstantValue__170_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__170_fixbits + (-10000)*ConstantValue__170_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__170_fixp + (1)*ConstantValue__170_float + (1)*ConstantValue__170_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__170_fixbits + (-10000)*ConstantValue__170_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Constraint for cast for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-ConstantValue__170_CAST_mul18_fixbits = solver.IntVar(0, 31, 'ConstantValue__170_CAST_mul18_fixbits')
-ConstantValue__170_CAST_mul18_fixp = solver.IntVar(0, 1, 'ConstantValue__170_CAST_mul18_fixp')
-ConstantValue__170_CAST_mul18_float = solver.IntVar(0, 1, 'ConstantValue__170_CAST_mul18_float')
-ConstantValue__170_CAST_mul18_double = solver.IntVar(0, 1, 'ConstantValue__170_CAST_mul18_double')
-solver.Add( + (1)*ConstantValue__170_CAST_mul18_fixp + (1)*ConstantValue__170_CAST_mul18_float + (1)*ConstantValue__170_CAST_mul18_double==1)    #exactly 1 type
-solver.Add( + (1)*ConstantValue__170_CAST_mul18_fixbits + (-10000)*ConstantValue__170_CAST_mul18_fixp<=0)    #If no fix, fix frac part = 0
-C1_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C1_ConstantValue__170_CAST_mul18')
-C2_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C2_ConstantValue__170_CAST_mul18')
-solver.Add( + (1)*ConstantValue__170_fixbits + (-1)*ConstantValue__170_CAST_mul18_fixbits + (-10000)*C1_ConstantValue__170_CAST_mul18<=0)    #Shift cost 1
-solver.Add( + (-1)*ConstantValue__170_fixbits + (1)*ConstantValue__170_CAST_mul18_fixbits + (-10000)*C2_ConstantValue__170_CAST_mul18<=0)    #Shift cost 2
-castCostObj +=  + (1.13006)*C1_ConstantValue__170_CAST_mul18
-castCostObj +=  + (1.13006)*C2_ConstantValue__170_CAST_mul18
-C3_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C3_ConstantValue__170_CAST_mul18')
-C4_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C4_ConstantValue__170_CAST_mul18')
-C5_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C5_ConstantValue__170_CAST_mul18')
-C6_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C6_ConstantValue__170_CAST_mul18')
-C7_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C7_ConstantValue__170_CAST_mul18')
-C8_ConstantValue__170_CAST_mul18 = solver.IntVar(0, 1, 'C8_ConstantValue__170_CAST_mul18')
-solver.Add( + (1)*ConstantValue__170_fixp + (1)*ConstantValue__170_CAST_mul18_float + (-1)*C3_ConstantValue__170_CAST_mul18<=1)    #Fix to float
-castCostObj +=  + (4.12075)*C3_ConstantValue__170_CAST_mul18
-solver.Add( + (1)*ConstantValue__170_float + (1)*ConstantValue__170_CAST_mul18_fixp + (-1)*C4_ConstantValue__170_CAST_mul18<=1)    #Float to fix
-castCostObj +=  + (3.33505)*C4_ConstantValue__170_CAST_mul18
-solver.Add( + (1)*ConstantValue__170_fixp + (1)*ConstantValue__170_CAST_mul18_double + (-1)*C5_ConstantValue__170_CAST_mul18<=1)    #Fix to double
-castCostObj +=  + (5.63733)*C5_ConstantValue__170_CAST_mul18
-solver.Add( + (1)*ConstantValue__170_double + (1)*ConstantValue__170_CAST_mul18_fixp + (-1)*C6_ConstantValue__170_CAST_mul18<=1)    #Double to fix
-castCostObj +=  + (4.40388)*C6_ConstantValue__170_CAST_mul18
-solver.Add( + (1)*ConstantValue__170_float + (1)*ConstantValue__170_CAST_mul18_double + (-1)*C7_ConstantValue__170_CAST_mul18<=1)    #Float to double
-castCostObj +=  + (1)*C7_ConstantValue__170_CAST_mul18
-solver.Add( + (1)*ConstantValue__170_double + (1)*ConstantValue__170_CAST_mul18_float + (-1)*C8_ConstantValue__170_CAST_mul18<=1)    #Double to float
-castCostObj +=  + (5.90592)*C8_ConstantValue__170_CAST_mul18
-
-
-
-#Stuff for   %mul18 = fmul double %conv17, 0x3FD9884533D43651, !taffo.info !50, !taffo.initweight !32, !taffo.constinfo !52
-_Z4CNDFf_3_mul18_fixbits = solver.IntVar(0, 31, '_Z4CNDFf_3_mul18_fixbits')
-_Z4CNDFf_3_mul18_fixp = solver.IntVar(0, 1, '_Z4CNDFf_3_mul18_fixp')
-_Z4CNDFf_3_mul18_float = solver.IntVar(0, 1, '_Z4CNDFf_3_mul18_float')
-_Z4CNDFf_3_mul18_double = solver.IntVar(0, 1, '_Z4CNDFf_3_mul18_double')
-_Z4CNDFf_3_mul18_enob = solver.IntVar(-10000, 10000, '_Z4CNDFf_3_mul18_enob')
-solver.Add( + (1)*_Z4CNDFf_3_mul18_enob + (-1)*_Z4CNDFf_3_mul18_fixbits + (10000)*_Z4CNDFf_3_mul18_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*_Z4CNDFf_3_mul18_enob + (10000)*_Z4CNDFf_3_mul18_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*_Z4CNDFf_3_mul18_enob + (10000)*_Z4CNDFf_3_mul18_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*_Z4CNDFf_3_mul18_fixbits + (-10000)*_Z4CNDFf_3_mul18_fixp>=-9970)    #Limit the lower number of frac bits31
-enobCostObj +=  + (-1)*_Z4CNDFf_3_mul18_enob
-solver.Add( + (1)*_Z4CNDFf_3_mul18_fixp + (1)*_Z4CNDFf_3_mul18_float + (1)*_Z4CNDFf_3_mul18_double==1)    #Exactly one selected type
-solver.Add( + (1)*_Z4CNDFf_3_mul18_fixbits + (-10000)*_Z4CNDFf_3_mul18_fixp<=0)    #If not fix, frac part to zero
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_fixp + (-1)*ConstantValue__170_CAST_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_float + (-1)*ConstantValue__170_CAST_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_double + (-1)*ConstantValue__170_CAST_mul18_double==0)    #double equality
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_fixp + (-1)*_Z4CNDFf_3_mul18_fixp==0)    #fix equality
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_float + (-1)*_Z4CNDFf_3_mul18_float==0)    #float equality
-solver.Add( + (1)*_Z4CNDFf_3_call_CAST_mul18_double + (-1)*_Z4CNDFf_3_mul18_double==0)    #double equality
-mathCostObj +=  + (2.04123)*_Z4CNDFf_3_mul18_fixp
-mathCostObj +=  + (3.34669)*_Z4CNDFf_3_mul18_float
-mathCostObj +=  + (4.14035)*_Z4CNDFf_3_mul18_double
-_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_1 = solver.IntVar(0, 1, '_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_1')
-_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_2 = solver.IntVar(0, 1, '_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_2')
-solver.Add( + (1)*_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_1 + (1)*_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_2==1)    #Enob: one selected constraint
-solver.Add( + (1)*_Z4CNDFf_3_mul18_enob + (-1)*ConstantValue__168_enob + (-10000)*_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_1<=1024)    #Enob: propagation in product 1
-solver.Add( + (1)*_Z4CNDFf_3_mul18_enob + (-1)*_Z4CNDFf_3_call_enob + (-10000)*_Z4CNDFf_3__Z4CNDFf_3_mul18_enob_2<=1)    #Enob: propagation in product 2
-
-
-
-#Stuff for double 0x3FCDA6711871100E
-ConstantValue__171_fixbits = solver.IntVar(0, 31, 'ConstantValue__171_fixbits')
-ConstantValue__171_fixp = solver.IntVar(0, 1, 'ConstantValue__171_fixp')
-ConstantValue__171_float = solver.IntVar(0, 1, 'ConstantValue__171_float')
-ConstantValue__171_double = solver.IntVar(0, 1, 'ConstantValue__171_double')
-ConstantValue__171_enob = solver.IntVar(-10000, 10000, 'ConstantValue__171_enob')
-solver.Add( + (1)*ConstantValue__171_enob + (-1)*ConstantValue__171_fixbits + (10000)*ConstantValue__171_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__171_enob + (10000)*ConstantValue__171_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__171_enob + (10000)*ConstantValue__171_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__171_fixbits + (-10000)*ConstantValue__171_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__171_fixp + (1)*ConstantValue__171_float + (1)*ConstantValue__171_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__171_fixbits + (-10000)*ConstantValue__171_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FCDA6711871100E
-ConstantValue__172_fixbits = solver.IntVar(0, 31, 'ConstantValue__172_fixbits')
-ConstantValue__172_fixp = solver.IntVar(0, 1, 'ConstantValue__172_fixp')
-ConstantValue__172_float = solver.IntVar(0, 1, 'ConstantValue__172_float')
-ConstantValue__172_double = solver.IntVar(0, 1, 'ConstantValue__172_double')
-ConstantValue__172_enob = solver.IntVar(-10000, 10000, 'ConstantValue__172_enob')
-solver.Add( + (1)*ConstantValue__172_enob + (-1)*ConstantValue__172_fixbits + (10000)*ConstantValue__172_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__172_enob + (10000)*ConstantValue__172_float<=10026)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__172_enob + (10000)*ConstantValue__172_double<=10055)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__172_fixbits + (-10000)*ConstantValue__172_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__172_fixp + (1)*ConstantValue__172_float + (1)*ConstantValue__172_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__172_fixbits + (-10000)*ConstantValue__172_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__173_fixbits = solver.IntVar(0, 31, 'ConstantValue__173_fixbits')
-ConstantValue__173_fixp = solver.IntVar(0, 1, 'ConstantValue__173_fixp')
-ConstantValue__173_float = solver.IntVar(0, 1, 'ConstantValue__173_float')
-ConstantValue__173_double = solver.IntVar(0, 1, 'ConstantValue__173_double')
-ConstantValue__173_enob = solver.IntVar(-10000, 10000, 'ConstantValue__173_enob')
-solver.Add( + (1)*ConstantValue__173_enob + (-1)*ConstantValue__173_fixbits + (10000)*ConstantValue__173_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__173_enob + (10000)*ConstantValue__173_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__173_enob + (10000)*ConstantValue__173_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__173_fixbits + (-10000)*ConstantValue__173_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__173_fixp + (1)*ConstantValue__173_float + (1)*ConstantValue__173_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__173_fixbits + (-10000)*ConstantValue__173_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__174_fixbits = solver.IntVar(0, 31, 'ConstantValue__174_fixbits')
-ConstantValue__174_fixp = solver.IntVar(0, 1, 'ConstantValue__174_fixp')
-ConstantValue__174_float = solver.IntVar(0, 1, 'ConstantValue__174_float')
-ConstantValue__174_double = solver.IntVar(0, 1, 'ConstantValue__174_double')
-ConstantValue__174_enob = solver.IntVar(-10000, 10000, 'ConstantValue__174_enob')
-solver.Add( + (1)*ConstantValue__174_enob + (-1)*ConstantValue__174_fixbits + (10000)*ConstantValue__174_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__174_enob + (10000)*ConstantValue__174_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__174_enob + (10000)*ConstantValue__174_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__174_fixbits + (-10000)*ConstantValue__174_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__174_fixp + (1)*ConstantValue__174_float + (1)*ConstantValue__174_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__174_fixbits + (-10000)*ConstantValue__174_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__175_fixbits = solver.IntVar(0, 31, 'ConstantValue__175_fixbits')
-ConstantValue__175_fixp = solver.IntVar(0, 1, 'ConstantValue__175_fixp')
-ConstantValue__175_float = solver.IntVar(0, 1, 'ConstantValue__175_float')
-ConstantValue__175_double = solver.IntVar(0, 1, 'ConstantValue__175_double')
-ConstantValue__175_enob = solver.IntVar(-10000, 10000, 'ConstantValue__175_enob')
-solver.Add( + (1)*ConstantValue__175_enob + (-1)*ConstantValue__175_fixbits + (10000)*ConstantValue__175_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__175_enob + (10000)*ConstantValue__175_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__175_enob + (10000)*ConstantValue__175_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__175_fixbits + (-10000)*ConstantValue__175_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__175_fixp + (1)*ConstantValue__175_float + (1)*ConstantValue__175_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__175_fixbits + (-10000)*ConstantValue__175_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__176_fixbits = solver.IntVar(0, 31, 'ConstantValue__176_fixbits')
-ConstantValue__176_fixp = solver.IntVar(0, 1, 'ConstantValue__176_fixp')
-ConstantValue__176_float = solver.IntVar(0, 1, 'ConstantValue__176_float')
-ConstantValue__176_double = solver.IntVar(0, 1, 'ConstantValue__176_double')
-ConstantValue__176_enob = solver.IntVar(-10000, 10000, 'ConstantValue__176_enob')
-solver.Add( + (1)*ConstantValue__176_enob + (-1)*ConstantValue__176_fixbits + (10000)*ConstantValue__176_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__176_enob + (10000)*ConstantValue__176_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__176_enob + (10000)*ConstantValue__176_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__176_fixbits + (-10000)*ConstantValue__176_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__176_fixp + (1)*ConstantValue__176_float + (1)*ConstantValue__176_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__176_fixbits + (-10000)*ConstantValue__176_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__177_fixbits = solver.IntVar(0, 31, 'ConstantValue__177_fixbits')
-ConstantValue__177_fixp = solver.IntVar(0, 1, 'ConstantValue__177_fixp')
-ConstantValue__177_float = solver.IntVar(0, 1, 'ConstantValue__177_float')
-ConstantValue__177_double = solver.IntVar(0, 1, 'ConstantValue__177_double')
-ConstantValue__177_enob = solver.IntVar(-10000, 10000, 'ConstantValue__177_enob')
-solver.Add( + (1)*ConstantValue__177_enob + (-1)*ConstantValue__177_fixbits + (10000)*ConstantValue__177_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__177_enob + (10000)*ConstantValue__177_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__177_enob + (10000)*ConstantValue__177_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__177_fixbits + (-10000)*ConstantValue__177_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__177_fixp + (1)*ConstantValue__177_float + (1)*ConstantValue__177_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__177_fixbits + (-10000)*ConstantValue__177_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FD470BF3A92F8EC
-ConstantValue__178_fixbits = solver.IntVar(0, 31, 'ConstantValue__178_fixbits')
-ConstantValue__178_fixp = solver.IntVar(0, 1, 'ConstantValue__178_fixp')
-ConstantValue__178_float = solver.IntVar(0, 1, 'ConstantValue__178_float')
-ConstantValue__178_double = solver.IntVar(0, 1, 'ConstantValue__178_double')
-ConstantValue__178_enob = solver.IntVar(-10000, 10000, 'ConstantValue__178_enob')
-solver.Add( + (1)*ConstantValue__178_enob + (-1)*ConstantValue__178_fixbits + (10000)*ConstantValue__178_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__178_enob + (10000)*ConstantValue__178_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__178_enob + (10000)*ConstantValue__178_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__178_fixbits + (-10000)*ConstantValue__178_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__178_fixp + (1)*ConstantValue__178_float + (1)*ConstantValue__178_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__178_fixbits + (-10000)*ConstantValue__178_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__179_fixbits = solver.IntVar(0, 30, 'ConstantValue__179_fixbits')
-ConstantValue__179_fixp = solver.IntVar(0, 1, 'ConstantValue__179_fixp')
-ConstantValue__179_float = solver.IntVar(0, 1, 'ConstantValue__179_float')
-ConstantValue__179_double = solver.IntVar(0, 1, 'ConstantValue__179_double')
-ConstantValue__179_enob = solver.IntVar(-10000, 10000, 'ConstantValue__179_enob')
-solver.Add( + (1)*ConstantValue__179_enob + (-1)*ConstantValue__179_fixbits + (10000)*ConstantValue__179_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__179_enob + (10000)*ConstantValue__179_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__179_enob + (10000)*ConstantValue__179_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__179_fixbits + (-10000)*ConstantValue__179_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__179_fixp + (1)*ConstantValue__179_float + (1)*ConstantValue__179_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__179_fixbits + (-10000)*ConstantValue__179_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFD6D1F0E5A8325B
-ConstantValue__180_fixbits = solver.IntVar(0, 30, 'ConstantValue__180_fixbits')
-ConstantValue__180_fixp = solver.IntVar(0, 1, 'ConstantValue__180_fixp')
-ConstantValue__180_float = solver.IntVar(0, 1, 'ConstantValue__180_float')
-ConstantValue__180_double = solver.IntVar(0, 1, 'ConstantValue__180_double')
-ConstantValue__180_enob = solver.IntVar(-10000, 10000, 'ConstantValue__180_enob')
-solver.Add( + (1)*ConstantValue__180_enob + (-1)*ConstantValue__180_fixbits + (10000)*ConstantValue__180_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__180_enob + (10000)*ConstantValue__180_float<=10025)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__180_enob + (10000)*ConstantValue__180_double<=10054)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__180_fixbits + (-10000)*ConstantValue__180_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__180_fixp + (1)*ConstantValue__180_float + (1)*ConstantValue__180_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__180_fixbits + (-10000)*ConstantValue__180_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__181_fixbits = solver.IntVar(0, 30, 'ConstantValue__181_fixbits')
-ConstantValue__181_fixp = solver.IntVar(0, 1, 'ConstantValue__181_fixp')
-ConstantValue__181_float = solver.IntVar(0, 1, 'ConstantValue__181_float')
-ConstantValue__181_double = solver.IntVar(0, 1, 'ConstantValue__181_double')
-ConstantValue__181_enob = solver.IntVar(-10000, 10000, 'ConstantValue__181_enob')
-solver.Add( + (1)*ConstantValue__181_enob + (-1)*ConstantValue__181_fixbits + (10000)*ConstantValue__181_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__181_enob + (10000)*ConstantValue__181_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__181_enob + (10000)*ConstantValue__181_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__181_fixbits + (-10000)*ConstantValue__181_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__181_fixp + (1)*ConstantValue__181_float + (1)*ConstantValue__181_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__181_fixbits + (-10000)*ConstantValue__181_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FFC80EF025F5E68
-ConstantValue__182_fixbits = solver.IntVar(0, 30, 'ConstantValue__182_fixbits')
-ConstantValue__182_fixp = solver.IntVar(0, 1, 'ConstantValue__182_fixp')
-ConstantValue__182_float = solver.IntVar(0, 1, 'ConstantValue__182_float')
-ConstantValue__182_double = solver.IntVar(0, 1, 'ConstantValue__182_double')
-ConstantValue__182_enob = solver.IntVar(-10000, 10000, 'ConstantValue__182_enob')
-solver.Add( + (1)*ConstantValue__182_enob + (-1)*ConstantValue__182_fixbits + (10000)*ConstantValue__182_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__182_enob + (10000)*ConstantValue__182_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__182_enob + (10000)*ConstantValue__182_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__182_fixbits + (-10000)*ConstantValue__182_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__182_fixp + (1)*ConstantValue__182_float + (1)*ConstantValue__182_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__182_fixbits + (-10000)*ConstantValue__182_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__183_fixbits = solver.IntVar(0, 29, 'ConstantValue__183_fixbits')
-ConstantValue__183_fixp = solver.IntVar(0, 1, 'ConstantValue__183_fixp')
-ConstantValue__183_float = solver.IntVar(0, 1, 'ConstantValue__183_float')
-ConstantValue__183_double = solver.IntVar(0, 1, 'ConstantValue__183_double')
-ConstantValue__183_enob = solver.IntVar(-10000, 10000, 'ConstantValue__183_enob')
-solver.Add( + (1)*ConstantValue__183_enob + (-1)*ConstantValue__183_fixbits + (10000)*ConstantValue__183_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__183_enob + (10000)*ConstantValue__183_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__183_enob + (10000)*ConstantValue__183_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__183_fixbits + (-10000)*ConstantValue__183_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__183_fixp + (1)*ConstantValue__183_float + (1)*ConstantValue__183_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__183_fixbits + (-10000)*ConstantValue__183_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0xBFFD23DD4EF278D0
-ConstantValue__184_fixbits = solver.IntVar(0, 29, 'ConstantValue__184_fixbits')
-ConstantValue__184_fixp = solver.IntVar(0, 1, 'ConstantValue__184_fixp')
-ConstantValue__184_float = solver.IntVar(0, 1, 'ConstantValue__184_float')
-ConstantValue__184_double = solver.IntVar(0, 1, 'ConstantValue__184_double')
-ConstantValue__184_enob = solver.IntVar(-10000, 10000, 'ConstantValue__184_enob')
-solver.Add( + (1)*ConstantValue__184_enob + (-1)*ConstantValue__184_fixbits + (10000)*ConstantValue__184_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__184_enob + (10000)*ConstantValue__184_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__184_enob + (10000)*ConstantValue__184_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__184_fixbits + (-10000)*ConstantValue__184_fixp>=-9972)    #Limit the lower number of frac bits29
-solver.Add( + (1)*ConstantValue__184_fixp + (1)*ConstantValue__184_float + (1)*ConstantValue__184_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__184_fixbits + (-10000)*ConstantValue__184_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FF548CDD6F42943
-ConstantValue__185_fixbits = solver.IntVar(0, 30, 'ConstantValue__185_fixbits')
-ConstantValue__185_fixp = solver.IntVar(0, 1, 'ConstantValue__185_fixp')
-ConstantValue__185_float = solver.IntVar(0, 1, 'ConstantValue__185_float')
-ConstantValue__185_double = solver.IntVar(0, 1, 'ConstantValue__185_double')
-ConstantValue__185_enob = solver.IntVar(-10000, 10000, 'ConstantValue__185_enob')
-solver.Add( + (1)*ConstantValue__185_enob + (-1)*ConstantValue__185_fixbits + (10000)*ConstantValue__185_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__185_enob + (10000)*ConstantValue__185_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__185_enob + (10000)*ConstantValue__185_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__185_fixbits + (-10000)*ConstantValue__185_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__185_fixp + (1)*ConstantValue__185_float + (1)*ConstantValue__185_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__185_fixbits + (-10000)*ConstantValue__185_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 0x3FF548CDD6F42943
-ConstantValue__186_fixbits = solver.IntVar(0, 30, 'ConstantValue__186_fixbits')
-ConstantValue__186_fixp = solver.IntVar(0, 1, 'ConstantValue__186_fixp')
-ConstantValue__186_float = solver.IntVar(0, 1, 'ConstantValue__186_float')
-ConstantValue__186_double = solver.IntVar(0, 1, 'ConstantValue__186_double')
-ConstantValue__186_enob = solver.IntVar(-10000, 10000, 'ConstantValue__186_enob')
-solver.Add( + (1)*ConstantValue__186_enob + (-1)*ConstantValue__186_fixbits + (10000)*ConstantValue__186_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__186_enob + (10000)*ConstantValue__186_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__186_enob + (10000)*ConstantValue__186_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__186_fixbits + (-10000)*ConstantValue__186_fixp>=-9971)    #Limit the lower number of frac bits30
-solver.Add( + (1)*ConstantValue__186_fixp + (1)*ConstantValue__186_float + (1)*ConstantValue__186_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__186_fixbits + (-10000)*ConstantValue__186_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__187_fixbits = solver.IntVar(0, 31, 'ConstantValue__187_fixbits')
-ConstantValue__187_fixp = solver.IntVar(0, 1, 'ConstantValue__187_fixp')
-ConstantValue__187_float = solver.IntVar(0, 1, 'ConstantValue__187_float')
-ConstantValue__187_double = solver.IntVar(0, 1, 'ConstantValue__187_double')
-ConstantValue__187_enob = solver.IntVar(-10000, 10000, 'ConstantValue__187_enob')
-solver.Add( + (1)*ConstantValue__187_enob + (-1)*ConstantValue__187_fixbits + (10000)*ConstantValue__187_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__187_enob + (10000)*ConstantValue__187_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__187_enob + (10000)*ConstantValue__187_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__187_fixbits + (-10000)*ConstantValue__187_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__187_fixp + (1)*ConstantValue__187_float + (1)*ConstantValue__187_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__187_fixbits + (-10000)*ConstantValue__187_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__188_fixbits = solver.IntVar(0, 31, 'ConstantValue__188_fixbits')
-ConstantValue__188_fixp = solver.IntVar(0, 1, 'ConstantValue__188_fixp')
-ConstantValue__188_float = solver.IntVar(0, 1, 'ConstantValue__188_float')
-ConstantValue__188_double = solver.IntVar(0, 1, 'ConstantValue__188_double')
-ConstantValue__188_enob = solver.IntVar(-10000, 10000, 'ConstantValue__188_enob')
-solver.Add( + (1)*ConstantValue__188_enob + (-1)*ConstantValue__188_fixbits + (10000)*ConstantValue__188_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__188_enob + (10000)*ConstantValue__188_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__188_enob + (10000)*ConstantValue__188_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__188_fixbits + (-10000)*ConstantValue__188_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__188_fixp + (1)*ConstantValue__188_float + (1)*ConstantValue__188_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__188_fixbits + (-10000)*ConstantValue__188_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__189_fixbits = solver.IntVar(0, 31, 'ConstantValue__189_fixbits')
-ConstantValue__189_fixp = solver.IntVar(0, 1, 'ConstantValue__189_fixp')
-ConstantValue__189_float = solver.IntVar(0, 1, 'ConstantValue__189_float')
-ConstantValue__189_double = solver.IntVar(0, 1, 'ConstantValue__189_double')
-ConstantValue__189_enob = solver.IntVar(-10000, 10000, 'ConstantValue__189_enob')
-solver.Add( + (1)*ConstantValue__189_enob + (-1)*ConstantValue__189_fixbits + (10000)*ConstantValue__189_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__189_enob + (10000)*ConstantValue__189_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__189_enob + (10000)*ConstantValue__189_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__189_fixbits + (-10000)*ConstantValue__189_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__189_fixp + (1)*ConstantValue__189_float + (1)*ConstantValue__189_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__189_fixbits + (-10000)*ConstantValue__189_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__190_fixbits = solver.IntVar(0, 31, 'ConstantValue__190_fixbits')
-ConstantValue__190_fixp = solver.IntVar(0, 1, 'ConstantValue__190_fixp')
-ConstantValue__190_float = solver.IntVar(0, 1, 'ConstantValue__190_float')
-ConstantValue__190_double = solver.IntVar(0, 1, 'ConstantValue__190_double')
-ConstantValue__190_enob = solver.IntVar(-10000, 10000, 'ConstantValue__190_enob')
-solver.Add( + (1)*ConstantValue__190_enob + (-1)*ConstantValue__190_fixbits + (10000)*ConstantValue__190_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__190_enob + (10000)*ConstantValue__190_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__190_enob + (10000)*ConstantValue__190_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__190_fixbits + (-10000)*ConstantValue__190_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__190_fixp + (1)*ConstantValue__190_float + (1)*ConstantValue__190_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__190_fixbits + (-10000)*ConstantValue__190_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__191_fixbits = solver.IntVar(0, 31, 'ConstantValue__191_fixbits')
-ConstantValue__191_fixp = solver.IntVar(0, 1, 'ConstantValue__191_fixp')
-ConstantValue__191_float = solver.IntVar(0, 1, 'ConstantValue__191_float')
-ConstantValue__191_double = solver.IntVar(0, 1, 'ConstantValue__191_double')
-ConstantValue__191_enob = solver.IntVar(-10000, 10000, 'ConstantValue__191_enob')
-solver.Add( + (1)*ConstantValue__191_enob + (-1)*ConstantValue__191_fixbits + (10000)*ConstantValue__191_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__191_enob + (10000)*ConstantValue__191_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__191_enob + (10000)*ConstantValue__191_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__191_fixbits + (-10000)*ConstantValue__191_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__191_fixp + (1)*ConstantValue__191_float + (1)*ConstantValue__191_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__191_fixbits + (-10000)*ConstantValue__191_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__192_fixbits = solver.IntVar(0, 32, 'ConstantValue__192_fixbits')
-ConstantValue__192_fixp = solver.IntVar(0, 1, 'ConstantValue__192_fixp')
-ConstantValue__192_float = solver.IntVar(0, 1, 'ConstantValue__192_float')
-ConstantValue__192_double = solver.IntVar(0, 1, 'ConstantValue__192_double')
-ConstantValue__192_enob = solver.IntVar(-10000, 10000, 'ConstantValue__192_enob')
-solver.Add( + (1)*ConstantValue__192_enob + (-1)*ConstantValue__192_fixbits + (10000)*ConstantValue__192_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__192_enob + (10000)*ConstantValue__192_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__192_enob + (10000)*ConstantValue__192_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__192_fixbits + (-10000)*ConstantValue__192_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__192_fixp + (1)*ConstantValue__192_float + (1)*ConstantValue__192_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__192_fixbits + (-10000)*ConstantValue__192_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for float -0.000000e+00
-ConstantValue__193_fixbits = solver.IntVar(0, 32, 'ConstantValue__193_fixbits')
-ConstantValue__193_fixp = solver.IntVar(0, 1, 'ConstantValue__193_fixp')
-ConstantValue__193_float = solver.IntVar(0, 1, 'ConstantValue__193_float')
-ConstantValue__193_double = solver.IntVar(0, 1, 'ConstantValue__193_double')
-ConstantValue__193_enob = solver.IntVar(-10000, 10000, 'ConstantValue__193_enob')
-solver.Add( + (1)*ConstantValue__193_enob + (-1)*ConstantValue__193_fixbits + (10000)*ConstantValue__193_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__193_enob + (10000)*ConstantValue__193_float<=10149)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__193_enob + (10000)*ConstantValue__193_double<=11074)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__193_fixbits + (-10000)*ConstantValue__193_fixp>=-9969)    #Limit the lower number of frac bits32
-solver.Add( + (1)*ConstantValue__193_fixp + (1)*ConstantValue__193_float + (1)*ConstantValue__193_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__193_fixbits + (-10000)*ConstantValue__193_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__194_fixbits = solver.IntVar(0, 31, 'ConstantValue__194_fixbits')
-ConstantValue__194_fixp = solver.IntVar(0, 1, 'ConstantValue__194_fixp')
-ConstantValue__194_float = solver.IntVar(0, 1, 'ConstantValue__194_float')
-ConstantValue__194_double = solver.IntVar(0, 1, 'ConstantValue__194_double')
-ConstantValue__194_enob = solver.IntVar(-10000, 10000, 'ConstantValue__194_enob')
-solver.Add( + (1)*ConstantValue__194_enob + (-1)*ConstantValue__194_fixbits + (10000)*ConstantValue__194_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__194_enob + (10000)*ConstantValue__194_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__194_enob + (10000)*ConstantValue__194_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__194_fixbits + (-10000)*ConstantValue__194_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__194_fixp + (1)*ConstantValue__194_float + (1)*ConstantValue__194_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__194_fixbits + (-10000)*ConstantValue__194_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__195_fixbits = solver.IntVar(0, 31, 'ConstantValue__195_fixbits')
-ConstantValue__195_fixp = solver.IntVar(0, 1, 'ConstantValue__195_fixp')
-ConstantValue__195_float = solver.IntVar(0, 1, 'ConstantValue__195_float')
-ConstantValue__195_double = solver.IntVar(0, 1, 'ConstantValue__195_double')
-ConstantValue__195_enob = solver.IntVar(-10000, 10000, 'ConstantValue__195_enob')
-solver.Add( + (1)*ConstantValue__195_enob + (-1)*ConstantValue__195_fixbits + (10000)*ConstantValue__195_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__195_enob + (10000)*ConstantValue__195_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__195_enob + (10000)*ConstantValue__195_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__195_fixbits + (-10000)*ConstantValue__195_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__195_fixp + (1)*ConstantValue__195_float + (1)*ConstantValue__195_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__195_fixbits + (-10000)*ConstantValue__195_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__196_fixbits = solver.IntVar(0, 31, 'ConstantValue__196_fixbits')
-ConstantValue__196_fixp = solver.IntVar(0, 1, 'ConstantValue__196_fixp')
-ConstantValue__196_float = solver.IntVar(0, 1, 'ConstantValue__196_float')
-ConstantValue__196_double = solver.IntVar(0, 1, 'ConstantValue__196_double')
-ConstantValue__196_enob = solver.IntVar(-10000, 10000, 'ConstantValue__196_enob')
-solver.Add( + (1)*ConstantValue__196_enob + (-1)*ConstantValue__196_fixbits + (10000)*ConstantValue__196_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__196_enob + (10000)*ConstantValue__196_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__196_enob + (10000)*ConstantValue__196_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__196_fixbits + (-10000)*ConstantValue__196_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__196_fixp + (1)*ConstantValue__196_float + (1)*ConstantValue__196_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__196_fixbits + (-10000)*ConstantValue__196_fixp<=0)    #If not fix, frac part to zero
-
-
-
-#Stuff for double 1.000000e+00
-ConstantValue__197_fixbits = solver.IntVar(0, 31, 'ConstantValue__197_fixbits')
-ConstantValue__197_fixp = solver.IntVar(0, 1, 'ConstantValue__197_fixp')
-ConstantValue__197_float = solver.IntVar(0, 1, 'ConstantValue__197_float')
-ConstantValue__197_double = solver.IntVar(0, 1, 'ConstantValue__197_double')
-ConstantValue__197_enob = solver.IntVar(-10000, 10000, 'ConstantValue__197_enob')
-solver.Add( + (1)*ConstantValue__197_enob + (-1)*ConstantValue__197_fixbits + (10000)*ConstantValue__197_fixp<=10000)    #Enob constraint for fix
-solver.Add( + (1)*ConstantValue__197_enob + (10000)*ConstantValue__197_float<=10023)    #Enob constraint for float
-solver.Add( + (1)*ConstantValue__197_enob + (10000)*ConstantValue__197_double<=10052)    #Enob constraint for double
-solver.Add( + (1)*ConstantValue__197_fixbits + (-10000)*ConstantValue__197_fixp>=-9970)    #Limit the lower number of frac bits31
-solver.Add( + (1)*ConstantValue__197_fixp + (1)*ConstantValue__197_float + (1)*ConstantValue__197_double==1)    #Exactly one selected type
-solver.Add( + (1)*ConstantValue__197_fixbits + (-10000)*ConstantValue__197_fixp<=0)    #If not fix, frac part to zero
+ConstantValue__99_fixbits = solver.IntVar(0, 34, 'ConstantValue__99_fixbits')
+ConstantValue__99_fixp = solver.IntVar(0, 1, 'ConstantValue__99_fixp')
+ConstantValue__99_float = solver.IntVar(0, 1, 'ConstantValue__99_float')
+ConstantValue__99_double = solver.IntVar(0, 1, 'ConstantValue__99_double')
+ConstantValue__99_enob = solver.IntVar(-10000, 10000, 'ConstantValue__99_enob')
+solver.Add( + (1)*ConstantValue__99_enob + (-1)*ConstantValue__99_fixbits + (10000)*ConstantValue__99_fixp<=10000)    #Enob constraint for fix
+solver.Add( + (1)*ConstantValue__99_enob + (10000)*ConstantValue__99_float<=9994)    #Enob constraint for float
+solver.Add( + (1)*ConstantValue__99_enob + (10000)*ConstantValue__99_double<=10023)    #Enob constraint for double
+solver.Add( + (1)*ConstantValue__99_fixbits + (-10000)*ConstantValue__99_fixp>=-9967)    #Limit the lower number of frac bits34
+solver.Add( + (1)*ConstantValue__99_fixp + (1)*ConstantValue__99_float + (1)*ConstantValue__99_double==1)    #Exactly one selected type
+solver.Add( + (1)*ConstantValue__99_fixbits + (-10000)*ConstantValue__99_fixp<=0)    #If not fix, frac part to zero
 
 
 
 
 
 #All the model has been generated, lets solve it!
-solver.Minimize(1000 * castCostObj / 1027.63+ 1 * enobCostObj / 84803+ 1000 * mathCostObj / 244.18)
+solver.Minimize(1 * castCostObj / 927.229+ 1 * enobCostObj / 75191+ 1000 * mathCostObj / 231.759)
 
 # Model declaration end.

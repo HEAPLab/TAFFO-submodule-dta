@@ -2,16 +2,18 @@ TODOS:
 
 Implement inserting cost proportional to number of execution
 
+When storing a non converted value to a converted one, a cast is needed. Indeed there should be a conversion cost.
+What if a conversion disabled is used in a computation that is not disabled? As for now it is skipped.
+
 Enob propagation (WIP, known math functions calls not handled)
 
 Avoid error in empty models (this should not even happen...)
 
 Disable execution on disabled instructions
 
-Handle global pointers!!!
+Handle global pointers!!! -> WIP, handled in a general and ugly way. For now, only define a new variable until a store happens!
 Handle pointers (WIP) (OUCH, should work but it is still to be tested very much, moreover, what happens when more than a variable is inserted? General pointers are still not handled)
 
-What if a conversion disabled is used in a computation that is not disabled? As for now it is skipped.
 
 When computing a function call from root, parse arguments info!
 

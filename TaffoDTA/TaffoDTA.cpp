@@ -692,7 +692,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
     }
 
 
-    for (Function &f : m.functions()) {
+    /*for (Function &f : m.functions()) {
         //Skip compiler provided functions
         if (f.isIntrinsic()) {
             dbgs() << "Skipping intrinsic function " << f.getName() << "\n";
@@ -708,7 +708,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
         optimizer.handleCallFromRoot(&f);
 
 
-    }
+    }*/
 
     assert(optimizer.finish() && "Optimizer did not found a solution!");
 
@@ -718,6 +718,9 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
             dbgs() << "Not in the conversion queue! Skipping!\n";
             continue;
         }
+        dbgs() << "Assigning to ";
+        v->print(dbgs());
+
 
         std::shared_ptr<ValueInfo> viu = valueInfo(v);
 
@@ -728,9 +731,10 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
             continue;
         }
 
-        dbgs() << "Assigning " << fp->toString() << " to ";
-        v->print(dbgs());
+        dbgs() << " datatype " << fp->toString();
+
         dbgs() << "\n";
+
 
         bool result = mergeDataTypes(viu->metadata, fp);
         if (result) {

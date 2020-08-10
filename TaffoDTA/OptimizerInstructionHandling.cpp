@@ -559,8 +559,8 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
         return;
     }
 
-    if(isa<IntToPtrInst>(instruction) ||
-            isa<PtrToIntInst>(instruction)){
+    if (isa<IntToPtrInst>(instruction) ||
+        isa<PtrToIntInst>(instruction)) {
         dbgs() << "Black magic with pointers is happening. We do not want to awake the dragon, rigth?\n";
         return;
     }
@@ -673,6 +673,20 @@ void Optimizer::handleFCmp(Instruction *instr, shared_ptr<ValueInfo> valueInfo) 
     if (!info1 || !info2) {
         dbgs() << "One of the two values does not have info, ignoring...\n";
         return;
+    }
+
+    if(auto scalar = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info1)){
+        if(scalar->doesReferToConstant()){
+            dbgs() << "Info1 is a constant, skipping as no further cast cost will be introduced.\n";
+            return;
+        }
+    }
+
+    if(auto scalar = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info2)){
+        if(scalar->doesReferToConstant()){
+            dbgs() << "Info2 is a constant, skipping as no further cast cost will be introduced.\n";
+            return;;
+        }
     }
 
 
@@ -802,7 +816,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
         if (intrinsicsID != llvm::Intrinsic::not_intrinsic) {
             switch (intrinsicsID) {
                 //TODO: implement the rest of the libc...
-                case llvm::Intrinsic::log2:
+                /*case llvm::Intrinsic::log2:
                 case llvm::Intrinsic::sqrt:
                 case llvm::Intrinsic::powi:
                 case llvm::Intrinsic::sin:
@@ -819,17 +833,17 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
                 case llvm::Intrinsic::trunc:
                 case llvm::Intrinsic::rint:
                 case llvm::Intrinsic::nearbyint:
-                case llvm::Intrinsic::round:
-                    //FIXME: we, for now, emulate the support for these intrinsic; in the real case, these calls have
-                    // their counterpart in all the versions, so they can be treated in some other ways
+                case llvm::Intrinsic::round:*/
+                //FIXME: we, for now, emulate the support for these intrinsic; in the real case, these calls have
+                // their counterpart in all the versions, so they can be treated in some other ways
 
-                    break;
+                break;
                 default:
                     emitError("skipping intrinsic " + calledFunctionName);
                     return;
             }
         }
-        dbgs() << "Handling external function call, we will convert all to original parameters.";
+        dbgs() << "Handling external function call, we will convert all to original parameters.\n";
         handleUnknownFunction(instruction, valueInfo);
         return;
     }
@@ -864,7 +878,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
         //}
         dbgs() << "\n\n";
     }
-    dbgs() << ("Arguments end.");
+    dbgs() << ("Arguments end.\n");
 
 
     auto it = functions_still_to_visit.find(calledFunctionName);
@@ -886,6 +900,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
                                                                                  inputInfo->IError,
                                                                                  instruction->getFunction()->getName());
             retInfo = result;
+            dbgs() << "Allocated variable for returns.\n";
         } else {
             dbgs() << "There was an input info but no fix point associated.\n";
         }
@@ -893,9 +908,12 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
         auto info = loadStructInfo(instruction, pInfo, "");
         saveInfoForValue(instruction, info);
         retInfo = info;
+        dbgs() << "Allocated variable for struct returns (?).\n";
     } else {
         dbgs() << "No info available on return value, maybe it is not a floating point returning function.\n";
     }
+
+
 
     //in retInfo we now have a variable for the return value of the function. Every return should be casted against it!
 
@@ -903,13 +921,22 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
 
 
     //Obviously the type should be sufficient to contain the result
-
+    /* THIS IS A WHITELIST! USE FOR DEBUG
+     * auto nm = callee->getName();
+    if (!nm.equals("main") &&
+        !nm.equals("_Z9bs_threadPv") &&
+        !nm.equals("_Z19BlkSchlsEqEuroNoDivdddddifPdS_.3") &&
+            !nm.equals("_Z19BlkSchlsEqEuroNoDivfffffifPfS_.5")&&
+            !nm.equals("_Z4CNDFf.2.13")&&
+            !nm.equals("CNDF.1")) {
+        dbgs() << "HALTING CALLING DUE TO DEBUG REQUEST!";
+        return;
+    }*/
 
 
 
     //In this case we have no known math function.
     //We will have, when enabled, math functions. In this case these will be handled here!
-    //TODO: handle known fix point math functions, such as implemented cos and sin
 
     // if not a whitelisted then try to fetch it from Module
     // fetch llvm::Function
@@ -1287,9 +1314,10 @@ int Optimizer::getMinIntBitOfValue(Value *pValue) {
         APFloat tmp = fp_i->getValueAPF();
         bool losesInfo;
         tmp.convert(APFloatBase::IEEEdouble(), APFloat::roundingMode::rmNearestTiesToEven, &losesInfo);
-        dbgs() << "Getting max bits of constant!\n";
-        smallestRepresentableNumber = tmp.convertToDouble();
-    }else {
+        auto a = tmp.convertToDouble();
+        dbgs() << "Getting max bits of constant " << a << "!\n";
+        smallestRepresentableNumber = abs(a);
+    } else {
         if (!tuner->hasInfo(pValue)) {
             dbgs() << "No info available for IntBit computation. Using default value\n";
             return bits;
@@ -1338,7 +1366,7 @@ int Optimizer::getMaxIntBitOfValue(Value *pValue) {
         bool losesInfo;
         tmp.convert(APFloatBase::IEEEdouble(), APFloat::roundingMode::rmNearestTiesToEven, &losesInfo);
         dbgs() << "Getting max bits of constant!\n";
-        biggestRepresentableNumber = tmp.convertToDouble();
+        biggestRepresentableNumber = abs(tmp.convertToDouble());
     } else {
         if (!tuner->hasInfo(pValue)) {
             dbgs() << "No info available for IntBit computation. Using default value\n";
@@ -1369,8 +1397,12 @@ int Optimizer::getMaxIntBitOfValue(Value *pValue) {
 }
 
 void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
+
     assert(instruction && "Instruction is nullptr");
     const auto *call_i = dyn_cast<CallBase>(instruction);
+    dbgs() << "=====> Unknown function handling: " << call_i->getCalledFunction()->getName() << "\n";
+
+
     assert(call_i && "Cannot cast instruction to call!");
     shared_ptr<OptimizerScalarInfo> retInfo;
     //handling return value. We will force it to be in the original type.
@@ -1388,6 +1420,7 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
                                                                                      true,
                                                                                      false);
                 retInfo = result;
+                dbgs() << "Correctly handled. New info: " << retInfo->toString() << "\n";
             } else {
                 dbgs() << "There was an input info but no fix point associated.\n";
             }
@@ -1408,11 +1441,13 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
             constraint.clear();
             constraint.push_back(make_pair(retInfo->getDoubleSelectedVariable(), 1.0));
             model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
+            dbgs() << "Forced return cast to double.\n";
         } else if (instruction->getType()->isFloatTy()) {
             auto constraint = vector<pair<string, double>>();
             constraint.clear();
             constraint.push_back(make_pair(retInfo->getFloatSelectedVariable(), 1.0));
             model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
+            dbgs() << "Forced return cast to float.\n";
         } else if (instruction->getType()->isFloatingPointTy()) {
             dbgs() << "The function returns a floating point type not implemented in the model. Bailing out.\n";
         } else {
@@ -1451,14 +1486,14 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
                 constraint.clear();
                 constraint.push_back(make_pair(info2->getFloatSelectedVariable(), 1.0));
                 model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
-
+                dbgs() << "Forcing argument to float type.\n";
             } else if ((*arg_it)->getType()->isDoubleTy()) {
                 auto info2 = allocateNewVariableWithCastCost(arg_it->get(), instruction);
                 auto constraint = vector<pair<string, double>>();
                 constraint.clear();
                 constraint.push_back(make_pair(info2->getDoubleSelectedVariable(), 1.0));
                 model.insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
-
+                dbgs() << "Forcing argument to double type.\n";
             } else if ((*arg_it)->getType()->isFloatingPointTy()) {
                 dbgs() << "The function uses a floating point type not implemented in the model. Bailing out.\n";
             } else {
