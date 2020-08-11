@@ -819,12 +819,16 @@ shared_ptr<mdutils::MDInfo> Optimizer::buildDataHierarchy(shared_ptr<OptimizerIn
         }
 
         return result;
+    }else if(info->getKind() == OptimizerInfo::K_Pointer){
+        auto apr = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info);
+        dbgs() << "Unwrapping pointer...\n";
+        return buildDataHierarchy(apr->getOptInfo());
     }
 
     if(!info){
         dbgs() << "OptimizerInfo null!\n";
     }else{
-        dbgs() << "Unknown OptimizerInfo: \n";
+        dbgs() << "Unknown OptimizerInfo: " << info->toString() << "\n";
     }
     llvm_unreachable("Unnknown data type");
 }
