@@ -157,9 +157,9 @@ int saveRgbImage(RgbImage* image, const char* fileName, float scale) {
 
 	for(i = 0; i < image->h; i++) {
 		for(j = 0; j < (image->w - 1); j++) {
-			fprintf(fp, "%d,%d,%d,", int(image->pixels[i][j].r * scale), int(image->pixels[i][j].g * scale), int(image->pixels[i][j].b * scale));
+			fprintf(fp, "%d,%d,%d,", (int)(image->pixels[i][j].r * scale), (int)(image->pixels[i][j].g * scale), (int)(image->pixels[i][j].b * scale));
 		}
-		fprintf(fp, "%d,%d,%d\n", int(image->pixels[i][j].r * scale), int(image->pixels[i][j].g * scale), int(image->pixels[i][j].b * scale));
+		fprintf(fp, "%d,%d,%d\n", (int)(image->pixels[i][j].r * scale), (int)(image->pixels[i][j].g * scale), (int)(image->pixels[i][j].b * scale));
 	}
 
 	fprintf(fp, "%s", image->meta);

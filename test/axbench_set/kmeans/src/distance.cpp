@@ -8,8 +8,7 @@
 
 #include "distance.h"
 #include <math.h>
-#include <map>
-#include <cstdio>
+
 
 int count = 0;
 #define MAX_COUNT 1200000

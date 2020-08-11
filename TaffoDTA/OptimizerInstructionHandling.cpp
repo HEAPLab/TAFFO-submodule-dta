@@ -211,11 +211,14 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
 
     } else if (load->getType()->isPointerTy()) {
         dbgs() << "Handling load of a pointer...\n";
-        //Unvrap the pointer, hoping that it is pointing to something
+        //Unwrap the pointer, hoping that it is pointing to something
         auto info = pinfos->getOptInfo();
         if (info->getKind() != OptimizerInfo::K_Pointer) {
-            emitError("Expecting a pointer info when unwrapping a pointer...");
-            return;
+            dbgs() << "Warning, returning a pointer but the unwrapped thing is not a pointer! To prevent error, wrapping it...";
+            //FIXME: hack to prevent problem when using global pointer as arrays
+            dbgs() << "Unfortunately got " << info->toString() << "\n";
+
+            info = make_shared<OptimizerPointerInfo>(info);
         }
         dbgs() << "The final register will have as info: " << info->toString() << "\n";
         saveInfoForValue(instruction, info);
@@ -501,6 +504,46 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
 
 
     if (isa<BitCastInst>(instruction)) {
+        //FIXME: hack for jmeint to give info after the malloc
+        auto bitcast = dyn_cast_or_null<BitCastInst>(instruction);
+        assert(bitcast && "Not a bitcast???");
+
+        if(bitcast->getType()->getPointerElementType()->isFloatingPointTy()){
+            //When bitcasting to a floating point and having info, maybe we are dealing with a floating point array!
+            auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
+            if (!fieldInfo) {
+                dbgs() << "Not enough information. Bailing out.\n\n";
+
+                if (valueInfo->metadata) {
+                    dbgs() << "WTF metadata has a value but it is not an input info...\n\n";
+                } else {
+                    dbgs() << "Metadata is really null.\n";
+                }
+                return;
+            }
+
+            auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
+            if (!fptype) {
+                dbgs() << "No fixed point info associated. Bailing out.\n";
+                return;
+            }
+
+            //Do not save! As here we have a pointer!
+            shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
+                                                                                   fieldInfo->IError,
+                                                                                   instruction->getFunction()->getName(), false);
+
+            auto met =make_shared<OptimizerPointerInfo>(variable);
+
+            saveInfoForValue(instruction, met);
+
+            dbgs() << "Associated metadata " << met->toString() << " to the bitcast!\n";
+            return;
+
+        }
+
+
+
         dbgs() << "[Warning] Bitcasting not supported for model generation.";
         return;
     }
@@ -893,16 +936,23 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
     //Allocating variable for result: all returns will have the same type, and therefore a cast, if needed
     shared_ptr<OptimizerInfo> retInfo;
     if (auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata)) {
-        auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
-        if (fptype) {
-            dbgs() << fptype->toString();
-            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange,
-                                                                                 inputInfo->IError,
-                                                                                 instruction->getFunction()->getName());
-            retInfo = result;
-            dbgs() << "Allocated variable for returns.\n";
-        } else {
-            dbgs() << "There was an input info but no fix point associated.\n";
+        if(instruction->getType()->isFloatingPointTy()) {
+            auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
+            if (fptype) {
+                dbgs() << fptype->toString();
+                dbgs() << "\n";
+                dbgs() << "Info: " << inputInfo->toString() << "\n";
+                shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype,
+                                                                                     inputInfo->IRange,
+                                                                                     inputInfo->IError,
+                                                                                     instruction->getFunction()->getName());
+                retInfo = result;
+                dbgs() << "Allocated variable for returns.\n";
+            } else {
+                dbgs() << "There was an input info but no fix point associated.\n";
+            }
+        }else{
+            dbgs() << "Has metadata but is not a floating point!!!\n";
         }
     } else if (auto pInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata)) {
         auto info = loadStructInfo(instruction, pInfo, "");

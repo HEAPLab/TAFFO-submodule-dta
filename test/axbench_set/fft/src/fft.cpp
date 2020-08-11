@@ -13,7 +13,18 @@ int main(int argc, char* argv[])
 {
 	int i ;
 
-	int __attribute((annotate("target('n') scalar(range(1,65536) final disabled)"))) n = atoi(argv[1]);
+	if(argc < 3){
+	    std::cout << "Missing input parameters!" << std::endl;
+	    exit(-1);
+	}
+
+
+    int __attribute((annotate("target('n') scalar(range(1,65536) final disabled)"))) n = strtol(argv[1], NULL, 10);
+	if(errno){
+        std::cout << "Error looking for number!" << std::endl;
+        exit(-1);
+	}
+
 	std::string outputFilename 	= argv[2];
 
 	// prepare the output file for writting the theta values
