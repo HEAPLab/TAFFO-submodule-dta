@@ -691,8 +691,8 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
     }
 
-
-    /*for (Function &f : m.functions()) {
+    //Looking for remaining functions
+    for (Function &f : m.functions()) {
         //Skip compiler provided functions
         if (f.isIntrinsic()) {
             dbgs() << "Skipping intrinsic function " << f.getName() << "\n";
@@ -708,7 +708,7 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
         optimizer.handleCallFromRoot(&f);
 
 
-    }*/
+    }
 
     assert(optimizer.finish() && "Optimizer did not found a solution!");
 

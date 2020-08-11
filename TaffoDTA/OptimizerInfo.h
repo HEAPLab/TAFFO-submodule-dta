@@ -55,7 +55,6 @@ namespace tuner {
         bool referToConstant;
 
 
-
         OptimizerScalarInfo(string _variableName, unsigned _minBits, unsigned _maxBits, unsigned _totalBits,
                             bool _isSigned, mdutils::Range _range, string _overriddenEnob)
                 : OptimizerInfo(K_Field), referToConstant(false) {
@@ -124,7 +123,7 @@ namespace tuner {
         }
 
         const string getRealEnobVariable() {
-            if(!overridedEnob.empty()){
+            if (!overridedEnob.empty()) {
                 return overridedEnob;
             }
             return *baseName + "_enob";
@@ -142,7 +141,7 @@ namespace tuner {
             return isSigned;
         }
 
-        void overrideEnob(string newEnob){
+        void overrideEnob(string newEnob) {
             overridedEnob = newEnob;
         }
 
@@ -210,7 +209,22 @@ namespace tuner {
 
 
         virtual std::string toString() const override {
-            return "STRUCT TO STRING NOT IMPLEMENTED!";
+            std::stringstream sstm;
+            sstm << "StructInfo(";
+            int i = 0;
+            for (auto inf : Fields) {
+                if (i) {
+                    sstm << "; ";
+                }
+                if (inf) {
+                    sstm << inf->toString();
+                } else {
+                    sstm << "nullptr";
+                }
+                i++;
+            }
+            sstm << ")";
+            return sstm.str();
         };
 
         bool operator==(const OptimizerInfo &other) const override {
