@@ -11,12 +11,13 @@ if not os.path.isfile('./magiclang2.sh'):
     exit(-1)
 
 PROGRAM_NAME = sys.argv[1]
-COST_MODEL = "raspberry-clang.csv"
+COST_MODEL = "core2.csv"
 OPT_FLAG="-O0"
 COMPILER_NAME="clang"
 TEST_DIM="MEDIUM"
 HONEST_MODE_ENABLED=True
 TAFFO_DEBUG=False
+ITERATIONS = 1
 print("Running test for", PROGRAM_NAME, file=sys.stderr)
 
 
@@ -83,7 +84,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
         return {"ERROR": "NO DATA"}
 
     cumulated_time = 0
-    for i in range(0, 20):
+    for i in range(0, ITERATIONS):
         process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp"], stdout=PIPE, stderr=PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
@@ -100,7 +101,7 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
         run_time = float(err.decode('ascii').strip())
         cumulated_time+=run_time
 
-    run_time = cumulated_time/20
+    run_time = cumulated_time/ITERATIONS
     for i in range(0, len(output)):
         output[i] = float(output[i])
 
@@ -152,7 +153,7 @@ def loadReferenceRun():
     compilationParams.append(COMPILER_NAME)
     compilationParams.append("-lm")
     compilationParams.append(OPT_FLAG)
-    compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp.1.magiclangtmp.ll")
+    compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".fixp.4.magiclangtmp.ll")
     compilationParams.append("-o")
     compilationParams.append("polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".flt")
 
@@ -161,7 +162,7 @@ def loadReferenceRun():
     exit_code = process.wait()
 
     cumulated_time = 0
-    for i in range(0, 20):
+    for i in range(0, ITERATIONS):
         process = Popen(["polybench_edited/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".flt"], stdout=PIPE, stderr=PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
@@ -180,7 +181,7 @@ def loadReferenceRun():
     for i in range(0, len(output)):
         output[i] = float(output[i])
 
-    return (output, cumulated_time/20)
+    return (output, cumulated_time/ITERATIONS)
 
 
 # Parameters:
@@ -188,22 +189,22 @@ def loadReferenceRun():
 # Loading reference dataset
 
 #pre compilation in order to prepare the correct ll file
-#compileAndCheck("NONE", "false", 0, 0, 0, "false")
+compileAndCheck("NONE", "false", 0, 0, 0, "false")
 dataset, orig_run_time = loadReferenceRun()
 
 
 testSet = {}
 
-#testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
+testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-#testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
+testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-#testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
+testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
 
-#testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
+testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
 
 testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
 
-#testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
+testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 
 print(json.dumps(testSet, indent=4))

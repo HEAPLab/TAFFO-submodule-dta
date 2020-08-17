@@ -34,7 +34,7 @@
 
 /* Variable declaration/allocation. */
 int seq[N];
-DATA_TYPE __attribute__((annotate("scalar(range(-20, 20) final error(1e-100))"))) table[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-500, 500) error(1e-100))"))) table[N][N];
 
 #define match(b1, b2) (((b1)+(b2)) == 3 ? 1 : 0)
 #define max_score(s1, s2) ((s1 >= s2) ? s1 : s2)
@@ -50,8 +50,8 @@ int main(){
 
 
 
-    int i __attribute__((annotate("scalar(range(-60, 60) final)")));
-    int j __attribute__((annotate("scalar(range(-60, 60) final)")));
+    int i __attribute__((annotate("scalar(range(-500, 500) final)")));
+    int j __attribute__((annotate("scalar(range(-500, 500) final)")));
     int k;
 
     //base is AGCT/0..3
@@ -65,7 +65,7 @@ int main(){
 
     for (i = _PB_N-1; i >= 0; i--) {
         for (j=i+1; j<_PB_N; j++) {
-            DATA_TYPE __attribute__((annotate("scalar()"))) table_i_j = table[i][j];
+            DATA_TYPE __attribute__((annotate("scalar(range(-500, 500))"))) table_i_j = table[i][j];
 
             if (j-1>=0)
                 table_i_j = max_score(table_i_j, table[i][j-1]);

@@ -924,14 +924,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
     dbgs() << ("Arguments end.\n");
 
 
-    auto it = functions_still_to_visit.find(calledFunctionName);
-    if (it != functions_still_to_visit.end()) {
-        //We mark the called function as visited from the global queue, so we will not visit it starting from root.
-        functions_still_to_visit.erase(calledFunctionName);
-        dbgs() << "Function " << calledFunctionName << " marked as visited in global queue.\n";
-    } else {
-        emitError("Cannot find function " + calledFunctionName + " in global queue!\n");
-    }
+
 
     //Allocating variable for result: all returns will have the same type, and therefore a cast, if needed
     shared_ptr<OptimizerInfo> retInfo;
@@ -968,7 +961,20 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
     //in retInfo we now have a variable for the return value of the function. Every return should be casted against it!
 
 
-
+    auto it = functions_still_to_visit.find(calledFunctionName);
+    if (it != functions_still_to_visit.end()) {
+        //We mark the called function as visited from the global queue, so we will not visit it starting from root.
+        functions_still_to_visit.erase(calledFunctionName);
+        dbgs() << "Function " << calledFunctionName << " marked as visited in global queue.\n";
+    } else {
+        dbgs() << "\n\n==================================================\n";
+        dbgs() << "FUNCTION ALREADY VISITED!\n";
+        dbgs() << "As we have already visited the function we can not visit it again, as it will cause errors.\n";
+        dbgs() << "Probably, some precedent component of TAFFO did not clone this function, therefore this error.\n";
+        dbgs() << "==================================================\n\n";
+        //Ok it may happen to visit the same function two times. In this case, just reuse the variable. If the function was cloneable, TAFFO would have already done it!
+        return;
+    }
 
     //Obviously the type should be sufficient to contain the result
     /* THIS IS A WHITELIST! USE FOR DEBUG

@@ -18,7 +18,7 @@ int initClusters(Clusters* __attribute((annotate(ANNOTATION_CLUSTER))) clusters,
 
 	clusters->centroids = (Centroid*)malloc(k * sizeof(Centroid));
 
-	if (clusters == NULL) {
+	if (clusters->centroids == NULL) {
 		printf("Warning: Oops! Cannot allocate memory for the clusters!\n");
 
 		return 0;

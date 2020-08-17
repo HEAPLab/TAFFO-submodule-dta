@@ -11,7 +11,20 @@ gettime:                                # @gettime
 	.cfi_offset %rbp, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
-	callq	clock
+	subq	$32, %rsp
+	movl	$2, %edi
+	leaq	-16(%rbp), %rsi
+	callq	clock_gettime
+	imulq	$1000000, -16(%rbp), %rsi # imm = 0xF4240
+	movq	-8(%rbp), %rcx
+	movl	%eax, -20(%rbp)         # 4-byte Spill
+	movq	%rcx, %rax
+	cqto
+	movl	$1000, %ecx             # imm = 0x3E8
+	idivq	%rcx
+	addq	%rax, %rsi
+	movq	%rsi, %rax
+	addq	$32, %rsp
 	popq	%rbp
 	.cfi_def_cfa %rsp, 8
 	retq
@@ -150,7 +163,7 @@ main:                                   # @main
                                         # =>This Loop Header: Depth=1
                                         #     Child Loop BB6_3 Depth 2
 	movl	-20(%rbp), %eax         # 4-byte Reload
-	cmpl	$32, %eax
+	cmpl	$260, %eax              # imm = 0x104
 	movl	%eax, -24(%rbp)         # 4-byte Spill
 	jge	.LBB6_8
 # %bb.2:                                # %for.body
@@ -162,33 +175,33 @@ main:                                   # @main
                                         #   Parent Loop BB6_1 Depth=1
                                         # =>  This Inner Loop Header: Depth=2
 	movl	-28(%rbp), %eax         # 4-byte Reload
-	cmpl	$28, %eax
+	cmpl	$240, %eax
 	movl	%eax, -32(%rbp)         # 4-byte Spill
 	jge	.LBB6_6
 # %bb.4:                                # %for.body9
                                         #   in Loop: Header=BB6_3 Depth=2
 	movl	-24(%rbp), %eax         # 4-byte Reload
-	shll	$25, %eax
+	shll	$23, %eax
 	movl	-32(%rbp), %ecx         # 4-byte Reload
-	shll	$25, %ecx
+	shll	$23, %ecx
 	movl	%eax, %eax
 	movl	%eax, %edx
 	movl	%ecx, %eax
 	movl	%eax, %esi
 	imulq	%rsi, %rdx
-	shrq	$32, %rdx
+	shrq	$31, %rdx
 	movl	%edx, %eax
 	movl	%eax, %eax
                                         # kill: def $rax killed $eax
 	xorl	%ecx, %ecx
 	movl	%ecx, %edx
-	movl	$28, %esi
+	movl	$240, %esi
 	divq	%rsi
-	shlq	$5, %rax
+	shlq	$8, %rax
 	movl	%eax, %ecx
 	movl	-24(%rbp), %edi         # 4-byte Reload
 	movslq	%edi, %rax
-	imulq	$112, %rax, %rax
+	imulq	$960, %rax, %rax        # imm = 0x3C0
 	movabsq	$data.fixp, %rsi
 	addq	%rax, %rsi
 	movl	-32(%rbp), %r8d         # 4-byte Reload
@@ -218,7 +231,7 @@ main:                                   # @main
                                         # =>This Loop Header: Depth=1
                                         #     Child Loop BB6_11 Depth 2
 	movl	-36(%rbp), %eax         # 4-byte Reload
-	cmpl	$28, %eax
+	cmpl	$240, %eax
 	movl	%eax, -40(%rbp)         # 4-byte Spill
 	jge	.LBB6_16
 # %bb.10:                               # %for.body20
@@ -232,14 +245,14 @@ main:                                   # @main
                                         #   Parent Loop BB6_9 Depth=1
                                         # =>  This Inner Loop Header: Depth=2
 	movl	-44(%rbp), %eax         # 4-byte Reload
-	cmpl	$32, %eax
+	cmpl	$260, %eax              # imm = 0x104
 	movl	%eax, -48(%rbp)         # 4-byte Spill
 	jge	.LBB6_14
 # %bb.12:                               # %for.body26
                                         #   in Loop: Header=BB6_11 Depth=2
 	movl	-48(%rbp), %eax         # 4-byte Reload
 	movslq	%eax, %rcx
-	imulq	$112, %rcx, %rcx
+	imulq	$960, %rcx, %rcx        # imm = 0x3C0
 	movabsq	$data.fixp, %rdx
 	addq	%rcx, %rdx
 	movl	-40(%rbp), %esi         # 4-byte Reload
@@ -261,14 +274,14 @@ main:                                   # @main
 	movl	-40(%rbp), %eax         # 4-byte Reload
 	movslq	%eax, %rcx
 	movslq	mean.fixp(,%rcx,4), %rdx
-	shlq	$26, %rdx
+	shlq	$23, %rdx
 	movq	%rdx, %rax
 	cqto
-	movl	$2147483648, %esi       # imm = 0x80000000
+	movl	$2181038080, %esi       # imm = 0x82000000
 	idivq	%rsi
-	shlq	$7, %rax
+	shlq	$10, %rax
 	movl	%eax, %edi
-	sarl	$7, %edi
+	sarl	$10, %edi
 	movl	%edi, mean.fixp(,%rcx,4)
 # %bb.15:                               # %for.inc39
                                         #   in Loop: Header=BB6_9 Depth=1
@@ -284,7 +297,7 @@ main:                                   # @main
                                         # =>This Loop Header: Depth=1
                                         #     Child Loop BB6_19 Depth 2
 	movl	-52(%rbp), %eax         # 4-byte Reload
-	cmpl	$32, %eax
+	cmpl	$260, %eax              # imm = 0x104
 	movl	%eax, -56(%rbp)         # 4-byte Spill
 	jge	.LBB6_24
 # %bb.18:                               # %for.body45
@@ -296,7 +309,7 @@ main:                                   # @main
                                         #   Parent Loop BB6_17 Depth=1
                                         # =>  This Inner Loop Header: Depth=2
 	movl	-60(%rbp), %eax         # 4-byte Reload
-	cmpl	$28, %eax
+	cmpl	$240, %eax
 	movl	%eax, -64(%rbp)         # 4-byte Spill
 	jge	.LBB6_22
 # %bb.20:                               # %for.body49
@@ -306,7 +319,7 @@ main:                                   # @main
 	movl	mean.fixp(,%rcx,4), %edx
 	movl	-56(%rbp), %esi         # 4-byte Reload
 	movslq	%esi, %rcx
-	imulq	$112, %rcx, %rcx
+	imulq	$960, %rcx, %rcx        # imm = 0x3C0
 	movabsq	$data.fixp, %rdi
 	addq	%rcx, %rdi
 	movslq	%eax, %rcx
@@ -339,7 +352,7 @@ main:                                   # @main
                                         #     Child Loop BB6_27 Depth 2
                                         #       Child Loop BB6_29 Depth 3
 	movl	-68(%rbp), %eax         # 4-byte Reload
-	cmpl	$28, %eax
+	cmpl	$240, %eax
 	movl	%eax, -72(%rbp)         # 4-byte Spill
 	jge	.LBB6_36
 # %bb.26:                               # %for.body65
@@ -352,7 +365,7 @@ main:                                   # @main
                                         # =>  This Loop Header: Depth=2
                                         #       Child Loop BB6_29 Depth 3
 	movl	-76(%rbp), %eax         # 4-byte Reload
-	cmpl	$28, %eax
+	cmpl	$240, %eax
 	movl	%eax, -80(%rbp)         # 4-byte Spill
 	jge	.LBB6_34
 # %bb.28:                               # %for.body69
@@ -360,7 +373,7 @@ main:                                   # @main
 	xorl	%eax, %eax
 	movl	-72(%rbp), %ecx         # 4-byte Reload
 	movslq	%ecx, %rdx
-	imulq	$112, %rdx, %rdx
+	imulq	$960, %rdx, %rdx        # imm = 0x3C0
 	movabsq	$cov.fixp, %rsi
 	addq	%rdx, %rsi
 	movl	-80(%rbp), %edi         # 4-byte Reload
@@ -372,14 +385,14 @@ main:                                   # @main
                                         #     Parent Loop BB6_27 Depth=2
                                         # =>    This Inner Loop Header: Depth=3
 	movl	-84(%rbp), %eax         # 4-byte Reload
-	cmpl	$32, %eax
+	cmpl	$260, %eax              # imm = 0x104
 	movl	%eax, -88(%rbp)         # 4-byte Spill
 	jge	.LBB6_32
 # %bb.30:                               # %for.body77
                                         #   in Loop: Header=BB6_29 Depth=3
 	movl	-88(%rbp), %eax         # 4-byte Reload
 	movslq	%eax, %rcx
-	imulq	$112, %rcx, %rcx
+	imulq	$960, %rcx, %rcx        # imm = 0x3C0
 	movabsq	$data.fixp, %rdx
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
@@ -387,7 +400,7 @@ main:                                   # @main
 	movslq	%edi, %rcx
 	movl	(%rsi,%rcx,4), %r8d
 	movslq	%eax, %rcx
-	imulq	$112, %rcx, %rcx
+	imulq	$960, %rcx, %rcx        # imm = 0x3C0
 	addq	%rcx, %rdx
 	movl	-80(%rbp), %r9d         # 4-byte Reload
 	movslq	%r9d, %rcx
@@ -397,7 +410,7 @@ main:                                   # @main
 	imulq	%rdx, %rcx
 	shlq	$2, %rcx
 	movslq	%edi, %rdx
-	imulq	$112, %rdx, %rdx
+	imulq	$960, %rdx, %rdx        # imm = 0x3C0
 	movabsq	$cov.fixp, %rsi
 	addq	%rdx, %rsi
 	movslq	%r9d, %rdx
@@ -417,7 +430,7 @@ main:                                   # @main
                                         #   in Loop: Header=BB6_27 Depth=2
 	movl	-72(%rbp), %eax         # 4-byte Reload
 	movslq	%eax, %rcx
-	imulq	$112, %rcx, %rcx
+	imulq	$960, %rcx, %rcx        # imm = 0x3C0
 	movabsq	$cov.fixp, %rdx
 	movq	%rdx, %rsi
 	addq	%rcx, %rsi
@@ -427,21 +440,21 @@ main:                                   # @main
 	movq	%r8, %rax
 	movq	%rdx, -96(%rbp)         # 8-byte Spill
 	cqto
-	movl	$31, %r8d
+	movl	$259, %r8d              # imm = 0x103
 	idivq	%r8
-	shlq	$5, %rax
+	shlq	$9, %rax
 	movl	%eax, %r9d
-	sarl	$5, %r9d
+	sarl	$9, %r9d
 	movl	%r9d, (%rsi,%rcx,4)
 	movl	-72(%rbp), %r9d         # 4-byte Reload
 	movslq	%r9d, %rax
-	imulq	$112, %rax, %rax
+	imulq	$960, %rax, %rax        # imm = 0x3C0
 	movq	-96(%rbp), %rcx         # 8-byte Reload
 	addq	%rax, %rcx
 	movslq	%edi, %rax
 	movl	(%rcx,%rax,4), %r10d
 	movslq	%edi, %rax
-	imulq	$112, %rax, %rax
+	imulq	$960, %rax, %rax        # imm = 0x3C0
 	movq	-96(%rbp), %rcx         # 8-byte Reload
 	addq	%rax, %rcx
 	movslq	%r9d, %rax
@@ -470,7 +483,7 @@ main:                                   # @main
                                         # =>This Loop Header: Depth=1
                                         #     Child Loop BB6_39 Depth 2
 	movl	-100(%rbp), %eax        # 4-byte Reload
-	cmpl	$28, %eax
+	cmpl	$240, %eax
 	movl	%eax, -104(%rbp)        # 4-byte Spill
 	jge	.LBB6_46
 # %bb.38:                               # %for.body117
@@ -482,13 +495,13 @@ main:                                   # @main
                                         #   Parent Loop BB6_37 Depth=1
                                         # =>  This Inner Loop Header: Depth=2
 	movl	-108(%rbp), %eax        # 4-byte Reload
-	cmpl	$28, %eax
+	cmpl	$240, %eax
 	movl	%eax, -112(%rbp)        # 4-byte Spill
 	jge	.LBB6_44
 # %bb.40:                               # %for.body121
                                         #   in Loop: Header=BB6_39 Depth=2
 	movl	-104(%rbp), %eax        # 4-byte Reload
-	imull	$28, %eax, %ecx
+	imull	$240, %eax, %ecx
 	movl	-112(%rbp), %edx        # 4-byte Reload
 	addl	%edx, %ecx
 	movl	%ecx, %eax
@@ -510,7 +523,7 @@ main:                                   # @main
 	movq	stdout, %rdi
 	movl	-104(%rbp), %eax        # 4-byte Reload
 	movslq	%eax, %rcx
-	imulq	$112, %rcx, %rcx
+	imulq	$960, %rcx, %rcx        # imm = 0x3C0
 	movabsq	$cov.fixp, %rdx
 	addq	%rcx, %rdx
 	movl	-112(%rbp), %esi        # 4-byte Reload
@@ -558,11 +571,11 @@ main:                                   # @main
 	.size	.L.str, 4
 
 	.type	data,@object            # @data
-	.comm	data,7168,16
+	.comm	data,499200,16
 	.type	mean,@object            # @mean
-	.comm	mean,224,16
+	.comm	mean,1920,16
 	.type	cov,@object             # @cov
-	.comm	cov,7168,16
+	.comm	cov,499200,16
 	.type	.L.str.4,@object        # @.str.4
 .L.str.4:
 	.asciz	"\n"
@@ -574,17 +587,17 @@ main:                                   # @main
 	.size	.L.str.5, 8
 
 	.type	data.fixp,@object       # @data.fixp
-	.comm	data.fixp,3584,16
+	.comm	data.fixp,249600,16
 	.type	mean.fixp,@object       # @mean.fixp
-	.comm	mean.fixp,112,16
+	.comm	mean.fixp,960,16
 	.type	cov.fixp,@object        # @cov.fixp
-	.comm	cov.fixp,3584,16
+	.comm	cov.fixp,249600,16
 
 	.ident	"clang version 8.0.1 (tags/RELEASE_801/final)"
 	.section	".note.GNU-stack","",@progbits
 	.addrsig
 	.addrsig_sym gettime
-	.addrsig_sym clock
+	.addrsig_sym clock_gettime
 	.addrsig_sym TIMING_CPUCLOCK_START
 	.addrsig_sym TIMING_CPUCLOCK_TOGGLE
 	.addrsig_sym TIMING_CPUCLOCK_PRINT

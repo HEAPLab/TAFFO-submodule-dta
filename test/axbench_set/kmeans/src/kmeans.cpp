@@ -22,6 +22,11 @@ int main (int argc, const char* argv[]) {
 
 	initRgbImage(&srcImage);
 
+	if (argc < 3){
+	    std::cout << "Not enough parameters!" << std::endl;
+	    exit(-1);
+	}
+
 	std::string inImageName  = argv[1];
 	std::string outImageName = argv[2];
 

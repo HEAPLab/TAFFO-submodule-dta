@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM
 
 if [[ -z $PASSLIB ]]; then

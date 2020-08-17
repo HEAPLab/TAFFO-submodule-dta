@@ -47,9 +47,9 @@ int main(int argc, char** argv)
 
 
 
-    int __attribute((annotate("scalar(range(1, 100) final)"))) i;
-    int __attribute((annotate("scalar(range(1, 100) final)"))) j;
-    int __attribute((annotate("scalar(range(1, 100) final)"))) k;
+    int __attribute((annotate("scalar(range(1, 260) final)"))) i;
+    int __attribute((annotate("scalar(range(1, 260) final)"))) j;
+    int __attribute((annotate("scalar(range(1, 260) final)"))) k;
 
     float_n = (DATA_TYPE)n;
 
