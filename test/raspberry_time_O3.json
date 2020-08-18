@@ -1,0 +1,1232 @@
+{
+    "2mm": {
+        "ORIG": {
+            "RUNNING_TIME": 1508608.75
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 1508359.55,
+            "SPEEDUP": 1.0001652125980174,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 729392.95,
+            "SPEEDUP": 2.068307282103563,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 1508810.15,
+            "SPEEDUP": 0.9998665173348682,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 746685.3,
+            "SPEEDUP": 2.020407727325019,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 745255.6,
+            "SPEEDUP": 2.024283682001182,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 766582.15,
+            "SPEEDUP": 1.967967490503138,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "3mm": {
+        "ORIG": {
+            "RUNNING_TIME": 2334225.5
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 2341626.85,
+            "SPEEDUP": 0.9968392273944074,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 1167016.35,
+            "SPEEDUP": 2.0001652076254115,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 2341322.2,
+            "SPEEDUP": 0.9969689349035343,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 1525056.15,
+            "SPEEDUP": 1.5305833165552627,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 1524491.1,
+            "SPEEDUP": 1.5311506246248336,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 1197286.4,
+            "SPEEDUP": 1.949596604454874,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "adi": {
+        "ORIG": {
+            "RUNNING_TIME": 3296507.75
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 3289958.05,
+            "SPEEDUP": 1.0019908156579687,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 1945970.5,
+            "SPEEDUP": 1.6940173296563334,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 3291679.75,
+            "SPEEDUP": 1.001466728347434,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 7448038.9,
+            "SPEEDUP": 0.44260076971402496,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 7446559.95,
+            "SPEEDUP": 0.4426886739829443,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 10114351.8,
+            "SPEEDUP": 0.32592377793305544,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "atax": {
+        "ORIG": {
+            "RUNNING_TIME": 33262.0
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 33260.95,
+            "SPEEDUP": 1.0000315685511088,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 24912.3,
+            "SPEEDUP": 1.3351637544506127,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 33317.2,
+            "SPEEDUP": 0.9983431981078843,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 23344.8,
+            "SPEEDUP": 1.424814091360817,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 23218.1,
+            "SPEEDUP": 1.432589229954217,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 17450.05,
+            "SPEEDUP": 1.906126343477526,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "bicg": {
+        "ORIG": {
+            "RUNNING_TIME": 29357.4
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 29201.55,
+            "SPEEDUP": 1.0053370454650525,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 24446.0,
+            "SPEEDUP": 1.200908124028471,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 29175.35,
+            "SPEEDUP": 1.0062398565912665,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 23637.0,
+            "SPEEDUP": 1.242010407412108,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 24081.3,
+            "SPEEDUP": 1.219095314621719,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 15691.35,
+            "SPEEDUP": 1.870928887571815,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "cholesky": {
+        "ORIG": {
+            "RUNNING_TIME": 15730991.15
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 15867836.6,
+            "SPEEDUP": 0.9913759226635849,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 9675412.05,
+            "SPEEDUP": 1.6258729931817217,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 15890287.45,
+            "SPEEDUP": 0.9899752411338538,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 9664629.65,
+            "SPEEDUP": 1.6276869077957892,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 9672577.15,
+            "SPEEDUP": 1.626349514307053,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 8815716.0,
+            "SPEEDUP": 1.7844258084085287,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "corr": {
+        "ORIG": {
+            "RUNNING_TIME": 1280451.65
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 1278903.15,
+            "SPEEDUP": 1.0012108031792712,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 659546.3,
+            "SPEEDUP": 1.9414128318209045,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 1274726.95,
+            "SPEEDUP": 1.004490922546197,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 659652.2,
+            "SPEEDUP": 1.9411011590653378,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 698186.75,
+            "SPEEDUP": 1.8339672730827388,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 626928.7,
+            "SPEEDUP": 2.042419895595783,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "covariance": {
+        "ORIG": {
+            "RUNNING_TIME": 1274280.65
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 1270075.95,
+            "SPEEDUP": 1.0033105894179006,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 649492.85,
+            "SPEEDUP": 1.9619625527825286,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 1266130.7,
+            "SPEEDUP": 1.006436894706052,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 654988.55,
+            "SPEEDUP": 1.94550065035488,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 654792.6,
+            "SPEEDUP": 1.9460828512722959,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 643354.75,
+            "SPEEDUP": 1.9806811871677328,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "deriche": {
+        "ORIG": {
+            "RUNNING_TIME": 544145.45
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 677565.9,
+            "SPEEDUP": 0.8030885999428247,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 446951.55,
+            "SPEEDUP": 1.217459588181314,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 701517.6,
+            "SPEEDUP": 0.775668992481443,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 337865.65,
+            "SPEEDUP": 1.6105379460741271,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 340086.45,
+            "SPEEDUP": 1.6000209652575101,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 333854.7,
+            "SPEEDUP": 1.6298870436749877,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "doitgen": {
+        "ORIG": {
+            "RUNNING_TIME": 263483.0
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 266153.8,
+            "SPEEDUP": 0.9899652005720001,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 161529.9,
+            "SPEEDUP": 1.6311716901948186,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 266967.35,
+            "SPEEDUP": 0.9869484039902259,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 184780.45,
+            "SPEEDUP": 1.425924658155124,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 184361.15,
+            "SPEEDUP": 1.429167696122529,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 156217.95,
+            "SPEEDUP": 1.6866371630148775,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "durbin": {
+        "ORIG": {
+            "RUNNING_TIME": 5073.1
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 5106.0,
+            "SPEEDUP": 0.9935566000783392,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 4688.8,
+            "SPEEDUP": 1.0819612694079508,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 5050.9,
+            "SPEEDUP": 1.0043952562909582,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 4166.7,
+            "SPEEDUP": 1.2175342597259224,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 4173.05,
+            "SPEEDUP": 1.2156815758258348,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 4370.15,
+            "SPEEDUP": 1.160852602313422,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "fdtd-2d": {
+        "ORIG": {
+            "RUNNING_TIME": 2007157.15
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 2038903.6,
+            "SPEEDUP": 0.984429646404077,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 1358493.5,
+            "SPEEDUP": 1.4774874888985483,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 2039748.2,
+            "SPEEDUP": 0.984022022914397,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 1009895.95,
+            "SPEEDUP": 1.987489057659851,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 1011626.15,
+            "SPEEDUP": 1.984089824091637,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 1067155.7,
+            "SPEEDUP": 1.8808475183143378,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "gemm": {
+        "ORIG": {
+            "RUNNING_TIME": 786169.3
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 787172.8,
+            "SPEEDUP": 0.9987251846100373,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 563854.8,
+            "SPEEDUP": 1.3942761505266958,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 787179.3,
+            "SPEEDUP": 0.9987169378056562,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 533756.25,
+            "SPEEDUP": 1.4728994742450323,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 532178.75,
+            "SPEEDUP": 1.4772654864554438,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 535166.4,
+            "SPEEDUP": 1.4690184211863824,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "gemmver": {
+        "ORIG": {
+            "RUNNING_TIME": 79970.9
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 79911.55,
+            "SPEEDUP": 1.0007426961434234,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 53192.5,
+            "SPEEDUP": 1.5034243549372561,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 79783.2,
+            "SPEEDUP": 1.0023526256154178,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 49643.0,
+            "SPEEDUP": 1.61091996857563,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 49520.35,
+            "SPEEDUP": 1.614909829999182,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 45602.5,
+            "SPEEDUP": 1.7536516638342194,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "gesummv": {
+        "ORIG": {
+            "RUNNING_TIME": 15743.75
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 15993.25,
+            "SPEEDUP": 0.9843996686101949,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 11892.05,
+            "SPEEDUP": 1.3238886482986534,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 15925.05,
+            "SPEEDUP": 0.9886154203597477,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 10583.1,
+            "SPEEDUP": 1.4876312233655544,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 9570.5,
+            "SPEEDUP": 1.6450289953502952,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 9797.75,
+            "SPEEDUP": 1.6068740272001225,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "gramschmidt": {
+        "ORIG": {
+            "RUNNING_TIME": 1251444.7
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 3092074.4,
+            "SPEEDUP": 0.404726580964546,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 1256523.65,
+            "SPEEDUP": 0.9959579352127594,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 3097132.9,
+            "SPEEDUP": 0.40406554720335053,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 3092336.1,
+            "SPEEDUP": 0.4046923295304155,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 1251523.55,
+            "SPEEDUP": 0.9999369967908314,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 1233145.35,
+            "SPEEDUP": 1.01483957264243,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "heat-3d": {
+        "ORIG": {
+            "RUNNING_TIME": 1808415.45
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 1781283.3,
+            "SPEEDUP": 1.0152317994560438,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 1308224.65,
+            "SPEEDUP": 1.3823432007644865,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 1780702.65,
+            "SPEEDUP": 1.0155628453745493,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 762661.45,
+            "SPEEDUP": 2.3711903230456977,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 761780.05,
+            "SPEEDUP": 2.373933854004184,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 740388.7,
+            "SPEEDUP": 2.4425216781401446,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "jacobi-1d": {
+        "ORIG": {
+            "RUNNING_TIME": 3787.2
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 3845.3,
+            "SPEEDUP": 0.9848906457233505,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 3697.35,
+            "SPEEDUP": 1.0243011886891964,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 3840.75,
+            "SPEEDUP": 0.98605741066198,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 2347.75,
+            "SPEEDUP": 1.6131189436694706,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 2324.25,
+            "SPEEDUP": 1.6294288480154888,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 2612.5,
+            "SPEEDUP": 1.449645933014354,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "jacobi-2d": {
+        "ORIG": {
+            "RUNNING_TIME": 1362614.95
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 1360936.25,
+            "SPEEDUP": 1.0012334890778314,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 1069516.1,
+            "SPEEDUP": 1.2740480952086648,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 1360582.55,
+            "SPEEDUP": 1.0014937719140966,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 709562.7,
+            "SPEEDUP": 1.9203587646306663,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 708276.55,
+            "SPEEDUP": 1.9238459186598793,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 756841.15,
+            "SPEEDUP": 1.8003975470942613,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "lu": {
+        "ORIG": {
+            "RUNNING_TIME": 18969845.9
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 19066494.3,
+            "SPEEDUP": 0.994930982147043,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 11059282.9,
+            "SPEEDUP": 1.715287154829903,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 19125430.6,
+            "SPEEDUP": 0.9918650354465743,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 11051366.5,
+            "SPEEDUP": 1.7165158625406187,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 11063056.5,
+            "SPEEDUP": 1.7147020717104715,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 10065372.85,
+            "SPEEDUP": 1.8846640042748142,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "ludcmp": {
+        "ORIG": {
+            "RUNNING_TIME": 18882259.4
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 18836228.25,
+            "SPEEDUP": 1.002443756222799,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 10793591.95,
+            "SPEEDUP": 1.7493953345160504,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 18791952.05,
+            "SPEEDUP": 1.0048056396567913,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 10799463.1,
+            "SPEEDUP": 1.7484442721971982,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 10811355.45,
+            "SPEEDUP": 1.7465210062999084,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 10006686.25,
+            "SPEEDUP": 1.8869642685159633,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "mvt": {
+        "ORIG": {
+            "RUNNING_TIME": 61391.4
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 60930.4,
+            "SPEEDUP": 1.0075660097422634,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 39170.6,
+            "SPEEDUP": 1.567282604810751,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 60739.3,
+            "SPEEDUP": 1.0107360473367326,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 33411.7,
+            "SPEEDUP": 1.837422220359934,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 33384.7,
+            "SPEEDUP": 1.8389082423984642,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 33409.5,
+            "SPEEDUP": 1.8375432137565664,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "seidel-2d": {
+        "ORIG": {
+            "RUNNING_TIME": 2548614.05
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 2548531.5,
+            "SPEEDUP": 1.0000323912025415,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 1800362.85,
+            "SPEEDUP": 1.4156113307936784,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 2548399.6,
+            "SPEEDUP": 1.000084150852951,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 1037659.9,
+            "SPEEDUP": 2.4561169319542944,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 1037672.6,
+            "SPEEDUP": 2.45608687171657,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 1163788.9,
+            "SPEEDUP": 2.189928130436714,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "symm": {
+        "ORIG": {
+            "RUNNING_TIME": 1469217.4
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 1470759.4,
+            "SPEEDUP": 0.9989515620297922,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 722541.3,
+            "SPEEDUP": 2.033402658090271,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 1469163.5,
+            "SPEEDUP": 1.000036687543626,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 664072.75,
+            "SPEEDUP": 2.212434405718349,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 672559.7,
+            "SPEEDUP": 2.184515961928733,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 690054.9,
+            "SPEEDUP": 2.129131174925357,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "syr2k": {
+        "ORIG": {
+            "RUNNING_TIME": 1372416.0
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 1578725.8,
+            "SPEEDUP": 0.869318788607876,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 628589.35,
+            "SPEEDUP": 2.183326841283582,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 1580017.2,
+            "SPEEDUP": 0.8686082657834358,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 569757.6,
+            "SPEEDUP": 2.408771730293725,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 570322.55,
+            "SPEEDUP": 2.406385649664387,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 570602.75,
+            "SPEEDUP": 2.4052039707134254,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "syrk": {
+        "ORIG": {
+            "RUNNING_TIME": 570667.05
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 567946.6,
+            "SPEEDUP": 1.0047899749729994,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 297338.6,
+            "SPEEDUP": 1.9192498047680324,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 568217.4,
+            "SPEEDUP": 1.0043111140207956,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 271022.9,
+            "SPEEDUP": 2.1056045448558036,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 269576.35,
+            "SPEEDUP": 2.1169032446651945,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 269114.35,
+            "SPEEDUP": 2.120537422103281,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "trisolv": {
+        "ORIG": {
+            "RUNNING_TIME": 15479.05
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 15462.5,
+            "SPEEDUP": 1.0010703314470493,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 10592.4,
+            "SPEEDUP": 1.4613354858200218,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 15431.75,
+            "SPEEDUP": 1.0030651092714695,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 9291.95,
+            "SPEEDUP": 1.6658559290568715,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 9356.3,
+            "SPEEDUP": 1.6543986404882272,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 6339.55,
+            "SPEEDUP": 2.44166384049341,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "trmm": {
+        "ORIG": {
+            "RUNNING_TIME": 849377.5
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 846970.55,
+            "SPEEDUP": 1.0028418343471328,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 349639.95,
+            "SPEEDUP": 2.4292919044291135,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 846098.55,
+            "SPEEDUP": 1.0038753759830932,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 302683.75,
+            "SPEEDUP": 2.8061549389420475,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 303249.95,
+            "SPEEDUP": 2.800915548378491,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 296101.65,
+            "SPEEDUP": 2.8685334917924297,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "floyd-warshall": {
+        "ORIG": {
+            "RUNNING_TIME": 10603406.65
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 10604110.3,
+            "SPEEDUP": 0.99993364365514,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 7561217.85,
+            "SPEEDUP": 1.4023411122852387,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 10603877.75,
+            "SPEEDUP": 0.9999555728563544,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 4598155.6,
+            "SPEEDUP": 2.3060130131307432,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 4598284.15,
+            "SPEEDUP": 2.3059485460462463,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 5251489.3,
+            "SPEEDUP": 2.019123727434806,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    },
+    "nussinov": {
+        "ORIG": {
+            "RUNNING_TIME": 4528602.6
+        },
+        "PRECISE": {
+            "RUNNING_TIME": 4540041.1,
+            "SPEEDUP": 0.9974805294163527,
+            "MIX_MODE": "true",
+            "NAME": "PRECISE"
+        },
+        "NODOUBLE": {
+            "RUNNING_TIME": 2513772.7,
+            "SPEEDUP": 1.8015163423486933,
+            "MIX_MODE": "true",
+            "NAME": "NODOUBLE"
+        },
+        "MEDIUM": {
+            "RUNNING_TIME": 5508896.5,
+            "SPEEDUP": 0.8220525834892705,
+            "MIX_MODE": "true",
+            "NAME": "MEDIUM"
+        },
+        "IMPRECISE": {
+            "RUNNING_TIME": 1810663.2,
+            "SPEEDUP": 2.5010739711283687,
+            "MIX_MODE": "true",
+            "NAME": "IMPRECISE"
+        },
+        "QUICK": {
+            "RUNNING_TIME": 1809822.7,
+            "SPEEDUP": 2.5022354952228194,
+            "MIX_MODE": "true",
+            "NAME": "QUICK"
+        },
+        "FIX": {
+            "RUNNING_TIME": 1810601.95,
+            "SPEEDUP": 2.5011585787809407,
+            "MIX_MODE": "false",
+            "NAME": "FIX"
+        }
+    }
+}

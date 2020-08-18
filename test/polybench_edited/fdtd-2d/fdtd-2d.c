@@ -48,10 +48,10 @@
 #define POLYBENCH_DUMP_TARGET stdout
 
 /* Variable declaration/allocation. */
-DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) ex[NX][NY];
-DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) ey[NX][NY];
-DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) hz[NX][NY];
-DATA_TYPE __attribute__((annotate("scalar(range(-4194304, 4194303) final error(1e-100))"))) _fict_[TMAX];
+DATA_TYPE __attribute__((annotate("scalar(range(-200, 200) final error(1e-100))"))) ex[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(range(-200, 200) final error(1e-100))"))) ey[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(range(-200, 200) final error(1e-100))"))) hz[NX][NY];
+DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) _fict_[TMAX];
 
 
 int main(){
@@ -61,12 +61,13 @@ int main(){
     int nx = NX;
     int ny = NY;
 
-    int i __attribute__((annotate("scalar(range(-20, 20) final)")));
-    int j __attribute__((annotate("scalar(range(-30, 30) final)")));
-    int t;
-
+    int i __attribute__((annotate("scalar(range(-200, 200) final)")));
+    int j __attribute__((annotate("scalar(range(-240, 240) final)")));
+    int t __attribute__((annotate("scalar(range(0, 100) final)")));
+    //printf("A\n");
     for (i = 0; i < tmax; i++)
         _fict_[i] = (DATA_TYPE) i;
+    //printf("B\n");
     for (i = 0; i < nx; i++)
         for (j = 0; j < ny; j++)
         {
@@ -74,23 +75,29 @@ int main(){
             ey[i][j] = ((DATA_TYPE) i*(j+2)) / ny;
             hz[i][j] = ((DATA_TYPE) i*(j+3)) / nx;
         }
+    //printf("C\n");
 
     for(t = 0; t < _PB_TMAX; t++)
     {
         i=0;
         for (j = 0; j < _PB_NY; j++)
             ey[i][j] = _fict_[t];
+
+    //printf("D\n");
         for (i = 1; i < _PB_NX; i++)
             for (j = 0; j < _PB_NY; j++)
                 ey[i][j] = ey[i][j] - SCALAR_VAL(0.5)*(hz[i][j]-hz[i-1][j]);
+    //printf("E\n");
         for (i = 0; i < _PB_NX; i++)
             for (j = 1; j < _PB_NY; j++)
                 ex[i][j] = ex[i][j] - SCALAR_VAL(0.5)*(hz[i][j]-hz[i][j-1]);
+    //printf("F\n");
         for (i = 0; i < _PB_NX - 1; i++)
             for (j = 0; j < _PB_NY - 1; j++)
                 hz[i][j] = hz[i][j] - SCALAR_VAL(0.7)*  (ex[i][j+1] - ex[i][j] +
                                                          ey[i+1][j] - ey[i][j]);
     }
+    //printf("G\n");
 
     TIMING_CPUCLOCK_TOGGLE();
     TIMING_CPUCLOCK_PRINT();

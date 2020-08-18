@@ -62,7 +62,7 @@ def loadReferenceRun():
     cumulated_time = 0
     for i in range(0, 20):
         print("Run", i, file=sys.stderr)
-        process = Popen(["compiled/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".flt"], stdout=PIPE, stderr=PIPE)
+        process = Popen(["compiled/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".4.flt"], stdout=PIPE, stderr=PIPE)
         (output, err) = process.communicate()
         exit_code = process.wait()
 

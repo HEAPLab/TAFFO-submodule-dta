@@ -45,18 +45,11 @@ def evaluateResults(res):
     allSucceded = True
     for (k) in res:
         v = res[k]
-        if 'ERR' in v:
-            e=v['ERR']
-            if v['ERR'] > 0.2:
-                success = False
-                allSucceded = False
-            else:
-                success = True
+        if 'SPEEDUP' in v:
+            e=v['SPEEDUP']
         else:
             e=9999
-            allSucceded = False
-            success=False
-        print("Error for", k, ":", e, success)
+        print("Error for", k, ":", e)
     return allSucceded
 
 

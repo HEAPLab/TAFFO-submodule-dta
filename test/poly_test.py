@@ -11,7 +11,7 @@ if not os.path.isfile('./magiclang2.sh'):
     exit(-1)
 
 PROGRAM_NAME = sys.argv[1]
-COST_MODEL = "core2.csv"
+COST_MODEL = "stm32.csv"
 OPT_FLAG="-O0"
 COMPILER_NAME="clang"
 TEST_DIM="MEDIUM"

@@ -15,7 +15,7 @@ if not os.path.isfile('./magiclang2.sh'):
 
 PROGRAM_NAME = sys.argv[1]
 COST_MODEL = "raspberry-clang.csv"
-OPT_FLAG="-O0"
+OPT_FLAG="-O3"
 COMPILER_NAME="clang-8"
 TEST_DIM="MEDIUM"
 HONEST_MODE_ENABLED=True
@@ -79,6 +79,9 @@ def compileAndCheck(NAME, MIX_MODE, TUNING_ENOB, TUNING_TIME, TUNING_CAST_TIME, 
     end = datetime.datetime.now()
     delta = end-start
 
+    text_file = open("result.txt", "w")
+    text_file.write(err.decode('ascii'))
+    text_file.close()
 
     return ""
 
@@ -87,12 +90,13 @@ def loadReferenceRun():
     compilationParams = []
     compilationParams.append(COMPILER_NAME)
     compilationParams.append("-lm")
-    compilationParams.append("-S") #generate assembly as output
+    #compilationParams.append("-S") #generate assembly as output
+    #compilationParams.append("-mno-relax-all")
     compilationParams.append(OPT_FLAG)
     compilationParams.extend(COMPILATION_TARGET_PARAMS.split(" "))
     compilationParams.append("raspberry/compiled/" + PROGRAM_NAME + "/" + PROGRAM_NAME + "_NONE.fixp.4.magiclangtmp.ll")
     compilationParams.append("-o")
-    compilationParams.append("raspberry/compiled/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".4.flt.s")
+    compilationParams.append("raspberry/compiled/" + PROGRAM_NAME + "/" + PROGRAM_NAME + ".4.flt")
 
 
     print("Compilation params:", " ".join(compilationParams), file=sys.stderr)
@@ -115,16 +119,16 @@ orig_run_time = loadReferenceRun()
 
 testSet = {}
 
-#testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
+testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-#testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
+testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-#testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
+testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
 
-#testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
+testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
 
-#testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
+testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
 
-#testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
+testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 
 #print(json.dumps(testSet, indent=4))
