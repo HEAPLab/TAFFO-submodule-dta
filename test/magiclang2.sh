@@ -215,7 +215,6 @@ ${OPT} \
 ###
 if [[ $disable_vra -eq 0 ]]; then
   ${OPT} \
-    -debug \
     -load "$VRALIB" \
     -mem2reg -taffoVRA \
     ${vra_flags} \

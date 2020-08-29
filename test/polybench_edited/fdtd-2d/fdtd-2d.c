@@ -55,6 +55,7 @@ DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) _fict_[TMAX];
 
 
 int main(){
+    TAFFO_DUMPCONFIG();
     TIMING_CPUCLOCK_START();
     /* Retrieve problem size. */
     int tmax = TMAX;

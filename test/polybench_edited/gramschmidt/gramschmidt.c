@@ -31,7 +31,7 @@
 #   define _PB_M M
 #   define _PB_N N
 
-#  define DATA_TYPE float
+#  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
 #  define SQRT_FUN(x) sqrt(x)
@@ -39,9 +39,9 @@
 #  define POW_FUN(x,y) pow(x,y)
 
 /* Variable declaration/allocation. */
-DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) A[M][N];
-DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) R[N][N];
-DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) Q[M][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final error(1e-100))"))) A[M][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final error(1e-100))"))) R[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final error(1e-100))"))) Q[M][N];
 
 int main(){
     TAFFO_DUMPCONFIG();
@@ -52,8 +52,8 @@ int main(){
 
 
 
-    int i __attribute__((annotate("scalar(range(-240, 240) final)")));
-    int j __attribute__((annotate("scalar(range(-240, 240) final)")));
+    int i __attribute__((annotate("scalar(range(-30, 30) final)")));
+    int j __attribute__((annotate("scalar(range(-30, 30) final)")));
     int k;
 
     for (i = 0; i < m; i++)
@@ -68,7 +68,7 @@ int main(){
 
 
 
-    DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) nrm;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final error(1e-100))"))) nrm;
     for (k = 0; k < _PB_N; k++)
     {
         nrm = SCALAR_VAL(0.0);

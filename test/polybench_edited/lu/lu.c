@@ -31,7 +31,7 @@
 
 #define POLYBENCH_DUMP_TARGET stdout
 /* Variable declaration/allocation. */
-DATA_TYPE __attribute__((annotate("scalar(range(-2, 1) final error(1e-100))"))) A[N][N];
+DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final error(1e-100))"))) A[N][N];
 DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) B[N][N];
 
 
@@ -75,14 +75,14 @@ int main(){
     for (i = 0; i < _PB_N; i++) {
         for (j = 0; j <i; j++) {
             for (k = 0; k < j; k++) {
-                DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) tmp = A[i][k] * A[k][j];
+                DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final  error(1e-100))"))) tmp = A[i][k] * A[k][j];
                 A[i][j] -= tmp;
             }
             A[i][j] /= A[j][j];
         }
         for (j = i; j < _PB_N; j++) {
             for (k = 0; k < i; k++) {
-                DATA_TYPE __attribute__((annotate("scalar(error(1e-100))"))) tmp = A[i][k] * A[k][j];
+                DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final error(1e-100))"))) tmp = A[i][k] * A[k][j];
                 A[i][j] -= tmp;
             }
         }

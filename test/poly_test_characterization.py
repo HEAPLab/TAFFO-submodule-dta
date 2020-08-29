@@ -196,16 +196,19 @@ dataset, orig_run_time = loadReferenceRun()
 
 testSet = {}
 
-testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
+for i in range(1, 100, 5):
+    testSet[str(i)] = compileAndCheck("PRECISE", "true", 101-i, i, i, "true")
 
-testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
+#testSet["PRECISE"] = compileAndCheck("PRECISE", "true", 100000, 1, 1, "true")
 
-testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
+#testSet["NODOUBLE"] = compileAndCheck("NODOUBLE", "true", 1000, 1, 1, "false")
 
-testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
+#testSet["MEDIUM"] = compileAndCheck("MEDIUM", "true", 50, 50, 50, "true")
 
-testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
+#testSet["IMPRECISE"] = compileAndCheck("IMPRECISE", "true", 20, 80, 80, "true")
 
-testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
+#testSet["QUICK"] = compileAndCheck("QUICK", "true", 1, 1000, 1000, "true")
+
+#testSet["FIX"] = compileAndCheck("FIX", "false", 0, 0, 0, "true")
 
 print(json.dumps(testSet, indent=4))

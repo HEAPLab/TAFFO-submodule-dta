@@ -7,7 +7,7 @@ import json
 import csv
 
 
-process = Popen(["./gr.double"], stdout=PIPE, stderr=PIPE)
+process = Popen(["./gramschmidt.flt"], stdout=PIPE, stderr=PIPE)
 (output, err) = process.communicate()
 exit_code = process.wait()
 
@@ -23,7 +23,7 @@ for i in range(0, len(output)):
     output[i] = float(output[i])
 
 
-process = Popen(["./gr.float"], stdout=PIPE, stderr=PIPE)
+process = Popen(["./gramschmidt.fixp"], stdout=PIPE, stderr=PIPE)
 (output1, err) = process.communicate()
 exit_code = process.wait()
 
@@ -45,14 +45,18 @@ if len(output) != len(output1):
     print("FUUUUUUUUUUUU")
     exit(-1)
 
-
+problematic = 0
 for i in range(0, len(output)):
     if abs(output1[i]) >= 10**-3: #To keep out values near to zero: will have a huuuge impact on error
         tmp = abs((output[i] - output1[i]) / output1[i])
         accumulator += tmp
-        print(output[i], output1[i], file=sys.stderr)
+        if tmp>1:
+            problematic += 1
+            print(output[i], output1[i], file=sys.stderr)
     else:
         skipped += 1
 
 
 err = accumulator / (len(output)-skipped)
+
+print("Problematic: ", problematic, "on", len(output)-skipped, problematic/(len(output)-skipped) *100)
