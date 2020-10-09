@@ -1,35 +1,28 @@
-add_llvm_library(TaffoDTA MODULE
+
+add_llvm_library(TaffoDTA OBJECT BUILDTREE_ONLY
+  TaffoDTA.cpp
         TaffoDTA.cpp
-        TaffoDTA.h
-        Optimizer.h
         Optimizer.cpp
-        Infos.h
-        OptimizerInfo.h
         Model.cpp
-        Model.h
         OptimizerBinaryInstructions.cpp
         OptimizerInstructionHandling.cpp
         OptimizerConstantsHandling.cpp
         PhiWatcher.cpp
-        DTAConfig.h
         CPUCosts.cpp
-        CPUCosts.h
         MemSSAUtils.cpp
-        MemSSAUtils.hpp
         MemWatcher.cpp
         LoopAnalyzerUtil.cpp
-        LoopAnalyzerUtil.h
+  ADDITIONAL_HEADERS
+  TaffoDTA.h
+  TaffoDTA.h
+  Optimizer.h
+  Infos.h
+  OptimizerInfo.h
+  Model.h
+  DTAConfig.h
+  MemSSAUtils.hpp
+  CPUCosts.h
+  LoopAnalyzerUtil.h
+    )
 
-        PLUGIN_TOOL
-        opt
-        )
-
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set_property(TARGET TaffoDTA APPEND_STRING PROPERTY
-            LINK_FLAGS " -undefined dynamic_lookup")
-endif ()
-
-set_property(TARGET TaffoDTA PROPERTY CXX_STANDARD 11)
-set_property(TARGET TaffoDTA PROPERTY CXX_STANDARD_REQUIRED ON)
-
-target_link_libraries(TaffoDTA TaffoUtils)
+set_property(TARGET obj.TaffoDTA PROPERTY POSITION_INDEPENDENT_CODE ON)
