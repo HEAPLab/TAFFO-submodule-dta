@@ -38,14 +38,14 @@ namespace tuner {
 
         bool processMetadataOfValue(llvm::Value *v, mdutils::MDInfo *MDI);
 
-        bool associateFixFormat(mdutils::InputInfo &rng, Type::TypeID origType);
+        bool associateFixFormat(mdutils::InputInfo &rng, llvm::Type::TypeID origType);
 
         void sortQueue(std::vector<llvm::Value *> &vals, llvm::SmallPtrSetImpl<llvm::Value *> &valset);
 
         void mergeFixFormat(const std::vector<llvm::Value *> &vals,
                             const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
 
-        void buildModelAndOptimze(Module &m, const std::vector<llvm::Value *> &vals,
+        void buildModelAndOptimze(llvm::Module &m, const std::vector<llvm::Value *> &vals,
                             const llvm::SmallPtrSetImpl<llvm::Value *> &valset);
 
         void getAnalysisUsage(llvm::AnalysisUsage &) const override;

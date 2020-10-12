@@ -9,7 +9,6 @@ add_llvm_library(TaffoDTA OBJECT BUILDTREE_ONLY
         OptimizerConstantsHandling.cpp
         PhiWatcher.cpp
         CPUCosts.cpp
-        MemSSAUtils.cpp
         MemWatcher.cpp
         LoopAnalyzerUtil.cpp
   ADDITIONAL_HEADERS

@@ -13,6 +13,7 @@
 #define __TAFFO_DTA_OPTIMIZERINFO_H__
 
 namespace tuner {
+    using namespace std;
     class OptimizerInfo {
     public:
         enum OptimizerInfoKind {
