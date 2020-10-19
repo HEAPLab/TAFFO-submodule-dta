@@ -10,7 +10,7 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "CPUCosts.h"
-
+#define DEBUG_TYPE "taffo-dta"
 using namespace tuner;
 using namespace std;
 
@@ -68,12 +68,23 @@ void CPUCosts::loadModelFile(string modelFile) {
 
 CPUCosts::CostsId CPUCosts::decodeId(string &basicString) {
     auto it = std::find(CostsIdValues.begin(), CostsIdValues.end(), basicString);
+
+    LLVM_DEBUG(llvm::dbgs() <<  "searching cost [" << basicString << "]");
     if(it != CostsIdValues.end()){
         int index = it - CostsIdValues.begin();
+        LLVM_DEBUG(llvm::dbgs() <<  " found [" << *it <<"]\n" );
         return CostsId(index);
     }
 
+    LLVM_DEBUG( 
+        {
+            for ( auto& i : CostsIdValues ){
+                llvm::dbgs() << i << " = " << basicString << " : " << std::to_string(basicString == i) << "\n";
+            }
+        }
+    );
     llvm::dbgs() << "Unknown value: "<<basicString<<"\n";
+
     llvm_unreachable("Unknown cost value!");
 }
 
@@ -94,6 +105,8 @@ double CPUCosts::getCost(CPUCosts::CostsId id) {
 
     bool fixDoubleCast = false;
     switch (id) {
+        case CAST_HALF_FIX:
+        case CAST_FIX_HALF:
         case CAST_FIX_DOUBLE:
         case CAST_FIX_FLOAT:
         case CAST_FLOAT_FIX:

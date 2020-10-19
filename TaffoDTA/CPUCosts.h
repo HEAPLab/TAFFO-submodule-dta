@@ -15,25 +15,27 @@ namespace tuner {
 
     public:
         enum CostsId {
-            ADD_FIX=0, ADD_FLOAT, ADD_DOUBLE,
-            SUB_FIX, SUB_FLOAT, SUB_DOUBLE,
-            MUL_FIX, MUL_FLOAT, MUL_DOUBLE,
-            DIV_FIX, DIV_FLOAT, DIV_DOUBLE,
-            REM_FIX, REM_FLOAT, REM_DOUBLE,
-            CAST_FIX_FLOAT, CAST_FIX_DOUBLE,
-            CAST_FLOAT_FIX, CAST_FLOAT_DOUBLE,
-            CAST_DOUBLE_FIX, CAST_DOUBLE_FLOAT,
+            ADD_FIX=0, ADD_FLOAT, ADD_DOUBLE, ADD_HALF,
+            SUB_FIX, SUB_FLOAT, SUB_DOUBLE, SUB_HALF,
+            MUL_FIX, MUL_FLOAT, MUL_DOUBLE, MUL_HALF,
+            DIV_FIX, DIV_FLOAT, DIV_DOUBLE, DIV_HALF,
+            REM_FIX, REM_FLOAT, REM_DOUBLE, REM_HALF,
+            CAST_FIX_FLOAT, CAST_FIX_DOUBLE, CAST_FIX_HALF,
+            CAST_FLOAT_FIX, CAST_FLOAT_DOUBLE, CAST_FLOAT_HALF,
+            CAST_DOUBLE_FIX, CAST_DOUBLE_FLOAT, CAST_DOUBLE_HALF,
+            CAST_HALF_FIX, CAST_HALF_FLOAT, CAST_HALF_DOUBLE,
             CAST_FIX_FIX
         };
 
-        const vector<string> CostsIdValues ={"ADD_FIX", "ADD_FLOAT", "ADD_DOUBLE",
-                                             "SUB_FIX", "SUB_FLOAT", "SUB_DOUBLE",
-                                             "MUL_FIX", "MUL_FLOAT", "MUL_DOUBLE",
-                                             "DIV_FIX", "DIV_FLOAT", "DIV_DOUBLE",
-                                             "REM_FIX", "REM_FLOAT", "REM_DOUBLE",
-                                             "CAST_FIX_FLOAT", "CAST_FIX_DOUBLE",
-                                             "CAST_FLOAT_FIX", "CAST_FLOAT_DOUBLE",
-                                             "CAST_DOUBLE_FIX", "CAST_DOUBLE_FLOAT",
+        const vector<string> CostsIdValues ={"ADD_FIX", "ADD_FLOAT", "ADD_DOUBLE","ADD_HALF",
+                                             "SUB_FIX", "SUB_FLOAT", "SUB_DOUBLE","SUB_HALF",
+                                             "MUL_FIX", "MUL_FLOAT", "MUL_DOUBLE","MUL_HALF",
+                                             "DIV_FIX", "DIV_FLOAT", "DIV_DOUBLE","DIV_HALF",
+                                             "REM_FIX", "REM_FLOAT", "REM_DOUBLE","REM_HALF",
+                                             "CAST_FIX_FLOAT", "CAST_FIX_DOUBLE", "CAST_FIX_HALF",
+                                             "CAST_FLOAT_FIX", "CAST_FLOAT_DOUBLE", "CAST_FLOAT_HALF",
+                                             "CAST_DOUBLE_FIX", "CAST_DOUBLE_FLOAT", "CAST_DOUBLE_HALF",
+                                             "CAST_HALF_FIX", "CAST_HALF_FLOAT", "CAST_HALF_DOUBLE",
                                              "CAST_FIX_FIX"};
     private:
         map<CostsId, double> costsMap;

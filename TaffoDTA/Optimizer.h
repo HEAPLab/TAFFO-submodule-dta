@@ -108,6 +108,7 @@ namespace tuner {
         int StatSelectedFixed=0;
         int StatSelectedDouble=0;
         int StatSelectedFloat=0;
+        int StatSelectedHalf=0;
 
     public:
 

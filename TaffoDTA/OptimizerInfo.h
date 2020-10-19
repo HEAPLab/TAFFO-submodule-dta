@@ -119,6 +119,10 @@ namespace tuner {
             return *baseName + "_double";
         }
 
+        const string getHalfSelectedVariable() {
+            return *baseName + "_Half";
+        }
+
         const string getFractBitsVariable() {
             return *baseName + "_fixbits";
         }
