@@ -66,7 +66,7 @@ void CPUCosts::loadModelFile(string modelFile) {
     }
 }
 
-CPUCosts::CostsId CPUCosts::decodeId(string &basicString) {
+CPUCosts::CostsId CPUCosts::decodeId(const string& basicString) const{
     auto it = std::find(CostsIdValues.begin(), CostsIdValues.end(), basicString);
 
     LLVM_DEBUG(llvm::dbgs() <<  "searching cost [" << basicString << "]");

@@ -123,6 +123,22 @@ namespace tuner {
             return *baseName + "_Half";
         }
 
+        const string getQuadSelectedVariable() {
+            return *baseName + "_Quad";
+        }
+
+        const string getFP80SelectedVariable() {
+            return *baseName + "_FP80";
+        }
+
+        const string getPPC128SelectedVariable() {
+            return *baseName + "_PPC128";
+        }
+
+        const string getBF16SelectedVariable() {
+            return *baseName + "_BF16";
+        }        
+
         const string getFractBitsVariable() {
             return *baseName + "_fixbits";
         }

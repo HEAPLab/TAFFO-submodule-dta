@@ -687,8 +687,6 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
             optimizer.handleCallFromRoot(&f);
             break;
         }
-
-
     }
 
     //Looking for remaining functions

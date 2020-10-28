@@ -76,9 +76,30 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_DOUBLE)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasHalf)
     model.insertObjectiveElement(
             make_pair(res->getHalfSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_HALF)),
             MODEL_OBJ_MATHCOST, 0);
+
+    if(hasQuad)
+    model.insertObjectiveElement(
+            make_pair(res->getQuadSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_QUAD)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasPPC128)
+    model.insertObjectiveElement(
+            make_pair(res->getPPC128SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_PPC128)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasFP80)
+    model.insertObjectiveElement(
+            make_pair(res->getFP80SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_FP80)),
+            MODEL_OBJ_MATHCOST, 0);       
+
+    if(hasBF16)
+    model.insertObjectiveElement(
+            make_pair(res->getBF16SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::ADD_BF16)),
+            MODEL_OBJ_MATHCOST, 0);          
 
     //enob constraint
     auto constraint = vector<pair<string, double>>();
@@ -93,10 +114,8 @@ void Optimizer::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const s
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
     model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sum second addend");
-
     //Precision cost
     //Handloed in allocating variable
-
 }
 
 
@@ -123,10 +142,29 @@ void Optimizer::handleFSub(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_DOUBLE)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasHalf)
     model.insertObjectiveElement(
             make_pair(res->getHalfSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_HALF)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasQuad)
+    model.insertObjectiveElement(
+            make_pair(res->getQuadSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_QUAD)),
+            MODEL_OBJ_MATHCOST, 0);
 
+    if(hasPPC128)
+    model.insertObjectiveElement(
+            make_pair(res->getPPC128SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_PPC128)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasFP80)
+    model.insertObjectiveElement(
+            make_pair(res->getFP80SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_FP80)),
+            MODEL_OBJ_MATHCOST, 0);   
+
+    if(hasBF16)
+    model.insertObjectiveElement(
+            make_pair(res->getBF16SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::SUB_BF16)),
+            MODEL_OBJ_MATHCOST, 0);            
     //Precision cost
     //Handloed in allocating variable
 
@@ -169,9 +207,29 @@ void Optimizer::handleFMul(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_DOUBLE)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasHalf)
     model.insertObjectiveElement(
-            make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_HALF)),
+            make_pair(res->getHalfSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_HALF)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasQuad)
+    model.insertObjectiveElement(
+            make_pair(res->getQuadSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_QUAD)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasPPC128)
+    model.insertObjectiveElement(
+            make_pair(res->getPPC128SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_PPC128)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasFP80)
+    model.insertObjectiveElement(
+            make_pair(res->getFP80SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_FP80)),
+            MODEL_OBJ_MATHCOST, 0);      
+
+    if(hasBF16)
+    model.insertObjectiveElement(
+            make_pair(res->getBF16SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::MUL_BF16)),
+            MODEL_OBJ_MATHCOST, 0);        
 
     //Precision cost
     //Handloed in allocating variable
@@ -242,9 +300,30 @@ void Optimizer::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_DOUBLE)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasHalf)
     model.insertObjectiveElement(
-        make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_HALF)),
-        MODEL_OBJ_MATHCOST, 0);
+            make_pair(res->getHalfSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_HALF)),
+            MODEL_OBJ_MATHCOST, 0);
+    if(hasQuad)
+    model.insertObjectiveElement(
+            make_pair(res->getQuadSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_QUAD)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasPPC128)
+    model.insertObjectiveElement(
+            make_pair(res->getPPC128SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_PPC128)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasFP80)
+    model.insertObjectiveElement(
+            make_pair(res->getFP80SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_FP80)),
+            MODEL_OBJ_MATHCOST, 0);            
+
+
+    if(hasBF16)
+    model.insertObjectiveElement(
+            make_pair(res->getBF16SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::DIV_BF16)),
+            MODEL_OBJ_MATHCOST, 0);        
     //Precision cost
     //Handled in allocating variable
 
@@ -311,9 +390,30 @@ void Optimizer::handleFRem(BinaryOperator *instr, const unsigned OpCode, const s
     model.insertObjectiveElement(
             make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_DOUBLE)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasHalf)
     model.insertObjectiveElement(
-            make_pair(res->getDoubleSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_HALF)),
+            make_pair(res->getHalfSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_HALF)),
             MODEL_OBJ_MATHCOST, 0);
+    if(hasQuad)
+    model.insertObjectiveElement(
+            make_pair(res->getQuadSelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_QUAD)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasPPC128)
+    model.insertObjectiveElement(
+            make_pair(res->getPPC128SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_PPC128)),
+            MODEL_OBJ_MATHCOST, 0);
+
+    if(hasFP80)
+    model.insertObjectiveElement(
+            make_pair(res->getFP80SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_FP80)),
+            MODEL_OBJ_MATHCOST, 0);     
+
+    if(hasBF16)
+    model.insertObjectiveElement(
+            make_pair(res->getBF16SelectedVariable(), I_COST * cpuCosts.getCost(CPUCosts::REM_BF16)),
+            MODEL_OBJ_MATHCOST, 0);  
+
     //Precision cost
     //Handloed in allocating variable
 
@@ -354,7 +454,7 @@ Optimizer::handleBinOpCommon(Instruction *instr, Value *op1, Value *op2, bool fo
     //Obviously the type should be sufficient to contain the result
     shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instr, fptype, inputInfo->IRange,
                                                                          inputInfo->IError,
-                                                                         instr->getFunction()->getName());
+                                                                         instr->getFunction()->getName().str());
 
     insertTypeEqualityConstraint(varCast1, varCast2, forceFixEquality);
     insertTypeEqualityConstraint(varCast1, result, forceFixEquality);

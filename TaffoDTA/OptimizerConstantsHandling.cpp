@@ -34,7 +34,7 @@ shared_ptr<OptimizerInfo> Optimizer::processConstant(Constant *constant) {
 
             APFloat tmp = constantFP->getValueAPF();
             bool losesInfo;
-            tmp.convert(APFloatBase::IEEEdouble(), APFloat::roundingMode::rmNearestTiesToEven, &losesInfo);
+            tmp.convert(APFloatBase::IEEEdouble(), APFloat::rmNearestTiesToEven , &losesInfo);
             double a = tmp.convertToDouble();
 
             double min, max;

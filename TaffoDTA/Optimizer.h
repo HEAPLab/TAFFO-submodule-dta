@@ -14,13 +14,20 @@
 #include "Infos.h"
 #include "OptimizerInfo.h"
 #include "Model.h"
-
+#include "llvm/ADT/Triple.h"
 #include "TaffoDTA.h"
 #include "CPUCosts.h"
+#include "llvm/IR/DerivedTypes.h"
+
 
 #ifndef __TAFFO_DTA_OPTIMIZER_H__
 #define __TAFFO_DTA_OPTIMIZER_H__
 
+extern llvm::cl::opt<bool> hasHalf;
+extern llvm::cl::opt<bool> hasQuad;
+extern llvm::cl::opt<bool> hasPPC128;
+extern llvm::cl::opt<bool> hasFP80;
+extern llvm::cl::opt<bool> hasBF16;
 
 //FIXME: I_COST should absolutely not be constant
 
@@ -109,6 +116,18 @@ namespace tuner {
         int StatSelectedDouble=0;
         int StatSelectedFloat=0;
         int StatSelectedHalf=0;
+        int StatSelectedQuad=0;
+        int StatSelectedPPC128=0;
+        int StatSelectedFP80=0;
+        int StatSelectedBF16=0;
+
+
+        /*
+        bool hasHalf;
+        bool hasQuad;
+        bool hasFP80 ;
+        bool hasPPC128;
+        bool hasBF16;*/
 
     public:
 
@@ -122,8 +141,14 @@ namespace tuner {
             cpuCosts.dump();
             dbgs() << "ENOB tuning knob: " << to_string(TUNING_ENOB) << "\n";
             dbgs() << "Time tuning knob: " << to_string(TUNING_MATH) << "\n";
-            dbgs() << "Time tuning CAST knob: " << to_string(TUNING_CASTING) << "\n";
-        }
+            dbgs() << "Time tuning CAST knob: " << to_string(TUNING_CASTING) << "\n";            
+
+             LLVM_DEBUG(dbgs() << "has half: " << to_string(hasHalf) << "\n";);
+             LLVM_DEBUG(dbgs() << "has Quad: " << to_string(hasQuad) << "\n";);
+             LLVM_DEBUG(dbgs() << "has PPC128: " << to_string(hasPPC128) << "\n";);
+             LLVM_DEBUG(dbgs() << "has FP80: " << to_string(hasFP80) << "\n";);
+             LLVM_DEBUG(dbgs() << "has BF16: " << to_string(hasBF16) << "\n";);
+         }
 
         Optimizer();
 

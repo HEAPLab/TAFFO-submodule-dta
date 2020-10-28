@@ -41,7 +41,7 @@ void Optimizer::handleAlloca(Instruction *instruction, shared_ptr<ValueInfo> val
                 return;
             }
             auto info = allocateNewVariableForValue(alloca, fptype, fieldInfo->IRange, fieldInfo->IError,
-                                                    alloca->getFunction()->getName(),
+                                                    alloca->getFunction()->getName().str(),
                                                     false);
             saveInfoForValue(alloca, make_shared<OptimizerPointerInfo>(info));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
@@ -98,9 +98,9 @@ void Optimizer::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo>
         model.insertComment("Restriction for new enob [LOAD]", 1);
         string newEnobVariable = sinfos->getBaseEnobVariable();
         newEnobVariable.append("_memphi_");
-        newEnobVariable.append(load->getFunction()->getName());
+        newEnobVariable.append(load->getFunction()->getName().str());
         newEnobVariable.append("_");
-        newEnobVariable.append(load->getName());
+        newEnobVariable.append(load->getName().str());
         std::replace(newEnobVariable.begin(), newEnobVariable.end(), '.', '_');
         dbgs() << "New enob for load: " << newEnobVariable << "\n";
         model.createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
@@ -287,6 +287,12 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
             auto constraint = vector<pair<string, double>>();
             int ENOBfloat = getENOBFromRange(info_pointer->getRange(), FloatType::Float_float);
             int ENOBdouble = getENOBFromRange(info_pointer->getRange(), FloatType::Float_double);
+            int ENOBhalf = getENOBFromRange(info_pointer->getRange(), FloatType::Float_half);
+            int ENOBquad = getENOBFromRange(info_pointer->getRange(), FloatType::Float_fp128);
+            int ENOBfp80 = getENOBFromRange(info_pointer->getRange(), FloatType::Float_x86_fp80);
+            int ENOBppc128 = getENOBFromRange(info_pointer->getRange(), FloatType::Float_ppc_fp128);
+            int ENOBbf16 = getENOBFromRange(info_pointer->getRange(), FloatType::Float_bfloat);
+
 
             constraint.clear();
             constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
@@ -294,18 +300,39 @@ void Optimizer::handleStore(Instruction *instruction, const shared_ptr<ValueInfo
             constraint.push_back(make_pair(info_pointer->getFixedSelectedVariable(), BIG_NUMBER));
             model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
 
-            //Enob constraints float
+
+            auto enoblambda = [&] (int ENOB, const std::string (tuner::OptimizerScalarInfo::* getvariable)(), const char* desc) mutable {
             constraint.clear();
             constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
-            constraint.push_back(make_pair(info_pointer->getFloatSelectedVariable(), BIG_NUMBER));
-            model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBfloat, "Enob constraint for float");
+            constraint.push_back(make_pair(((*info_pointer).*getvariable)(), BIG_NUMBER));
+            model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOB, desc);
+            };
 
             //Enob constraints float
-            constraint.clear();
-            constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
-            constraint.push_back(make_pair(info_pointer->getDoubleSelectedVariable(), BIG_NUMBER));
-            model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
+            enoblambda(ENOBfloat, &tuner::OptimizerScalarInfo::getFloatSelectedVariable, "Enob constraint for float" );
 
+            //Enob constraints Double
+            enoblambda(ENOBdouble, &tuner::OptimizerScalarInfo::getDoubleSelectedVariable, "Enob constraint for double" );
+
+            //Enob constraints half
+            if(hasHalf)
+            enoblambda(ENOBhalf, &tuner::OptimizerScalarInfo::getHalfSelectedVariable, "Enob constraint for half" );
+
+            //Enob constraints quad
+            if(hasQuad)
+            enoblambda(ENOBquad, &tuner::OptimizerScalarInfo::getQuadSelectedVariable, "Enob constraint for quad" );
+
+            //Enob constraints fp80
+            if(hasFP80)
+            enoblambda(ENOBfp80, &tuner::OptimizerScalarInfo::getFP80SelectedVariable, "Enob constraint for fp80" );
+
+            //Enob constraints ppc128
+            if(hasPPC128)
+            enoblambda(ENOBppc128, &tuner::OptimizerScalarInfo::getPPC128SelectedVariable, "Enob constraint for ppc128" );
+
+            //Enob constraints bf16
+            if(hasBF16)
+            enoblambda(ENOBbf16, &tuner::OptimizerScalarInfo::getBF16SelectedVariable, "Enob constraint for bf16" );
 
             constraint.clear();
             constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
@@ -432,7 +459,7 @@ Optimizer::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) 
     //Allocating variable for result
     shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
                                                                            fieldInfo->IError,
-                                                                           instruction->getFunction()->getName());
+                                                                           instruction->getFunction()->getName().str());
     auto constraint = vector<pair<string, double>>();
     constraint.clear();
 
@@ -531,7 +558,7 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
             //Do not save! As here we have a pointer!
             shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
                                                                                    fieldInfo->IError,
-                                                                                   instruction->getFunction()->getName(), false);
+                                                                                   instruction->getFunction()->getName().str(), false);
 
             auto met =make_shared<OptimizerPointerInfo>(variable);
 
@@ -585,7 +612,7 @@ void Optimizer::handleCastInstruction(Instruction *instruction, shared_ptr<Value
 
         shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
                                                                                fieldInfo->IError,
-                                                                               instruction->getFunction()->getName());
+                                                                               instruction->getFunction()->getName().str());
 
         //Limiting the ENOB as coming from an integer we can have an error at min of 1
         //Look that here we have the original program, so these instruction are not related to fixed point implementation!
@@ -678,10 +705,10 @@ bool Optimizer::extractGEPOffset(const llvm::Type *source_element_type,
         const llvm::ConstantInt *int_i = dyn_cast<llvm::ConstantInt>(*idx_it);
         if (int_i) {
             int n = static_cast<int>(int_i->getSExtValue());
-            if (isa<SequentialType>(source_element_type)) {
+            if (isa<llvm::ArrayType>(source_element_type) || isa<llvm::VectorType>(source_element_type)) {
                 //This is needed to skip the array element in array of structures
                 //In facts, we treats arrays as "scalar" things, so we just do not want to deal with them
-                source_element_type = cast<SequentialType>(source_element_type)->getTypeAtIndex(n);
+                source_element_type = source_element_type->getContainedType(n);
                 dbgs() << "continuing...   ";
                 continue;
             }
@@ -693,7 +720,7 @@ bool Optimizer::extractGEPOffset(const llvm::Type *source_element_type,
             (dbgs() << n << " ");
         } else {
             //We can skip only if is a sequential i.e. we are accessing an index of an array
-            if (!isa<SequentialType>(source_element_type)) {
+            if (!isa<llvm::ArrayType>(source_element_type) || isa<llvm::VectorType>(source_element_type)) {
                 emitError("Index of GEP not constant");
                 return false;
             }
@@ -849,7 +876,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
     }
 
 
-    const std::string calledFunctionName = callee->getName();
+    const std::string calledFunctionName = callee->getName().str();
     dbgs() << ("We are calling " + calledFunctionName + "\n");
 
 
@@ -938,7 +965,7 @@ void Optimizer::handleCall(Instruction *instruction, shared_ptr<ValueInfo> value
                 shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype,
                                                                                      inputInfo->IRange,
                                                                                      inputInfo->IError,
-                                                                                     instruction->getFunction()->getName());
+                                                                                     instruction->getFunction()->getName().str());
                 retInfo = result;
                 dbgs() << "Allocated variable for returns.\n";
             } else {
@@ -1199,7 +1226,7 @@ void Optimizer::handleCallFromRoot(Function *f) {
 
 
     dbgs() << "\n============ FUNCTION FROM ROOT: " << f->getName() << " ============\n";
-    const std::string calledFunctionName = f->getName();
+    const std::string calledFunctionName = f->getName().str();
     dbgs() << ("We are calling " + calledFunctionName + " from root\n");
 
 
@@ -1330,12 +1357,12 @@ string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
     string valueName;
 
     if (auto instr = dyn_cast_or_null<Instruction>(value)) {
-        valueName.append(instr->getFunction()->getName());
+        valueName.append(instr->getFunction()->getName().str());
         valueName.append("_");
     }
 
     if (!value->getName().empty()) {
-        valueName.append(value->getName());
+        valueName.append(value->getName().str());
     } else {
         valueName.append(to_string(value->getValueID()));
         valueName.append("_");
@@ -1348,7 +1375,7 @@ string Optimizer::getEnobActivationVariable(Value *value, int cardinal) {
 
     string fname;
     if (auto instr = dyn_cast_or_null<Instruction>(value)) {
-        fname = instr->getFunction()->getName();
+        fname = instr->getFunction()->getName().str();
         std::replace(fname.begin(), fname.end(), '.', '_');
     }
 
@@ -1369,7 +1396,7 @@ int Optimizer::getMinIntBitOfValue(Value *pValue) {
     if (fp_i) {
         APFloat tmp = fp_i->getValueAPF();
         bool losesInfo;
-        tmp.convert(APFloatBase::IEEEdouble(), APFloat::roundingMode::rmNearestTiesToEven, &losesInfo);
+        tmp.convert(APFloatBase::IEEEdouble(), APFloat::rmNearestTiesToEven, &losesInfo);
         auto a = tmp.convertToDouble();
         dbgs() << "Getting max bits of constant " << a << "!\n";
         smallestRepresentableNumber = abs(a);
@@ -1420,7 +1447,7 @@ int Optimizer::getMaxIntBitOfValue(Value *pValue) {
     if (fp_i) {
         APFloat tmp = fp_i->getValueAPF();
         bool losesInfo;
-        tmp.convert(APFloatBase::IEEEdouble(), APFloat::roundingMode::rmNearestTiesToEven, &losesInfo);
+        tmp.convert(APFloatBase::IEEEdouble(), APFloat::rmNearestTiesToEven, &losesInfo);
         dbgs() << "Getting max bits of constant!\n";
         biggestRepresentableNumber = abs(tmp.convertToDouble());
     } else {
@@ -1470,7 +1497,7 @@ void Optimizer::handleUnknownFunction(Instruction *instruction, shared_ptr<Value
                 shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype,
                                                                                      inputInfo->IRange,
                                                                                      inputInfo->IError,
-                                                                                     call_i->getFunction()->getName(),
+                                                                                     call_i->getFunction()->getName().str(),
                                                                                      true,
                                                                                      "",
                                                                                      true,
@@ -1605,7 +1632,7 @@ Optimizer::handleSelect(Instruction *instruction, shared_ptr<ValueInfo> valueInf
     //Allocating variable for result
     shared_ptr<OptimizerScalarInfo> variable = allocateNewVariableForValue(instruction, fptype, fieldInfo->IRange,
                                                                            fieldInfo->IError,
-                                                                           instruction->getFunction()->getName());
+                                                                           instruction->getFunction()->getName().str());
     auto constraint = vector<pair<string, double>>();
     constraint.clear();
 

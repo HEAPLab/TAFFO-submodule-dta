@@ -1,10 +1,24 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Pass.h"
+#include "string"
 #define DEBUG_TYPE "taffo-dta"
 
 #ifndef DTACONFIG
 #define DTACONFIG
+
+llvm::cl::opt<bool> hasHalf("hasHalf", llvm::cl::desc("target support half"),
+                            llvm::cl::init(false));
+llvm::cl::opt<bool> hasQuad("hasQuad", llvm::cl::desc("target support quad"),
+                            llvm::cl::init(false));
+llvm::cl::opt<bool> hasPPC128("hasPPC128",
+                              llvm::cl::desc("target support ppc128"),
+                              llvm::cl::init(false));
+llvm::cl::opt<bool> hasFP80("hasFP80", llvm::cl::desc("target support fp80"),
+                            llvm::cl::init(false));
+llvm::cl::opt<bool> hasBF16("hasBF16", llvm::cl::desc("target support bf16"),
+                            llvm::cl::init(true));
+
 llvm::cl::opt<int> FracThreshold("minfractbits", llvm::cl::value_desc("bits"),
                                  llvm::cl::desc("Threshold of fractional bits in fixed point numbers"),
                                  llvm::cl::init(3));

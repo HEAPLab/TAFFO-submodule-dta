@@ -2,6 +2,7 @@
 #include "Optimizer.h"
 #include "LoopAnalyzerUtil.h"
 #include "llvm/IR/IntrinsicInst.h"
+#include "llvm/ADT/APFloat.h"
 
 
 using namespace tuner;
@@ -14,7 +15,7 @@ void Optimizer::initialize() {
         if (f.empty()) {
             continue;
         }
-        const std::string name = f.getName();
+        const std::string name = f.getName().str();
         known_functions[name] = &f;
         functions_still_to_visit[name] = &f;
     }
@@ -132,7 +133,7 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     }
 
 
-    string varNameBase(string(functionName).append(value->getName()).append(nameAppendix));
+    string varNameBase(string(functionName).append((std::string)value->getName()).append(nameAppendix));
     std::replace(varNameBase.begin(), varNameBase.end(), '.', '_');
     string varName(varNameBase);
 
@@ -164,7 +165,17 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
+
+    if(hasHalf)
     model.createVariable(optimizerInfo->getHalfSelectedVariable(), 0, 1);
+    if(hasQuad)
+    model.createVariable(optimizerInfo->getQuadSelectedVariable(), 0, 1);
+    if(hasFP80)
+    model.createVariable(optimizerInfo->getFP80SelectedVariable(), 0, 1);
+    if(hasPPC128)
+    model.createVariable(optimizerInfo->getPPC128SelectedVariable(), 0, 1);
+    if(hasBF16)
+    model.createVariable(optimizerInfo->getBF16SelectedVariable(), 0, 1);
 
     //ENOB propagation, free variable
     model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
@@ -172,7 +183,13 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     auto constraint = vector<pair<string, double>>();
     int ENOBfloat = getENOBFromRange(rangeInfo, FloatType::Float_float);
     int ENOBdouble = getENOBFromRange(rangeInfo, FloatType::Float_double);
-    int ENOBhalf = getENOBFromRange(rangeInfo, FloatType::Float_half);
+    int ENOBhalf = 0;
+    int ENOBquad = 0;
+    int ENOBppc128 = 0;
+    int ENOBfp80 = 0;
+    int ENOBbf16 = 0;       
+
+
     //Enob constraints fix
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
@@ -180,23 +197,55 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), BIG_NUMBER));
     model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
 
-    //Enob constraints float
+    auto enobconstraint = [&]( int ENOB, const std::string (tuner::OptimizerScalarInfo::* getVariable)(), const char * desc) mutable {
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBfloat, "Enob constraint for float");
+    constraint.push_back(make_pair( ((*optimizerInfo).*getVariable)(), BIG_NUMBER));
+    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOB, desc);
+    };
+    //Enob constraints float     
+    enobconstraint(ENOBfloat, &tuner::OptimizerScalarInfo::getFloatSelectedVariable, "Enob constraint for float");
 
-    //Enob constraints Double
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBdouble, "Enob constraint for double");
+    //Enob constraints Double     
+    enobconstraint(ENOBdouble, &tuner::OptimizerScalarInfo::getDoubleSelectedVariable, "Enob constraint for double");
 
     //Enob constraints Half
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOBhalf, "Enob constraint for Half");
+    if(hasHalf){
+    ENOBhalf = getENOBFromRange(rangeInfo, FloatType::Float_half);
+    enobconstraint(ENOBhalf, &tuner::OptimizerScalarInfo::getHalfSelectedVariable, "Enob constraint for half");    
+    }
+
+    // Enob constraints Quad
+    if (hasQuad) {
+      ENOBquad = getENOBFromRange(rangeInfo, FloatType::Float_fp128);
+      enobconstraint(ENOBquad,
+                     &tuner::OptimizerScalarInfo::getQuadSelectedVariable,
+                     "Enob constraint for quad");
+    }
+    // Enob constraints FP80
+    
+      if (hasFP80){
+        ENOBfp80 = getENOBFromRange(rangeInfo, FloatType::Float_x86_fp80);
+      enobconstraint(ENOBfp80,
+                     &tuner::OptimizerScalarInfo::getFP80SelectedVariable,
+                     "Enob constraint for fp80");
+    }
+    // Enob constraints PPC128
+    
+      if (hasPPC128){
+        ENOBppc128 = getENOBFromRange(rangeInfo, FloatType::Float_ppc_fp128);
+      enobconstraint(ENOBppc128,
+                     &tuner::OptimizerScalarInfo::getPPC128SelectedVariable,
+                     "Enob constraint for ppc128");
+    }
+    // Enob constraints FP80
+    
+      if (hasBF16){
+        ENOBbf16 = getENOBFromRange(rangeInfo, FloatType::Float_bfloat);
+      enobconstraint(ENOBbf16,
+                     &tuner::OptimizerScalarInfo::getBF16SelectedVariable,
+                     "Enob constraint for bf16");
+    }
 
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
@@ -204,7 +253,16 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     //DO NOT REMOVE THE CAST OR SOMEONE WILL DEBUG THIS FOR AN WHOLE DAY AGAIN
     model.insertLinearConstraint(constraint, Model::GE, (-BIG_NUMBER-FIX_DELTA_MAX)+((int)fpInfo->getPointPos()), "Limit the lower number of frac bits"+to_string(fpInfo->getPointPos()));
 
-    int enobMaxCost = max({ENOBfloat, ENOBdouble,ENOBhalf, (int)fpInfo->getPointPos()});
+    int enobMaxCost = max({ENOBfloat, ENOBdouble, (int)fpInfo->getPointPos()});
+    
+    enobMaxCost = hasHalf ? max(enobMaxCost, ENOBhalf) : enobMaxCost;
+    enobMaxCost = hasFP80 ? max(enobMaxCost, ENOBfp80) : enobMaxCost;
+    enobMaxCost = hasQuad ? max(enobMaxCost, ENOBquad) : enobMaxCost;
+    enobMaxCost = hasPPC128 ? max(enobMaxCost, ENOBppc128) : enobMaxCost;
+    enobMaxCost = hasBF16 ? max(enobMaxCost, ENOBbf16) : enobMaxCost;
+
+
+
 
     if(suggestedMinError){
         /*If we have a suggested min initial error, that is used for error propagation, we should cap the enob to that erro.
@@ -252,7 +310,17 @@ Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, 
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+    if(hasHalf)
     constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), 1.0));
+    if(hasQuad)
+    constraint.push_back(make_pair(optimizerInfo->getQuadSelectedVariable(), 1.0));    
+    if(hasPPC128)
+    constraint.push_back(make_pair(optimizerInfo->getPPC128SelectedVariable(), 1.0));  
+    if(hasFP80)
+    constraint.push_back(make_pair(optimizerInfo->getFP80SelectedVariable(), 1.0)); 
+    if(hasBF16)
+    constraint.push_back(make_pair(optimizerInfo->getBF16SelectedVariable(), 1.0)); 
+
     model.insertLinearConstraint(constraint, Model::EQ, 1, "Exactly one selected type");
 
     //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
@@ -494,7 +562,16 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
     model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
+    if(hasHalf)
     model.createVariable(optimizerInfo->getHalfSelectedVariable(), 0, 1);
+    if(hasQuad)
+    model.createVariable(optimizerInfo->getQuadSelectedVariable(), 0, 1);
+    if(hasPPC128)
+    model.createVariable(optimizerInfo->getPPC128SelectedVariable(), 0, 1);
+    if(hasFP80)
+    model.createVariable(optimizerInfo->getFP80SelectedVariable(), 0, 1);
+    if(hasBF16)
+    model.createVariable(optimizerInfo->getBF16SelectedVariable(), 0, 1);
     //model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
 
     auto constraint = vector<pair<string, double>>();
@@ -504,7 +581,18 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
+    if(hasHalf)
     constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), 1.0));
+     if(hasQuad)
+    constraint.push_back(make_pair(optimizerInfo->getQuadSelectedVariable(), 1.0));
+    if(hasPPC128)
+    constraint.push_back(make_pair(optimizerInfo->getPPC128SelectedVariable(), 1.0));
+    if(hasFP80)
+    constraint.push_back(make_pair(optimizerInfo->getFP80SelectedVariable(), 1.0));
+    if(hasBF16)
+    constraint.push_back(make_pair(optimizerInfo->getBF16SelectedVariable(), 1.0));
+
+
     model.insertLinearConstraint(constraint, Model::EQ, 1, "exactly 1 type");
 
 
@@ -569,149 +657,103 @@ shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value
 
 
 
-
+    
 
     //TYPE CAST
-    auto C3 = "C3_" + varName;
-    auto C4 = "C4_" + varName;
-    auto C5 = "C5_" + varName;
-    auto C6 = "C6_" + varName;
-    auto C7 = "C7_" + varName;
-    auto C8 = "C8_" + varName;
-    auto C9 = "C9_" + varName;
-    auto C10 = "C10_" + varName;
-    auto C11 = "C11_" + varName;
-    auto C12 = "C12_" + varName;
-    auto C13 = "C13_" + varName;
-    auto C14 = "C14_" + varName;
-
-
-
-    model.createVariable(C3, 0, 1);
-    model.createVariable(C4, 0, 1);
-    model.createVariable(C5, 0, 1);
-    model.createVariable(C6, 0, 1);
-    model.createVariable(C7, 0, 1);
-    model.createVariable(C8, 0, 1);
-    model.createVariable(C9, 0, 1);
-    model.createVariable(C10, 0, 1);
-    model.createVariable(C11, 0, 1);
-    model.createVariable(C12, 0, 1);
-    model.createVariable(C13, 0, 1);
-    model.createVariable(C14, 0, 1);
-
-
-
-    //FIX to FLOAT
+    auto costcrosslambda = [&](std::string& variable , tuner::CPUCosts::CostsId cost, const string (tuner::OptimizerScalarInfo::*getFirstVariable)(), const string (tuner::OptimizerScalarInfo::*getSecondVariable)(), const std::string desc) mutable {
+    
     constraint.clear();
-    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C3, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Fix to float");
-    model.insertObjectiveElement(make_pair(C3, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FLOAT)), MODEL_OBJ_CASTCOST, 0);
+    constraint.push_back(make_pair(((*info).*getFirstVariable)(), 1.0));
+    constraint.push_back(make_pair(((*optimizerInfo).*getSecondVariable)(), 1.0));
+    constraint.push_back(make_pair(variable, -1));
+    model.insertLinearConstraint(constraint, Model::LE, 1, desc);
+    model.insertObjectiveElement(make_pair(variable, I_COST * cpuCosts.getCost(cost)), MODEL_OBJ_CASTCOST, 0);
+    };
+
+    int counter2 = 3;
+    for (auto& CostsString : cpuCosts.CostsIdValues){
 
 
-    //FLOAT to FIX
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C4, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Float to fix");
-    model.insertObjectiveElement(make_pair(C4, I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_FIX)), MODEL_OBJ_CASTCOST, 0);
+        if(CostsString.find("CAST") == 0 && CostsString.find("CAST_FIX_FIX") == std::string::npos){
+            const string (tuner::OptimizerScalarInfo::*first_f )() = nullptr;
+            std::size_t first_i = 0;
+            std::size_t second_i = 0;
+            char * first_c;
+            char * second_c;            
+            const string (tuner::OptimizerScalarInfo::*second_f)() = nullptr;
+            std::size_t fixed_i  = CostsString.find("FIX");
+            std::size_t float_i  = CostsString.find("FLOAT");
+            std::size_t double_i  = CostsString.find("DOUBLE");
+            std::size_t quad_i  = CostsString.find("QUAD");
+            std::size_t fp80_i  = CostsString.find("FP80");
+            std::size_t ppc128_i  = CostsString.find("PPC128");
+            std::size_t half_i  = CostsString.find("HALF");
+            std::size_t bf16_i  = CostsString.find("BF16");
+            LLVM_DEBUG(dbgs()<< "C"<<std::to_string(counter2)<<"\n");
+            if(!hasHalf && half_i != std::string::npos) continue;
+            if(!hasQuad && quad_i != std::string::npos) continue;
+            if(!hasFP80 && fp80_i != std::string::npos) continue;
+            if(!hasPPC128 && ppc128_i != std::string::npos) continue;
+            if(!hasBF16 && bf16_i != std::string::npos) continue;
 
-    //FIX to DOUBLE
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C5, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Fix to double");
-    model.insertObjectiveElement(make_pair(C5, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_DOUBLE)), MODEL_OBJ_CASTCOST, 0);
-
-
-    //DOUBLE to FIX
-    constraint.clear();
-    constraint.push_back(make_pair(info->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C6, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Double to fix");
-    model.insertObjectiveElement(make_pair(C6, I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FIX)), MODEL_OBJ_CASTCOST, 0);
-
-
-
-    //FLOAT to DOUBLE
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C7, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Float to double");
-    model.insertObjectiveElement(
-            make_pair(C7, I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_DOUBLE)), MODEL_OBJ_CASTCOST, 0);
-
-
-    //DOUBLE to FLOAT
-    constraint.clear();
-    constraint.push_back(make_pair(info->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C8, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Double to float");
-    model.insertObjectiveElement(
-            make_pair(C8, I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FLOAT)), MODEL_OBJ_CASTCOST, 0);
-
-
-    //FIX to HALF
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C9, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Fix to Half");
-    model.insertObjectiveElement(make_pair(C9, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_HALF)), MODEL_OBJ_CASTCOST, 0);
-
-
-    //HALF to FIX
-    constraint.clear();
-    constraint.push_back(make_pair(info->getHalfSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C10, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Half to Fix");
-    model.insertObjectiveElement(make_pair(C10, I_COST * cpuCosts.getCost(CPUCosts::CAST_HALF_FIX)), MODEL_OBJ_CASTCOST, 0);
+            if (fixed_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getFixedSelectedVariable; first_i = fixed_i; first_c = "Fixed";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getFixedSelectedVariable; second_i = fixed_i; second_c = "Fixed";}
+            }
+            if (float_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getFloatSelectedVariable; first_i = float_i; first_c = "Float";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getFloatSelectedVariable; second_i = float_i; second_c = "Float";}
+            }
+            if (double_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getDoubleSelectedVariable; first_i = double_i; first_c = "Double";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getDoubleSelectedVariable; second_i = double_i; second_c = "Double";}
+            }
+            if (quad_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getQuadSelectedVariable; first_i = quad_i; first_c = "Quad";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getQuadSelectedVariable; second_i = quad_i; second_c = "Quad";}
+            }
+            if (fp80_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getFP80SelectedVariable; first_i = fp80_i; first_c = "FP80";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getFP80SelectedVariable; second_i = fp80_i; second_c = "FP80";}
+            }
+            if (ppc128_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getPPC128SelectedVariable; first_i = ppc128_i; first_c = "PPC128";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getPPC128SelectedVariable; second_i = ppc128_i; second_c = "PPC128";}
+            }
+            if (half_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getHalfSelectedVariable; first_i = half_i; first_c = "Half";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getHalfSelectedVariable; second_i = half_i; second_c = "Half";}
+            }
+            if (bf16_i != std::string::npos){
+                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getBF16SelectedVariable; first_i = half_i; first_c = "bf16";}
+                else                    {second_f = &tuner::OptimizerScalarInfo::getBF16SelectedVariable; second_i = half_i; second_c = "bf16";}
+            }            
 
 
-    //FLOAT to HALF
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C11, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Float to Half");
-    model.insertObjectiveElement(make_pair(C11, I_COST * cpuCosts.getCost(CPUCosts::CAST_FLOAT_HALF)), MODEL_OBJ_CASTCOST, 0);
+            if(first_i > second_i){
+                std::swap(first_f,second_f);
+                std::swap(first_c,second_c);
+            }
 
+            auto CX = std::string("C") + std::to_string(counter2) + "_" + varName;
+            counter2++;
 
-    //HALF to FLOAT
-    constraint.clear();
-    constraint.push_back(make_pair(info->getHalfSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C12, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Half to float");
-    model.insertObjectiveElement(make_pair(C12, I_COST * cpuCosts.getCost(CPUCosts::CAST_HALF_FLOAT)), MODEL_OBJ_CASTCOST, 0);
+            model.createVariable(CX, 0, 1);
 
+            LLVM_DEBUG(llvm::dbgs() << "Inserting constraint " << CostsString << " first " << first_c << " second " << second_c << " wtih desc " << std::string(first_c) + " to " + std::string(second_c) << "\n" );
 
-    //DOUBLE to HALF
-    constraint.clear();
-    constraint.push_back(make_pair(info->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C13, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Double to half");
-    model.insertObjectiveElement(make_pair(C13, I_COST * cpuCosts.getCost(CPUCosts::CAST_DOUBLE_HALF)), MODEL_OBJ_CASTCOST, 0);
+            costcrosslambda(CX, cpuCosts.decodeId(CostsString), first_f, 
+                        second_f, std::string(first_c) + " to " + std::string(second_c));
 
-
-    //HALF to DOUBLE
-    constraint.clear();
-    constraint.push_back(make_pair(info->getHalfSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(C14, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, "Half to double");
-    model.insertObjectiveElement(make_pair(C14, I_COST * cpuCosts.getCost(CPUCosts::CAST_HALF_DOUBLE)), MODEL_OBJ_CASTCOST, 0);
-
-
+                
+            
+        }
+    }
+    auto CX = std::string("C") + std::to_string(counter2) + "_" + varName;
+    model.createVariable(CX, 0, 1);
+    costcrosslambda(CX, cpuCosts.CAST_FIX_FIX, &tuner::OptimizerScalarInfo::getFixedSelectedVariable, &tuner::OptimizerScalarInfo::getFixedSelectedVariable
+            ,"Fix to Fix");
+    
     return optimizerInfo;
 }
 
@@ -739,27 +781,33 @@ void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1
     //Inserting constraint about of the very same type
 
 
+    auto eqconstraintlambda = [&](const string (tuner::OptimizerScalarInfo::*getFirstVariable)(), const std::string desc) mutable {
     constraint.clear();
-    constraint.push_back(make_pair(op1->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(op2->getFixedSelectedVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 0, "fix equality");
+    constraint.push_back(make_pair(((*op1).*getFirstVariable)(), 1.0));
+    constraint.push_back(make_pair(((*op2).*getFirstVariable)(), -1.0));
+    model.insertLinearConstraint(constraint, Model::EQ, 0, desc);
+    };
 
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getFixedSelectedVariable,"fix equality");
 
-    constraint.clear();
-    constraint.push_back(make_pair(op1->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(op2->getFloatSelectedVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 0, "float equality");
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getFloatSelectedVariable,"float equality");
 
-    constraint.clear();
-    constraint.push_back(make_pair(op1->getDoubleSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(op2->getDoubleSelectedVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 0, "double equality");
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getDoubleSelectedVariable,"double equality");
+   
+    if(hasHalf)
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getHalfSelectedVariable,"Half equality");
 
+    if(hasQuad)
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getQuadSelectedVariable,"Quad equality");
 
-    constraint.clear();
-    constraint.push_back(make_pair(op1->getHalfSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(op2->getHalfSelectedVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 0, "Half equality");
+    if(hasPPC128)
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getPPC128SelectedVariable,"PPC128 equality");
+
+    if(hasFP80)
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getFP80SelectedVariable,"FP80 equality");
+
+    if(hasBF16)
+    eqconstraintlambda(&tuner::OptimizerScalarInfo::getBF16SelectedVariable,"FP80 equality");
 
     if (forceFixBitsConstraint) {
         constraint.clear();
@@ -778,17 +826,33 @@ int Optimizer::getENOBFromRange(shared_ptr<mdutils::Range> range, mdutils::Float
     int minExponentPower; //eheheh look at this
     switch (standard) {
         case mdutils::FloatType::Float_half:
-            fractionalDigits = 7;
-            minExponentPower = -126;
+            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEhalf()) - 1;
+            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEhalf());
             break;        
         case mdutils::FloatType::Float_float:
-            fractionalDigits = 23;
-            minExponentPower = -126;
+            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEsingle()) - 1;
+            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEsingle());
             break;
         case mdutils::FloatType::Float_double:
-            fractionalDigits = 52;
-            minExponentPower = -1022;
+            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEdouble()) - 1;
+            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEdouble());
             break;
+        case mdutils::FloatType::Float_bfloat:
+            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::BFloat()) - 1;
+            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::BFloat());
+            break;
+        case mdutils::FloatType::Float_fp128:
+            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEquad()) - 1;
+            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEquad());
+            break;
+        case mdutils::FloatType::Float_ppc_fp128:
+            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::PPCDoubleDouble()) - 1;
+            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::PPCDoubleDouble());
+            break;
+        case mdutils::FloatType::Float_x86_fp80:
+            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::x87DoubleExtended()) - 1;
+            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::x87DoubleExtended());
+            break;                                            
         default:
             llvm_unreachable("Unsupported type here!");
     }
@@ -824,7 +888,7 @@ shared_ptr<OptimizerStructInfo> Optimizer::loadStructInfo(Value *glob, shared_pt
 
     string function = "";
     if (auto instr = dyn_cast_or_null<Instruction>(glob)) {
-        function = instr->getFunction()->getName();
+        function = instr->getFunction()->getName().str();
     }
 
 
@@ -938,13 +1002,45 @@ shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalar
         dbgs() << "Nullptr scalar info!";
         return nullptr;
     }
+    LLVM_DEBUG(dbgs() << "\nmodel var values\n" );
     double selectedFixed = model.getVariableValue(scalarInfo->getFixedSelectedVariable());
+    LLVM_DEBUG(dbgs() << scalarInfo->getFixedSelectedVariable() << " " << selectedFixed << "\n" );
     double selectedFloat = model.getVariableValue(scalarInfo->getFloatSelectedVariable());
+    LLVM_DEBUG(dbgs() << scalarInfo->getFloatSelectedVariable() << " " << selectedFloat << "\n" );
     double selectedDouble = model.getVariableValue(scalarInfo->getDoubleSelectedVariable());
-    double selectedHalf = model.getVariableValue(scalarInfo->getHalfSelectedVariable());
-    double fracbits = model.getVariableValue(scalarInfo->getFractBitsVariable());
+    LLVM_DEBUG(dbgs() << scalarInfo->getDoubleSelectedVariable() << " " << selectedDouble << "\n" );
+    double selectedHalf = 0;
+    double selectedFP80 = 0;
+    double selectedPPC128 = 0;
+    double selectedQuad = 0;
+    double selectedBF16 = 0;
 
-    assert(selectedDouble + selectedFixed + selectedFloat + selectedHalf == 1 &&
+
+    if(hasHalf){
+     selectedHalf = model.getVariableValue(scalarInfo->getHalfSelectedVariable());
+    LLVM_DEBUG(dbgs() << scalarInfo->getHalfSelectedVariable() << " " << selectedHalf << "\n" );
+    }
+    if(hasQuad){
+     selectedQuad = model.getVariableValue(scalarInfo->getQuadSelectedVariable());
+    LLVM_DEBUG(dbgs() << scalarInfo->getQuadSelectedVariable() << " " << selectedQuad << "\n" );
+    }
+    if(hasPPC128){
+     selectedPPC128 = model.getVariableValue(scalarInfo->getPPC128SelectedVariable());
+    LLVM_DEBUG(dbgs() << scalarInfo->getPPC128SelectedVariable() << " " << selectedPPC128 << "\n" );
+    }
+    if(hasFP80){
+     selectedFP80 = model.getVariableValue(scalarInfo->getFP80SelectedVariable());
+    LLVM_DEBUG(dbgs() << scalarInfo->getFP80SelectedVariable() << " " << selectedFP80 << "\n" );
+    }   
+    if(hasBF16){
+    selectedBF16 = model.getVariableValue(scalarInfo->getBF16SelectedVariable());   
+    LLVM_DEBUG(dbgs() << scalarInfo->getBF16SelectedVariable() << " " << selectedBF16 << "\n" );
+    }
+
+
+    double fracbits = model.getVariableValue(scalarInfo->getFractBitsVariable());
+    
+    assert(selectedDouble + selectedFixed + selectedFloat + selectedHalf + selectedFP80 + selectedPPC128 + selectedQuad + selectedBF16 == 1 &&
            "OMG! Catastrophic failure! Exactly one variable should be selected here!!!");
 
     if (selectedFixed == 1) {
@@ -969,7 +1065,25 @@ shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalar
         return make_shared<mdutils::FloatType>(FloatType::Float_half, 0);
     }
 
+    if (selectedQuad == 1) {
+        StatSelectedQuad++;
+        return make_shared<mdutils::FloatType>(FloatType::Float_fp128, 0);
+    }
 
+    if (selectedPPC128 == 1) {
+        StatSelectedPPC128++;
+        return make_shared<mdutils::FloatType>(FloatType::Float_ppc_fp128, 0);
+    }
+
+    if (selectedFP80 == 1) {
+        StatSelectedFP80++;
+        return make_shared<mdutils::FloatType>(FloatType::Float_x86_fp80, 0);
+    }
+
+    if (selectedBF16 == 1) {
+        StatSelectedBF16++;
+        return make_shared<mdutils::FloatType>(FloatType::Float_bfloat, 0);
+    }
 
 
     llvm_unreachable("Trying to implement a new datatype? look here :D");
