@@ -1,8 +1,7 @@
 #Time Arit Math
-These benchmarks are built to compute the correct model parameters that are used by the model solver to make decisions
-about the tradeoff to make during the type selection.
+These benchmarks compute the correct model parameters that are used by the model solver as reference for the precision-speed tradeoff.
 
-##Compilation
+##Compilation and run
 The current configuration of the benchmark is suitable to benchmark "powerful" architectures, such as personal computer.
 
 Just run the `make` command and wait for the compilation and run of the benchmark.
@@ -20,10 +19,10 @@ C99 	= clang
 CFLAGS	= -g -O0 -DNOFLT80 -DNOFLT128 -DNBRUN=128 -DMEMSIZE=10000000 #-DNOMEMALIGN
 ```
 The first line configures the compiler used to build the benchmarks. The current selected compiler is set to `clang` as 
-it is the one used by the final tests.
+it is the one used by the framework.
 
 The second line configures the flags of the C compiler:
-* `-O0` the optimization, should always be set to 0 to reduce the optimization of the compiler and enhance the fidelty of the results.
+* `-O0` the optimization, should always be set to 0 to reduce the optimization of the compiler and enhance the fidelity of the results.
 * `-DNOFLT80` removes the support to 80 bits floating point, that are not used by the model, currently
 * `-DNOFLT128` same as above
 * `-DNBRUN=128` controls the number of run of the same test
@@ -39,5 +38,5 @@ The benchmark make use of standard libraries calls both for the time keeping and
 and final results respectively to stdout.
 Usually the printf functions is present in most embedded systems OS. Hence for the output part no action is needed.
 
-For the time keeping part, it may be more complex. At the current state, both the posix timing and the libc clock are supported.
-Please see lines 139 of timing.c to implement the correct calls for your operating system.
+For the time keeping part, both the posix timing and the libc clock are supported.
+Please see lines 139 of timing.c to implement the correct calls for your operating system, in case neither of these libraries are not available.
