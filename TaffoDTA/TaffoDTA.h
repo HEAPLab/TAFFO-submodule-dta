@@ -80,9 +80,9 @@ namespace tuner {
 
 
     std::shared_ptr<ValueInfo> valueInfo(llvm::Value *val) {
-      LLVM_DEBUG(llvm::dbgs() << "new valueinfo for " << *val << "\n");
       auto vi = info.find(val);
       if (vi == info.end()) {
+        LLVM_DEBUG(llvm::dbgs() << "new valueinfo for " << *val << "\n");
         info[val] = std::make_shared<ValueInfo>(ValueInfo());
         return info[val];
       } else {
