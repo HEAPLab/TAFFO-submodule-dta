@@ -586,7 +586,8 @@ void TaffoTuner::attachFunctionMetaData(llvm::Module &m) {
   mdutils::MetadataManager &MDManager = mdutils::MetadataManager::getMetadataManager();
 
   for (Function &f : m.functions()) {
-    if (f.isIntrinsic())
+    LLVM_DEBUG(dbgs() << f.getName() << "\n");
+    if (f.isIntrinsic() || f.isDeclaration())
       continue;
     
     SmallVector<mdutils::MDInfo*, 5> argsII;
