@@ -688,6 +688,9 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
     //FIXME: this is an hack to prevent multiple visit of the same function if it will be called somewhere from the program
     for (Function &f : m.functions()) {
         //Skip compiler provided functions
+          if (f.isIntrinsic() || f.isDeclaration())
+            continue;
+
         if (!f.isIntrinsic() && !f.empty() && f.getName().equals("main")) {
             LLVM_DEBUG(dbgs() << "========== GLOBAL ENTRY POINT main ==========";);
 

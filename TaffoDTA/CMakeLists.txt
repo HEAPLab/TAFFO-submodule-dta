@@ -1,5 +1,6 @@
+set(SELF TaffoDTA)
 
-add_llvm_library(TaffoDTA OBJECT BUILDTREE_ONLY
+add_llvm_library(${SELF} OBJECT BUILDTREE_ONLY
   TaffoDTA.cpp
   Optimizer.cpp
   Model.cpp
@@ -25,6 +26,9 @@ add_llvm_library(TaffoDTA OBJECT BUILDTREE_ONLY
   MemSSAUtils.hpp
   CPUCosts.h
   LoopAnalyzerUtil.h
+  )  
+)
+target_link_libraries(obj.${SELF} PUBLIC
+  TaffoUtils
   )
-
-set_property(TARGET obj.TaffoDTA PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET obj.${SELF} PROPERTY POSITION_INDEPENDENT_CODE ON)
