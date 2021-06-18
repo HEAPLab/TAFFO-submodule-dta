@@ -29,7 +29,7 @@ opts=
 init_flags=
 vra_flags=
 disable_vra=0
-dta_flags="-mixedmode=1 -costmodelfilename=i7-4.csv"
+dta_flags="-mixedmode=1 -instructionsetfile=./fix -costmodelfilename=i7-4.csv"
 conversion_flags=
 enable_errorprop=0
 errorprop_flags=
