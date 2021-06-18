@@ -4,10 +4,11 @@
 #include <fstream>
 #include <map>
 #include <llvm/Support/CommandLine.h>
+#include "ortools/linear_solver/linear_solver.h"
 
 
-#ifndef __TAFFO_DTA_MODEL_H__
-#define __TAFFO_DTA_MODEL_H__
+#ifndef TAFFO_DTA_MODEL_H
+#define TAFFO_DTA_MODEL_H
 
 #define MODEL_OBJ_CASTCOST "castCostObj"
 #define MODEL_OBJ_ENOB "enobCostObj"
@@ -28,21 +29,23 @@ namespace tuner {
             MIN, MAX
         };
 
-        double costEnob, costTime, costCast;
+
 
     private:
-        set<string> variablesPool;
-        map<string, double> variableValues;
+        map<const string, operations_research::MPVariable* > variablesPool;
+        map< const string, double> variableValues;
 
-        map<string, bool> objDeclarationOccoured;
+        map<const string, std::vector<std::pair<operations_research::MPVariable*,double>>> objDeclarationOccoured;
 
-        map<string, double> objMaxCosts;
+        map< const string, double> objMaxCosts;
 
-        ofstream modelFile;
 
-        vector<pair<string, double>> objectiveFunction;
+        vector<pair< const string, double>> objectiveFunction;
         ProblemType  problemType;
         Model() = delete;
+
+        std::unique_ptr<operations_research::MPSolver> solver;
+
     public:
 
 
@@ -53,9 +56,9 @@ namespace tuner {
         enum ConstraintType {
             EQ, LE, GE
         }; //Equal, less or equal, greater or equal; strict inequalities are not handled by the tools usually
-        void createVariable(const string &varName);
+        // void createVariable(const string &varName);
 
-        void insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType,  double rightSide, string comment);
+        void insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType,  double rightSide/*, string& comment*/);
 
 
 
@@ -79,7 +82,7 @@ namespace tuner {
 
         double getMultiplier(string var);
 
-        void insertComment(string comment, int spaceBefore=0, int spaceAfter=0);
+       // void insertComment(string comment, int spaceBefore=0, int spaceAfter=0);
     };
 }
 

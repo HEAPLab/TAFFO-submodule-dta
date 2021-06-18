@@ -7,7 +7,7 @@
 #include <llvm/Analysis/LoopInfo.h>
 #include <llvm/Analysis/ScalarEvolution.h>
 #include "LoopAnalyzerUtil.h"
-
+#define DEBUG_TYPE "taffo-dta"
 
 using namespace llvm;
 
@@ -19,7 +19,7 @@ unsigned LoopAnalyzerUtil::computeFullTripCount(ModulePass *tuner, Instruction *
     unsigned info;
     info = computeFullTripCount(tuner, loop);
 
-    dbgs() << "Total trip count: " << info << "\n";
+    LLVM_DEBUG(dbgs() << "Total trip count: " << info << "\n";);
     return info;
 }
 
@@ -27,14 +27,14 @@ unsigned LoopAnalyzerUtil::computeFullTripCount(ModulePass *tuner, Loop *loop) {
     if (loop) {
         auto scev = tuner->getAnalysis<ScalarEvolutionWrapperPass>(
                 *loop->getHeader()->getParent()).getSE().getSmallConstantTripCount(loop);
-        dbgs() << "Got SCEV " << scev << "; looking for nested loops...\n";
+        LLVM_DEBUG(dbgs() << "Got SCEV " << scev << "; looking for nested loops...\n";);
         if(scev == 0){
             scev = 1;
-            dbgs() << "[Warning] Could not find a loop trip count, forcing to be at least 1.\n";
+            LLVM_DEBUG(dbgs() << "[Warning] Could not find a loop trip count, forcing to be at least 1.\n";);
         }
         return scev * computeFullTripCount(tuner, loop->getParentLoop());
     } else {
-        dbgs() << "Loop Info: loop is null! Not part of a loop, finishing search!\n";
+        LLVM_DEBUG(dbgs() << "Loop Info: loop is null! Not part of a loop, finishing search!\n";);
         return 1;
     }
 

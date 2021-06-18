@@ -40,14 +40,14 @@ void MemWatcher::closePhiLoop(LoadInst *phiNode, Value *requestedValue) {
 
 void MemWatcher::dumpState() {
     if(pairsToClose.empty()){
-        dbgs() << "All Mem loops closed!\n";
+        LLVM_DEBUG(dbgs() << "All Mem loops closed!\n";);
     }
     for(auto pair :pairsToClose){
-        pair.first->print(dbgs());
-        dbgs() << " STILL MISSING; will close:\n";
+        LLVM_DEBUG(pair.first->print(dbgs()););
+        LLVM_DEBUG(dbgs() << " STILL MISSING; will close:\n";);
         for(auto a : pair.second){
-            a->print(dbgs());
-            dbgs() << "\n";
+            LLVM_DEBUG(a->print(dbgs()););
+            LLVM_DEBUG(dbgs() << "\n";);
         }
     }
 

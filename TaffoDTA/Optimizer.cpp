@@ -3,15 +3,44 @@
 #include "LoopAnalyzerUtil.h"
 #include "llvm/IR/IntrinsicInst.h"
 #include "llvm/ADT/APFloat.h"
+#include "llvm/IR/InstIterator.h"
+#include "MetricBase.h"
 
 
 using namespace tuner;
 using namespace mdutils;
 
+
+    Optimizer::Optimizer(Module &mm, TaffoTuner *tuner,  MetricBase*  met, string modelFile, CPUCosts::CostType cType) : model(Model::MIN), module(mm), tuner(tuner), DisabledSkipped(0), metric(met) {
+        auto& TTI = tuner->getAnalysis<llvm::TargetTransformInfoWrapperPass>().getTTI(*(mm.begin()));
+        if (cType == CPUCosts::CostType::Performance){  
+            cpuCosts = CPUCosts(modelFile); 
+        } else if (cType == CPUCosts::CostType::Size){
+            cpuCosts = CPUCosts(mm,TTI); 
+        } 
+        
+        LLVM_DEBUG(dbgs() << "\n\n\n[WARNING] Mixed precision mode enabled. This is an experimental feature. Use it at your own risk!\n\n\n";);
+        cpuCosts.dump();
+        LLVM_DEBUG(dbgs() << "ENOB tuning knob: " << to_string(TUNING_ENOB) << "\n";);
+        LLVM_DEBUG(dbgs() << "Time tuning knob: " << to_string(TUNING_MATH) << "\n";);
+        LLVM_DEBUG(dbgs() << "Time tuning CAST knob: " << to_string(TUNING_CASTING) << "\n";);
+        metric->setOpt(this);
+
+        LLVM_DEBUG(dbgs() << "has half: " << to_string(hasHalf) << "\n";);
+        LLVM_DEBUG(dbgs() << "has Quad: " << to_string(hasQuad) << "\n";);
+        LLVM_DEBUG(dbgs() << "has PPC128: " << to_string(hasPPC128) << "\n";);
+        LLVM_DEBUG(dbgs() << "has FP80: " << to_string(hasFP80) << "\n";);
+        LLVM_DEBUG(dbgs() << "has BF16: " << to_string(hasBF16) << "\n";);
+        }
+
+        Optimizer::~Optimizer() = default;
+
+
+
 void Optimizer::initialize() {
 
      for (llvm::Function &f : module.functions()) {
-        dbgs() << "\nGetting info of " << f.getName() << ":\n";
+        LLVM_DEBUG(dbgs() << "\nGetting info of " << f.getName() << ":\n");
         if (f.empty()) {
             continue;
         }
@@ -23,42 +52,42 @@ void Optimizer::initialize() {
 }
 
 void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo) {
-    dbgs() << "handleGlobal called.\n";
+    LLVM_DEBUG(dbgs() << "handleGlobal called.\n");
 
     auto * globalVar = dyn_cast_or_null<GlobalVariable>(glob);
     assert(globalVar && "glob is not a global variable!");
 
     if (!glob->getValueType()->isPointerTy()) {
         if(!valueInfo->metadata->getEnableConversion()){
-            dbgs() << "Skipping as conversion is disabled!";
+            LLVM_DEBUG(dbgs() << "Skipping as conversion is disabled!");
             return;
         }
         if (valueInfo->metadata->getKind() == MDInfo::K_Field) {
-            dbgs() << " ^ This is a real field\n";
+            LLVM_DEBUG(dbgs() << " ^ This is a real field\n");
             auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
             if (!fieldInfo) {
-                dbgs() << "Not enough information. Bailing out.\n\n";
+                LLVM_DEBUG(dbgs() << "Not enough information. Bailing out.\n\n");
                 return;
             }
 
             auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
             if (!fptype) {
-                dbgs() << "No fixed point info associated. Bailing out.\n";
+                LLVM_DEBUG(dbgs() << "No fixed point info associated. Bailing out.\n");
                 return;
             }
-            auto optInfo = allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, fieldInfo->IError, "", false);
-            saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(optInfo));
+            auto optInfo = metric->allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, fieldInfo->IError, "", false);
+            metric->saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(optInfo));
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
-            dbgs() << " ^ This is a real structure\n";
+            LLVM_DEBUG(dbgs() << " ^ This is a real structure\n");
 
             auto fieldInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata);
             if (!fieldInfo) {
-                dbgs() << "No struct info. Bailing out.\n";
+                LLVM_DEBUG(dbgs() << "No struct info. Bailing out.\n");
                 return;
             }
 
-            auto optInfo = loadStructInfo(glob, fieldInfo, "");
-            saveInfoForValue(glob, optInfo);
+            auto optInfo = metric->loadStructInfo(glob, fieldInfo, "");
+            metric->saveInfoForValue(glob, optInfo);
 
         } else {
             llvm_unreachable("Unknown metadata!");
@@ -67,22 +96,22 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
 
     } else {
         if(!valueInfo->metadata->getEnableConversion()){
-            dbgs() << "Skipping as conversion is disabled!";
+            LLVM_DEBUG(dbgs() << "Skipping as conversion is disabled!");
             return;
         }
-        dbgs() << " ^ this is a pointer.\n";
+        LLVM_DEBUG(dbgs() << " ^ this is a pointer.\n");
 
         if (valueInfo->metadata->getKind() == MDInfo::K_Field) {
-            dbgs() << " ^ This is a real field ptr\n";
+            LLVM_DEBUG(dbgs() << " ^ This is a real field ptr\n");
             auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
             if (!fieldInfo) {
-                dbgs() << "Not enough information. Bailing out.\n\n";
+                LLVM_DEBUG(dbgs() << "Not enough information. Bailing out.\n\n");
                 return;
             }
 
             auto fptype = dynamic_ptr_cast_or_null<FPType>(fieldInfo->IType);
             if (!fptype) {
-                dbgs() << "No fixed point info associated. Bailing out.\n";
+                LLVM_DEBUG(dbgs() << "No fixed point info associated. Bailing out.\n");
                 return;
             }
             //FIXME: hack, this is done to respect the fact that a pointer (yes, even a simple pointer) may be used by hugly people
@@ -90,254 +119,205 @@ void Optimizer::handleGlobal(GlobalObject *glob, shared_ptr<ValueInfo> valueInfo
             //value even if it may be overwritten at some time...
 
             if(globalVar->hasInitializer() && !globalVar->getInitializer()->isNullValue()){
-                dbgs() << "Has initializer and it is not a null value! Need more processing!\n";
+                LLVM_DEBUG(dbgs() << "Has initializer and it is not a null value! Need more processing!\n");
             }else{
-                dbgs() << "No initializer, or null value!\n";
-                auto optInfo = allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, fieldInfo->IError, "", false);
+                LLVM_DEBUG(dbgs() << "No initializer, or null value!\n");
+                auto optInfo = metric->allocateNewVariableForValue(glob, fptype, fieldInfo->IRange, fieldInfo->IError, "", false);
                 //This is a pointer, so the reference to it is a pointer to a pointer yay
-                saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(make_shared<OptimizerPointerInfo>(optInfo)));
+                metric->saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(make_shared<OptimizerPointerInfo>(optInfo)));
             }
 
         } else if (valueInfo->metadata->getKind() == MDInfo::K_Struct) {
-            dbgs() << " ^ This is a real structure ptr\n";
+            LLVM_DEBUG(dbgs() << " ^ This is a real structure ptr\n");
 
             auto fieldInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata);
             if (!fieldInfo) {
-                dbgs() << "No struct info. Bailing out.\n";
+                LLVM_DEBUG(dbgs() << "No struct info. Bailing out.\n");
                 return;
             }
 
-            auto optInfo = loadStructInfo(glob, fieldInfo, "");
-            saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(optInfo));
+            auto optInfo = metric->loadStructInfo(glob, fieldInfo, "");
+            metric->saveInfoForValue(glob, make_shared<OptimizerPointerInfo>(optInfo));
 
         } else {
             llvm_unreachable("Unknown metadata!");
         }
+        return;
+    }
+}
 
+
+void Optimizer::handleCallFromRoot(Function *f) {
+    //Therefore this should be added as a cost, not simply ignored
+
+    LLVM_DEBUG(dbgs() << "\n============ FUNCTION FROM ROOT: " << f->getName() << " ============\n";);
+    const std::string calledFunctionName = f->getName().str();
+    LLVM_DEBUG(dbgs() << ("We are calling " + calledFunctionName + " from root\n"););
+
+
+    auto function = known_functions.find(calledFunctionName);
+    if (function == known_functions.end()) {
+        LLVM_DEBUG(dbgs() << "Calling an external function, UNSUPPORTED at the moment.\n";);
+        return;
+    }
+
+
+    //In teoria non dobbiamo mai pushare variabili per quanto riguarda una chiamata da root
+    //Infatti, la chiamata da root implica la compatibilità con codice esterno che si aspetta che non vengano modificate
+    //le call ad altri tipi. Per lo stesso motivo non serve nulla per il valore di ritorno.
+    /*
+    // fetch ranges of arguments
+    std::list<shared_ptr<OptimizerInfo>> arg_errors;
+    std::list<shared_ptr<OptimizerScalarInfo>> arg_scalar_errors;
+    LLVM_DEBUG(dbgs() << ("Arguments:\n"););
+    for (auto arg = f->arg_begin(); arg != f->arg_end(); arg++) {
+        LLVM_DEBUG(dbgs() << "info for ";);
+        (arg)->print(LLVM_DEBUG(dbgs()););
+        LLVM_DEBUG(dbgs() << " --> ";);
+
+        //if a variable was declared for type
+        auto info = getInfoOfValue(arg);
+        if (!info) {
+            //This is needed to resolve eventual constants in function call (I'm looking at you, LLVM)
+            LLVM_DEBUG(dbgs() << "No error for the argument!\n";);
+        } else {
+            LLVM_DEBUG(dbgs() << "Got this error: " << info->toString() << "\n";);
+        }
+
+        //Even if is a null value, we push it!
+        arg_errors.push_back(info);
+
+        //If the error is a scalar, collect it also as a scalar
+        auto arg_info_scalar = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info);
+        if (arg_info_scalar) {
+            arg_scalar_errors.push_back(arg_info_scalar);
+        }
+        //}
+        LLVM_DEBUG(dbgs() << "\n\n";);
+    }
+    LLVM_DEBUG(dbgs() << ("Arguments end.");*/
+
+
+    auto it = functions_still_to_visit.find(calledFunctionName);
+    if (it != functions_still_to_visit.end()) {
+        //We mark the called function as visited from the global queue, so we will not visit it starting from root.
+        functions_still_to_visit.erase(calledFunctionName);
+        LLVM_DEBUG(dbgs() << "Function " << calledFunctionName << " marked as visited in global queue.\n";);
+    } else {
+        LLVM_DEBUG(dbgs()<< "[WARNING] We already visited this function, for example when called from another function. Ignoring.\n";);
 
         return;
     }
 
+    //Allocating variable for result: all returns will have the same type, and therefore a cast, if needed
+    //SEE COMMENT BEFORE!
+    /*shared_ptr<OptimizerInfo> retInfo;
+    if (auto inputInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata)) {
+        auto fptype = dynamic_ptr_cast_or_null<FPType>(inputInfo->IType);
+        if (fptype) {
+            LLVM_DEBUG(dbgs() << fptype->toString(););
+            shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype, inputInfo->IRange,
+                                                                                 instruction->getFunction()->getName());
+            retInfo = result;
+        } else {
+            LLVM_DEBUG(dbgs() << "There was an input info but no fix point associated.\n";);
+        }
+    } else if (auto pInfo = dynamic_ptr_cast_or_null<StructInfo>(valueInfo->metadata)) {
+        auto info = loadStructInfo(instruction, pInfo, "");
+        saveInfoForValue(instruction, info);
+        retInfo = info;
+    } else {
+        LLVM_DEBUG(dbgs() << "No info available on return value, maybe it is not a floating point call.\n";);
+    }*/
+
+    //in retInfo we now have a variable for the return value of the function. Every return should be casted against it!
+
+    //Obviously the type should be sufficient to contain the result
+
+    //In this case we have no known math function.
+    //We will have, when enabled, math functions. In this case these will be handled here!
+
+    LLVM_DEBUG(dbgs() << ("The function belongs to the current module.\n"););
+    // got the llvm::Function
+
+
+    // check for recursion
+    //no stack check for recursion from root, I hope
+    /*size_t call_count = 0;
+    for (size_t i = 0; i < call_stack.size(); i++) {
+        if (call_stack[i] == f) {
+            call_count++;
+        }
+    }*/
+
+    std::list<shared_ptr<OptimizerInfo>> arg_errors;
+    LLVM_DEBUG(dbgs() << ("Arguments:\n"););
+    for (auto arg_i = f->arg_begin(); arg_i != f->arg_end(); arg_i++) {
+        //Even if is a null value, we push it!
+        arg_errors.push_back(nullptr);
+    }
+
+
+    LLVM_DEBUG(dbgs() << ("Processing function...\n"););
+
+    //See comment before to understand why these variable are set to nulls here
+    processFunction(*f, arg_errors, nullptr);
+    return;
 }
 
-shared_ptr<OptimizerScalarInfo>
-Optimizer::allocateNewVariableForValue(Value *value, shared_ptr<FPType> fpInfo, shared_ptr<Range> rangeInfo, shared_ptr<double> suggestedMinError,
-                                       string functionName, bool insertInList, string nameAppendix, bool insertENOBinMin, bool respectFloatingPointConstraint) {
-    assert(!valueHasInfo(value) && "The value considered already have an info!");
 
-    assert(fpInfo && "fpInfo should not be nullptr here!");
-    assert(rangeInfo && "rangeInfo should not be nullptr here!");
 
-    if (!functionName.empty()) {
-        functionName = functionName.append("_");
+void Optimizer::processFunction(Function &f, list<shared_ptr<OptimizerInfo>> argInfo,
+                                shared_ptr<OptimizerInfo> retInfo) {
+    LLVM_DEBUG(dbgs() << "\n============ FUNCTION " << f.getName() << " ============\n";);
+
+    if (f.arg_size() != argInfo.size()) {
+        llvm_unreachable("Sizes should be equal!");
     }
 
-
-    string varNameBase(string(functionName).append((std::string)value->getName()).append(nameAppendix));
-    std::replace(varNameBase.begin(), varNameBase.end(), '.', '_');
-    string varName(varNameBase);
-
-    int counter = 0;
-    while (model.isVariableDeclared(varName + "_fixp")) {
-        varName = string(varNameBase).append("_").append(to_string(counter));
-        counter++;
+    auto argInfoIt = argInfo.begin();
+    for (auto arg = f.arg_begin(); arg != f.arg_end(); arg++, argInfoIt++) {
+        if (*argInfoIt) {
+            LLVM_DEBUG(dbgs() << "Copying info of this value.\n";);
+            metric->saveInfoForValue(&(*arg), *argInfoIt);
+        } else {
+            LLVM_DEBUG(dbgs() << "No info for this value.\n";);
+        }
     }
 
-
-    dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
-
-    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, 0, fpInfo->getPointPos(), fpInfo->getWidth(),
-                                                          fpInfo->isSigned(), *rangeInfo, "");
+    //Even if null, we push this on the stack. The return will handle it hopefully
+    retStack.push(retInfo);
 
 
-    dbgs() << "Allocating variable " << varName << " with limits [" << optimizerInfo->minBits << ", "
-           << optimizerInfo->maxBits << "];\n";
+    //As we have copy of the same function for
+    for (inst_iterator iIt = inst_begin(&f), iItEnd = inst_end(&f); iIt != iItEnd; iIt++) {
+        //C++ is horrible
+        LLVM_DEBUG((*iIt).print(dbgs()););
+        LLVM_DEBUG(dbgs() << "     -having-     ";);
+        if (!tuner->hasInfo(&(*iIt)) || !tuner->valueInfo(&(*iIt))->metadata) {
+            LLVM_DEBUG(dbgs() << "No info available.\n";);
+        } else {
+            LLVM_DEBUG(dbgs() << tuner->valueInfo(&(*iIt))->metadata->toString() << "\n";);
 
-    string out;
-    raw_string_ostream stream(out);
-    value->print(stream);
-
-    model.insertComment("Stuff for " + stream.str(), 3);
-
-    model.createVariable(optimizerInfo->getFractBitsVariable(), optimizerInfo->minBits, optimizerInfo->maxBits);
-
-    //binary variables for mixed precision
-    model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
-    model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
-    model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
-
-    if(hasHalf)
-    model.createVariable(optimizerInfo->getHalfSelectedVariable(), 0, 1);
-    if(hasQuad)
-    model.createVariable(optimizerInfo->getQuadSelectedVariable(), 0, 1);
-    if(hasFP80)
-    model.createVariable(optimizerInfo->getFP80SelectedVariable(), 0, 1);
-    if(hasPPC128)
-    model.createVariable(optimizerInfo->getPPC128SelectedVariable(), 0, 1);
-    if(hasBF16)
-    model.createVariable(optimizerInfo->getBF16SelectedVariable(), 0, 1);
-
-    //ENOB propagation, free variable
-    model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
-
-    auto constraint = vector<pair<string, double>>();
-    int ENOBfloat = getENOBFromRange(rangeInfo, FloatType::Float_float);
-    int ENOBdouble = getENOBFromRange(rangeInfo, FloatType::Float_double);
-    int ENOBhalf = 0;
-    int ENOBquad = 0;
-    int ENOBppc128 = 0;
-    int ENOBfp80 = 0;
-    int ENOBbf16 = 0;       
+            if (!tuner->valueInfo(&(*iIt))->metadata->getEnableConversion()) {
+                LLVM_DEBUG(dbgs() << "Skipping as conversion is disabled!\n";);
+                DisabledSkipped++;
+                continue;
+            }
+        }
 
 
-    //Enob constraints fix
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), -1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
-
-    auto enobconstraint = [&]( int ENOB, const std::string (tuner::OptimizerScalarInfo::* getVariable)(), const char * desc) mutable {
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    constraint.push_back(make_pair( ((*optimizerInfo).*getVariable)(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOB, desc);
-    };
-    //Enob constraints float     
-    enobconstraint(ENOBfloat, &tuner::OptimizerScalarInfo::getFloatSelectedVariable, "Enob constraint for float");
-
-    //Enob constraints Double     
-    enobconstraint(ENOBdouble, &tuner::OptimizerScalarInfo::getDoubleSelectedVariable, "Enob constraint for double");
-
-    //Enob constraints Half
-    if(hasHalf){
-    ENOBhalf = getENOBFromRange(rangeInfo, FloatType::Float_half);
-    enobconstraint(ENOBhalf, &tuner::OptimizerScalarInfo::getHalfSelectedVariable, "Enob constraint for half");    
+        handleInstruction(&(*iIt), tuner->valueInfo(&(*iIt)));
+        LLVM_DEBUG(dbgs() << "\n\n";);
     }
 
-    // Enob constraints Quad
-    if (hasQuad) {
-      ENOBquad = getENOBFromRange(rangeInfo, FloatType::Float_fp128);
-      enobconstraint(ENOBquad,
-                     &tuner::OptimizerScalarInfo::getQuadSelectedVariable,
-                     "Enob constraint for quad");
-    }
-    // Enob constraints FP80
-    
-      if (hasFP80){
-        ENOBfp80 = getENOBFromRange(rangeInfo, FloatType::Float_x86_fp80);
-      enobconstraint(ENOBfp80,
-                     &tuner::OptimizerScalarInfo::getFP80SelectedVariable,
-                     "Enob constraint for fp80");
-    }
-    // Enob constraints PPC128
-    
-      if (hasPPC128){
-        ENOBppc128 = getENOBFromRange(rangeInfo, FloatType::Float_ppc_fp128);
-      enobconstraint(ENOBppc128,
-                     &tuner::OptimizerScalarInfo::getPPC128SelectedVariable,
-                     "Enob constraint for ppc128");
-    }
-    // Enob constraints FP80
-    
-      if (hasBF16){
-        ENOBbf16 = getENOBFromRange(rangeInfo, FloatType::Float_bfloat);
-      enobconstraint(ENOBbf16,
-                     &tuner::OptimizerScalarInfo::getBF16SelectedVariable,
-                     "Enob constraint for bf16");
-    }
-
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
-    //DO NOT REMOVE THE CAST OR SOMEONE WILL DEBUG THIS FOR AN WHOLE DAY AGAIN
-    model.insertLinearConstraint(constraint, Model::GE, (-BIG_NUMBER-FIX_DELTA_MAX)+((int)fpInfo->getPointPos()), "Limit the lower number of frac bits"+to_string(fpInfo->getPointPos()));
-
-    int enobMaxCost = max({ENOBfloat, ENOBdouble, (int)fpInfo->getPointPos()});
-    
-    enobMaxCost = hasHalf ? max(enobMaxCost, ENOBhalf) : enobMaxCost;
-    enobMaxCost = hasFP80 ? max(enobMaxCost, ENOBfp80) : enobMaxCost;
-    enobMaxCost = hasQuad ? max(enobMaxCost, ENOBquad) : enobMaxCost;
-    enobMaxCost = hasPPC128 ? max(enobMaxCost, ENOBppc128) : enobMaxCost;
-    enobMaxCost = hasBF16 ? max(enobMaxCost, ENOBbf16) : enobMaxCost;
-
-
-
-
-    if(suggestedMinError){
-        /*If we have a suggested min initial error, that is used for error propagation, we should cap the enob to that erro.
-         * In facts, it is not really necessary to "unbound" the minimum error while the input variables are not error free
-         * Think about a reading from a sensor (ADC) or something similar, the error there will be even if we use a double to
-         * store its result. Therefore we limit the enob to a useful value even for floating points.*/
-
-
-        double errorEnob = getENOBFromError(*suggestedMinError);
-
-        dbgs() << "We have a suggested min error, limiting the enob in the model to " << errorEnob << "\n";
-
-        constraint.clear();
-        constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-        model.insertLinearConstraint(constraint, Model::LE, errorEnob, "Enob constraint for error maximal");
-
-        //Capped at max
-        enobMaxCost = min(enobMaxCost, (int) errorEnob);
-    }
-
-    if(!MixedDoubleEnabled && respectFloatingPointConstraint){
-        constraint.clear();
-        constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-        model.insertLinearConstraint(constraint, Model::LE, 0, "Disable double data type");
-    }
-
-
-    /*//introducing precision cost: the more a variable is precise, the better it is
-    model.insertObjectiveElement(make_pair(optimizerInfo->getFractBitsVariable(), (-1) * TUNING_ENOB));
-
-    //La variabile indica solo se il costo è attivo o meno, senza indicare nulla riguardo ENOB
-    //Enob is computed from Range
-
-    model.insertObjectiveElement(make_pair(optimizerInfo->getFloatSelectedVariable(), (-1) * TUNING_ENOB * ENOBfloat));
-    model.insertObjectiveElement(
-            make_pair(optimizerInfo->getDoubleSelectedVariable(), (-1) * TUNING_ENOB * ENOBdouble));*/
-    if(insertENOBinMin) {
-        model.insertObjectiveElement(
-                make_pair(optimizerInfo->getRealEnobVariable(), (-1)), MODEL_OBJ_ENOB, enobMaxCost);
-    }
-
-    //Constraint for mixed precision: only one constraint active at one time:
-    //_float + _double + _fixed = 1
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-    if(hasHalf)
-    constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), 1.0));
-    if(hasQuad)
-    constraint.push_back(make_pair(optimizerInfo->getQuadSelectedVariable(), 1.0));    
-    if(hasPPC128)
-    constraint.push_back(make_pair(optimizerInfo->getPPC128SelectedVariable(), 1.0));  
-    if(hasFP80)
-    constraint.push_back(make_pair(optimizerInfo->getFP80SelectedVariable(), 1.0)); 
-    if(hasBF16)
-    constraint.push_back(make_pair(optimizerInfo->getBF16SelectedVariable(), 1.0)); 
-
-    model.insertLinearConstraint(constraint, Model::EQ, 1, "Exactly one selected type");
-
-    //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
-    //x_bits - M * x_fixp <= 0
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "If not fix, frac part to zero");
-
-
-    if (insertInList) {
-        saveInfoForValue(value, optimizerInfo);
-    }
-
-    return optimizerInfo;
+    //When the analysis is completed, we remove the info from the stack, as it is no more necessary.
+    retStack.pop();
 
 }
+
+
+
 
 shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
     assert(value && "Value must not be nullptr!");
@@ -349,30 +329,80 @@ shared_ptr<OptimizerInfo> Optimizer::getInfoOfValue(Value *value) {
     }
 
     if (auto constant = dyn_cast_or_null<Constant>(value)) {
-        return processConstant(constant);
+        return metric->processConstant(constant);
     }
 
-    dbgs() << "Could not find any info for ";
-    value->print(dbgs());
-    dbgs() << "     :( \n";
+    LLVM_DEBUG(dbgs() << "Could not find any info for ");
+    LLVM_DEBUG(value->print(dbgs()););
+    LLVM_DEBUG(dbgs() << "     :( \n");
 
     return nullptr;
 }
+
+
+//FIXME: replace with a dynamic version!
+#define I_COST 1
+
+void
+Optimizer::handleBinaryInstruction(Instruction *instr, const unsigned OpCode, const shared_ptr<ValueInfo> &valueInfos) {
+    //We are only handling operations between floating point, as we do not care about other values when building the model
+    //This is ok as floating point instruction can only be used inside floating point operations in LLVM! :D
+    auto binop = dyn_cast_or_null<BinaryOperator>(instr);
+
+
+    switch (OpCode) {
+        case llvm::Instruction::FAdd:
+            metric->handleFAdd(binop, OpCode, valueInfos);
+            break;
+        case llvm::Instruction::FSub:
+            metric->handleFSub(binop, OpCode, valueInfos);
+            break;
+        case llvm::Instruction::FMul:
+            metric->handleFMul(binop, OpCode, valueInfos);
+            break;
+        case llvm::Instruction::FDiv:;
+           metric->handleFDiv(binop, OpCode, valueInfos);
+            break;
+        case llvm::Instruction::FRem:
+            metric->handleFRem(binop, OpCode, valueInfos);
+            break;
+
+        case llvm::Instruction::Add:
+        case llvm::Instruction::Sub:
+        case llvm::Instruction::Mul:
+        case llvm::Instruction::UDiv:
+        case llvm::Instruction::SDiv:
+        case llvm::Instruction::URem:
+        case llvm::Instruction::SRem:
+        case llvm::Instruction::Shl:
+        case llvm::Instruction::LShr:
+        case llvm::Instruction::AShr:
+        case llvm::Instruction::And:
+        case llvm::Instruction::Or:
+        case llvm::Instruction::Xor:
+            LLVM_DEBUG(dbgs() << "Skipping operation between integers...\n";);
+            break;
+        default:
+            emitError("Unhandled binary operator " + to_string(OpCode)); // unsupported operation
+            break;
+    }
+}
+
 
 
 void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
     //This will be a mess. God bless you.
 
     auto info = LoopAnalyzerUtil::computeFullTripCount(tuner, instruction);
-    dbgs() << "Optimizer: got trip count " << info << "\n";
+    LLVM_DEBUG(dbgs() << "Optimizer: got trip count " << info << "\n");
 
     const unsigned opCode = instruction->getOpcode();
     if (opCode == Instruction::Call) {
-        handleCall(instruction, valueInfo);
+        metric->handleCall(instruction, valueInfo);
     } else if (Instruction::isTerminator(opCode)) {
-        handleTerminators(instruction, valueInfo);
+         handleTerminators(instruction, valueInfo);
     } else if (Instruction::isCast(opCode)) {
-        handleCastInstruction(instruction, valueInfo);
+         metric->handleCastInstruction(instruction, valueInfo);
 
     } else if (Instruction::isBinaryOp(opCode)) {
         handleBinaryInstruction(instruction, opCode, valueInfo);
@@ -384,16 +414,16 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
         switch (opCode) {
             // memory operations
             case llvm::Instruction::Alloca:
-                handleAlloca(instruction, valueInfo);
+                 metric->handleAlloca(instruction, valueInfo);
                 break;
             case llvm::Instruction::Load:
-                handleLoad(instruction, valueInfo);
+                 metric->handleLoad(instruction, valueInfo);
                 break;
             case llvm::Instruction::Store:
-                handleStore(instruction, valueInfo);
+                 metric->handleStore(instruction, valueInfo);
                 break;
             case llvm::Instruction::GetElementPtr:
-                handleGEPInstr(instruction, valueInfo);
+                 metric->handleGEPInstr(instruction, valueInfo);
                 break;
             case llvm::Instruction::Fence:
                 emitError("Handling of Fence not supported yet");
@@ -407,19 +437,19 @@ void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo
 
                 // other operations
             case llvm::Instruction::ICmp: {
-                dbgs() << "Comparing two integers, skipping...\n";
+                LLVM_DEBUG(dbgs() << "Comparing two integers, skipping...\n");
                 break;
             }
             case llvm::Instruction::FCmp: {
-                handleFCmp(instruction, valueInfo);
+                 metric->handleFCmp(instruction, valueInfo);
             }
                 break;
             case llvm::Instruction::PHI: {
-                handlePhi(instruction, valueInfo);
+                 metric->handlePhi(instruction, valueInfo);
             }
                 break;
             case llvm::Instruction::Select:
-                handleSelect(instruction, valueInfo);;
+                 metric->handleSelect(instruction, valueInfo);;
                 break;
             case llvm::Instruction::UserOp1: // TODO implement
             case llvm::Instruction::UserOp2: // TODO implement
@@ -459,7 +489,7 @@ void Optimizer::handleTerminators(llvm::Instruction *term, shared_ptr<ValueInfo>
     const unsigned opCode = term->getOpcode();
     switch (opCode) {
         case llvm::Instruction::Ret:
-            handleReturn(term, valueInfo);
+             metric->handleReturn(term, valueInfo);
             break;
         case llvm::Instruction::Br:
             // TODO improve by checking condition and relatevely update BB weigths
@@ -472,7 +502,7 @@ void Optimizer::handleTerminators(llvm::Instruction *term, shared_ptr<ValueInfo>
             emitError("Handling of IndirectBr not implemented yet");
             break; // TODO implement
         case llvm::Instruction::Invoke:
-            handleCall(term, valueInfo);
+             metric->handleCall(term, valueInfo);
             break;
         case llvm::Instruction::Resume:
             emitError("Handling of Resume not implemented yet");
@@ -497,277 +527,21 @@ void Optimizer::handleTerminators(llvm::Instruction *term, shared_ptr<ValueInfo>
 }
 
 void Optimizer::emitError(string stringhina) {
-    dbgs() << "[ERROR] " << stringhina << "\n";
+    LLVM_DEBUG(dbgs() << "[ERROR] " << stringhina << "\n");
 
-}
-
-
-shared_ptr<OptimizerScalarInfo> Optimizer::allocateNewVariableWithCastCost(Value *toUse, Value *whereToUse) {
-    auto info_t = getInfoOfValue(toUse);
-    if (!info_t) {
-        llvm_unreachable("Every value should have an info here!");
-    }
-
-    auto info = dynamic_ptr_cast_or_null<OptimizerScalarInfo>(info_t);
-    if (!info) {
-        llvm_unreachable("Here we should only have floating variable, not aggregate.");
-    }
-
-    auto originalVar = info->getBaseName();
-
-    string endName = whereToUse->getName().str();
-    if(endName.empty()){
-        if(auto istr = dyn_cast_or_null<Instruction>(whereToUse)){
-            endName = string(istr->getOpcodeName());
-        }
-
-    }
-    std::replace(endName.begin(), endName.end(), '.', '_');
-
-
-
-    string varNameBase((originalVar + ("_CAST_") + endName));
-
-    string varName(varNameBase);
-
-    int counter = 0;
-    while (model.isVariableDeclared(varName + "_fixp")) {
-        varName = string(varNameBase).append("_").append(to_string(counter));
-        counter++;
-    }
-
-    dbgs() << "Allocating new variable, will have the following name: " << varName << "\n";
-
-
-    unsigned minBits = info->minBits;
-    unsigned maxBits = info->maxBits;
-
-    auto optimizerInfo = make_shared<OptimizerScalarInfo>(varName, minBits, maxBits, info->totalBits, info->isSigned, *info->getRange(), info->getOverridedEnob());
-
-
-
-
-    dbgs() << "Allocating variable " << varName << " with limits [" << minBits << ", " << maxBits
-           << "] with casting cost from " << info->getBaseName() << "\n";
-
-    string out;
-    raw_string_ostream stream(out);
-    whereToUse->print(stream);
-
-    model.insertComment("Constraint for cast for " + stream.str(), 3);
-
-    model.createVariable(optimizerInfo->getFractBitsVariable(), minBits, maxBits);
-
-    //binary variables for mixed precision
-    model.createVariable(optimizerInfo->getFixedSelectedVariable(), 0, 1);
-    model.createVariable(optimizerInfo->getFloatSelectedVariable(), 0, 1);
-    model.createVariable(optimizerInfo->getDoubleSelectedVariable(), 0, 1);
-    if(hasHalf)
-    model.createVariable(optimizerInfo->getHalfSelectedVariable(), 0, 1);
-    if(hasQuad)
-    model.createVariable(optimizerInfo->getQuadSelectedVariable(), 0, 1);
-    if(hasPPC128)
-    model.createVariable(optimizerInfo->getPPC128SelectedVariable(), 0, 1);
-    if(hasFP80)
-    model.createVariable(optimizerInfo->getFP80SelectedVariable(), 0, 1);
-    if(hasBF16)
-    model.createVariable(optimizerInfo->getBF16SelectedVariable(), 0, 1);
-    //model.createVariable(optimizerInfo->getRealEnobVariable(), -BIG_NUMBER, BIG_NUMBER);
-
-    auto constraint = vector<pair<string, double>>();
-    //Constraint for mixed precision: only one constraint active at one time:
-    //_float + _double + _fixed = 1
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFloatSelectedVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-    if(hasHalf)
-    constraint.push_back(make_pair(optimizerInfo->getHalfSelectedVariable(), 1.0));
-     if(hasQuad)
-    constraint.push_back(make_pair(optimizerInfo->getQuadSelectedVariable(), 1.0));
-    if(hasPPC128)
-    constraint.push_back(make_pair(optimizerInfo->getPPC128SelectedVariable(), 1.0));
-    if(hasFP80)
-    constraint.push_back(make_pair(optimizerInfo->getFP80SelectedVariable(), 1.0));
-    if(hasBF16)
-    constraint.push_back(make_pair(optimizerInfo->getBF16SelectedVariable(), 1.0));
-
-
-    model.insertLinearConstraint(constraint, Model::EQ, 1, "exactly 1 type");
-
-
-    //Real enob is still the same!
-    //constraint.clear();
-    //constraint.push_back(make_pair(info->getRealEnobVariable(), -1.0));
-    //constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    //model.insertLinearConstraint(constraint, Model::LE, 0, "The ENOB is less or equal!");
-
-    //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
-    //x_bits - M * x_fixp <= 0
-    constraint.clear();
-    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "If no fix, fix frac part = 0");
-
-
-    double maxCastCost = max({cpuCosts.getCost(CPUCosts::CAST_FIX_FIX),
-                              cpuCosts.getCost(CPUCosts::CAST_FIX_FLOAT),
-                              cpuCosts.getCost(CPUCosts::CAST_FIX_HALF),  
-                              cpuCosts.getCost(CPUCosts::CAST_FIX_DOUBLE),                                                          
-                              cpuCosts.getCost(CPUCosts::CAST_FLOAT_FIX),
-                              cpuCosts.getCost(CPUCosts::CAST_FLOAT_DOUBLE), 
-                              cpuCosts.getCost(CPUCosts::CAST_FLOAT_HALF),
-                              cpuCosts.getCost(CPUCosts::CAST_HALF_FIX),
-                              cpuCosts.getCost(CPUCosts::CAST_HALF_DOUBLE), 
-                              cpuCosts.getCost(CPUCosts::CAST_HALF_FLOAT),                                                                                        
-                              cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FIX),
-                              cpuCosts.getCost(CPUCosts::CAST_DOUBLE_HALF),
-                              cpuCosts.getCost(CPUCosts::CAST_DOUBLE_FLOAT)});
-
-
-    //Variables for costs:
-
-    //Shift cost
-    auto C1 = "C1_" + varName;
-    auto C2 = "C2_" + varName;
-    model.createVariable(C1, 0, 1);
-    model.createVariable(C2, 0, 1);
-
-    //Constraint for binary value to activate
-
-    
-
-    constraint.clear();
-    constraint.push_back(make_pair(info->getFractBitsVariable(), 1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), -1.0));
-    constraint.push_back(make_pair(C1, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Shift cost 1");
-
-    constraint.clear();
-    //Constraint for binary value to activate
-    constraint.push_back(make_pair(info->getFractBitsVariable(), -1.0));
-    constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
-    constraint.push_back(make_pair(C2, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Shift cost 2");
-
-    //Casting costs
-    //Is correct to only place here the maxCastCost, as only one cast will be active at a time
-    model.insertObjectiveElement(make_pair(C1, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)), MODEL_OBJ_CASTCOST, maxCastCost);
-    model.insertObjectiveElement(make_pair(C2, I_COST * cpuCosts.getCost(CPUCosts::CAST_FIX_FIX)), MODEL_OBJ_CASTCOST, 0);
-
-
-
-    
-
-    //TYPE CAST
-    auto costcrosslambda = [&](std::string& variable , tuner::CPUCosts::CostsId cost, const string (tuner::OptimizerScalarInfo::*getFirstVariable)(), const string (tuner::OptimizerScalarInfo::*getSecondVariable)(), const std::string desc) mutable {
-    
-    constraint.clear();
-    constraint.push_back(make_pair(((*info).*getFirstVariable)(), 1.0));
-    constraint.push_back(make_pair(((*optimizerInfo).*getSecondVariable)(), 1.0));
-    constraint.push_back(make_pair(variable, -1));
-    model.insertLinearConstraint(constraint, Model::LE, 1, desc);
-    model.insertObjectiveElement(make_pair(variable, I_COST * cpuCosts.getCost(cost)), MODEL_OBJ_CASTCOST, 0);
-    };
-
-    int counter2 = 3;
-    for (auto& CostsString : cpuCosts.CostsIdValues){
-
-
-        if(CostsString.find("CAST") == 0 && CostsString.find("CAST_FIX_FIX") == std::string::npos){
-            const string (tuner::OptimizerScalarInfo::*first_f )() = nullptr;
-            std::size_t first_i = 0;
-            std::size_t second_i = 0;
-            char * first_c;
-            char * second_c;            
-            const string (tuner::OptimizerScalarInfo::*second_f)() = nullptr;
-            std::size_t fixed_i  = CostsString.find("FIX");
-            std::size_t float_i  = CostsString.find("FLOAT");
-            std::size_t double_i  = CostsString.find("DOUBLE");
-            std::size_t quad_i  = CostsString.find("QUAD");
-            std::size_t fp80_i  = CostsString.find("FP80");
-            std::size_t ppc128_i  = CostsString.find("PPC128");
-            std::size_t half_i  = CostsString.find("HALF");
-            std::size_t bf16_i  = CostsString.find("BF16");
-            LLVM_DEBUG(dbgs()<< "C"<<std::to_string(counter2)<<"\n");
-            if(!hasHalf && half_i != std::string::npos) continue;
-            if(!hasQuad && quad_i != std::string::npos) continue;
-            if(!hasFP80 && fp80_i != std::string::npos) continue;
-            if(!hasPPC128 && ppc128_i != std::string::npos) continue;
-            if(!hasBF16 && bf16_i != std::string::npos) continue;
-
-            if (fixed_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getFixedSelectedVariable; first_i = fixed_i; first_c = "Fixed";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getFixedSelectedVariable; second_i = fixed_i; second_c = "Fixed";}
-            }
-            if (float_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getFloatSelectedVariable; first_i = float_i; first_c = "Float";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getFloatSelectedVariable; second_i = float_i; second_c = "Float";}
-            }
-            if (double_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getDoubleSelectedVariable; first_i = double_i; first_c = "Double";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getDoubleSelectedVariable; second_i = double_i; second_c = "Double";}
-            }
-            if (quad_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getQuadSelectedVariable; first_i = quad_i; first_c = "Quad";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getQuadSelectedVariable; second_i = quad_i; second_c = "Quad";}
-            }
-            if (fp80_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getFP80SelectedVariable; first_i = fp80_i; first_c = "FP80";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getFP80SelectedVariable; second_i = fp80_i; second_c = "FP80";}
-            }
-            if (ppc128_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getPPC128SelectedVariable; first_i = ppc128_i; first_c = "PPC128";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getPPC128SelectedVariable; second_i = ppc128_i; second_c = "PPC128";}
-            }
-            if (half_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getHalfSelectedVariable; first_i = half_i; first_c = "Half";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getHalfSelectedVariable; second_i = half_i; second_c = "Half";}
-            }
-            if (bf16_i != std::string::npos){
-                if (first_f == nullptr) {first_f = &tuner::OptimizerScalarInfo::getBF16SelectedVariable; first_i = half_i; first_c = "bf16";}
-                else                    {second_f = &tuner::OptimizerScalarInfo::getBF16SelectedVariable; second_i = half_i; second_c = "bf16";}
-            }            
-
-
-            if(first_i > second_i){
-                std::swap(first_f,second_f);
-                std::swap(first_c,second_c);
-            }
-
-            auto CX = std::string("C") + std::to_string(counter2) + "_" + varName;
-            counter2++;
-
-            model.createVariable(CX, 0, 1);
-
-            LLVM_DEBUG(llvm::dbgs() << "Inserting constraint " << CostsString << " first " << first_c << " second " << second_c << " wtih desc " << std::string(first_c) + " to " + std::string(second_c) << "\n" );
-
-            costcrosslambda(CX, cpuCosts.decodeId(CostsString), first_f, 
-                        second_f, std::string(first_c) + " to " + std::string(second_c));
-
-                
-            
-        }
-    }
-    auto CX = std::string("C") + std::to_string(counter2) + "_" + varName;
-    model.createVariable(CX, 0, 1);
-    costcrosslambda(CX, cpuCosts.CAST_FIX_FIX, &tuner::OptimizerScalarInfo::getFixedSelectedVariable, &tuner::OptimizerScalarInfo::getFixedSelectedVariable
-            ,"Fix to Fix");
-    
-    return optimizerInfo;
 }
 
 
 bool Optimizer::finish() {
-    dbgs() << "[Phi] Phi node state:\n";
+    LLVM_DEBUG(dbgs() << "[Phi] Phi node state:\n");
     phiWatcher.dumpState();
 
-    dbgs() << "[Mem] MemPhi node state:\n";
+    LLVM_DEBUG(dbgs() << "[Mem] MemPhi node state:\n");
     memWatcher.dumpState();
 
     bool result = model.finalizeAndSolve();
 
-    dbgs() << "Skipped conversions due to disabled flag: " << DisabledSkipped << "\n";
+    LLVM_DEBUG(dbgs() << "Skipped conversions due to disabled flag: " << DisabledSkipped << "\n");
 
     return result;
 }
@@ -819,134 +593,6 @@ void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1
 }
 
 
-int Optimizer::getENOBFromRange(shared_ptr<mdutils::Range> range, mdutils::FloatType::FloatStandard standard) {
-    assert(range && "We must have a valid range here!");
-
-    int fractionalDigits;
-    int minExponentPower; //eheheh look at this
-    switch (standard) {
-        case mdutils::FloatType::Float_half:
-            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEhalf()) - 1;
-            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEhalf());
-            break;        
-        case mdutils::FloatType::Float_float:
-            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEsingle()) - 1;
-            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEsingle());
-            break;
-        case mdutils::FloatType::Float_double:
-            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEdouble()) - 1;
-            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEdouble());
-            break;
-        case mdutils::FloatType::Float_bfloat:
-            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::BFloat()) - 1;
-            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::BFloat());
-            break;
-        case mdutils::FloatType::Float_fp128:
-            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::IEEEquad()) - 1;
-            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::IEEEquad());
-            break;
-        case mdutils::FloatType::Float_ppc_fp128:
-            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::PPCDoubleDouble()) - 1;
-            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::PPCDoubleDouble());
-            break;
-        case mdutils::FloatType::Float_x86_fp80:
-            fractionalDigits = llvm::APFloat::semanticsPrecision(llvm::APFloat::x87DoubleExtended()) - 1;
-            minExponentPower = llvm::APFloat::semanticsMinExponent(llvm::APFloat::x87DoubleExtended());
-            break;                                            
-        default:
-            llvm_unreachable("Unsupported type here!");
-    }
-
-    //We explore the range in order to understand where to compute the number of bits
-    //TODO: implement other less pessimistics algorithm, like medium value, or wathever
-    double smallestRepresentableNumber;
-    if (range->Min <= 0 && range->Max >= 0) {
-        //range overlapping 0
-        smallestRepresentableNumber = 0;
-    } else if (range->Min >= 0) {
-        //both are greater than 0
-        smallestRepresentableNumber = range->Min;
-    } else {
-        //Both are less than 0
-        smallestRepresentableNumber = abs(range->Max);
-    }
-
-    double exponentOfExponent = log2(smallestRepresentableNumber);
-    int exponentInt = floor(exponentOfExponent);
-
-    /*dbgs() << "smallestNumber: " << smallestRepresentableNumber << "\n";
-    dbgs() << "exponentInt: " << exponentInt << "\n";*/
-
-    if (exponentInt < minExponentPower) exponentInt = minExponentPower;
-
-
-    return (-exponentInt) + fractionalDigits;
-}
-
-shared_ptr<OptimizerStructInfo> Optimizer::loadStructInfo(Value *glob, shared_ptr<StructInfo> pInfo, string name) {
-    shared_ptr<OptimizerStructInfo> optInfo = make_shared<OptimizerStructInfo>(pInfo->size());
-
-    string function = "";
-    if (auto instr = dyn_cast_or_null<Instruction>(glob)) {
-        function = instr->getFunction()->getName().str();
-    }
-
-
-    int i = 0;
-    for (auto it = pInfo->begin(); it != pInfo->end(); it++) {
-        if (auto structInfo = dynamic_ptr_cast_or_null<StructInfo>(*it)) {
-            optInfo->setField(i, loadStructInfo(glob, structInfo, (name + "_" + to_string(i))));
-        } else if (auto ii = dyn_cast<InputInfo>(it->get())) {
-            auto fptype = dynamic_ptr_cast_or_null<FPType>(ii->IType);
-            if (!fptype) {
-                dbgs() << "No fixed point info associated. Bailing out.\n";
-
-            } else {
-                auto info = allocateNewVariableForValue(glob, fptype, ii->IRange, ii->IError, function, false,
-                                                        name + "_" + to_string(i));
-                optInfo->setField(i, info);
-            }
-        } else {
-
-        }
-        i++;
-    }
-
-    return optInfo;
-}
-
-void Optimizer::saveInfoForValue(Value *value, shared_ptr<OptimizerInfo> optInfo) {
-    assert(value && "Value must not be nullptr!");
-    assert(optInfo && "optInfo must be a valid info!");
-    assert(!valueHasInfo(value) && "Double insertion of value info!");
-
-    dbgs() << "Saved info " << optInfo->toString() << " for ";
-    value->print(dbgs());
-    dbgs()<<"\n";
-
-    valueToVariableName.insert(make_pair(value, optInfo));
-
-    int closed_phi = 0;
-    while (PHINode *phiNode = phiWatcher.getPhiNodeToClose(value)) {
-        closePhiLoop(phiNode, value);
-        closed_phi++;
-    }
-    if (closed_phi) {
-        dbgs() << "Closed " << closed_phi << " PHI loops\n";
-    }
-
-
-    int closed_mem=0;
-    while (auto *phiNode = memWatcher.getPhiNodeToClose(value)) {
-        closeMemLoop(phiNode, value);
-        closed_mem++;
-    }
-    if (closed_mem) {
-        dbgs() << "Closed " << closed_mem << " MEM loops\n";
-    }
-
-}
-
 bool Optimizer::valueHasInfo(Value *value) {
     return valueToVariableName.find(value) != valueToVariableName.end();
 }
@@ -978,28 +624,28 @@ shared_ptr<mdutils::MDInfo> Optimizer::buildDataHierarchy(shared_ptr<OptimizerIn
     } else if (info->getKind() == OptimizerInfo::K_Struct) {
         auto sti = dynamic_ptr_cast_or_null<OptimizerStructInfo>(info);
         auto result = make_shared<StructInfo>(sti->size());
-        for (int i = 0; i < sti->size(); i++) {
+        for (unsigned int i = 0; i < sti->size(); i++) {
             result->setField(i, buildDataHierarchy(sti->getField(i)));
         }
 
         return result;
     }else if(info->getKind() == OptimizerInfo::K_Pointer){
         auto apr = dynamic_ptr_cast_or_null<OptimizerPointerInfo>(info);
-        dbgs() << "Unwrapping pointer...\n";
+        LLVM_DEBUG(dbgs() << "Unwrapping pointer...\n");
         return buildDataHierarchy(apr->getOptInfo());
     }
 
     if(!info){
-        dbgs() << "OptimizerInfo null!\n";
+        LLVM_DEBUG(dbgs() << "OptimizerInfo null!\n");
     }else{
-        dbgs() << "Unknown OptimizerInfo: " << info->toString() << "\n";
+        LLVM_DEBUG(dbgs() << "Unknown OptimizerInfo: " << info->toString() << "\n");
     }
     llvm_unreachable("Unnknown data type");
 }
 
 shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalarInfo> scalarInfo) {
     if (!scalarInfo) {
-        dbgs() << "Nullptr scalar info!";
+        LLVM_DEBUG(dbgs() << "Nullptr scalar info!");
         return nullptr;
     }
     LLVM_DEBUG(dbgs() << "\nmodel var values\n" );
@@ -1091,29 +737,19 @@ shared_ptr<mdutils::TType> Optimizer::modelvarToTType(shared_ptr<OptimizerScalar
 
 
 
-int Optimizer::getENOBFromError(double error) {
-    int enob=floor(log2(error));
-
-
-
-
-    //Fix enob to be at least 0.
-    return max(-enob, 0);
-}
-
 void Optimizer::printStatInfos() {
-    dbgs() << "Converted to fix: " << StatSelectedFixed << "\n";
-    dbgs() << "Converted to float: " << StatSelectedFloat << "\n";
-    dbgs() << "Converted to double: " << StatSelectedDouble << "\n";
-    dbgs() << "Converted to half: " << StatSelectedHalf << "\n";
+    LLVM_DEBUG(dbgs() << "Converted to fix: " << StatSelectedFixed << "\n");
+    LLVM_DEBUG(dbgs() << "Converted to float: " << StatSelectedFloat << "\n");
+    LLVM_DEBUG(dbgs() << "Converted to double: " << StatSelectedDouble << "\n");
+    LLVM_DEBUG(dbgs() << "Converted to half: " << StatSelectedHalf << "\n");
 
     int total = StatSelectedFixed + StatSelectedFloat + StatSelectedDouble + StatSelectedHalf;
 
-    dbgs() << "Conversion entropy as equally distributed variables: " << -(
+    LLVM_DEBUG(dbgs() << "Conversion entropy as equally distributed variables: " << -(
             ((double)StatSelectedDouble / total) * log2(((double)StatSelectedDouble) / total) +
                     ((double)StatSelectedFloat / total) * log2(((double)StatSelectedFloat) / total) +
                     ((double)StatSelectedDouble / total) * log2(((double)StatSelectedDouble) / total)
-            ) << "\n";
+            ) << "\n";);
 
 
     ofstream statFile;
@@ -1123,9 +759,6 @@ void Optimizer::printStatInfos() {
     statFile << "TOFLOAT, " << StatSelectedFloat << "\n";
     statFile << "TODOUBLE, " << StatSelectedDouble << "\n";
     statFile << "TOHALF, " << StatSelectedHalf << "\n";
-    statFile << "COSTENOB, " << model.costEnob << "\n";
-    statFile << "COSTCAST, " << model.costCast << "\n";
-    statFile << "COSTTIME, " << model.costTime << "\n";
     statFile.flush();
     statFile.close();
 

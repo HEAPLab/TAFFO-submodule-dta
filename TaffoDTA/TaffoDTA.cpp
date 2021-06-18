@@ -1,5 +1,6 @@
 #include <llvm/Analysis/MemorySSA.h>
 #include <llvm/Analysis/ScalarEvolution.h>
+#include "llvm/Analysis/TargetTransformInfo.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
@@ -7,10 +8,10 @@
 #include "llvm/IR/Metadata.h"
 #include "llvm/Support/Debug.h"
 #include "Optimizer.h"
-
+#include "llvm/IR/IRBuilder.h"
+#include "MetricBase.h"
 #include "TaffoDTA.h"
 #include "Metadata.h"
-
 #include "DTAConfig.h"
 
 
@@ -32,6 +33,7 @@ void TaffoTuner::getAnalysisUsage(AnalysisUsage &AU) const {
     AU.addRequiredTransitive<LoopInfoWrapperPass>();
     AU.addRequiredTransitive<MemorySSAWrapperPass>();
     AU.addRequiredTransitive<ScalarEvolutionWrapperPass>();
+    AU.addRequiredTransitive<TargetTransformInfoWrapperPass>();
     AU.setPreservesAll();
 }
 
@@ -40,6 +42,9 @@ bool TaffoTuner::runOnModule(Module &m) {
     std::vector<llvm::Value *> vals;
     llvm::SmallPtrSet<llvm::Value *, 8U> valset;
     retrieveAllMetadata(m, vals, valset);
+
+    LLVM_DEBUG(llvm::dbgs() << "Model " << CostModelFilename << "\n");
+    LLVM_DEBUG(llvm::dbgs() << "Inst " << InstructionSet << "\n");
 
 
     if (MixedMode) {
@@ -129,7 +134,7 @@ bool TaffoTuner::processMetadataOfValue(Value *v, MDInfo *MDI) {
             //FIXME: hack to propagate itofp metadata
             if(isa<UIToFPInst>(v) ||
                isa<SIToFPInst>(v)){
-                dbgs() << "FORCING CONVERSION OF A ITOFP!\n";
+                LLVM_DEBUG(dbgs() << "FORCING CONVERSION OF A ITOFP!\n";);
                 II->IEnableConversion = true;
             }
 
@@ -660,29 +665,31 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
                                       const SmallPtrSetImpl<llvm::Value *> &valset) {
     assert(vals.size() == valset.size() && "They must contain the same elements.");
 
-    Optimizer optimizer(m, this, CostModelFilename);
+    
+    Optimizer optimizer(m, this, new MetricPerf(),CostModelFilename, CPUCosts::CostType::Performance);
+    //Optimizer optimizer(m, this, new MetricPerf(),"", CPUCosts::CostType::Size);
     optimizer.initialize();
 
-    dbgs() << "\n============ GLOBALS ============\n";
+    LLVM_DEBUG(dbgs() << "\n============ GLOBALS ============\n");
 
     for (GlobalObject &globObj : m.globals()) {
-        globObj.print(dbgs());
-        dbgs() << "     -having-     ";
+        LLVM_DEBUG(globObj.print(dbgs()););
+        LLVM_DEBUG(dbgs() << "     -having-     ");
         if (!hasInfo(&globObj)) {
-            dbgs() << "No info available, skipping.";
+            LLVM_DEBUG(dbgs() << "No info available, skipping.");
         } else {
-            dbgs() << valueInfo(&globObj)->metadata->toString() << "\n";
+            LLVM_DEBUG(dbgs() << valueInfo(&globObj)->metadata->toString() << "\n");
 
             optimizer.handleGlobal(&globObj, valueInfo(&globObj));
         }
-        dbgs() << "\n\n";
+        LLVM_DEBUG(dbgs() << "\n\n";);
     }
 
     //FIXME: this is an hack to prevent multiple visit of the same function if it will be called somewhere from the program
     for (Function &f : m.functions()) {
         //Skip compiler provided functions
         if (!f.isIntrinsic() && !f.empty() && f.getName().equals("main")) {
-            dbgs() << "========== GLOBAL ENTRY POINT main ==========";
+            LLVM_DEBUG(dbgs() << "========== GLOBAL ENTRY POINT main ==========";);
 
             optimizer.handleCallFromRoot(&f);
             break;
@@ -693,13 +700,13 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
     for (Function &f : m.functions()) {
         //Skip compiler provided functions
         if (f.isIntrinsic()) {
-            dbgs() << "Skipping intrinsic function " << f.getName() << "\n";
+            LLVM_DEBUG(dbgs() << "Skipping intrinsic function " << f.getName() << "\n";);
             continue;
         }
 
         //Skip empty functions
         if (f.empty()) {
-            dbgs() << "Skipping empty function " << f.getName() << "\n";
+            LLVM_DEBUG(dbgs() << "Skipping empty function " << f.getName() << "\n";);
             continue;
         }
 
@@ -713,11 +720,11 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
 
     for (Value *v : vals) {
         if (!valset.count(v)) {
-            dbgs() << "Not in the conversion queue! Skipping!\n";
+            LLVM_DEBUG(dbgs() << "Not in the conversion queue! Skipping!\n";);
             continue;
         }
-        dbgs() << "Assigning to ";
-        v->print(dbgs());
+        LLVM_DEBUG(dbgs() << "Assigning to ";);
+        LLVM_DEBUG(v->print(dbgs()););
 
 
         std::shared_ptr<ValueInfo> viu = valueInfo(v);
@@ -725,19 +732,19 @@ void TaffoTuner::buildModelAndOptimze(Module &m, const vector<llvm::Value *> &va
         //Read from the model, search for the data type associated with that value and convert it!
         auto fp = optimizer.getAssociatedMetadata(v);
         if (!fp) {
-            dbgs() << "Invalid datatype returned!\n";
+            LLVM_DEBUG(dbgs() << "Invalid datatype returned!\n";);
             continue;
         }
 
-        dbgs() << " datatype " << fp->toString();
+        LLVM_DEBUG(dbgs() << " datatype " << fp->toString(););
 
-        dbgs() << "\n";
+        LLVM_DEBUG(dbgs() << "\n";);
 
 
         bool result = mergeDataTypes(viu->metadata, fp);
         if (result) {
             //Some datatype has changed, restore in function call
-            dbgs() << "Restoring call type...\n";
+            LLVM_DEBUG(dbgs() << "Restoring call type...\n";);
             restoreTypesAcrossFunctionCall(v);
         }
 
@@ -765,8 +772,8 @@ bool TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdut
 
 
         if(!old1->IType) return false;
-        dbgs() << "model1: " << model1->IType->toString() << "\n";
-        dbgs() << "old1: " << old1->IType->toString() << "\n\n";
+        LLVM_DEBUG(dbgs() << "model1: " << model1->IType->toString() << "\n";);
+        LLVM_DEBUG(dbgs() << "old1: " << old1->IType->toString() << "\n\n";);
         if (old1->IType->operator==(*model1->IType)) {
             return false;
         }
@@ -778,7 +785,7 @@ bool TaffoTuner::mergeDataTypes(shared_ptr<mdutils::MDInfo> old, shared_ptr<mdut
         auto model1 = dynamic_ptr_cast_or_null<StructInfo>(model);
 
         bool changed = false;
-        for (int i = 0; i < old1->size(); i++) {
+        for (unsigned int i = 0; i < old1->size(); i++) {
             changed |= mergeDataTypes(old1->getField(i), model1->getField(i));
         }
         return changed;

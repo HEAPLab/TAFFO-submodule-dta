@@ -6,7 +6,7 @@
 
 #ifndef DTACONFIG
 #define DTACONFIG
-
+/*
 llvm::cl::opt<bool> hasHalf("hasHalf", llvm::cl::desc("target support half"),
                             llvm::cl::init(false));
 llvm::cl::opt<bool> hasQuad("hasQuad", llvm::cl::desc("target support quad"),
@@ -18,6 +18,13 @@ llvm::cl::opt<bool> hasFP80("hasFP80", llvm::cl::desc("target support fp80"),
                             llvm::cl::init(false));
 llvm::cl::opt<bool> hasBF16("hasBF16", llvm::cl::desc("target support bf16"),
                             llvm::cl::init(true));
+*/
+
+bool hasHalf = true;
+bool hasQuad = true;
+bool hasPPC128 = true;
+bool hasFP80 = true;
+bool hasBF16 = true;
 
 llvm::cl::opt<int> FracThreshold("minfractbits", llvm::cl::value_desc("bits"),
                                  llvm::cl::desc("Threshold of fractional bits in fixed point numbers"),
@@ -51,9 +58,15 @@ llvm::cl::opt<bool> MixedDoubleEnabled("mixeddoubleenabled", llvm::cl::value_des
                                              llvm::cl::init(true));
 
 
-llvm::cl::opt<string> CostModelFilename("costmodelfilename", llvm::cl::value_desc("Cost model filename"),
+llvm::cl::opt<std::string> CostModelFilename("costmodelfilename", llvm::cl::value_desc("Cost model filename"),
                                        llvm::cl::desc("Set the filename to load optimization constant parameter i.e. operation costs"),
                                        llvm::cl::init("DOES-NOT-EXIST"));
+
+
+std::string InstructionSet;
+static llvm::cl::opt<std::string, true> InstructionSetFlag("instructionsetfile", llvm::cl::value_desc("Instruction file name"),
+                                       llvm::cl::desc("Set the filename to load wich instruction set are allowed"),
+                                       llvm::cl::location(InstructionSet), llvm::cl::init("DOES-NOT-EXIST") );                                       
 
 STATISTIC(FixCast, "Number of fixed point format cast");
 #endif

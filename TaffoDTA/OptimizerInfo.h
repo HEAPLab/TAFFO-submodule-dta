@@ -258,7 +258,7 @@ namespace tuner {
                 return false;
             }
 
-            for (int i = 0; i < Fields.size(); i++) {
+            for (unsigned int i = 0; i < Fields.size(); i++) {
                 if (Fields[i] == nullptr && b2->Fields[i] == nullptr) {
                     continue;
                 }

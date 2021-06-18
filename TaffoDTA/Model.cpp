@@ -1,3 +1,4 @@
+
 #include <cassert>
 #include <cmath>
 #include "Model.h"
@@ -8,178 +9,191 @@
 #include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/Support/CommandLine.h"
+#include "llvm/Support/ErrorHandling.h"
 #include "InputInfo.h"
 #include "Metadata.h"
 #include "TypeUtils.h"
 #include "Infos.h"
 #include "OptimizerInfo.h"
-#include "Model.h"
+
+
+#define M_BIG 1000000 
+
+
+#define DEBUG_TYPE "taffo-dta"
 
 using namespace tuner;
 using namespace llvm;
-void Model::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType, double rightSide, string comment) {
+void Model::insertLinearConstraint(const vector<pair<string, double>> &variables, ConstraintType constraintType, double rightSide/*, string&  comment*/) {
     //modelFile << "inserting constraint: ";
     //solver.Add(x + 7 * y <= 17.5)
     //Example of
-    modelFile<<"solver.Add(";
+
+     auto constraint = solver->MakeRowConstraint();
+    switch (constraintType) {
+        case EQ:
+            constraint->SetBounds(rightSide, rightSide);
+            break;
+        case LE:
+            constraint->SetUB(rightSide);
+            break;
+        case GE:
+            constraint->SetLB(rightSide);
+            break;
+    }
+
     for (auto p : variables) {
         assert(isVariableDeclared(p.first) || VARIABLE_NOT_DECLARED(p.first));
         if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
-            modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
+            constraint->SetCoefficient(variablesPool.at(p.first), p.second>0 ? M_BIG: -M_BIG );
             continue;
         }
-        modelFile << " + (" << p.second << ")*" << p.first;
+        constraint->SetCoefficient(variablesPool.at(p.first), p.second );
     }
 
-    switch (constraintType) {
-        case EQ:
-            modelFile << "==";
-            break;
-        case LE:
-            modelFile << "<=";
-            break;
-        case GE:
-            modelFile << ">=";
-            break;
-    }
+    //TODO what to do about comment
 
-    modelFile << rightSide << ")    #" << comment <<"\n";
+
 }
 
-void Model::createVariable(const string& varName) {
-    assert(false && "Not working");
-    assert(!isVariableDeclared(varName) && "Variable already declared!");
-    variablesPool.insert(varName);
+// void Model::createVariable(const string& varName) {
+//     assert(false && "Not working");
+//     assert(!isVariableDeclared(varName) && "Variable already declared!");
+//     variablesPool.insert(varName);
 
-    modelFile<<varName<<" = solver.IntVar('"<<varName<<"')\n";
-}
+    
+
+
+//     modelFile<<varName<<" = solver.IntVar('"<<varName<<"')\n";
+// }
 
 void Model::createVariable(const string& varName, double min, double max) {
     assert(!isVariableDeclared(varName) && "Variable already declared!");
-    variablesPool.insert(varName);
-
-    //Prototype line:
-    //#x = solver.IntVar(0.0, infinity, 'x')
-    modelFile<<varName<<" = solver.IntVar("<<min<<", "<<max<<", "<<"'"<<varName<<"')\n";
+    variablesPool.insert({varName,solver->MakeIntVar(min, max, varName)});
 }
 
-Model::Model(ProblemType type) {
-    modelFile.open("./model_test.py", ios::out|ios::trunc);
-    assert(modelFile.is_open() && "File open failed!");
-    this->problemType=type;
-
+Model::Model(ProblemType type): solver(operations_research::MPSolver::CreateSolver("CBC_MIXED_INTEGER_PROGRAMMING")){
+        this->problemType=type;
+        if (!solver){    
+        llvm_unreachable("CBC solver unavailable.");
+        }
 }
 
 bool Model::finalizeAndSolve() {
-    assert(modelFile.is_open() && "Model not opened!");
-    writeOutObjectiveFunction();
-    modelFile<<"# Model declaration end.";
-    modelFile.close();
+
+  writeOutObjectiveFunction();
+  const operations_research::MPSolver::ResultStatus result_status =
+      solver->Solve();
+  // Check that the problem has an optimal solution.
+  if (result_status != operations_research::MPSolver::OPTIMAL) {
+    LLVM_DEBUG(
+        dbgs() << "[ERROR] There was an error while solving the model!\n\n";);
+    return false;
+  }
 
 
-    //We should run solver.py that automatically imports the predeclared file
-    //FIXME: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH
-    int result = system("python3 solver.py");
-    if(result){
-
-        dbgs() << "[ERROR] There was an error while solving the model!\n\n";
-        return false;
-    }
-
-    loadResultsFromFile("model_results.txt");
-
-    dbgs() << "Dumping results:\n\n";
-    for(auto var : variablesPool){
-        dbgs() << var << " = " << getVariableValue(var) << "\n";
-    }
-
-    return true;
-
-}
-
-bool Model::loadResultsFromFile(string modelFile) {
-    fstream fin;
-
-    fin.open(modelFile, ios::in);
-
-    assert(fin.is_open() && "Cannot open results file!");
-
-    string line, field, temp;
-    vector<string> row;
-
-    //for each line in the file
-    int nline=0;
-    while (getline(fin, line)) {
-
-        //read the file until a newline is found (discarded from final string)
-        row.clear();
-        double value = 0;
-        nline++;
 
 
-        //Generate a stream in order to be used by getLine
-        stringstream lineStream(line);
-        //llvm::dbgs() << "Line: " << line << "\n";
-
-        while (getline(lineStream, field, ',')) {
-            row.push_back(field);
-        }
-
-        if (row.size() != 2) {
-            llvm::dbgs() << "Malformed line found: [" << line << "] on line"<< nline << ", skipping...\n";
-            continue;
-        }
-
-        string varName = row[0];
-        value = stod(row[1]);
-
-        if(varName == "__ERROR__"){
-            if(value==0){
-                dbgs() << "The model was solved correctly!\n";
-            }else{
-                dbgs() << "[ERROR] The Python solver signalled an error!\n\n";
-                return false;
-            }
-            //Skips any other computation as this is a state message
-            continue;
-        }
-
-        if(varName == "__COST_ENOB__"){
-            costEnob = value;
-            continue;
-        }
-
-        if(varName == "__COST_TIME__"){
-            costTime = value;
-            continue;
-        }
-
-        if(varName == "__COST_CONV__"){
-            costCast=value;
-            continue;
-        }
-
-        if(!isVariableDeclared(varName)){
-            dbgs() << "Trying to load results for an unknown variable!\nThis may be signal of a more problematic error!\n\n";
-            VARIABLE_NOT_DECLARED(varName);
-        }
-
-        if(variableValues.find(varName) != variableValues.end()){
-            llvm::dbgs() << "Found duplicated result: [" << line << "], skipping...\n";
-            continue;
-        }
-
-        variableValues.insert(make_pair(varName, value));
-
+    for(auto& v : variablesPool){
+        variableValues.insert(make_pair(v.first, v.second->solution_value()));
+                LLVM_DEBUG(dbgs() << v.first << " = " << v.second->solution_value() << "\n";);
 
     }
 
     if(variableValues.size() != variablesPool.size()){
-        dbgs() << "[ERROR] The number of variables in the file and in the model does not match!\n";
+        LLVM_DEBUG(dbgs() << "[ERROR] The number of variables in the file and in the model does not match!\n";);
         return false;
     }
+
+
     return true;
+
 }
+
+// bool Model::loadResultsFromFile(string modelFile) {
+//     fstream fin;
+
+//     fin.open(modelFile, ios::in);
+
+//     assert(fin.is_open() && "Cannot open results file!");
+
+//     string line, field, temp;
+//     vector<string> row;
+
+//     //for each line in the file
+//     int nline=0;
+//     while (getline(fin, line)) {
+
+//         //read the file until a newline is found (discarded from final string)
+//         row.clear();
+//         double value = 0;
+//         nline++;
+
+
+//         //Generate a stream in order to be used by getLine
+//         stringstream lineStream(line);
+//         //llvm::dbgs() << "Line: " << line << "\n";
+
+//         while (getline(lineStream, field, ',')) {
+//             row.push_back(field);
+//         }
+
+//         if (row.size() != 2) {
+//             LLVM_DEBUG(llvm::dbgs() << "Malformed line found: [" << line << "] on line"<< nline << ", skipping...\n";);
+//             continue;
+//         }
+
+//         string varName = row[0];
+//         value = stod(row[1]);
+
+//         if(varName == "__ERROR__"){
+//             if(value==0){
+//                 LLVM_DEBUG(dbgs() << "The model was solved correctly!\n";);
+//             }else{
+//                 LLVM_DEBUG(dbgs() << "[ERROR] The Python solver signalled an
+// error!\n\n";);
+//                 return false;
+//             }
+//             //Skips any other computation as this is a state message
+//             continue;
+//         }
+
+//         if(varName == "__COST_ENOB__"){
+//             costEnob = value;
+//             continue;
+//         }
+
+//         if(varName == "__COST_TIME__"){
+//             costTime = value;
+//             continue;
+//         }
+
+//         if(varName == "__COST_CONV__"){
+//             costCast=value;
+//             continue;
+//         }
+
+//         if(!isVariableDeclared(varName)){
+//             LLVM_DEBUG(dbgs() << "Trying to load results for an unknown variable!\nThis may be signal of a more problematic error!\n\n";);
+//             VARIABLE_NOT_DECLARED(varName);
+//         }
+
+//         if(variableValues.find(varName) != variableValues.end()){
+//             LLVM_DEBUG(dbgs() << "Found duplicated result: [" << line << "], skipping...\n";);
+//             continue;
+//         }
+
+//         variableValues.insert(make_pair(varName, value));
+
+
+//     }
+
+//     if(variableValues.size() != variablesPool.size()){
+//         LLVM_DEBUG(dbgs() << "[ERROR] The number of variables in the file and in the model does not match!\n";);
+//         return false;
+//     }
+//     return true;
+// }
 
 bool Model::isVariableDeclared(const string& variable) {
     return variablesPool.count(variable)!=0;
@@ -189,61 +203,46 @@ bool Model::isVariableDeclared(const string& variable) {
 void Model::insertObjectiveElement(const pair<string, double> &p, string costName, double maxVal) {
     assert(isVariableDeclared(p.first) && "Variable not declared!");
 
-    string operand = " += ";
-    if(objDeclarationOccoured.find(costName) == objDeclarationOccoured.end() || !objDeclarationOccoured[costName]){
-        operand = " = ";
-        objDeclarationOccoured.insert(make_pair(costName, true));
+
+
+    if(objDeclarationOccoured.find(costName) == objDeclarationOccoured.end() /*!objDeclarationOccoured[costName].second*/){         
+        objDeclarationOccoured.insert(std::make_pair(costName, std::vector<std::pair<operations_research::MPVariable*,double>>{}));
     }
 
     //We use this to normalize the objective value against program complexity changes
     objMaxCosts[costName] = objMaxCosts[costName] + maxVal;
 
-    modelFile <<  costName << operand;
-
     if(p.second==HUGE_VAL || p.second == -HUGE_VAL){
-        modelFile << " + (" << (p.second>0?"":"-") << "M" << ")*" << p.first;
+        
+        objDeclarationOccoured[costName].push_back({variablesPool.at(p.first),  p.second>0 ? M_BIG : -M_BIG});
 
     }else {
-        modelFile << " + (" << p.second << ")*" << p.first;
+        objDeclarationOccoured[costName].push_back({variablesPool.at(p.first),  p.second});
     }
 
-    modelFile << "\n";
-    //objectiveFunction.push_back(p);
 
 }
 
 void Model::writeOutObjectiveFunction() {
-    //solver.Minimize(x + 10 * y)
-
-    this->insertComment("All the model has been generated, lets solve it!", 5);
-
-
+    //solver.Minimize(x + 10 * y)    
+    auto obj = solver->MutableObjective();
 
     switch (problemType) {
         case MIN:
-            modelFile << "solver.Minimize";
+            obj->SetMinimization();
             break;
         case MAX:
-            modelFile << "solver.Maximize";
+            obj->SetMaximization();
             break;
     }
 
-    modelFile<<"(";
 
-    int i =0;
-    for(auto a : objDeclarationOccoured){
-        if(i>0){
-            modelFile<< "+ ";
+    for(auto& objectives : objDeclarationOccoured){
+        for(auto& a : objectives.second){
+            obj->SetCoefficient(a.first, a.second * getMultiplier(objectives.first) / objMaxCosts[objectives.first]);
         }
-
-        modelFile << getMultiplier(a.first) << " * " << a.first << " / " << objMaxCosts[a.first];
-        i++;
     }
 
-    //modelFile << "objectiveFunction";
-
-
-    modelFile<<")\n\n";
 
 }
 
@@ -264,11 +263,11 @@ double Model::getMultiplier(string var){
 }
 
 bool Model::VARIABLE_NOT_DECLARED(string var){
-    dbgs() << "THIS VARIABLE WAS NOT DECLARED >>" << var <<"<<\n";
-    dbgs() << "Here is a list of declared vars:\n";
+    LLVM_DEBUG(dbgs() << "THIS VARIABLE WAS NOT DECLARED >>" << var <<"<<\n";);
+    LLVM_DEBUG(dbgs() << "Here is a list of declared vars:\n";);
 
-    for(string a : variablesPool){
-        dbgs() << ">>"<<a<<"<<\n";
+    for(auto& a : variablesPool){
+        LLVM_DEBUG(dbgs() << ">>"<<a.first<<"<<\n";);
     }
 
     assert(false);
@@ -285,21 +284,22 @@ double Model::getVariableValue(string variable){
     return res->second;
 }
 
-void Model::insertComment(string comment, int spaceBefore, int spaceAfter) {
-    int i;
+// void Model::insertComment(string comment, int spaceBefore, int spaceAfter) {
+//     int i;
 
-    for(i=0; i<spaceBefore; i++){
-        modelFile << "\n";
-    }
+//     for(i=0; i<spaceBefore; i++){
+//         modelFile << "\n";
+//     }
 
 
-    //delete newline
-    std::replace(comment.begin(), comment.end(), '\n', '_');
-    std::replace(comment.begin(), comment.end(), '\r', '_');
-    modelFile << "#" << comment << "\n";
+//     //delete newline
+//     std::replace(comment.begin(), comment.end(), '\n', '_');
+//     std::replace(comment.begin(), comment.end(), '\r', '_');
+//     modelFile << "#" << comment << "\n";
 
-    for(i=0; i<spaceAfter; i++){
-        modelFile << "\n";
-    }
+//     for(i=0; i<spaceAfter; i++){
+//         modelFile << "\n";
+//     }
 
-}
+//
+// }
