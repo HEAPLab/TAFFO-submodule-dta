@@ -177,7 +177,7 @@ public:
 protected:
   MetricPerf(MetricKind k): MetricBase(k) {}
   int getENOBFromError(double error);
-  static int getENOBFromRange(shared_ptr<mdutils::Range>& range,
+  static int getENOBFromRange(const shared_ptr<mdutils::Range>& range,
                        mdutils::FloatType::FloatStandard standard);
   void handleSelect(llvm::Instruction *instruction,
                     shared_ptr<tuner::ValueInfo> valueInfo) override;

@@ -85,13 +85,13 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableForValue(V
     constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), -1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER, "Enob constraint for fix");
+    model.insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER/*, "Enob constraint for fix"*/);
 
     auto enobconstraint = [&]( int ENOB, const std::string (tuner::OptimizerScalarInfo::* getVariable)(), const char * desc) mutable {
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair( ((*optimizerInfo).*getVariable)(), BIG_NUMBER));
-    model.insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER + ENOB, desc);
+    model.insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER + ENOB/*, desc*/);
     };
     //Enob constraints float     
     enobconstraint(ENOBfloat, &tuner::OptimizerScalarInfo::getFloatSelectedVariable, "Enob constraint for float");
@@ -141,7 +141,7 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableForValue(V
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
     //DO NOT REMOVE THE CAST OR SOMEONE WILL DEBUG THIS FOR AN WHOLE DAY AGAIN
-    model.insertLinearConstraint(constraint, tuner::Model::GE, (-BIG_NUMBER-FIX_DELTA_MAX)+((int)fpInfo->getPointPos()), "Limit the lower number of frac bits"+to_string(fpInfo->getPointPos()));
+    model.insertLinearConstraint(constraint, tuner::Model::GE, (-BIG_NUMBER-FIX_DELTA_MAX)+((int)fpInfo->getPointPos())/*, "Limit the lower number of frac bits"+to_string(fpInfo->getPointPos())*/);
 
     int enobMaxCost = max({ENOBfloat, ENOBdouble, (int)fpInfo->getPointPos()});
     
@@ -167,7 +167,7 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableForValue(V
 
         constraint.clear();
         constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-        model.insertLinearConstraint(constraint, tuner::Model::LE, errorEnob, "Enob constraint for error maximal");
+        model.insertLinearConstraint(constraint, tuner::Model::LE, errorEnob/*, "Enob constraint for error maximal"*/);
 
         //Capped at max
         enobMaxCost = min(enobMaxCost, (int) errorEnob);
@@ -176,7 +176,7 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableForValue(V
     if(!MixedDoubleEnabled && respectFloatingPointConstraint){
         constraint.clear();
         constraint.push_back(make_pair(optimizerInfo->getDoubleSelectedVariable(), 1.0));
-        model.insertLinearConstraint(constraint, tuner::Model::LE, 0, "Disable double data type");
+        model.insertLinearConstraint(constraint, tuner::Model::LE, 0/*, "Disable double data type"*/);
     }
 
 
@@ -211,14 +211,14 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableForValue(V
     if(hasBF16)
     constraint.push_back(make_pair(optimizerInfo->getBF16SelectedVariable(), 1.0)); 
 
-    model.insertLinearConstraint(constraint, tuner::Model::EQ, 1, "Exactly one selected type");
+    model.insertLinearConstraint(constraint, tuner::Model::EQ, 1/*, "Exactly one selected type"*/);
 
     //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
     //x_bits - M * x_fixp <= 0
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, tuner::Model::LE, 0, "If not fix, frac part to zero");
+    model.insertLinearConstraint(constraint, tuner::Model::LE, 0/*, "If not fix, frac part to zero"*/);
 
 
     if (insertInList) {
@@ -323,21 +323,21 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableWithCastCo
     constraint.push_back(make_pair(optimizerInfo->getBF16SelectedVariable(), 1.0));
 
 
-    model.insertLinearConstraint(constraint, tuner::Model::EQ, 1, "exactly 1 type");
+    model.insertLinearConstraint(constraint, tuner::Model::EQ, 1/*, "exactly 1 type"*/);
 
 
     //Real enob is still the same!
     //constraint.clear();
     //constraint.push_back(make_pair(info->getRealEnobVariable(), -1.0));
     //constraint.push_back(make_pair(optimizerInfo->getRealEnobVariable(), 1.0));
-    //model.insertLinearConstraint(constraint, Model::LE, 0, "The ENOB is less or equal!");
+    //model.insertLinearConstraint(constraint, Model::LE, 0/*, "The ENOB is less or equal!"*/);
 
     //Constraint for mixed precision: if fixed is not the selected data type, force bits to 0
     //x_bits - M * x_fixp <= 0
     constraint.clear();
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFixedSelectedVariable(), -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, tuner::Model::LE, 0, "If no fix, fix frac part = 0");
+    model.insertLinearConstraint(constraint, tuner::Model::LE, 0/*, "If no fix, fix frac part = 0"*/);
 
     auto& cpuCosts = getCpuCosts();
     double maxCastCost = cpuCosts.MaxMinCosts("CAST").first;
@@ -359,14 +359,17 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableWithCastCo
     constraint.push_back(make_pair(info->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), -1.0));
     constraint.push_back(make_pair(C1, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, tuner::Model::LE, 0, "Shift cost 1");
+    model.insertLinearConstraint(constraint, tuner::Model::LE, 0/*, "Shift cost 1"*/);
 
     constraint.clear();
     //Constraint for binary value to activate
     constraint.push_back(make_pair(info->getFractBitsVariable(), -1.0));
     constraint.push_back(make_pair(optimizerInfo->getFractBitsVariable(), 1.0));
     constraint.push_back(make_pair(C2, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, tuner::Model::LE, 0, "Shift cost 2");
+    model.insertLinearConstraint(constraint, tuner::Model::LE, 0/*, "Shift cost 2"*/);
+    /*
+
+    */
 
     //Casting costs
     //Is correct to only place here the maxCastCost, as only one cast will be active at a time
@@ -380,7 +383,7 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableWithCastCo
     constraint.push_back(make_pair(((*info).*getFirstVariable)(), 1.0));
     constraint.push_back(make_pair(((*optimizerInfo).*getSecondVariable)(), 1.0));
     constraint.push_back(make_pair(variable, -1));
-    model.insertLinearConstraint(constraint, tuner::Model::LE, 1, desc);
+    model.insertLinearConstraint(constraint, tuner::Model::LE, 1/*, desc*/);
     model.insertObjectiveElement(make_pair(variable, I_COST * cpuCosts.getCost(cost)), MODEL_OBJ_CASTCOST, 0);
     };
 
@@ -537,7 +540,7 @@ void MetricPerf::closePhiLoop(PHINode *phiNode, Value *requestedValue) {
     constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_var, BIG_NUMBER));
-    getModel().insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER, "Enob: forcing phi enob");
+    getModel().insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER/*, "Enob: forcing phi enob"*/);
     getPhiWatcher().closePhiLoop(phiNode, requestedValue);
 }
 
@@ -577,7 +580,7 @@ void MetricPerf::closeMemLoop(LoadInst *load, Value *requestedValue) {
     constraint.push_back(make_pair(phiInfo->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_var, BIG_NUMBER));
-    getModel().insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER, "Enob: forcing MEM phi enob");
+    getModel().insertLinearConstraint(constraint, tuner::Model::LE, BIG_NUMBER/*, "Enob: forcing MEM phi enob"*/);
     getMemWatcher().closePhiLoop(load, requestedValue);
 }
 
@@ -602,7 +605,7 @@ int MetricPerf::getENOBFromError(double error) {
 }
 
 
-static int MetricPerf::getENOBFromRange(shared_ptr<mdutils::Range>& range, mdutils::FloatType::FloatStandard standard) {
+ int MetricPerf::getENOBFromRange(const shared_ptr<mdutils::Range>& range, mdutils::FloatType::FloatStandard standard) {
     assert(range && "We must have a valid range here!");
 
     int fractionalDigits;
@@ -864,7 +867,7 @@ void MetricPerf::handleSelect(Instruction *instruction, shared_ptr<tuner::ValueI
     }
 
     if (constraint.size() > 0) {
-        model.insertLinearConstraint(constraint, tuner::Model::EQ, 1, "Enob: one selected constraint");
+        model.insertLinearConstraint(constraint, tuner::Model::EQ, 1/*, "Enob: one selected constraint"*/);
     } else {
         LLVM_DEBUG(dbgs() << "[INFO] All constants or unknown nodes, nothing to do!!!\n";);
         return;
@@ -905,7 +908,7 @@ void MetricPerf::handleSelect(Instruction *instruction, shared_ptr<tuner::ValueI
             constraint.push_back(make_pair(variable->getRealEnobVariable(), 1.0));
             constraint.push_back(make_pair(destInfo->getRealEnobVariable(), -1.0));
             constraint.push_back(make_pair(enob_var, -BIG_NUMBER));
-            model.insertLinearConstraint(constraint, tuner::Model::LE, 0, "Enob: forcing select enob");
+            model.insertLinearConstraint(constraint, tuner::Model::LE, 0/*, "Enob: forcing select enob"*/);
         }
         //if no info is to skip
     }

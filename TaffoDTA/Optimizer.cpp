@@ -559,7 +559,7 @@ void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1
     constraint.clear();
     constraint.push_back(make_pair(((*op1).*getFirstVariable)(), 1.0));
     constraint.push_back(make_pair(((*op2).*getFirstVariable)(), -1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 0, desc);
+    model.insertLinearConstraint(constraint, Model::EQ, 0/*, desc*/);
     };
 
     eqconstraintlambda(&tuner::OptimizerScalarInfo::getFixedSelectedVariable,"fix equality");
@@ -587,7 +587,7 @@ void Optimizer::insertTypeEqualityConstraint(shared_ptr<OptimizerScalarInfo> op1
         constraint.clear();
         constraint.push_back(make_pair(op1->getFractBitsVariable(), 1.0));
         constraint.push_back(make_pair(op2->getFractBitsVariable(), -1.0));
-        model.insertLinearConstraint(constraint, Model::EQ, 0, "same fractional bit");
+        model.insertLinearConstraint(constraint, Model::EQ, 0);
     }
 
 }

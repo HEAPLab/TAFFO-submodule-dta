@@ -1,9 +1,8 @@
+#include "InputInfo.h"
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallPtrSet.h"
-
-#include "InputInfo.h"
 #include "Metadata.h"
 #include "TypeUtils.h"
 
@@ -135,8 +134,8 @@ struct TaffoTuner : public llvm::ModulePass {
     }
   }
 
-  bool mergeDataTypes(shared_ptr<mdutils::MDInfo> old,
-                      shared_ptr<mdutils::MDInfo> model);
+  bool mergeDataTypes(std::shared_ptr<mdutils::MDInfo> old,
+                      std::shared_ptr<mdutils::MDInfo> model);
     };
 }
 

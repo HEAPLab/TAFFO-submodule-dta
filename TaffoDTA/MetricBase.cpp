@@ -762,13 +762,13 @@ void MetricBase::handleUnknownFunction(Instruction *instruction, shared_ptr<Valu
             auto constraint = vector<pair<string, double>>();
             constraint.clear();
             constraint.push_back(make_pair(retInfo->getDoubleSelectedVariable(), 1.0));
-            getModel().insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
+            getModel().insertLinearConstraint(constraint, Model::EQ, 1/*, "Type constraint for return value"*/);
             LLVM_DEBUG(dbgs() << "Forced return cast to double.\n";);
         } else if (instruction->getType()->isFloatTy()) {
             auto constraint = vector<pair<string, double>>();
             constraint.clear();
             constraint.push_back(make_pair(retInfo->getFloatSelectedVariable(), 1.0));
-            getModel().insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for return value");
+            getModel().insertLinearConstraint(constraint, Model::EQ, 1/*, "Type constraint for return value"*/);
             LLVM_DEBUG(dbgs() << "Forced return cast to float.\n";);
         } else if (instruction->getType()->isFloatingPointTy()) {
             LLVM_DEBUG(dbgs() << "The function returns a floating point type not implemented in the model. Bailing out.\n";);
@@ -807,14 +807,14 @@ void MetricBase::handleUnknownFunction(Instruction *instruction, shared_ptr<Valu
                 auto constraint = vector<pair<string, double>>();
                 constraint.clear();
                 constraint.push_back(make_pair(info2->getFloatSelectedVariable(), 1.0));
-                getModel().insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
+                getModel().insertLinearConstraint(constraint, Model::EQ, 1/*, "Type constraint for argument value"*/);
                 LLVM_DEBUG(dbgs() << "Forcing argument to float type.\n";);
             } else if ((*arg_it)->getType()->isDoubleTy()) {
                 auto info2 = allocateNewVariableWithCastCost(arg_it->get(), instruction);
                 auto constraint = vector<pair<string, double>>();
                 constraint.clear();
                 constraint.push_back(make_pair(info2->getDoubleSelectedVariable(), 1.0));
-                getModel().insertLinearConstraint(constraint, Model::EQ, 1, "Type constraint for argument value");
+                getModel().insertLinearConstraint(constraint, Model::EQ, 1/*, "Type constraint for argument value"*/);
                 LLVM_DEBUG(dbgs() << "Forcing argument to double type.\n";);
             } else if ((*arg_it)->getType()->isFloatingPointTy()) {
                 LLVM_DEBUG(dbgs() << "The function uses a floating point type not implemented in the model. Bailing out.\n";);

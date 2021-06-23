@@ -22,36 +22,36 @@ void MetricPerf::handleDisabled(std::shared_ptr<tuner::OptimizerScalarInfo> res,
           if (hasHalf && tmpString.find("HALF") != string::npos){
           constraint.clear();
           constraint.push_back(make_pair(res->getHalfSelectedVariable(), 1.0));
-          model.insertLinearConstraint(constraint, Model::EQ, 0,
-                                       "Disable Half");
+          model.insertLinearConstraint(constraint, Model::EQ, 0/*,
+                                       "Disable Half"*/);
           }
 
           if (hasQuad && tmpString.find("QUAD") != string::npos){
           constraint.clear();
           constraint.push_back(make_pair(res->getQuadSelectedVariable(), 1.0));
-          model.insertLinearConstraint(constraint, Model::EQ, 0,
-                                       "Disable Quad");
+          model.insertLinearConstraint(constraint, Model::EQ, 0/*,
+                                       "Disable Quad"*/);
           }          
 
           if (hasPPC128 && tmpString.find("PPC128") != string::npos){
           constraint.clear();
           constraint.push_back(make_pair(res->getPPC128SelectedVariable(), 1.0));
-          model.insertLinearConstraint(constraint, Model::EQ, 0,
-                                       "Disable PPC128");
+          model.insertLinearConstraint(constraint, Model::EQ, 0/*,
+                                       "Disable PPC128"*/);
           }        
 
           if (hasFP80 && tmpString.find("FP80") != string::npos){
           constraint.clear();
           constraint.push_back(make_pair(res->getFP80SelectedVariable(), 1.0));
-          model.insertLinearConstraint(constraint, Model::EQ, 0,
-                                       "Disable FP80");
+          model.insertLinearConstraint(constraint, Model::EQ, 0/*,
+                                       "Disable FP80"*/);
           }
 
           if (hasBF16 && tmpString.find("BF16") != string::npos){
           constraint.clear();
           constraint.push_back(make_pair(res->getBF16SelectedVariable(), 1.0));
-          model.insertLinearConstraint(constraint, Model::EQ, 0,
-                                       "Disable BF16");
+          model.insertLinearConstraint(constraint, Model::EQ, 0/*,
+                                       "Disable BF16"*/);
           }
 
 
@@ -127,13 +127,13 @@ void MetricPerf::handleFAdd(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.clear();
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sum first addend");
+    model.insertLinearConstraint(constraint, Model::LE, 0/*, "Enob propagation in sum first addend"*/);
 
     //Enob constraints
     constraint.clear();
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sum second addend");
+    model.insertLinearConstraint(constraint, Model::LE, 0/*, "Enob propagation in sum second addend"*/);
     //Precision cost
     //Handloed in allocating variable
 }
@@ -198,13 +198,13 @@ void MetricPerf::handleFSub(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.clear();
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sub first addend");
+    model.insertLinearConstraint(constraint, Model::LE, 0/*, "Enob propagation in sub first addend"*/);
 
     //Enob constraints
     constraint.clear();
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in sub second addend");
+    model.insertLinearConstraint(constraint, Model::LE, 0/*, "Enob propagation in sub second addend"*/);
 
 }
 
@@ -267,7 +267,7 @@ void MetricPerf::handleFMul(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in product");*/
+    model.insertLinearConstraint(constraint, Model::LE, 0/*, "Enob propagation in product");*/
 
     string enob_selection_1 = getEnobActivationVariable(instr, 1);
     model.createVariable(enob_selection_1, 0, 1);
@@ -282,7 +282,7 @@ void MetricPerf::handleFMul(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.clear();
     constraint.push_back(make_pair(enob_selection_1, 1.0));
     constraint.push_back(make_pair(enob_selection_2, 1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+    model.insertLinearConstraint(constraint, Model::EQ, 1/*, "Enob: one selected constraint"*/);
 
 
     //New enob constraint (tighter)
@@ -293,14 +293,14 @@ void MetricPerf::handleFMul(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_selection_1, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, -intbit_1, "Enob: propagation in product 1");
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_1/*, "Enob: propagation in product 1"*/);
 
 
     constraint.clear();
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_selection_2, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, -intbit_2, "Enob: propagation in product 2");
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_2/*, "Enob: propagation in product 2"*/);
 
 }
 
@@ -378,7 +378,7 @@ void MetricPerf::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.clear();
     constraint.push_back(make_pair(enob_selection_1, 1.0));
     constraint.push_back(make_pair(enob_selection_2, 1.0));
-    model.insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+    model.insertLinearConstraint(constraint, Model::EQ, 1/*, "Enob: one selected constraint"*/);
 
 
     //New enob constraint (tighter)
@@ -389,14 +389,14 @@ void MetricPerf::handleFDiv(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_selection_1, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, -intbit_1 + 2 * maxbits2, "Enob: propagation in division 1");
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_1 + 2 * maxbits2/*, "Enob: propagation in division 1"*/);
 
 
     constraint.clear();
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(enob_selection_2, -BIG_NUMBER));
-    model.insertLinearConstraint(constraint, Model::LE, -intbit_2 + 2 * maxbits2, "Enob: propagation in division 2");
+    model.insertLinearConstraint(constraint, Model::LE, -intbit_2 + 2 * maxbits2/*, "Enob: propagation in division 2"*/);
 
 }
 
@@ -555,7 +555,7 @@ void MetricPerf::handleCastInstruction(Instruction *instruction, shared_ptr<Valu
         auto constraint = vector<pair<string, double>>();
         constraint.clear();
         constraint.push_back(make_pair(variable->getRealEnobVariable(), 1.0));
-        getModel().insertLinearConstraint(constraint, Model::LE, 1, "Limiting Enob for integer to float conversion");
+        getModel().insertLinearConstraint(constraint, Model::LE, 1/*, "Limiting Enob for integer to float conversion"*/);
         return;
     }
 
@@ -644,14 +644,14 @@ void MetricPerf::handleStore(Instruction *instruction, const shared_ptr<ValueInf
             constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
             constraint.push_back(make_pair(info_pointer->getFractBitsVariable(), -1.0));
             constraint.push_back(make_pair(info_pointer->getFixedSelectedVariable(), BIG_NUMBER));
-            getModel().insertLinearConstraint(constraint, Model::LE, BIG_NUMBER, "Enob constraint for fix");
+            getModel().insertLinearConstraint(constraint, Model::LE, BIG_NUMBER/*, "Enob constraint for fix"*/);
 
 
             auto enoblambda = [&] (int ENOB, const std::string (tuner::OptimizerScalarInfo::* getvariable)(), const char* desc) mutable {
             constraint.clear();
             constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
             constraint.push_back(make_pair(((*info_pointer).*getvariable)(), BIG_NUMBER));
-            getModel().insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOB, desc);
+            getModel().insertLinearConstraint(constraint, Model::LE, BIG_NUMBER + ENOB/*, desc*/);
             };
 
             //Enob constraints float
@@ -683,7 +683,7 @@ void MetricPerf::handleStore(Instruction *instruction, const shared_ptr<ValueInf
             constraint.clear();
             constraint.push_back(make_pair(info_pointer->getRealEnobVariable(), 1.0));
             constraint.push_back(make_pair(info_variable_oeig_t->getRealEnobVariable(), -1.0));
-            getModel().insertLinearConstraint(constraint, Model::LE, 0, "Enob constraint ENOB propagation in load/store");
+            getModel().insertLinearConstraint(constraint, Model::LE, 0/*, "Enob constraint ENOB propagation in load/store"*/);
         } else {
             LLVM_DEBUG(dbgs() << "[INFO] The value to store is a constant, not inserting it as may cause problems...\n";);
             //getModel().insertComment("Storing constant, no new enob.", 1);
@@ -828,7 +828,7 @@ MetricPerf::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo)
     }
 
     if (constraint.size() > 0) {
-        getModel().insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+        getModel().insertLinearConstraint(constraint, Model::EQ, 1/*, "Enob: one selected constraint"*/);
     } else {
         LLVM_DEBUG(dbgs() << "[INFO] All constants phi node, nothing to do!!!\n";);
         return;
@@ -914,8 +914,8 @@ void MetricPerf::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo
         constraint.clear();
         constraint.push_back(make_pair(newEnobVariable, 1.0));
         constraint.push_back(make_pair(sinfos->getBaseEnobVariable(), -1.0));
-        getModel().insertLinearConstraint(constraint, Model::LE, 0,
-                                     "Enob constraint, new enob at most original variable enob");
+        getModel().insertLinearConstraint(constraint, Model::LE, 0/*,
+                                     "Enob constraint, new enob at most original variable enob"*/);
 
         auto a = make_shared<OptimizerScalarInfo>(sinfos->getBaseName(),
                                                   sinfos->getMinBits(),
@@ -981,7 +981,7 @@ void MetricPerf::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo
         }
 
         if (constraint.size() > 0) {
-            getModel().insertLinearConstraint(constraint, Model::EQ, 1, "Enob: one selected constraint");
+            getModel().insertLinearConstraint(constraint, Model::EQ, 1/*, "Enob: one selected constraint"*/);
         } else {
             LLVM_DEBUG(dbgs() << "[INFO] All constants memPhi node, nothing to do!!!\n";);
             //return;
