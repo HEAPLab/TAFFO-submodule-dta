@@ -157,7 +157,7 @@ namespace tuner {
         void handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo);
 
 
-        void emitError(const string stringhina);
+        void emitError(const string& stringhina);
 
 
         shared_ptr<OptimizerInfo> getInfoOfValue(Value *value);

@@ -526,7 +526,7 @@ void Optimizer::handleTerminators(llvm::Instruction *term, shared_ptr<ValueInfo>
     return;
 }
 
-void Optimizer::emitError(string stringhina) {
+void Optimizer::emitError(const string& stringhina) {
     LLVM_DEBUG(dbgs() << "[ERROR] " << stringhina << "\n");
 
 }
