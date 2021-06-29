@@ -1,6 +1,7 @@
 #include <llvm/Analysis/MemorySSA.h>
 #include <llvm/Analysis/ScalarEvolution.h>
 #include "llvm/Analysis/TargetTransformInfo.h"
+#include "llvm/IR/AbstractCallSite.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
@@ -460,7 +461,7 @@ void TaffoTuner::restoreTypesAcrossFunctionCall(Value *v) {
 
     for (Use &use: v->uses()) {
         User *user = use.getUser();
-        CallSite call(user);
+        AbstractCallSite call(&use);
         if (call.getInstruction() == nullptr)
             continue;
 
