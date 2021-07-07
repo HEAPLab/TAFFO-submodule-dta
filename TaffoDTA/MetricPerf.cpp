@@ -245,7 +245,7 @@ shared_ptr<tuner::OptimizerScalarInfo> MetricPerf::allocateNewVariableWithCastCo
 
     auto originalVar = info->getBaseName();
 
-    string endName = whereToUse->getName().str();
+    string endName = whereToUse->getNameOrAsOperand();
     if(endName.empty()){
         if(auto istr = dyn_cast_or_null<Instruction>(whereToUse)){
             endName = string(istr->getOpcodeName());
@@ -681,7 +681,7 @@ std::string MetricPerf::getEnobActivationVariable(Value *value, int cardinal) {
     }
 
     if (!value->getName().empty()) {
-        valueName.append(value->getName().str());
+        valueName.append(value->getNameOrAsOperand());
     } else {
         valueName.append(to_string(value->getValueID()));
         valueName.append("_");

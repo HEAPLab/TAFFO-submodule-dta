@@ -515,7 +515,7 @@ void MetricBase::handleCall(Instruction *instruction, shared_ptr<ValueInfo> valu
                 shared_ptr<OptimizerScalarInfo> result = allocateNewVariableForValue(instruction, fptype,
                                                                                      inputInfo->IRange,
                                                                                      inputInfo->IError,
-                                                                                     instruction->getFunction()->getName().str());
+                                                                                     instruction->getFunction()->getNameOrAsOperand());
                 retInfo = result;
                 LLVM_DEBUG(dbgs() << "Allocated variable for returns.\n";);
             } else {

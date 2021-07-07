@@ -1,5 +1,6 @@
 #include "MetricBase.h"
 #include "Optimizer.h"
+#include "llvm/Support/Debug.h"
 
 using namespace llvm;
 using namespace mdutils;
@@ -876,6 +877,7 @@ MetricPerf::handlePhi(Instruction *instruction, shared_ptr<ValueInfo> valueInfo)
 
 
 void MetricPerf::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo> &valueInfo) {
+    LLVM_DEBUG(llvm::dbgs() << "Handle Load\n");
     if (!valueInfo) {
         LLVM_DEBUG(dbgs() << "No value info, skipping...\n";);
         return;
@@ -905,7 +907,7 @@ void MetricPerf::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo
         newEnobVariable.append("_memphi_");
         newEnobVariable.append(load->getFunction()->getName().str());
         newEnobVariable.append("_");
-        newEnobVariable.append(load->getName().str());
+        newEnobVariable.append(load->getNameOrAsOperand());
         std::replace(newEnobVariable.begin(), newEnobVariable.end(), '.', '_');
         LLVM_DEBUG(dbgs() << "New enob for load: " << newEnobVariable << "\n";);
         getModel().createVariable(newEnobVariable, -BIG_NUMBER, BIG_NUMBER);
@@ -974,8 +976,10 @@ void MetricPerf::handleLoad(Instruction *instruction, const shared_ptr<ValueInfo
             }
 
             string enob_selection = getEnobActivationVariable(instruction, index);
-            LLVM_DEBUG(dbgs() << "Declaring " << enob_selection << "for enob...\n";);
+            LLVM_DEBUG(dbgs() << "Declaring " << enob_selection << " for enob...\n";);
+            if(!getModel().isVariableDeclared(enob_selection)){
             getModel().createVariable(enob_selection, 0, 1);
+            }
             constraint.push_back(make_pair(enob_selection, 1.0));
             toSkip[index] = false;
         }

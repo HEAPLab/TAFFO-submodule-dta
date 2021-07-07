@@ -392,7 +392,7 @@ Optimizer::handleBinaryInstruction(Instruction *instr, const unsigned OpCode, co
 
 void Optimizer::handleInstruction(Instruction *instruction, shared_ptr<ValueInfo> valueInfo) {
     //This will be a mess. God bless you.
-
+    LLVM_DEBUG(llvm::dbgs() << "Handling instruction " << (instruction->dump() , "\n"));
     auto info = LoopAnalyzerUtil::computeFullTripCount(tuner, instruction);
     LLVM_DEBUG(dbgs() << "Optimizer: got trip count " << info << "\n");
 

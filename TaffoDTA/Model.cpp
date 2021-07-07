@@ -68,6 +68,7 @@ void Model::insertLinearConstraint(const vector<pair<string, double>> &variables
 // }
 
 void Model::createVariable(const string& varName, double min, double max) {
+    llvm::dbgs() <<"Creating variable: " << varName << "\n";
     assert(!isVariableDeclared(varName) && "Variable already declared!");
     variablesPool.insert({varName,solver->MakeIntVar(min, max, varName)});
 }

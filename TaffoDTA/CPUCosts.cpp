@@ -471,10 +471,9 @@ void CPUCosts::loadModelFile(string& modelFile) {
  CPUCosts::CostsId CPUCosts::decodeId(const string& basicString){
     auto it = std::find(CostsIdValues.cbegin(), CostsIdValues.cend(), basicString);
 
-    LLVM_DEBUG(llvm::dbgs() <<  "searching cost [" << basicString << "]");
     if(it != CostsIdValues.cend()){
         int index = it - CostsIdValues.cbegin();
-        LLVM_DEBUG(llvm::dbgs() <<  " found [" << *it <<"]\n" );
+        //LLVM_DEBUG(llvm::dbgs() <<  " found [" << *it <<"]\n" );
         return CostsId(index);
     }
 
