@@ -268,7 +268,7 @@ void MetricPerf::handleFMul(BinaryOperator *instr, const unsigned OpCode, const 
     constraint.push_back(make_pair(res->getRealEnobVariable(), 1.0));
     constraint.push_back(make_pair(info1->getRealEnobVariable(), -1.0));
     constraint.push_back(make_pair(info2->getRealEnobVariable(), -1.0));
-    model.insertLinearConstraint(constraint, Model::LE, 0/*, "Enob propagation in product");*/
+    model.insertLinearConstraint(constraint, Model::LE, 0, "Enob propagation in product");*/
 
     string enob_selection_1 = getEnobActivationVariable(instr, 1);
     model.createVariable(enob_selection_1, 0, 1);
