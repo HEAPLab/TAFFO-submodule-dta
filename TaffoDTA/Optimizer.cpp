@@ -751,7 +751,7 @@ void Optimizer::printStatInfos() {
                     ((double)StatSelectedDouble / total) * log2(((double)StatSelectedDouble) / total)
             ) << "\n";);
 
-
+/*
     ofstream statFile;
     statFile.open("./stats.txt", ios::out|ios::trunc);
     assert(statFile.is_open() && "File open failed!");
@@ -761,7 +761,7 @@ void Optimizer::printStatInfos() {
     statFile << "TOHALF, " << StatSelectedHalf << "\n";
     statFile.flush();
     statFile.close();
-
+*/
 }
 
 
