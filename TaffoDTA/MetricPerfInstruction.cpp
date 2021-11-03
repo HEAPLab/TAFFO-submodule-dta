@@ -472,7 +472,10 @@ void MetricPerf::handleCastInstruction(Instruction *instruction, shared_ptr<Valu
         auto bitcast = dyn_cast_or_null<BitCastInst>(instruction);
         assert(bitcast && "Not a bitcast???");
 
-        if(bitcast->getType()->getPointerElementType()->isFloatingPointTy()){
+
+
+
+        if(bitcast->getType()->isPointerTy() && bitcast->getType()->getPointerElementType()->isFloatingPointTy()){
             //When bitcasting to a floating point and having info, maybe we are dealing with a floating point array!
             auto fieldInfo = dynamic_ptr_cast_or_null<InputInfo>(valueInfo->metadata);
             if (!fieldInfo) {
