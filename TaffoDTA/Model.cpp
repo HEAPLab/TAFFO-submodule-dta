@@ -15,6 +15,7 @@
 #include "TypeUtils.h"
 #include "Infos.h"
 #include "OptimizerInfo.h"
+#include "DebugUtils.h"
 
 
 #define M_BIG 1000000 
@@ -53,7 +54,18 @@ void Model::insertLinearConstraint(const vector<pair<string, double>> &variables
 
     //TODO what to do about comment
 
-
+  IF_TAFFO_DEBUG {
+    dbgs() << "constraint: ";
+    bool first = true;
+    for (auto v: variables) {
+      if (first)
+        first = false;
+      else
+        dbgs() << " + ";
+      dbgs() << v.first << "*" << constraint->GetCoefficient(variablesPool.at(v.first));
+    }
+    dbgs() << " in [" << constraint->lb() << ", " << constraint->ub() << "]\n";
+  }
 }
 
 // void Model::createVariable(const string& varName) {
@@ -94,7 +106,15 @@ bool Model::finalizeAndSolve() {
 
 
 
-
+  LLVM_DEBUG(dbgs() << "****************************************************************************************\n");
+  LLVM_DEBUG(dbgs() << "****************************************************************************************\n");
+  LLVM_DEBUG(dbgs() << "****************************************************************************************\n");
+  LLVM_DEBUG(dbgs() << "                                HOUSTON WE HAVE A SOLUTION\n");
+  LLVM_DEBUG(dbgs() << "                                HOUSTON WE HAVE A SOLUTION\n");
+  LLVM_DEBUG(dbgs() << "                                HOUSTON WE HAVE A SOLUTION\n");
+  LLVM_DEBUG(dbgs() << "****************************************************************************************\n");
+  LLVM_DEBUG(dbgs() << "****************************************************************************************\n");
+  LLVM_DEBUG(dbgs() << "****************************************************************************************\n");
     for(auto& v : variablesPool){
         variableValues.insert(make_pair(v.first, v.second->solution_value()));
                 LLVM_DEBUG(dbgs() << v.first << " = " << v.second->solution_value() << "\n";);
