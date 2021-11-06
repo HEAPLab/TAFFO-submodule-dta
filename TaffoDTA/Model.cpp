@@ -121,6 +121,31 @@ bool Model::finalizeAndSolve() {
 
     }
 
+  IF_TAFFO_DEBUG {
+    dbgs() << "\n************* < TRUMPETS HERE > *************\n";
+    dbgs() << "**** THE HOLY OBJECTIVE FUNCTION MEMBERS ****\n";
+    dbgs() << "*********************************************\n";
+    double castcost = 0, mathcost = 0, enob = 0;
+    for(auto& coefficient_id_and_variables: objDeclarationOccoured) {
+      for(auto& variable: coefficient_id_and_variables.second){
+        std::string coefficient_id = coefficient_id_and_variables.first;
+        if (coefficient_id == MODEL_OBJ_CASTCOST) {
+          castcost += variable.first->solution_value() * variable.second;
+        } else if (coefficient_id == MODEL_OBJ_MATHCOST) {
+          mathcost += variable.first->solution_value() * variable.second;
+        } else if (coefficient_id == MODEL_OBJ_ENOB) {
+          enob += variable.first->solution_value() * variable.second;
+        } else {
+          llvm_unreachable("and why is it now that we discover that we have a coefficient id that does not exist?");
+        }
+      }
+    }
+    dbgs() << " Cast Cost = " << castcost << "\n";
+    dbgs() << " Math Cost = " << mathcost << "\n";
+    dbgs() << " ENOB      = " << enob << "\n";
+    dbgs() << "*********************************************\n\n";
+  }
+
     if(variableValues.size() != variablesPool.size()){
         LLVM_DEBUG(dbgs() << "[ERROR] The number of variables in the file and in the model does not match!\n";);
         return false;
