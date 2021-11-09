@@ -95,6 +95,18 @@ Model::Model(ProblemType type): solver(operations_research::MPSolver::CreateSolv
 bool Model::finalizeAndSolve() {
 
   writeOutObjectiveFunction();
+
+  LLVM_DEBUG(
+
+    std::string tmp;
+    solver->ExportModelAsLpFormat(false, &tmp);
+    llvm::dbgs() << "####LP Format####\n" <<tmp;
+    llvm::dbgs() << "\n\n";
+
+
+
+  );
+
   const operations_research::MPSolver::ResultStatus result_status =
       solver->Solve();
   // Check that the problem has an optimal solution.
@@ -144,6 +156,9 @@ bool Model::finalizeAndSolve() {
     dbgs() << " Math Cost = " << mathcost << "\n";
     dbgs() << " ENOB      = " << enob << "\n";
     dbgs() << "*********************************************\n\n";
+
+
+
   }
 
     if(variableValues.size() != variablesPool.size()){
